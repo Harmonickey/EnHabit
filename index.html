@@ -126,6 +126,46 @@
 	<script>
 		L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
 		var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
+		
+		//map.on('draw:created', getPointsWithinPolygon);
+		
+		//testing query filters
+		$.ajax({
+			type: "POST",
+			url: "api.php",
+			data: {data: "{\"lower\": 200, \"upper\": 700, \"bedrooms\": 2, \"bathrooms\": 1, \"start_date\": \"09/01/2015\"}"},
+			success: function(res) {
+
+				if (res != "") {
+					data = JSON.parse(res.replace(/=>/g, ":"));
+					console.log(data);
+					
+					L.marker([data.worldCoordinates.x, data.worldCoordinates.y]).addTo(map);
+				}
+
+			},
+			error: function(res, err) {
+				console.log(res);
+				console.log(err);
+			}
+
+		});
+		/*
+		function getPointsWithinPolygon(e) 
+		{
+			var currentPolyLayer = e.layers[0];
+			for each lat and long in db.listings that are at this school
+			{
+				var latlng = L.latLng(lat, long);
+				var layer = leafletPip.pointInLayer(latlng, currentPolyLayer, true);
+				if (layer.length) 
+				{
+				  // we have found a point in the polygon, now add the marker to the map
+				  L.marker([lat, long]).addTo(map);
+				} 
+			}
+		}
+*/
 	</script>
 	
 	
