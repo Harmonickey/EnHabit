@@ -9,20 +9,21 @@ require 'json'
 require 'moped'
 require 'bson'
 
-data = ARGV[0]
-json_data = JSON.parse(data)
+data = JSON.parse(ARGV[0].delete('\\'))
 
-@lower = json_data[:lower]
-@upper = json_data[:upper]
-@bedrooms = json_data[:bedrooms]
-@bathrooms = json_data[:bathrooms]
-@start_date = json_data[:start_date]
+@lower = data["lower"]
+@upper = data["upper"]
+@bedrooms = data["bedrooms"]
+@bathrooms = data["bathrooms"]
+@start_date = data["start_date"]
+@extensions = data["extensions"]
  
 @price_filter = {}
 @bedroom_filter = {}
-@bathroom_filter = {}
+@bathrooms_filter = {}
 @start_filter = {}
 @main_filter = {}
+@extensions_filter = {}
 
 def set_filters
   if @lower.nil? and @upper.nil?
@@ -53,22 +54,33 @@ def set_filters
         @start_filter[:start] = {}
         @start_filter[:start][:$gte] = Date.strptime(@start_date,"%m/%d/%Y").mongoize
   end
+  
+  if @extensions.nil?
+		@extensions_filter = nil
+  else
+		@extensions.each do |key, value|
+			@extensions_filter["extensions." + key] = value
+		end
+  end
 
 end
 
 def combine_filters_into_query
-  @main_filter[:$and] = Array.new
+  @main_filter["$and"] = Array.new
   if not @price_filter.nil?
-        @main_filter[:$and].push @price_filter
+        @main_filter["$and"].push @price_filter
   end
   if not @bedroom_filter.nil?
-  	    @main_filter[:$and].push @bedroom_filter
+  	    @main_filter["$and"].push @bedroom_filter
   end
-  if not @bathroom_filter.nil?
-        @main_filter[:$and].push @bathroom_filter
+  if not @bathrooms_filter.nil?
+        @main_filter["$and"].push @bathrooms_filter
   end
   if not @start_filter.nil?
-        @main_filter[:$and].push @start_filter
+        @main_filter["$and"].push @start_filter
+  end
+  if not @extensions_filter.nil?
+		@main_filter["$and"].push @extensions_filter
   end
 end
 
@@ -89,9 +101,14 @@ begin
         if documents.count == 0
           puts "Error: No Matching Entries"
         else
-          documents[0]["_id"] = "empty" #just clear out the _id since we don't need it
-          documents[0]["start"] = "#{documents[0]["start"]}" #make the date object a string for javascript usage
-          puts documents
+		  result_data = {"data" => []}
+		  documents.each do |doc|
+		    doc["_id"] = "empty"
+			doc["start"] = "#{doc["start"]}"
+			result_data["data"] << doc
+		  end
+		  
+          puts result_data
         end
 
 rescue Exception => e

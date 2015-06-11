@@ -129,27 +129,102 @@
 		
 		//map.on('draw:created', getPointsWithinPolygon);
 		
-		//testing query filters
-		$.ajax({
-			type: "POST",
-			url: "api.php",
-			data: {data: "{\"lower\": 200, \"upper\": 700, \"bedrooms\": 2, \"bathrooms\": 1, \"start_date\": \"09/01/2015\"}"},
-			success: function(res) {
-
-				if (res != "") {
-					data = JSON.parse(res.replace(/=>/g, ":"));
-					console.log(data);
-					
-					L.marker([data.worldCoordinates.x, data.worldCoordinates.y]).addTo(map);
-				}
-
-			},
-			error: function(res, err) {
-				console.log(res);
-				console.log(err);
-			}
-
+		$(function() 
+		{
+			//upon load, get all the entries that are at Northwestern
+			$.ajax(
+			{
+				type: "POST",
+				url: "api.php",
+				data: {data: "{\"extensions\": {\"university\": \"Northwestern\"}}"},
+				success: function(res) 
+				{
+					if (res.indexOf("Error") == -1)
+					{
+						insertMarkers(res);
+					}
+					else
+					{
+						if (res == "")
+						{
+							console.log("Error: Empty Output");
+						}
+						else
+						{
+							console.log(res);
+						}
+					}
+				},
+				error: function(res, err) 
+				{
+					console.log(res);
+					console.log(err);
+				}			
+			});
 		});
+		
+		function loadDataWithFilter()
+		{
+
+			var query = createQuery();
+		
+			/*
+			$.ajax(
+			{
+				type: "POST",
+				url: "api.php",
+				data: {data: query},
+				success: function(res) 
+				{
+					insertMarkers(res);
+				},
+				error: function(res, err) 
+				{
+					console.log(res);
+					console.log(err);
+				}
+			});
+			*/
+		}
+		
+		function createQuery()
+		{
+			var query = "{}";
+			
+			if ($("#lower").val())
+			{
+				query += "\"lower\": " + $("#lower").val();
+			}
+			if ($("#upper").val())
+			{
+				query += "\"upper\": " + $("#upper").val();
+			}
+			if ($("#bedrooms").val())
+			{
+				query += "\"bedrooms\": " + $("#bedrooms").val();
+			}
+			if ($("#bathrooms").val())
+			{
+				query += "\"bathrooms\": " + $("#bathrooms").val();
+			}
+			if ($("#start_date").val())
+			{
+				query += "\"start_date\": " + $("#start_date").val();
+			}
+			
+			return query;
+		}
+		
+		
+		function insertMarkers(res) {
+			if (res != "")
+			{
+				data = JSON.parse(res.replace(/=>/g, ":"))["data"]; //sanitize the data for the Json Parser
+				data.forEach(function(d) {
+					L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
+				});
+			}
+		}
 		/*
 		function getPointsWithinPolygon(e) 
 		{
