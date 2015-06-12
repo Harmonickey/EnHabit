@@ -71,8 +71,8 @@
 		  <!-- Login -->
 		  <div class="content-to-populate-in-modal" id="modal-content-1">
 			<h1>Log In</h1>
-			<label for="username">Username: </label><input type="text" class="form-control" id="username"/>
-			<label for="password">Password: </label><input type="password" class="form-control" id="password"/>
+			<label>Username: </label><input type="textbox" class="form-control username" />
+			<label>Password: </label><input type="password" class="form-control password" />
 			<input type="button" class="btn btn-outline-inverse btn-lg" value="Log In" onclick="login_user()" style="margin-top: 15px;"/>
 			<div></div>
 			<label for="create" style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a href="" onclick="populate_and_open_modal(event, 'modal-content-2');">Create an Account</a>
@@ -81,11 +81,11 @@
 		  <!-- Register -->
 		  <div class="content-to-populate-in-modal" id="modal-content-2">
 			<h1>Create New Account</h1>
-			<label for="username">Username: </label><input type="text" class="form-control" id="username"/>
-			<label for="password">Password: </label><input type="password" class="form-control" id="password"/>
-			<label for="firstname">First Name: </label><input type="text" class="form-control" id="firstname"/>
-			<label for="middleinitial">Middle Initial: </label><input type="text" class="form-control" id="middleinitial"/>
-			<label for="lastname">Last Name: </label><input type="text" class="form-control" id="lastname"/>
+			<label for="new_username">Username: </label><input type="text" class="form-control username" />
+			<label for="new_password">Password: </label><input type="password" class="form-control password" />
+			<label for="firstname">First Name: </label><input type="text" class="form-control firstname"/>
+			<label for="middleinitial">Middle Initial: </label><input type="text" class="form-control middleinitial"/>
+			<label for="lastname">Last Name: </label><input type="text" class="form-control lastname"/>
 			<input type="button" class="btn btn-outline-inverse btn-lg" value="Create Account" style="margin-top: 15px;"/>
 		  </div><!-- #modal-content-1 -->
 		  

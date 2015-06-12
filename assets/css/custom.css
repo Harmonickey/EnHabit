@@ -4,8 +4,11 @@
 	z-index: 1;
 }
 
-#username, 
-#password {
+.username, 
+.password,
+.firstname,
+.middleinitial,
+.lastname {
 	text-align: center;
 	width: 50%;
 	margin: 0 auto;

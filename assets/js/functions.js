@@ -1232,20 +1232,28 @@ function tabs_uniform_height()
  */
  function login_user()
  {
-	var username = $("#username").val();
-	var password = $("#password").val();
+	 var username = $(".modal-body .username").val().trim();
+	 var password = $(".modal-body .password").val().trim();
 	 
-	$.ajax(
-	{
-		type: "POST",
-		url: "api.php",
-		data: {data_login: {username: username, password: password}},
-		success: function(res) {
-			console.log(res);
-		},
-		error: function(err, res) {
-			console.log(err);
-			console.log(res);
-		}
-	});	
+	 if (username != "" && password != "")
+	 {
+	 
+		$.ajax(
+		{
+			type: "POST",
+			url: "api.php",
+			data: {data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"},
+			success: function(res) {
+				console.log(res);
+			},
+			error: function(err, res) {
+				console.log(err);
+				console.log(res);
+			}
+		});	
+	 }
+	 else
+	 {
+		 console.log("Need both username and password");
+	 }
  }
