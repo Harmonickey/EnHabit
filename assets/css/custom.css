@@ -3,3 +3,10 @@
 #left-sidebar {
 	z-index: 1;
 }
+
+#username, 
+#password {
+	text-align: center;
+	width: 50%;
+	margin: 0 auto;
+}

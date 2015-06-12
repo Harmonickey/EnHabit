@@ -234,58 +234,6 @@ function initialise_general_links_click_events()
 
 /*
  * ================================================================
- * Initialise Main Menu Click Events
- *
- * ** Has to be called AFTER initialise_general_links_click_events() since it overrides the other function **
- *
- * This function handles the onclick events for the main menu item links
- */
-function initialise_main_menu_click_events()
-{
-    // first remove any click events for menu links (which were set for all links in initialise_general_links_click_events() above)
-    $("#main-menu .menu-item > a").off('click');
-    $("#main-menu .menu-item > a").prop("onclick", null);
-
-    // for each click of main menu item links
-    $("#main-menu .menu-item > a").click(function(event)
-    {
-        var clicked_link_href = $(this).attr("href");
-        var first_character_of_link = clicked_link_href.substr(0,1); // will be used below
-        var clicked_link_parent_menu_item = $(this).parent(".menu-item");
-        var link_menu_item_id = clicked_link_parent_menu_item.attr("id");
-        
-        // if menu item has "scroll" class, and links to a section id (starts with #) load scroll function
-        if (clicked_link_parent_menu_item.hasClass("scroll") && first_character_of_link == "#")
-        {
-            var clicked_menu_item_id = (link_menu_item_id !== undefined && link_menu_item_id != "") ? link_menu_item_id : "";
-
-            // add class to identify that scroll is "in action", so that no other scroll functions conflict
-            $("#main-content").addClass("same_page_link_in_action");
-
-            // do not change background on mobile viewports
-            var change_background = (change_bg_check()) ? true : false;
-
-            scroll_to_section(clicked_link_href, clicked_menu_item_id, change_background);
-
-            event.preventDefault ? event.preventDefault() : event.returnValue = false; // stop link from default action 
-        }
-
-        // if menu item does NOT have "scroll" class, default link action will apply
-        else 
-        {
-            // if fake link ("#") or empty, do nothing
-            if (clicked_link_href === undefined || clicked_link_href == "" || clicked_link_href == "#") 
-            { 
-                event.preventDefault ? event.preventDefault() : event.returnValue = false; 
-                return false; 
-            }
-        }
-
-    });
-}
-
-/*
- * ================================================================
  * Scroll Up/Down to section wrapper
  *
  * This function scrolls up/down to a section, and calls function which updates section to active
@@ -1276,3 +1224,28 @@ function tabs_uniform_height()
         panes.css({ 'min-height': max_height+'px' });
     }
 }
+
+/*
+ * ================================================================
+ * Login User
+ *
+ */
+ function login_user()
+ {
+	var username = $("#username").val();
+	var password = $("#password").val();
+	 
+	$.ajax(
+	{
+		type: "POST",
+		url: "api.php",
+		data: {data_login: {username: username, password: password}},
+		success: function(res) {
+			console.log(res);
+		},
+		error: function(err, res) {
+			console.log(err);
+			console.log(res);
+		}
+	});	
+ }
