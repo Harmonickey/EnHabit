@@ -1245,6 +1245,8 @@ function tabs_uniform_height()
 			data: {data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"},
 			success: function(res) {
 				console.log(res);
+				
+				
 			},
 			error: function(err, res) {
 				console.log(err);
@@ -1257,3 +1259,103 @@ function tabs_uniform_height()
 		 console.log("Need both username and password");
 	 }
  }
+ 
+ function create_account()
+ {
+	 //first validate that the fields are filled out
+	 var username = $(".modal-body .username").val().trim();
+	 var password = $(".modal-body .password").val().trim();
+	 var firstname = $(".modal-body .firstname").val().trim();
+	 var middleinitial = $(".modal-body .middleinitial").val().trim();
+	 var lastname = $(".modal-body .lastname").val().trim();
+	 
+	 if (!username)
+	 {
+		 setRegisterError("Please Enter a Username!");
+	 }
+	 else if (!password)
+	 {
+		 setRegisterError("Please Enter a Password!");
+	 }
+	 else if (!firstname)
+	 {
+		 setRegisterError("Please Enter a First Name!");
+	 }
+	 else if (!middleinitial)
+	 {
+		 setRegisterError("Please Enter a Middle Initial!");
+	 }
+	 else if (!lastname)
+	 {
+		 setRegisterError("Please Enter a Last Name!");
+	 }
+	 else
+	 {
+		$.ajax(
+		{
+			type: "POST",
+			url: "api.php",
+			data: {data_register: "{\"username\": \"" + username + "\", \"password\": \"" + password + 
+			                             "\", \"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial + 
+										 "\", \"lastname\": \"" + lastname + "\"}"},
+			success: function(res) {
+				console.log(res);
+			},
+			error: function(err, res) {
+				console.log(err);
+				console.log(res);
+			}
+		});	
+	 }
+	 
+ }
+ 
+ function setRegisterError(msg)
+ {
+	 $(".register-error").text(msg);
+	 $(".register-error").show();
+ }
+ 
+ function checkCookie(name)
+ {
+	 var value = readCookie(name);
+	 
+	 if (value != null)
+	 {
+		 
+	 }
+ }
+ 
+ function createCookie(name,value,days) 
+ {
+    if (days) 
+	{
+       var date = new Date();
+       date.setTime(date.getTime()+(days*24*60*60*1000));
+       var expires = "; expires="+date.toGMTString();
+    }
+    else 
+	{
+		var expires = "";
+	}
+    
+	document.cookie = name+"="+value+expires+"; path=/";
+ }
+
+function readCookie(name) 
+{
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) 
+	{
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function eraseCookie(name) 
+{
+    createCookie(name,"",-1);
+}
