@@ -26,6 +26,14 @@ else if (isset($_POST["data_register"]))
 	
 	echo shell_exec("ruby register.rb '$data'");
 }
+else if (isset($_POST["data_delete"]))
+{
+	$data = $_POST["data_delete"];
+	
+	$data = remove_malicious_characters($data);
+	
+	echo shell_exec("ruby delete_cookie.rb '$data'");
+}
 
 function remove_malicious_characters($data)
 {
