@@ -1,5 +1,18 @@
 /* It is recommended to place all your extra/additional CSS rules here */
 
-#left-sidebar {
+#left-sidebar,
+#footer {
 	z-index: 1;
+}
+
+.username, 
+.password,
+.firstname,
+.middleinitial,
+.lastname,
+.email,
+.phonenumber {
+	text-align: center;
+	width: 50%;
+	margin: 0 auto;
 }

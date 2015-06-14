@@ -22,9 +22,7 @@ function initialise_document_ready_functions()
 
     // Initialise General Links Click Events
     initialise_general_links_click_events();
-    // Initialise Main Menu Links Click Events
-    initialise_main_menu_click_events();
-
+    
     // initialise hover effect - fade out inactive project grid items
     effect_fade_out_inactive_grid_items(); 
 
@@ -46,7 +44,7 @@ function initialise_document_ready_functions()
     $('#common-modal').on('shown.bs.modal', function()
     {
         // responsive videos inside popups
-        $('#common-modal .modal-body').fitVids();
+        //$('#common-modal .modal-body').fitVids();
 
         // initialise popup image gallery
         // - you can use the same functions below if you want to add a new Owl Carousel with different parameters (in this case call the carousel's unique ID instead)

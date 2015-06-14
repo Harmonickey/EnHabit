@@ -6,6 +6,8 @@
 window.xs_screen_max = 767;
 window.sm_screen_max = 991;
 
+var which_modal = "";
+
 var page_is_scrolling = false; // identify when page is being scrolled
 
 // page background default settings - to change, override them at the top of initialise-functions.js
@@ -230,58 +232,6 @@ function initialise_general_links_click_events()
         } 
     });
     // end: if any link inside the page is clicked
-}
-
-/*
- * ================================================================
- * Initialise Main Menu Click Events
- *
- * ** Has to be called AFTER initialise_general_links_click_events() since it overrides the other function **
- *
- * This function handles the onclick events for the main menu item links
- */
-function initialise_main_menu_click_events()
-{
-    // first remove any click events for menu links (which were set for all links in initialise_general_links_click_events() above)
-    $("#main-menu .menu-item > a").off('click');
-    $("#main-menu .menu-item > a").prop("onclick", null);
-
-    // for each click of main menu item links
-    $("#main-menu .menu-item > a").click(function(event)
-    {
-        var clicked_link_href = $(this).attr("href");
-        var first_character_of_link = clicked_link_href.substr(0,1); // will be used below
-        var clicked_link_parent_menu_item = $(this).parent(".menu-item");
-        var link_menu_item_id = clicked_link_parent_menu_item.attr("id");
-        
-        // if menu item has "scroll" class, and links to a section id (starts with #) load scroll function
-        if (clicked_link_parent_menu_item.hasClass("scroll") && first_character_of_link == "#")
-        {
-            var clicked_menu_item_id = (link_menu_item_id !== undefined && link_menu_item_id != "") ? link_menu_item_id : "";
-
-            // add class to identify that scroll is "in action", so that no other scroll functions conflict
-            $("#main-content").addClass("same_page_link_in_action");
-
-            // do not change background on mobile viewports
-            var change_background = (change_bg_check()) ? true : false;
-
-            scroll_to_section(clicked_link_href, clicked_menu_item_id, change_background);
-
-            event.preventDefault ? event.preventDefault() : event.returnValue = false; // stop link from default action 
-        }
-
-        // if menu item does NOT have "scroll" class, default link action will apply
-        else 
-        {
-            // if fake link ("#") or empty, do nothing
-            if (clicked_link_href === undefined || clicked_link_href == "" || clicked_link_href == "#") 
-            { 
-                event.preventDefault ? event.preventDefault() : event.returnValue = false; 
-                return false; 
-            }
-        }
-
-    });
 }
 
 /*
@@ -774,8 +724,8 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
 
     }
     // end: if modal and content container exists
-
-    event.preventDefault ? event.preventDefault() : event.returnValue = false; 
+	if (event != null)
+		event.preventDefault ? event.preventDefault() : event.returnValue = false; 
     return false;     
 }
 
@@ -1275,4 +1225,299 @@ function tabs_uniform_height()
         }
         panes.css({ 'min-height': max_height+'px' });
     }
+}
+
+$(function() {
+	
+	checkCookie();
+	
+});
+
+/*
+ * ================================================================
+ * Login User
+ *
+ */
+ function login_user()
+ {
+	 var username = $(".modal-body .username").val().trim();
+	 var password = $(".modal-body .password").val().trim();
+	 
+	 if (username != "" && password != "")
+	 {
+	 
+		$.ajax(
+		{
+			type: "POST",
+			url: "api.php",
+			data: {data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"},
+			beforeSend: function() {
+				$(".login-btn").text("Logging in...");
+				$(".login-btn").attr("disabled", true);
+			},
+			success: function(res) {
+				
+				if (res.indexOf("Okay") != -1)
+				{
+					//set cookie?
+					$("#login-create").text("Log Out");
+					$("#login-create-function").attr("onclick", "logout_user()");
+					
+					var randomValue = res.split(":")[1];
+					
+					createCookie("enhabit-user", randomValue, 7);
+					
+					$("#common-modal").modal('hide');
+				}
+				else
+				{
+					setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+				}
+			},
+			error: function(err, res) {
+				console.log(err);
+				console.log(res);
+			},
+			complete: function() {
+				$(".login-btn").text("Log In");
+				$(".login-btn").attr("disabled", false);
+			}
+		});	
+	 }
+	 else
+	 {
+		 console.log("Need both username and password");
+	 }
+ }
+ 
+ function logout_user()
+ {
+	 var value = readCookie("enhabit-user");
+	 
+	$.ajax( //extremely dangerous command
+	{
+		type: "POST",
+		url: "api.php",
+		data: {data_delete: "{\"entryname\": \"" + value + "\"}"},
+		success: function(res) {
+			
+			if (res.indexOf("Okay") == -1)
+			{
+				console.log(res);
+			}
+			
+		},
+		error: function(err, res) {
+			console.log(err);
+			console.log(res);
+		}
+	});
+	 
+	//unset cookie 
+	eraseCookie("enhabit-user");
+	$("#login-create").text("Log In");
+	$("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');" );
+	
+ }
+
+ function resetModals()
+ {
+	$(".register-btn").val("Create Account");
+	$(".register-btn").attr('disabled', false);
+	$(".register-error").hide();
+	
+	$(".login-btn").val("Log In");
+	$(".login-btn").attr('disabled', false);
+	$(".login-error").hide();
+ }
+ 
+ function create_account()
+ {
+	 //first validate that the fields are filled out
+	 var username = $(".modal-body .username").val().trim();
+	 var password = $(".modal-body .password").val().trim();
+	 var firstname = $(".modal-body .firstname").val().trim();
+	 var middleinitial = $(".modal-body .middleinitial").val().trim();
+	 var lastname = $(".modal-body .lastname").val().trim();
+	 var email = $(".modal-body .email").val().trim();
+	 var phonenumber = $(".modal-body .phonenumber").val().trim();
+	 
+	 if (!username)
+	 {
+		 setError(".register-error", "Please Enter a Username!");
+	 }
+	 else if (!password)
+	 {
+		 setError(".register-error", "Please Enter a Password!");
+	 }
+	 else if (!firstname)
+	 {
+		 setError(".register-error", "Please Enter a First Name!");
+	 }
+	 else if (!middleinitial)
+	 {
+		 setError(".register-error", "Please Enter a Middle Initial!");
+	 }
+	 else if (!lastname)
+	 {
+		 setError(".register-error", "Please Enter a Last Name!");
+	 }
+	 else if (!email || !isValidEmail(email))
+	 {
+		 setError(".register-error", "Please Enter a Valid Email!");
+	 }
+	 else if (!phonenumber || !isValidPhoneNumber(phonenumber))
+	 {
+		 setError(".register-error", "Please Enter a Valid Phone Number!");
+	 }
+	 else
+	 {
+		$.ajax(
+		{
+			type: "POST",
+			url: "api.php",
+			data: {data_register: "{\"username\": \"" + username + "\", \"password\": \"" + password + 
+			                             "\", \"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial + 
+										 "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
+										 "\", \"phonenumber\": \"" + phonenumber + "\"}"},
+			beforeSend: function() {
+				$(".register-btn").val("Processing...");
+				$(".register-btn").attr('disabled', true);
+			},
+			success: function(res) {
+				if (res.indexOf("Okay") != -1)
+				{
+					login_user();
+					populate_and_open_modal({preventDefault: true}, 'modal-content-3'); 
+					
+				}
+				else
+				{
+					setError(".register-error", res);
+				}
+			},
+			error: function(err, res) {
+				console.log(err);
+				console.log(res);
+			},
+			complete: function() {
+				$(".register-btn").val("Create Account");
+				$(".register-btn").attr('disabled', false);
+				
+				set_default_button_on_enter("");
+			}
+		});	
+	 }
+	 
+ }
+ 
+ function set_default_button_on_enter(modal)
+ {
+	 if (which_modal != "")
+		$(document).unbind("keypress");
+	 
+	 switch (modal)
+	 {
+		 case "login":
+			$(document).on("keypress", function(e) 
+			{
+				var code = e.keyCode || e.which;
+				if (code == 13)
+				{
+					$($(".login-btn")[0]).click();
+				}
+			});
+			which_modal = ".login-btn";
+		 break;
+		 case "register":
+			$(document).on("keypress", function(e) 
+			{
+				var code = e.keyCode || e.which;
+				if (code == 13)
+				{
+					$($(".register-btn")[0]).click();
+				}
+			});
+			which_modal = ".register-btn";
+		 break;
+		 default: 
+		 
+			which_modal = "";
+			break;
+	 }
+ }
+ 
+function isValidEmail(em)
+{
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(em);
+}
+
+function isValidPhoneNumber(pn)
+{
+	/*
+	Valid Formats are...
+	(123) 456-7890
+	123-456-7890
+	123.456.7890
+	1234567890
+	+31636363634
+	075-63546725
+	*/
+	
+	return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);                   
+}
+ 
+ function setError(el, msg)
+ {
+	 $(el).text(msg);
+	 $(el).show();
+	 
+	 //reset the height because the error bar increases it...
+	 modal_backdrop_height($('#common-modal.modal'));
+ }
+ 
+ function checkCookie()
+ {
+	 var value = readCookie("enhabit-user");
+	 if (value != null)
+	 {
+		createCookie("enhabit-user", value, 7);  //reinit cookie to be another 7 days
+		$("#login-create").text("Log Out");
+		$("#login-create-function").attr("onclick", "logout_user()");
+	 }
+ }
+ 
+ function createCookie(name,value,days) 
+ {
+    if (days) 
+	{
+       var date = new Date();
+       date.setTime(date.getTime()+(days*24*60*60*1000));
+       var expires = "; expires="+date.toGMTString();
+    }
+    else 
+	{
+		var expires = "";
+	}
+    
+	document.cookie = name+"="+value+expires+"; path=/";
+ }
+
+function readCookie(name) 
+{
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) 
+	{
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function eraseCookie(name) 
+{
+    createCookie(name,"",-1);
 }
