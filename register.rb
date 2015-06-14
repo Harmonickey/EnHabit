@@ -11,9 +11,7 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-data = JSON.parse(ARGV[0].delete('\\'))
-
-def insert_user(user, pass, fn, mi, ln)
+def insert_user(user, pass, fn, mi, ln, em, pn)
 
 	mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -24,6 +22,11 @@ def insert_user(user, pass, fn, mi, ln)
 	usr_obj["FirstName"] = fn
 	usr_obj["MiddleInitial"] = mi
 	usr_obj["LastName"] = ln
+	usr_obj["Email"] = em
+	usr_obj["PhoneNumber"] = pn
+	usr_obj["Landlord"] = false
+	usr_obj["Active"] = true
+	#usr_obj["Verified"] = false
  
     ret_msg = ""
  
@@ -34,12 +37,24 @@ def insert_user(user, pass, fn, mi, ln)
 		end
 		ret_msg = "Okay"
 	rescue Moped::Errors::OperationFailure => e
-		ret_msg = "That username already exists!"
+		if e.message.include? "enhabit.accounts.$Username_1"
+			ret_msg = "That username already exists!"
+		elsif e.message.include? "enhabit.accounts.$email_1"
+			ret_msg = "That email is already registered with another user!"
+		end
 	end
 	
 	return ret_msg
 end
 
-result = insert_user(data["username"], data["password"], data["firstname"], data["middleinitial"], data["lastname"])
+begin
 
-puts result
+  data = JSON.parse(ARGV[0].delete('\\'))
+
+  result = insert_user(data["username"], data["password"], data["firstname"], data["middleinitial"], data["lastname"], data["email"], data["phonenumber"])
+
+  puts result
+
+rescue Exception => e
+  puts e.inspect
+end

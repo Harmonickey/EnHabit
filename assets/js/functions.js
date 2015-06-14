@@ -6,6 +6,8 @@
 window.xs_screen_max = 767;
 window.sm_screen_max = 991;
 
+var which_modal = "";
+
 var page_is_scrolling = false; // identify when page is being scrolled
 
 // page background default settings - to change, override them at the top of initialise-functions.js
@@ -1246,7 +1248,20 @@ function tabs_uniform_height()
 			success: function(res) {
 				console.log(res);
 				
-				
+				if (res.indexOf("Okay") != -1)
+				{
+					//set cookie?
+					$("#login-create").text("Log Out");
+					$("#login-create-function").attr("onclick", "logout_user()");
+					
+					var randomValue = res.split(":")[1];
+					
+					createCookie("enhabit-user", randomValue, 7);
+				}
+				else
+				{
+					setError('.login-error', res);
+				}
 			},
 			error: function(err, res) {
 				console.log(err);
@@ -1260,6 +1275,42 @@ function tabs_uniform_height()
 	 }
  }
  
+ function logout_user()
+ {
+	 var value = readCookie("enhabit-user");
+	 
+	$.ajax(
+	{
+		type: "POST",
+		url: "api.php",
+		data: {data_delete: "{\"filename\": \"" + value + "\}"},
+		success: function(res) {
+			console.log(res);
+		},
+		error: function(err, res) {
+			console.log(err);
+			console.log(res);
+		}
+	}
+	 
+	//unset cookie 
+	eraseCookie("enhabit-user");
+	$("#login-create").text("Log In");
+	$("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');" );
+	
+ }
+
+ function resetModals()
+ {
+	$(".register-btn").val("Create Account");
+	$(".register-btn").attr('disabled', false);
+	$(".register-error").hide();
+	
+	$(".login-btn").val("Log In");
+	$(".login-btn").attr('disabled', false);
+	$(".login-error").hide();
+ }
+ 
  function create_account()
  {
 	 //first validate that the fields are filled out
@@ -1268,26 +1319,36 @@ function tabs_uniform_height()
 	 var firstname = $(".modal-body .firstname").val().trim();
 	 var middleinitial = $(".modal-body .middleinitial").val().trim();
 	 var lastname = $(".modal-body .lastname").val().trim();
+	 var email = $(".modal-body .email").val().trim();
+	 var phonenumber = $(".modal-body .phonenumber").val().trim();
 	 
 	 if (!username)
 	 {
-		 setRegisterError("Please Enter a Username!");
+		 setError(".register-error", "Please Enter a Username!");
 	 }
 	 else if (!password)
 	 {
-		 setRegisterError("Please Enter a Password!");
+		 setError(".register-error", "Please Enter a Password!");
 	 }
 	 else if (!firstname)
 	 {
-		 setRegisterError("Please Enter a First Name!");
+		 setError(".register-error", "Please Enter a First Name!");
 	 }
 	 else if (!middleinitial)
 	 {
-		 setRegisterError("Please Enter a Middle Initial!");
+		 setError(".register-error", "Please Enter a Middle Initial!");
 	 }
 	 else if (!lastname)
 	 {
-		 setRegisterError("Please Enter a Last Name!");
+		 setError(".register-error", "Please Enter a Last Name!");
+	 }
+	 else if (!email || !isValidEmail(email))
+	 {
+		 setError(".register-error", "Please Enter a Valid Email!");
+	 }
+	 else if (!phonenumber || !isValidPhoneNumber(phonenumber))
+	 {
+		 setError(".register-error", "Please Enter a Valid Phone Number!");
 	 }
 	 else
 	 {
@@ -1297,32 +1358,111 @@ function tabs_uniform_height()
 			url: "api.php",
 			data: {data_register: "{\"username\": \"" + username + "\", \"password\": \"" + password + 
 			                             "\", \"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial + 
-										 "\", \"lastname\": \"" + lastname + "\"}"},
+										 "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
+										 "\", \"phonenumber\": \"" + phonenumber + "\"}"},
+			beforeSend: function() {
+				$(".register-btn").val("Processing...");
+				$(".register-btn").attr('disabled', true);
+			},
 			success: function(res) {
-				console.log(res);
+				if (res.indexOf("Okay") != -1)
+				{
+					populate_and_open_modal({preventDefault: true}, 'modal-content-3'); 
+				}
+				else
+				{
+					setError(".register-error", res);
+				}
 			},
 			error: function(err, res) {
 				console.log(err);
 				console.log(res);
+			},
+			complete: function() {
+				$(".register-btn").val("Create Account");
+				$(".register-btn").attr('disabled', false);
+				
+				set_default_button_on_enter("");
 			}
 		});	
 	 }
 	 
  }
  
- function setRegisterError(msg)
+ function set_default_button_on_enter(modal)
  {
-	 $(".register-error").text(msg);
-	 $(".register-error").show();
+	 if (which_modal != "")
+		$(document).unbind("keypress");
+	 
+	 switch (modal)
+	 {
+		 case "login":
+			$(document).on("keypress", function(e) 
+			{
+				var code = e.keyCode || e.which;
+				if (code == 13)
+				{
+					$($(".login-btn")[0]).click();
+				}
+			});
+			which_modal = ".login-btn";
+		 break;
+		 case "register":
+			$(document).on("keypress", function(e) 
+			{
+				var code = e.keyCode || e.which;
+				if (code == 13)
+				{
+					$($(".register-btn")[0]).click();
+				}
+			});
+			which_modal = ".register-btn";
+		 break;
+		 default: 
+		 
+			which_modal = "";
+			break;
+	 }
  }
  
- function checkCookie(name)
+function isValidEmail(em)
+{
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(em);
+}
+
+function isValidPhoneNumber(pn)
+{
+	/*
+	Valid Formats are...
+	(123) 456-7890
+	123-456-7890
+	123.456.7890
+	1234567890
+	+31636363634
+	075-63546725
+	*/
+	
+	return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);                   
+}
+ 
+ function setError(el, msg)
  {
-	 var value = readCookie(name);
+	 $(el).text(msg);
+	 $(el).show();
 	 
+	 //reset the height because the error bar increases it...
+	 modal_backdrop_height($('#common-modal.modal'));
+ }
+ 
+ function checkCookie()
+ {
+	 var value = readCookie("enhabit-user");
 	 if (value != null)
 	 {
-		 
+		createCookie("enhabit-user", value, 7);  //reinit cookie to be another 7 days
+		$("#login-create").text("Log Out");
+		$("#login-create-function").attr("onclick", "logout_user()");
 	 }
  }
  

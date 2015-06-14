@@ -10,6 +10,7 @@ require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
+require 'securerandom'
 
 data = JSON.parse(ARGV[0].delete('\\'))
 
@@ -34,7 +35,17 @@ def user_exists(user, pass)
 end
 
 if user_exists(data["username"], data["password"])
-	puts "Okay"
+
+    randomValue = nil
+    while (not randomValue.nil? and not File.exists?(randomValue))
+      randomValue = SecureRandom.hex
+    end
+
+    File.open(randomValue, "w") do |file|
+      file.puts "#{username},#{password}"
+    end
+
+	puts "Okay:#{randomValue}"
 else
-	puts "Error: Incorrect Username/Password"
+	puts "Incorrect Username/Password"
 end

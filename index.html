@@ -64,7 +64,7 @@
 			<ul id="main-menu">
 			  <li id="menu-item-text" class="menu-item scroll"><a href="#text">Area for Filters</a></li>
 			  <li class="menu-item scroll"><input type="text" class="form-control" id="address" /></li>
-			  <li id="login-create-function" class="menu-item scroll" onclick="populate_and_open_modal(event, 'modal-content-1');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
+			  <li id="login-create-function" class="menu-item scroll" onclick="populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
 			</ul><!-- #main-menu -->
 
 		  </section><!-- #left-sidebar -->
@@ -73,9 +73,10 @@
 			<h1>Log In</h1>
 			<label>Username: </label><input type="textbox" class="form-control username" />
 			<label>Password: </label><input type="password" class="form-control password" />
-			<input type="button" class="btn btn-outline-inverse btn-lg" value="Log In" onclick="login_user()" style="margin-top: 15px;"/>
+			<input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user();" style="margin-top: 15px;"/>
+			<p class="login-error alert alert-danger" style="display: none;"></p>
 			<div></div>
-			<label for="create" style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a href="" onclick="$('.register-error').hide(); populate_and_open_modal(event, 'modal-content-2'); modal_backdrop_height($('#common-modal.modal'));">Create an Account</a>
+			<label for="create" style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a href="" onclick="populate_and_open_modal(event, 'modal-content-2'); modal_backdrop_height($('#common-modal.modal')); resetModals(); set_default_button_on_enter('login');">Create an Account</a>
 		  </div><!-- #modal-content-1 -->
 		  
 		  <!-- Register -->
@@ -83,11 +84,19 @@
 			<h1>Create New Account</h1>
 			<label for="new_username">Username: </label><input type="text" class="form-control username" />
 			<label for="new_password">Password: </label><input type="password" class="form-control password" />
-			<label for="firstname">First Name: </label><input type="text" class="form-control firstname"/>
-			<label for="middleinitial">Middle Initial: </label><input type="text" class="form-control middleinitial"/>
-			<label for="lastname">Last Name: </label><input type="text" class="form-control lastname"/>
-			<input type="button" class="btn btn-outline-inverse btn-lg" onclick="create_account()" value="Create Account" style="margin-top: 15px;"/>
-			<p class="register-error" class="hidden"></p>
+			<label for="firstname">First Name: </label><input type="text" class="form-control firstname" />
+			<label for="middleinitial">Middle Initial: </label><input type="text" class="form-control middleinitial" />
+			<label for="lastname">Last Name: </label><input type="text" class="form-control lastname" />
+			<label for="email">Email: </label><input type="text" class="form-control email" />
+			<label for="phonenumber">Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
+			<input type="button" class="btn btn-outline-inverse btn-lg register-btn" onclick="create_account()" value="Create Account" style="margin-top: 15px;" />
+			<p class="register-error alert alert-danger" style="display: none;"></p>
+		  </div><!-- #modal-content-1 -->
+		  
+		  <!-- Register -->
+		  <div class="content-to-populate-in-modal" id="modal-content-3">
+			<h1>Account Creation Success!</h1>
+			<p> You now have an account with EnHabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
 		  </div><!-- #modal-content-1 -->
 		  
 		  <!-- end: Left Sidebar -->
