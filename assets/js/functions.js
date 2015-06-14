@@ -1251,8 +1251,11 @@ $(function() {
 			type: "POST",
 			url: "api.php",
 			data: {data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"},
+			beforeSend: function() {
+				$(".login-btn").text("Logging in...");
+				$(".login-btn").attr("disabled", true);
+			},
 			success: function(res) {
-				console.log(res);
 				
 				if (res.indexOf("Okay") != -1)
 				{
@@ -1263,6 +1266,8 @@ $(function() {
 					var randomValue = res.split(":")[1];
 					
 					createCookie("enhabit-user", randomValue, 7);
+					
+					$("#common-modal").modal('hide');
 				}
 				else
 				{
@@ -1272,6 +1277,10 @@ $(function() {
 			error: function(err, res) {
 				console.log(err);
 				console.log(res);
+			},
+			complete: function() {
+				$(".login-btn").text("Log In");
+				$(".login-btn").attr("disabled", false);
 			}
 		});	
 	 }
@@ -1289,10 +1298,10 @@ $(function() {
 	{
 		type: "POST",
 		url: "api.php",
-		data: {data_delete: "{\"filename\": \"" + value + "\"}"},
+		data: {data_delete: "{\"entryname\": \"" + value + "\"}"},
 		success: function(res) {
 			
-			if (res != 1)
+			if (res.indexOf("Okay") == -1)
 			{
 				console.log(res);
 			}

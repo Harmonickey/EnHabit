@@ -11,6 +11,7 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 require 'securerandom'
+require 'date'
 
 def user_exists(user, pass)
 
@@ -42,8 +43,19 @@ begin
 		  randomValue = SecureRandom.hex
 		end
 
-		File.open(randomValue, "w") do |file|
-		  file.puts "cookie,#{data["username"]},#{data["password"]}"
+		cookie_obj = Hash.new
+		cookie_obj["cookie"] = randomValue
+		cookie_obj["credentials"] = "#{data["username"]},#{data["password"]}"
+		cookie_obj["expires"] = (Date.today + 7).to_s
+		
+		begin
+			mongo_session = Moped::Session.new(['127.0.0.1:27017'])
+			mongo_session.use("enhabit")
+			mongo_session.with(safe: true) do |session|
+				session[:cookies].insert(cookie_obj)
+			end
+		rescue Moped::Errors::OperationFailure => e
+			puts e.message
 		end
 
 		puts "Okay:#{randomValue}"
