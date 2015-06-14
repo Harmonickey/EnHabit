@@ -1289,12 +1289,12 @@ $(function() {
 	{
 		type: "POST",
 		url: "api.php",
-		data: {data_delete: "{\"filename\": \"" + value + "\}"},
+		data: {data_delete: "{\"filename\": \"" + value + "\"}"},
 		success: function(res) {
 			
 			if (res != 1)
 			{
-				console.log("Could not find server-side cookie.");
+				console.log(res);
 			}
 			
 		},

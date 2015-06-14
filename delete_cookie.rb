@@ -8,18 +8,22 @@ $: << "."
 
 require 'json'
 
-data = JSON.parse(ARGV[0].delete('\\'))
+begin
+	data = JSON.parse(ARGV[0].delete('\\'))
 
-filename = data["filename"]
+	filename = data["filename"]
 
-if File.exists?(filename)
+	if File.exists?(filename)
 
-	File.open(filename, "r") do |file|
-		line = file.readline
-		if line.include? "cookie"  #only delete the file if the first line includes 'cookie'
-			puts File.delete(filename)
+		File.open(filename, "r") do |file|
+			line = file.readline
+			if line.include? "cookie"  #only delete the file if the first line includes 'cookie'
+				puts File.delete(filename)
+			end
 		end
+	else
+		puts 0
 	end
-else
-	puts 0
+rescue Exception => e
+	puts e.message
 end
