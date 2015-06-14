@@ -12,8 +12,6 @@ require 'bson'
 require 'PasswordHash'
 require 'securerandom'
 
-data = JSON.parse(ARGV[0].delete('\\'))
-
 def user_exists(user, pass)
 
 	mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
@@ -34,18 +32,24 @@ def user_exists(user, pass)
 
 end
 
-if user_exists(data["username"], data["password"])
+begin
+	data = JSON.parse(ARGV[0].delete('\\'))
+	
+	if user_exists(data["username"], data["password"])
 
-    randomValue = nil
-    while (not randomValue.nil? and not File.exists?(randomValue))
-      randomValue = SecureRandom.hex
-    end
+		randomValue = ""
+		while (randomValue == "" or File.exists?(randomValue))
+		  randomValue = SecureRandom.hex
+		end
 
-    File.open(randomValue, "w") do |file|
-      file.puts "#{username},#{password}"
-    end
+		File.open(randomValue, "w") do |file|
+		  file.puts "cookie,#{data["username"]},#{data["password"]}"
+		end
 
-	puts "Okay:#{randomValue}"
-else
-	puts "Incorrect Username/Password"
+		puts "Okay:#{randomValue}"
+	else
+		puts "Incorrect Username/Password"
+	end
+rescue Exception => e
+	puts e.message
 end

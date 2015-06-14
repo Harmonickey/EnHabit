@@ -724,8 +724,8 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
 
     }
     // end: if modal and content container exists
-
-    event.preventDefault ? event.preventDefault() : event.returnValue = false; 
+	if (event != null)
+		event.preventDefault ? event.preventDefault() : event.returnValue = false; 
     return false;     
 }
 
@@ -1227,6 +1227,12 @@ function tabs_uniform_height()
     }
 }
 
+$(function() {
+	
+	checkCookie();
+	
+});
+
 /*
  * ================================================================
  * Login User
@@ -1260,7 +1266,7 @@ function tabs_uniform_height()
 				}
 				else
 				{
-					setError('.login-error', res);
+					setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
 				}
 			},
 			error: function(err, res) {
@@ -1279,19 +1285,24 @@ function tabs_uniform_height()
  {
 	 var value = readCookie("enhabit-user");
 	 
-	$.ajax(
+	$.ajax( //extremely dangerous command
 	{
 		type: "POST",
 		url: "api.php",
 		data: {data_delete: "{\"filename\": \"" + value + "\}"},
 		success: function(res) {
-			console.log(res);
+			
+			if (res != 1)
+			{
+				console.log("Could not find server-side cookie.");
+			}
+			
 		},
 		error: function(err, res) {
 			console.log(err);
 			console.log(res);
 		}
-	}
+	});
 	 
 	//unset cookie 
 	eraseCookie("enhabit-user");
@@ -1367,7 +1378,9 @@ function tabs_uniform_height()
 			success: function(res) {
 				if (res.indexOf("Okay") != -1)
 				{
+					login_user();
 					populate_and_open_modal({preventDefault: true}, 'modal-content-3'); 
+					
 				}
 				else
 				{
