@@ -1,5 +1,14 @@
 /* It is recommended to place all your extra/additional CSS rules here */
 
-#left-sidebar {
+#map 
+{ 
+	position:absolute; 
+	top:0; 
+	bottom:0; 
+	width:100%; 
+}
+
+#left-sidebar 
+{
 	z-index: 1;
 }
