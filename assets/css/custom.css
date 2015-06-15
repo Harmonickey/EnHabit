@@ -1,5 +1,6 @@
 /* It is recommended to place all your extra/additional CSS rules here */
 
-#left-sidebar {
+#left-sidebar 
+{
 	z-index: 1;
 }
