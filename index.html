@@ -116,7 +116,7 @@
             		data: {data_query: "{\"extensions\": {\"university\": \"Northwestern\"}}"},
             		success: function(res) 
             		{
-            			if (res.indexOf("Error") == -1)
+            			if (res.indexOf("No Matching Entries") == -1)
             			{
             				insertMarkers(res);
             			}
@@ -124,7 +124,7 @@
             			{
             				if (res == "")
             				{
-            					console.log("Error: Empty Output");
+            					console.log("No Matching Entries");
             				}
             				else
             				{
