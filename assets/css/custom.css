@@ -1,7 +1,8 @@
 /* It is recommended to place all your extra/additional CSS rules here */
 
 #left-sidebar,
-#footer {
+#footer 
+{
 	z-index: 1;
 }
 
@@ -11,7 +12,8 @@
 .middleinitial,
 .lastname,
 .email,
-.phonenumber {
+.phonenumber 
+{
 	text-align: center;
 	width: 50%;
 	margin: 0 auto;
