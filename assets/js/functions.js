@@ -1,18 +1,19 @@
 /* 
  * GLOBAL VARIABLES
  */
-
 // these should match with the bootrstrap defined widths
 window.xs_screen_max = 767;
 window.sm_screen_max = 991;
+
+var which_modal = "";
 
 var page_is_scrolling = false; // identify when page is being scrolled
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
-    change_on_mobile    : false, // if true, bg changes on mobile devices
-    change_on_nonmobile : true,  // if true, bg changes on tablet and desktop devices
-    use_script          : true,  // set to false if you want to set a custom background (css, video, etc)
+    change_on_mobile: false, // if true, bg changes on mobile devices
+    change_on_nonmobile: true, // if true, bg changes on tablet and desktop devices
+    use_script: true, // set to false if you want to set a custom background (css, video, etc)
 }
 
 
@@ -22,13 +23,19 @@ var background_settings = {
  *
  * get actual window width/height (to match with css media queries)
  */
-function viewport() {
-    var e = window, a = 'inner';
-    if (!('innerWidth' in window )) {
+function viewport()
+{
+    var e = window,
+        a = 'inner';
+    if (!('innerWidth' in window))
+    {
         a = 'client';
         e = document.documentElement || document.body;
     }
-    return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+    return {
+        width: e[a + 'Width'],
+        height: e[a + 'Height']
+    };
 }
 
 /*
@@ -48,7 +55,8 @@ function toggle_main_menu()
         // if menu is already visible, hide it and remove active class for menu icon
         if (main_menu.is(':visible'))
         {
-            main_menu.addClass("menu_closed_on_xs").removeClass("menu_opened_on_xs").slideUp("fast", function(){
+            main_menu.addClass("menu_closed_on_xs").removeClass("menu_opened_on_xs").slideUp("fast", function()
+            {
                 mobile_menu_icon.removeClass("active");
             });
 
@@ -56,12 +64,14 @@ function toggle_main_menu()
         }
 
         // if menu is hidden, show it and add active class to menu icon
-        else {
-            main_menu.addClass("menu_opened_on_xs").removeClass("menu_closed_on_xs").slideDown("fast", function(){
+        else
+        {
+            main_menu.addClass("menu_opened_on_xs").removeClass("menu_closed_on_xs").slideDown("fast", function()
+            {
                 mobile_menu_icon.addClass("active");
-            });  
+            });
 
-            return "opened";          
+            return "opened";
         }
     }
     // end: only applies for mobile window widths
@@ -89,17 +99,18 @@ function main_menu_visiblity_on_resize()
     // end: for larger window viewports
 
     // for smaller window viewports (mobile/xs)
-    else {
+    else
+    {
         // if menu was closed on small (mobile/xs) viewport, ensure it remains closed
         if (main_menu.hasClass("menu_closed_on_xs"))
         {
             main_menu.hide();
-        } 
+        }
         // if menu was open on small (mobile/xs) viewport, ensure it remains open
         if (main_menu.hasClass("menu_opened_on_xs"))
         {
             main_menu.show();
-        }       
+        }
     }
 }
 
@@ -113,7 +124,7 @@ function main_menu_visiblity_on_resize()
  * This function only applies for non-mobile viewports (when window width is larger than 768px), since on smaller screens, the layout is different
  */
 function sections_content_vertical_position()
-{  
+{
     // only applies for non-mobile window widths (see comment above)
     if (viewport().width > window.xs_screen_max)
     {
@@ -130,8 +141,9 @@ function sections_content_vertical_position()
             // if content-wrapper height is larger than the height available in page (without content being hidden), set position to static (not absolute)
             if (content_wrapper_height > content_available_height)
             {
-                content_wrapper.css({
-                    "position":"static"
+                content_wrapper.css(
+                {
+                    "position": "static"
                 });
             }
             // end: if content-wrapper height is larger than the height available
@@ -139,11 +151,12 @@ function sections_content_vertical_position()
             // if content-wrapper height is smaller than (within) height available, set position to absolute (with bottom and right position set in the CSS)
             else
             {
-                content_wrapper.css({
-                    "position":"absolute"
+                content_wrapper.css(
+                {
+                    "position": "absolute"
                 });
             }
-                       
+
         });
         // end: for each section
     }
@@ -153,8 +166,9 @@ function sections_content_vertical_position()
     else
     {
         // remove absolute positionining for all section's content
-        $("#main-content .section-wrapper .content-wrapper").css({
-            "position":"static"
+        $("#main-content .section-wrapper .content-wrapper").css(
+        {
+            "position": "static"
         });
     }
     // end: for mobile viewport
@@ -180,7 +194,7 @@ function initialise_general_links_click_events()
         // if link is not empty
         if (clicked_link_href !== undefined && clicked_link_href != "" && clicked_link_href != "#")
         {
-            var first_character_of_link = clicked_link_href.substr(0,1); // will be used below
+            var first_character_of_link = clicked_link_href.substr(0, 1); // will be used below
 
             // if link is to an ID of an element (anchor link)
             if (first_character_of_link == "#")
@@ -193,29 +207,33 @@ function initialise_general_links_click_events()
 
                     // scroll to section
                     var target_vertical_offset = $(clicked_link_href).offset().top;
-                    $('html, body').stop().animate({
+                    $('html, body').stop().animate(
+                    {
                         scrollTop: target_vertical_offset
-                    }, 1500,'easeInOutCubic', function(){
+                    }, 1500, 'easeInOutCubic', function()
+                    {
 
                         // remove class used to identify that scroll is "in action", so that no other scroll functions conflict
                         $("#main-content").removeClass("same_page_link_in_action");
 
                         // set visible section to active
-                        update_active_sections_on_scroll();                 
-                    });                  
+                        update_active_sections_on_scroll();
+                    });
 
-                    event.preventDefault ? event.preventDefault() : event.returnValue = false;                     
+                    event.preventDefault ? event.preventDefault() : event.returnValue = false;
                 }
 
                 // if element with that ID doesn't exist
-                else {
-                    return false; 
-                } 
+                else
+                {
+                    return false;
+                }
             }
             // end: if link is to an ID of an element (anchor link)
 
             // normal link
-            else {
+            else
+            {
                 // acts as a normal link
             }
             // end: normal link
@@ -224,64 +242,13 @@ function initialise_general_links_click_events()
         // end: if link is not empty 
 
         // empty link
-        else {
-            event.preventDefault ? event.preventDefault() : event.returnValue = false; 
-            return false;   
-        } 
+        else
+        {
+            event.preventDefault ? event.preventDefault() : event.returnValue = false;
+            return false;
+        }
     });
     // end: if any link inside the page is clicked
-}
-
-/*
- * ================================================================
- * Initialise Main Menu Click Events
- *
- * ** Has to be called AFTER initialise_general_links_click_events() since it overrides the other function **
- *
- * This function handles the onclick events for the main menu item links
- */
-function initialise_main_menu_click_events()
-{
-    // first remove any click events for menu links (which were set for all links in initialise_general_links_click_events() above)
-    $("#main-menu .menu-item > a").off('click');
-    $("#main-menu .menu-item > a").prop("onclick", null);
-
-    // for each click of main menu item links
-    $("#main-menu .menu-item > a").click(function(event)
-    {
-        var clicked_link_href = $(this).attr("href");
-        var first_character_of_link = clicked_link_href.substr(0,1); // will be used below
-        var clicked_link_parent_menu_item = $(this).parent(".menu-item");
-        var link_menu_item_id = clicked_link_parent_menu_item.attr("id");
-        
-        // if menu item has "scroll" class, and links to a section id (starts with #) load scroll function
-        if (clicked_link_parent_menu_item.hasClass("scroll") && first_character_of_link == "#")
-        {
-            var clicked_menu_item_id = (link_menu_item_id !== undefined && link_menu_item_id != "") ? link_menu_item_id : "";
-
-            // add class to identify that scroll is "in action", so that no other scroll functions conflict
-            $("#main-content").addClass("same_page_link_in_action");
-
-            // do not change background on mobile viewports
-            var change_background = (change_bg_check()) ? true : false;
-
-            scroll_to_section(clicked_link_href, clicked_menu_item_id, change_background);
-
-            event.preventDefault ? event.preventDefault() : event.returnValue = false; // stop link from default action 
-        }
-
-        // if menu item does NOT have "scroll" class, default link action will apply
-        else 
-        {
-            // if fake link ("#") or empty, do nothing
-            if (clicked_link_href === undefined || clicked_link_href == "" || clicked_link_href == "#") 
-            { 
-                event.preventDefault ? event.preventDefault() : event.returnValue = false; 
-                return false; 
-            }
-        }
-
-    });
 }
 
 /*
@@ -299,7 +266,7 @@ function scroll_to_section(target_section_id, clicked_menu_item_id, change_backg
     // only works if the target_section is provided
     if (target_section_id !== undefined && target_section_id != "")
     {
-        var target_section_wrapper = $("#main-content "+target_section_id+".section-wrapper");
+        var target_section_wrapper = $("#main-content " + target_section_id + ".section-wrapper");
 
         // if target section exists and is not already active
         if (target_section_wrapper.length != 0 && !target_section_wrapper.hasClass("active"))
@@ -308,29 +275,38 @@ function scroll_to_section(target_section_id, clicked_menu_item_id, change_backg
 
             // close main menu on mobile viewport
             var menu_height = $("#main-menu").height();
-            if (toggle_main_menu() == "closed") {
+            if (toggle_main_menu() == "closed")
+            {
                 section_vertical_offset = section_vertical_offset - menu_height;
             }
 
             // scroll to section
-            $('html, body').stop().animate({
+            $('html, body').stop().animate(
+            {
                 scrollTop: section_vertical_offset
-            }, 1500,'easeInOutCubic', function(){
+            }, 1500, 'easeInOutCubic', function()
+            {
 
                 // remove class used to identify that section is "in action", so that no other scroll functions conflict
-                $("#main-content").removeClass("same_page_link_in_action");   
+                $("#main-content").removeClass("same_page_link_in_action");
 
                 // set section to active
-                set_section_to_active(target_section_id, clicked_menu_item_id, '', change_background);             
-            }); 
+                set_section_to_active(target_section_id, clicked_menu_item_id, '', change_background);
+            });
         }
         // end: if target section exists
 
-        else { return false; }
+        else
+        {
+            return false;
+        }
     }
     // end: only works if the target_section is provided
 
-    else { return false; }
+    else
+    {
+        return false;
+    }
 }
 
 /*
@@ -353,7 +329,7 @@ function set_section_to_active(target_section_id, clicked_menu_item_id, called_o
     // only works if the target_section is provided
     if (target_section_id !== undefined && target_section_id != "")
     {
-        var section_wrapper = $("#main-content "+target_section_id+".section-wrapper");
+        var section_wrapper = $("#main-content " + target_section_id + ".section-wrapper");
 
         // remove current active classes
         $("#main-menu .menu-item").removeClass("active");
@@ -361,16 +337,17 @@ function set_section_to_active(target_section_id, clicked_menu_item_id, called_o
 
         // ------ set menu item to active ---------
         // if clicked menu item id is provided and exists
-        var clicked_menu_item_object = (clicked_menu_item_id != undefined && clicked_menu_item_id != "") ? $("#main-menu #"+clicked_menu_item_id+".menu-item") : "";
+        var clicked_menu_item_object = (clicked_menu_item_id != undefined && clicked_menu_item_id != "") ? $("#main-menu #" + clicked_menu_item_id + ".menu-item") : "";
         if (clicked_menu_item_object != "" && clicked_menu_item_object.length != 0)
         {
             clicked_menu_item_object.addClass("active");
         }
 
         // if clicked menu item id is not provided, find menu item corresponding to the target section id
-        else {
+        else
+        {
             var section_name = target_section_id.substr(1); // section ids (links) start with "#"
-            $("#main-menu #menu-item-"+section_name+".menu-item").addClass("active"); // assuming menu items ids start with "menu-item-"
+            $("#main-menu #menu-item-" + section_name + ".menu-item").addClass("active"); // assuming menu items ids start with "menu-item-"
         }
 
         // ------ set section wrapper to active ---------
@@ -384,7 +361,8 @@ function set_section_to_active(target_section_id, clicked_menu_item_id, called_o
         var overlay_opacity = (overlay_opacity_value !== undefined && overlay_opacity_value != "") ? parseFloat(overlay_opacity_value) : 0.35;
 
         // ------ change custom background ------
-        if ( change_background != false && change_bg_check() ){
+        if (change_background != false && change_bg_check())
+        {
             var section_custom_background_attr = section_wrapper.attr("data-custom-background-img");
             var section_custom_background = (section_custom_background_attr !== undefined && section_custom_background_attr != "") ? section_custom_background_attr : $("body").attr("data-default-background-img"); // use #outer-background-container default image if custom background not set
 
@@ -393,9 +371,18 @@ function set_section_to_active(target_section_id, clicked_menu_item_id, called_o
             {
                 var transition_speed = (called_on_scroll != true) ? 1500 : 550; // crossfading speed should be faster when function called on scroll
 
-                $(function() {
-                  $.vegas({ src:section_custom_background, fade:transition_speed, });
-                  if (overlay_enabled) $.vegas('overlay', { src:'assets/images/theme_images/background-image-overlay-full.png', opacity:overlay_opacity });
+                $(function()
+                {
+                    $.vegas(
+                    {
+                        src: section_custom_background,
+                        fade: transition_speed,
+                    });
+                    if (overlay_enabled) $.vegas('overlay',
+                    {
+                        src: 'assets/images/theme_images/background-image-overlay-full.png',
+                        opacity: overlay_opacity
+                    });
                 });
             }
             // end: if target section wrapper has custom background set
@@ -403,15 +390,26 @@ function set_section_to_active(target_section_id, clicked_menu_item_id, called_o
         // end: change custom background
 
         // background change disabled
-        else if ( background_settings.use_script && !$("body").hasClass("defualt-bg-set")) {
+        else if (background_settings.use_script && !$("body").hasClass("defualt-bg-set"))
+        {
             var default_bg = $("body").attr("data-default-background-img");
-            if (default_bg != "" && default_bg !== undefined) {
-                $(function() {
-                  $.vegas({ src:default_bg, fade:1500, });
-                  if (overlay_enabled)  $.vegas('overlay', { src:'assets/images/theme_images/background-image-overlay-full.png', opacity:overlay_opacity });
-                }); 
-                $("body").addClass("defualt-bg-set"); 
-            }          
+            if (default_bg != "" && default_bg !== undefined)
+            {
+                $(function()
+                {
+                    $.vegas(
+                    {
+                        src: default_bg,
+                        fade: 1500,
+                    });
+                    if (overlay_enabled) $.vegas('overlay',
+                    {
+                        src: 'assets/images/theme_images/background-image-overlay-full.png',
+                        opacity: overlay_opacity
+                    });
+                });
+                $("body").addClass("defualt-bg-set");
+            }
         } // end: background change disabled
 
     }
@@ -452,7 +450,8 @@ function update_active_sections_on_scroll(section_wrappers, amount_of_pixels_as_
     var scroll_from_top = $(document).scrollTop();
 
     // get the visible section
-    var current_scroll_section = all_section_wrappers.map(function(){
+    var current_scroll_section = all_section_wrappers.map(function()
+    {
         var offset_from_top = ($(this).offset().top) - amount_of_pixels_as_buffer_between_sections;
         var section_height = $(this).height();
         var offset_from_bottom = offset_from_top + section_height;
@@ -464,13 +463,13 @@ function update_active_sections_on_scroll(section_wrappers, amount_of_pixels_as_
     // update such section to active
     if (current_scroll_section !== undefined && current_scroll_section != "")
     {
-        var active_section_id = "#"+current_scroll_section.attr("id");
+        var active_section_id = "#" + current_scroll_section.attr("id");
 
         // DON'T do update if visible section is already active
         if (!current_scroll_section.hasClass("active"))
         {
             set_section_to_active(active_section_id, '', true);
-        }        
+        }
     }
 }
 
@@ -485,10 +484,17 @@ function toggle_top_icon_in_main_menu()
     var intro_menu_item = $("#main-menu #menu-item-intro");
     if (intro_menu_item.hasClass("active"))
     {
-        intro_menu_item.css({"opacity":0}).addClass("main-menu-top-icon-active")
+        intro_menu_item.css(
+        {
+            "opacity": 0
+        }).addClass("main-menu-top-icon-active")
     }
-    else {
-        intro_menu_item.css({"opacity":0.7}).removeClass("main-menu-top-icon-active")
+    else
+    {
+        intro_menu_item.css(
+        {
+            "opacity": 0.7
+        }).removeClass("main-menu-top-icon-active")
     }
 }
 
@@ -508,7 +514,8 @@ function preload_section_backgrounds()
     if (section_wrappers.length > 0)
     {
         // for each section wrapper
-        section_wrappers.each(function(){
+        section_wrappers.each(function()
+        {
             // if a custom background image is set, load it
             var section_custom_background = $(this).attr("data-custom-background-img");
             if (section_custom_background !== undefined && section_custom_background != "")
@@ -528,7 +535,8 @@ function preload_section_backgrounds()
  * This function adds clearfixes after the grid items to fix issues with different grid items heights
  *
  */
-function add_clear_items_to_fix_grid_items_different_heights_issue() {
+function add_clear_items_to_fix_grid_items_different_heights_issue()
+{
     // if there are grid items
     if ($("#main-content .grid .grid-item").length > 0)
     {
@@ -550,7 +558,7 @@ function add_clear_items_to_fix_grid_items_different_heights_issue() {
             // add clearfixes after every 2 items (for 2 cols grid)
             list_grid.find(".grid-item:nth-of-type(3n+3)").after('<article class="clearfix"></article>');
             return false;
-        }     
+        }
 
     }
     // end: if there are grid items   
@@ -564,36 +572,54 @@ function add_clear_items_to_fix_grid_items_different_heights_issue() {
  * It is applied to .project-grid containers with class ".effect-fade-inactive"
  *
  */
-function effect_fade_out_inactive_grid_items() {
+function effect_fade_out_inactive_grid_items()
+{
     // if there are project-grid sections with effect activated
     if ($("#main-content .projects-grid.effect-fade-inactive").length > 0)
     {
         // for each projects grid with effect
-        $("#main-content .projects-grid.effect-fade-inactive").each(function(){
+        $("#main-content .projects-grid.effect-fade-inactive").each(function()
+        {
             var this_project_grid = $(this);
 
             // on hover of each grid-item content
-            this_project_grid.find(".grid-item .item-content").hover(function(){
-            // on mouse over
+            this_project_grid.find(".grid-item .item-content").hover(function()
+            {
+                // on mouse over
                 var this_item_content = $(this);
 
-                this_item_content.css({"opacity":1}); // fade in this item
+                this_item_content.css(
+                {
+                    "opacity": 1
+                }); // fade in this item
 
-                this_project_grid.find(".grid-item .item-content").not(this_item_content).css({"opacity":0.3}); // fade out other items
+                this_project_grid.find(".grid-item .item-content").not(this_item_content).css(
+                {
+                    "opacity": 0.3
+                }); // fade out other items
 
-            }, function(){
-            // on mouse out
+            }, function()
+            {
+                // on mouse out
                 var this_item_content = $(this);
 
-                this_item_content.css({"opacity":0.3}); // fade out this              
+                this_item_content.css(
+                {
+                    "opacity": 0.3
+                }); // fade out this              
 
             });
             // end: on hover of each grid-item content            
 
             // ensure that on mouse out of grid, all its items are not faded
-            this_project_grid.hover(function(){}, function(){
-                setTimeout(function() {
-                    this_project_grid.find(".grid-item .item-content").css({"opacity":1});
+            this_project_grid.hover(function() {}, function()
+            {
+                setTimeout(function()
+                {
+                    this_project_grid.find(".grid-item .item-content").css(
+                    {
+                        "opacity": 1
+                    });
                 }, 200);
             });
 
@@ -628,13 +654,19 @@ function set_height_of_parent_content_wrappers()
             var defined_height_percentage = $(this).attr("data-height-percent");
             if (defined_height_percentage !== undefined && defined_height_percentage != "" && !isNaN(defined_height_percentage))
             {
-                parent_content_wrapper.css({ "height":defined_height_percentage+"%" });
+                parent_content_wrapper.css(
+                {
+                    "height": defined_height_percentage + "%"
+                });
             }
 
             // else, if no defined percentage height is set, set a default 80% height to the content-wrapper
-            else 
+            else
             {
-                parent_content_wrapper.css({ "height":"80%" });
+                parent_content_wrapper.css(
+                {
+                    "height": "80%"
+                });
             }
         }
         // end: if parent .content-wrapper is found
@@ -656,12 +688,20 @@ function set_equal_height_to_all_carousel_slides_on_small_displays()
     // for each carousel
     carousels.each(function()
     {
-        var visible_set_percentage_height = ( $(this).attr("data-height-percent") !== undefined && $(this).attr("data-height-percent") != "" &&  !isNaN($(this).attr("data-height-percent")) ) ? $(this).attr("data-height-percent") : 80; // the carousel height (percentage) in proportion of the screen height (default is 80)
+        var visible_set_percentage_height = ($(this).attr("data-height-percent") !== undefined && $(this).attr("data-height-percent") != "" && !isNaN($(this).attr("data-height-percent"))) ? $(this).attr("data-height-percent") : 80; // the carousel height (percentage) in proportion of the screen height (default is 80)
         var visible_set_height = (visible_set_percentage_height / 100) * viewport().height;
 
         var carousel_slides = $(this).find(".item .carousel-text-content");
-        $(this).find(".item:not(.active)").css({ "opacity":"0", "position":"absolute", "display":"block" }); // temporary fix to get the hidden slides' height
-        carousel_slides.css({ "height":"auto" }); // reset previously set height before getting actual height
+        $(this).find(".item:not(.active)").css(
+        {
+            "opacity": "0",
+            "position": "absolute",
+            "display": "block"
+        }); // temporary fix to get the hidden slides' height
+        carousel_slides.css(
+        {
+            "height": "auto"
+        }); // reset previously set height before getting actual height
 
         var all_slides_height = [];
         // for each slide, get their height and store them in an array
@@ -671,7 +711,7 @@ function set_equal_height_to_all_carousel_slides_on_small_displays()
         });
         var largest_slide_height = Math.max.apply(Math, all_slides_height) + 40; // get largest height among all slides (add 40px to make sure no content is hidden)
 
-        $(this).find(".item:not(.active)").attr("style",""); // reset the temporary fix to get the hidden slides' height
+        $(this).find(".item:not(.active)").attr("style", ""); // reset the temporary fix to get the hidden slides' height
 
         // if on small displays or small heights (slide height larger than visible height)
         if (viewport().width <= window.sm_screen_max || largest_slide_height >= visible_set_height)
@@ -682,10 +722,13 @@ function set_equal_height_to_all_carousel_slides_on_small_displays()
         // end: if on small displays
 
         // on larger displays
-        else 
+        else
         {
             $(this).parents(".section-wrapper").removeClass("modified-height");
-            $(this).removeClass("slides-height-modified").find(".item .carousel-text-content").css({ "height":"100%" });
+            $(this).removeClass("slides-height-modified").find(".item .carousel-text-content").css(
+            {
+                "height": "100%"
+            });
         }
 
     });
@@ -705,10 +748,11 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
 {
     var modal = $("#common-modal.modal");
     var modal_body = modal.find(".modal-body");
-    var modal_content_container_to_populate = $("#"+modal_content_id);
+    var modal_content_container_to_populate = $("#" + modal_content_id);
 
     var add_class = "";
-    if (add_class_to_modal !== undefined && add_class_to_modal != "") {
+    if (add_class_to_modal !== undefined && add_class_to_modal != "")
+    {
         add_class = add_class_to_modal;
     }
 
@@ -716,7 +760,7 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
     if (modal_body.length > 0 && modal_content_container_to_populate.length > 0)
     {
         // fade out main content of page (so modal content is readable)
-        $("#outer-container").fadeTo("fast",0.2);
+        $("#outer-container").fadeTo("fast", 0.2);
 
         // get initial vertical offset so that when modal is opened/closed, it ensures that page doesn't scroll to top (bugfix)
         var initial_vertical_scroll_offset = $(document).scrollTop();
@@ -725,10 +769,11 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
         modal_body.empty().html(modal_content); // first empty the modal body and then populate it with new content
 
         // open modal (popup)
-        modal.modal(); 
+        modal.modal();
 
         // lightbox fix - temporary change attribute, to avoid duplicate entries (since same content is printed inside the popup container)
-        modal_content_container_to_populate.find("a[data-lightbox]").each(function() {
+        modal_content_container_to_populate.find("a[data-lightbox]").each(function()
+        {
             var attr_value = $(this).attr("data-lightbox");
             $(this).removeAttr("data-lightbox");
             $(this).attr("data-mod-lightbox", attr_value);
@@ -738,15 +783,17 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
         if (add_class != "") modal.addClass(add_class);
 
         // when modal is shown, position it in the middle of the page 
-        modal.on('shown.bs.modal', function (e) {
+        modal.on('shown.bs.modal', function(e)
+        {
             position_modal_at_centre();
             // if set, scroll to a given section inside the popup
             if (section_in_modal !== undefined && section_in_modal != "" && $("#common-modal.modal").find(section_in_modal).length > 0)
             {
                 var section_vertical_offset = $("#common-modal.modal").find(section_in_modal).offset().top;
-                $('#common-modal.modal').stop().animate({
+                $('#common-modal.modal').stop().animate(
+                {
                     scrollTop: section_vertical_offset
-                }, 800,'easeInOutCubic');   
+                }, 800, 'easeInOutCubic');
             }
 
             // since bootstrap 3.3.1 - fix backdrop height after all elements inside the popup are loaded
@@ -754,29 +801,32 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
         });
 
         // when modal starts to close, fade in main content 
-        modal.on('hide.bs.modal', function (e) {
-            $("#outer-container").fadeTo("fast",1);
+        modal.on('hide.bs.modal', function(e)
+        {
+            $("#outer-container").fadeTo("fast", 1);
 
             // lightbox fix - reset attribute to original
-            $("#"+modal_content_id).find("a[data-mod-lightbox]").each(function() {
+            $("#" + modal_content_id).find("a[data-mod-lightbox]").each(function()
+            {
                 var attr_value = $(this).attr("data-mod-lightbox");
                 $(this).removeAttr("data-mod-lightbox");
                 $(this).attr("data-lightbox", attr_value);
-            });            
+            });
         });
 
         // when modal is hidden, empty modal body 
-        modal.on('hidden.bs.modal', function (e) {
+        modal.on('hidden.bs.modal', function(e)
+        {
             modal_body.empty(); // empty modal body
 
             if (add_class != "") modal.removeClass(add_class); // remove class
-        });       
+        });
 
     }
     // end: if modal and content container exists
-
-    event.preventDefault ? event.preventDefault() : event.returnValue = false; 
-    return false;     
+    if (event != null)
+        event.preventDefault ? event.preventDefault() : event.returnValue = false;
+    return false;
 }
 
 /*
@@ -786,9 +836,13 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
  *
  * @param modal - the modal as an object
  */
- function modal_backdrop_height(modal) {
-    modal.find(".modal-backdrop").css({ 'min-height' : modal.find(".modal-dialog").outerHeight(true) + 'px' });
- }
+function modal_backdrop_height(modal)
+{
+    modal.find(".modal-backdrop").css(
+    {
+        'min-height': modal.find(".modal-dialog").outerHeight(true) + 'px'
+    });
+}
 
 /*
  * ================================================================
@@ -805,19 +859,23 @@ function position_modal_at_centre()
         var modal_content_container = modal_outer_container.find(".modal-dialog");
         var modal_width = modal_content_container.width();
         var modal_height = modal_content_container.height();
-        var check_if_modal_content_fits_inside_the_page = ( (modal_height+70) < viewport().height) ? true : false;
+        var check_if_modal_content_fits_inside_the_page = ((modal_height + 70) < viewport().height) ? true : false;
 
         // for large viewports only, centre/middle align
         // align in the middle ONLY if the modal content height is less than the window height
         if (viewport().width > window.sm_screen_max && check_if_modal_content_fits_inside_the_page == true)
         {
             var top_margin_to_align_modal_at_middle_of_page = (viewport().height - modal_height) / 2;
-            modal_content_container.css({ "margin-top":top_margin_to_align_modal_at_middle_of_page+"px", "margin-bottom":"20px" });
+            modal_content_container.css(
+            {
+                "margin-top": top_margin_to_align_modal_at_middle_of_page + "px",
+                "margin-bottom": "20px"
+            });
         }
         // end: for large viewports
 
         // for smaller viewports
-        else 
+        else
         {
             modal_content_container.removeAttr("style");
         }
@@ -839,7 +897,7 @@ function go_to_top_visibility()
     if (go_to_top_icon.length > 0)
     {
         var scroll_from_top = $(document).scrollTop();
-        
+
         // if at the top section of the page, hide icon
         if (scroll_from_top < viewport().height)
         {
@@ -862,9 +920,11 @@ function go_to_top_visibility()
  */
 function scroll_to_top()
 {
-    $('html, body').stop().animate({
+    $('html, body').stop().animate(
+    {
         scrollTop: 0
-    }, 1500,'easeInOutCubic', function(){
+    }, 1500, 'easeInOutCubic', function()
+    {
         $("#go-to-top").removeClass("active"); // deactive scroll to top icin     
     });
 }
@@ -880,9 +940,9 @@ function scroll_to_top()
  * @param vertical_layout_positioning_check - if set to true, fire sections_content_vertical_position() function correct vertical positioning of sections
  */
 function load_images(images_objects_selector_class, remove_selector_class_after_image_loaded, vertical_layout_positioning_check)
-{   
+{
     // if images exist
-    var images_objects = $("."+images_objects_selector_class);
+    var images_objects = $("." + images_objects_selector_class);
     if (images_objects.length > 0)
     {
         // prepare image sources
@@ -901,7 +961,7 @@ function load_images(images_objects_selector_class, remove_selector_class_after_
 
         // load images
         var count_images_to_load = images.length;
-        for(i=0; i<count_images_to_load; i++) 
+        for (i = 0; i < count_images_to_load; i++)
         {
             var new_image_object = new Image();
             new_image_object.src = images[i]["img_src"];
@@ -912,9 +972,9 @@ function load_images(images_objects_selector_class, remove_selector_class_after_
             {
                 images[i]["img_object"].removeClass(images_objects_selector_class);
             }
-            
+
             // if enabled, correct vertical positioning of sections (after last image is completely loaded) (only when not viewing on mobile viewport)
-            if (vertical_layout_positioning_check == true && i == count_images_to_load-1 && (!jQuery.browser.mobile || viewport().width > window.xs_screen_max))
+            if (vertical_layout_positioning_check == true && i == count_images_to_load - 1 && (!jQuery.browser.mobile || viewport().width > window.xs_screen_max))
             {
                 new_image_object.onload = function()
                 {
@@ -938,20 +998,76 @@ function validate_and_submit_forms(form_object)
     var forms = (form_object !== undefined && form_object.length > 0) ? form_object : $("form.validate-form");
 
     // for each form 
-    forms.each(function(){
-
-        var this_form = $(this);
-
-        // -------------- onChange of each form field with validation enabled (with class .validate) --------------
-        this_form.find(".validate-field").each(function()
+    forms.each(function()
         {
-            $(this).change(function()
-            {
-                // first empty any error containers
-                $(this).siblings(".alert").fadeOut("fast", function(){ $(this).remove(); });
 
-                // value is not empty, validate it
-                if ($(this).val().trim() != "")
+            var this_form = $(this);
+
+            // -------------- onChange of each form field with validation enabled (with class .validate) --------------
+            this_form.find(".validate-field").each(function()
+            {
+                $(this).change(function()
+                {
+                    // first empty any error containers
+                    $(this).siblings(".alert").fadeOut("fast", function()
+                    {
+                        $(this).remove();
+                    });
+
+                    // value is not empty, validate it
+                    if ($(this).val().trim() != "")
+                    {
+                        var validation_message = validate_fields(this_form, $(this));
+                        if (validation_message.length > 0)
+                        {
+                            // if there are errors (not successfull)
+                            if (validation_message[0]["message"] !== undefined && validation_message[0]["message"] != "" && validation_message[0]["message"] != "success")
+                            {
+                                // create error field
+                                var error_field_html = '<div class="alert">' + validation_message[0]["message"] + '</div>';
+                                $(this).after(error_field_html);
+                                $(this).siblings(".alert").fadeIn("fast");
+                            }
+                            // end: if there are errors
+                        }
+                    }
+                    // end: if value is not empty
+                });
+            });
+            // -------------- end: onChange of each form field --------------
+
+            // -------------- reload captcha --------------
+            this_form.find("#form-captcha-refresh").click(function()
+            {
+                reset_captcha(this_form);
+            });
+
+            // -------------- on Submit of form --------------
+            this_form.submit(function(event)
+            {
+                event.preventDefault ? event.preventDefault() : event.returnValue = false; // stop default action (will be handled via AJAX below)
+
+                // show form loader
+                $(this).find(".form-loader").fadeIn("fast");
+
+                var form_action = $(this).attr("action");
+                // if action is not set (URL to mail.php), stop form action
+                if (form_action === undefined && form_action == "") return false;
+
+                // clear all errors
+                $(this).find(".alert").fadeOut("fast", function()
+                {
+                    $(this).remove();
+                });
+                $(this).find(".form-general-error-container").fadeOut("fast", function()
+                {
+                    $(this).empty();
+                });
+
+                var errors_found = false;
+
+                // for each field with validation enabled (with class .validate)
+                $(this).find(".validate-field").each(function()
                 {
                     var validation_message = validate_fields(this_form, $(this));
                     if (validation_message.length > 0)
@@ -960,145 +1076,108 @@ function validate_and_submit_forms(form_object)
                         if (validation_message[0]["message"] !== undefined && validation_message[0]["message"] != "" && validation_message[0]["message"] != "success")
                         {
                             // create error field
-                            var error_field_html = '<div class="alert">'+validation_message[0]["message"]+'</div>';
+                            var error_field_html = '<div class="alert">' + validation_message[0]["message"] + '</div>';
                             $(this).after(error_field_html);
                             $(this).siblings(".alert").fadeIn("fast");
+
+                            errors_found = true;
                         }
                         // end: if there are errors
                     }
-                }
-                // end: if value is not empty
-            });
-        });
-        // -------------- end: onChange of each form field --------------
+                });
+                // end: for each field
 
-        // -------------- reload captcha --------------
-        this_form.find("#form-captcha-refresh").click(function() {
-            reset_captcha(this_form);
-        });
-
-        // -------------- on Submit of form --------------
-        this_form.submit(function(event)
-        {
-            event.preventDefault ? event.preventDefault() : event.returnValue = false; // stop default action (will be handled via AJAX below)
-
-            // show form loader
-            $(this).find(".form-loader").fadeIn("fast");
-
-            var form_action = $(this).attr("action");
-            // if action is not set (URL to mail.php), stop form action
-            if (form_action === undefined && form_action == "") return false;
-
-            // clear all errors
-            $(this).find(".alert").fadeOut("fast", function(){ $(this).remove(); });
-            $(this).find(".form-general-error-container").fadeOut("fast", function(){ $(this).empty(); });
-
-            var errors_found = false;
-
-            // for each field with validation enabled (with class .validate)
-            $(this).find(".validate-field").each(function()
-            {
-                var validation_message = validate_fields(this_form, $(this));
-                if (validation_message.length > 0)
+                // if errors were found, stop form from being submitted
+                if (errors_found == true)
                 {
-                    // if there are errors (not successfull)
-                    if (validation_message[0]["message"] !== undefined && validation_message[0]["message"] != "" && validation_message[0]["message"] != "success")
+                    // hide loader
+                    $(this).find(".form-loader").fadeOut("fast");
+                    return false;
+                }
+
+                // submit form
+                $.ajax(
+                {
+                    type: 'POST',
+                    url: form_action,
+                    data: $(this).serialize(),
+                    dataType: 'html',
+                    success: function(data)
                     {
-                        // create error field
-                        var error_field_html = '<div class="alert">'+validation_message[0]["message"]+'</div>';
-                        $(this).after(error_field_html);
-                        $(this).siblings(".alert").fadeIn("fast");
+                        // if form submission was processed (successfully or not)
 
-                        errors_found = true;
+                        // hide loader
+                        this_form.find(".form-loader").fadeOut("fast");
+
+                        var submission_successful = (data == "success") ? true : false;
+                        var captcha_success = (data == "captcha") ? false : true;
+
+                        var message = "";
+                        switch (data)
+                        {
+                            case "success":
+                                message = "Form submitted successfully.";
+                                break;
+                            case "captcha":
+                                message = "Incorrect text entered. (Case-sensitive)";
+                                break;
+                            case "incomplete":
+                                message = "Please fill in all required fields.";
+                                break;
+                            case "error":
+                                message = "An error occured. Please try again later.";
+                                break;
+                        }
+
+                        // prepare message to show after form processed
+                        var message_field_html = '<div class="alert ';
+                        message_field_html += (submission_successful == true) ? 'success' : 'error';
+                        message_field_html += '">' + message + '</div>';
+
+                        // incorrect captcha
+                        if (!captcha_success)
+                        {
+                            this_form.find("#form-captcha").parent(".form-group").append(message_field_html);
+                            this_form.find("#form-captcha").siblings(".alert").fadeIn("fast");
+                        }
+                        // general message
+                        else
+                        {
+                            this_form.find(".form-general-error-container").html(message_field_html).fadeIn("fast", function()
+                            {
+                                // if submission was successful, hide message after some time
+                                $(this).delay(10000).fadeOut("fast", function()
+                                {
+                                    $(this).html("");
+                                });
+                            });
+                        }
+
+                        // refresh captcha
+                        reset_captcha(this_form);
+
+                        // if form submitted successfully, empty fields
+                        if (submission_successful == true) this_form.find(".form-control").val("");
+                    },
+                    error: function(data)
+                    {
+                        // if form submission wasn't processed
+
+                        // hide loader
+                        this_form.find(".form-loader").fadeOut("fast");
+
+                        // show error message
+                        var error_field_html = '<div class="alert">An error occured. Please try again later.</div>';
+                        this_form.find(".form-general-error-container").html(error_field_html).fadeIn("fast");
+
                     }
-                    // end: if there are errors
-                }               
+                });
+                // end: submit form           
             });
-            // end: for each field
+            // -------------- end: on Submit of form --------------
 
-            // if errors were found, stop form from being submitted
-            if (errors_found == true) 
-            {
-                // hide loader
-                $(this).find(".form-loader").fadeOut("fast");
-                return false;
-            }
-
-            // submit form
-            $.ajax({
-                type: 'POST',
-                url: form_action,
-                data: $(this).serialize(),
-                dataType: 'html',
-                success: function (data) 
-                {
-                    // if form submission was processed (successfully or not)
-
-                    // hide loader
-                    this_form.find(".form-loader").fadeOut("fast");
-
-                    var submission_successful = (data == "success") ? true : false;
-                    var captcha_success = (data == "captcha") ? false : true;
-
-                    var message = "";
-                    switch(data) {
-                        case "success":
-                            message = "Form submitted successfully.";
-                            break;
-                        case "captcha":
-                            message = "Incorrect text entered. (Case-sensitive)";
-                            break;
-                        case "incomplete":
-                            message = "Please fill in all required fields.";
-                            break;
-                        case "error":
-                            message = "An error occured. Please try again later.";
-                            break;
-                    }
-
-                    // prepare message to show after form processed
-                    var message_field_html = '<div class="alert ';
-                    message_field_html += (submission_successful == true) ? 'success' : 'error';
-                    message_field_html += '">'+message+'</div>';
-
-                    // incorrect captcha
-                    if (!captcha_success) {
-                        this_form.find("#form-captcha").parent(".form-group").append(message_field_html);
-                        this_form.find("#form-captcha").siblings(".alert").fadeIn("fast");
-                    }
-                    // general message
-                    else {
-                        this_form.find(".form-general-error-container").html(message_field_html).fadeIn("fast", function(){
-                            // if submission was successful, hide message after some time
-                            $(this).delay(10000).fadeOut("fast", function(){ $(this).html(""); });
-                        });
-                    }
-
-                    // refresh captcha
-                    reset_captcha(this_form);
-
-                    // if form submitted successfully, empty fields
-                    if (submission_successful == true) this_form.find(".form-control").val("");
-                },
-                error: function (data) 
-                {
-                    // if form submission wasn't processed
-
-                    // hide loader
-                    this_form.find(".form-loader").fadeOut("fast");
-
-                    // show error message
-                    var error_field_html = '<div class="alert">An error occured. Please try again later.</div>';
-                    this_form.find(".form-general-error-container").html(error_field_html).fadeIn("fast");
-
-                }
-            }); 
-            // end: submit form           
-        });
-        // -------------- end: on Submit of form --------------
-
-    })
-    // end: for each form
+        })
+        // end: for each form
 }
 
 /*
@@ -1107,8 +1186,8 @@ function validate_and_submit_forms(form_object)
  *
  * @param form_object - object - required - the form which will be reset
  */
- function reset_forms(form_object)
- {
+function reset_forms(form_object)
+{
     // if form exists
     if (form_object !== undefined && form_object.length > 0)
     {
@@ -1117,8 +1196,8 @@ function validate_and_submit_forms(form_object)
         form.find(".alert").remove();
         form.find(".form-general-error-container").empty().hide();
         reset_captcha(form_object);
-    }    
- }
+    }
+}
 
 /*
  * ================================================================
@@ -1126,21 +1205,26 @@ function validate_and_submit_forms(form_object)
  *
  * @param form_object - object - required - the form which will be reset
  */
- function reset_captcha(form_object)
- {
+function reset_captcha(form_object)
+{
     var forms = (form_object !== undefined && form_object.length > 0) ? form_object : $("form.validate-form");
     // for each form 
-    forms.each(function(){
+    forms.each(function()
+    {
         var this_form = $(this);
         var captcha = this_form.find("#form-captcha-img");
-        if (captcha.length > 0 && this_form.is(":visible")) {
+        if (captcha.length > 0 && this_form.is(":visible"))
+        {
             var d = new Date().getTime();
-            captcha.replaceWith('<img id="form-captcha-img" src="assets/php/form_captcha/captcha_img.php?t='+d+'" style="display:none">');
+            captcha.replaceWith('<img id="form-captcha-img" src="assets/php/form_captcha/captcha_img.php?t=' + d + '" style="display:none">');
             this_form.find("#form-captcha").val("");
-            setTimeout(function() { this_form.find("#form-captcha-img").show(); }, 500);
+            setTimeout(function()
+            {
+                this_form.find("#form-captcha-img").show();
+            }, 500);
         }
-    });  
- }
+    });
+}
 
 /*
  * ================================================================
@@ -1149,8 +1233,8 @@ function validate_and_submit_forms(form_object)
  * @param form_object - object - required - the form in which the fields relate to
  * @param single_field - object - if set, the function will validate only that particular field. Otherwise the function will validate all the fields with class .validate
  */
- function validate_fields(form_object, single_field)
- {
+function validate_fields(form_object, single_field)
+{
     // if form exists
     if (form_object !== undefined && form_object.length > 0)
     {
@@ -1167,7 +1251,7 @@ function validate_and_submit_forms(form_object)
 
             var single_field_error_details = new Array(); // will contain this field and its error
             single_field_error_details["field_object"] = $(this);
-            
+
             single_field_error_details["message"] = "success"; // default is success. If the above tests fail, replace message with error
 
             // if field is required and value is empty
@@ -1199,7 +1283,7 @@ function validate_and_submit_forms(form_object)
         return validation_messages;
     }
     // end: if form exists
- }
+}
 
 /*
  * ================================================================
@@ -1207,14 +1291,14 @@ function validate_and_submit_forms(form_object)
  *
  * Since IE9 or less browsers do not support "placeholders" for form input fields, set replace "placeholder" value inside the field value.
  */
- function contact_form_IE9_placeholder_fix()
- {
+function contact_form_IE9_placeholder_fix()
+{
     var forms = $("form");
 
     // for each form 
     forms.each(function()
     {
-        var this_form = $(this); 
+        var this_form = $(this);
 
         // for each input field
         $(this).find(".form-control").each(function()
@@ -1227,19 +1311,21 @@ function validate_and_submit_forms(form_object)
                 $(this).val(field_placeholder);
 
                 // set an onfocus event to clear input field
-                $(this).focus(function() {
+                $(this).focus(function()
+                {
                     if ($(this).val() == field_placeholder) $(this).val("");
                 });
 
                 // set an onblur event to insert placeholder if field is empty
-                $(this).blur(function() {
+                $(this).blur(function()
+                {
                     if ($(this).val() == "") $(this).val(field_placeholder);
                 });
             }
         });
         // end: for each input field
-    });   
- }
+    });
+}
 
 /*
  * ================================================================
@@ -1249,9 +1335,9 @@ function validate_and_submit_forms(form_object)
  * - on mobile, change only if 'mobile_change_bg' is set to 'true'
  * - on desktop, always change (if bg available)
  */
-function change_bg_check() 
+function change_bg_check()
 {
-    return ( (jQuery.browser.mobile && background_settings.change_on_mobile) || (!jQuery.browser.mobile && background_settings.change_on_nonmobile) ) ? true : false;
+    return ((jQuery.browser.mobile && background_settings.change_on_mobile) || (!jQuery.browser.mobile && background_settings.change_on_nonmobile)) ? true : false;
 }
 
 /*
@@ -1260,19 +1346,346 @@ function change_bg_check()
  *
  * to prevent jumping when switching between tabs
  */
-function tabs_uniform_height() 
+function tabs_uniform_height()
 {
     var tabs = $(".tabpanel.uniform-height");
-    for (var i = 0, l = tabs.length; i < l; i++) {
+    for (var i = 0, l = tabs.length; i < l; i++)
+    {
         var max_height = 0;
         var panes = $(tabs[i]).find(".tab-pane");
         for (var j = 0, k = panes.length; j < k; j++)
         {
-            var prev_css  = $(panes[j]).attr("style");
-            $(panes[j]).css({ position: 'absolute', visibility: 'hidden', display:    'block' });
-            max_height = ($(panes[j]).outerHeight(true) > max_height)? $(panes[j]).outerHeight(true) : max_height;
+            var prev_css = $(panes[j]).attr("style");
+            $(panes[j]).css(
+            {
+                position: 'absolute',
+                visibility: 'hidden',
+                display: 'block'
+            });
+            max_height = ($(panes[j]).outerHeight(true) > max_height) ? $(panes[j]).outerHeight(true) : max_height;
             $(panes[j]).attr("style", prev_css ? prev_css : "");
         }
-        panes.css({ 'min-height': max_height+'px' });
+        panes.css(
+        {
+            'min-height': max_height + 'px'
+        });
     }
+}
+
+$(function()
+{
+
+    checkCookie();
+
+});
+
+/*
+ * ================================================================
+ * Login User
+ *
+ */
+function login_user()
+{
+    var username = $(".modal-body .username").val().trim();
+    var password = $(".modal-body .password").val().trim();
+
+    if (username != "" && password != "")
+    {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"
+            },
+            beforeSend: function()
+            {
+                $(".login-btn").val("Logging in...");
+                $(".login-btn").attr("disabled", true);
+            },
+            success: function(res)
+            {
+
+                if (res.indexOf("Okay") != -1)
+                {
+                    //set cookie?
+                    $("#login-create").text("Log Out");
+                    $("#login-create-function").attr("onclick", "logout_user()");
+
+                    var randomValue = res.split(":")[1];
+
+                    createCookie("enhabit-user", randomValue, 7);
+
+                    $("#common-modal").modal('hide');
+                }
+                else
+                {
+                    setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $(".login-btn").text("Log In");
+                $(".login-btn").attr("disabled", false);
+            }
+        });
+    }
+    else
+    {
+        console.log("Need both username and password");
+    }
+}
+
+function logout_user()
+{
+    var value = readCookie("enhabit-user");
+
+    $.ajax( //extremely dangerous command
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_delete: "{\"entryname\": \"" + value + "\"}"
+            },
+            success: function(res)
+            {
+
+                if (res.indexOf("Okay") == -1)
+                {
+                    console.log(res);
+                }
+
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            }
+        });
+
+    //unset cookie 
+    eraseCookie("enhabit-user");
+    $("#login-create").text("Log In");
+    $("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');");
+
+}
+
+function resetModals()
+{
+    $(".register-btn").val("Create Account");
+    $(".register-btn").attr('disabled', false);
+    $(".register-error").hide();
+
+    $(".login-btn").val("Log In");
+    $(".login-btn").attr('disabled', false);
+    $(".login-error").hide();
+}
+
+function create_account()
+{
+    //first validate that the fields are filled out
+    var username = $(".modal-body .username").val().trim();
+    var password = $(".modal-body .password").val().trim();
+    var firstname = $(".modal-body .firstname").val().trim();
+    var middleinitial = $(".modal-body .middleinitial").val().trim();
+    var lastname = $(".modal-body .lastname").val().trim();
+    var email = $(".modal-body .email").val().trim();
+    var phonenumber = $(".modal-body .phonenumber").val().trim();
+
+    if (!username)
+    {
+        setError(".register-error", "Please Enter a Username!");
+    }
+    else if (!password)
+    {
+        setError(".register-error", "Please Enter a Password!");
+    }
+    else if (!firstname)
+    {
+        setError(".register-error", "Please Enter a First Name!");
+    }
+    else if (!middleinitial)
+    {
+        setError(".register-error", "Please Enter a Middle Initial!");
+    }
+    else if (!lastname)
+    {
+        setError(".register-error", "Please Enter a Last Name!");
+    }
+    else if (!email || !isValidEmail(email))
+    {
+        setError(".register-error", "Please Enter a Valid Email!");
+    }
+    else if (!phonenumber || !isValidPhoneNumber(phonenumber))
+    {
+        setError(".register-error", "Please Enter a Valid Phone Number!");
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_register: "{\"username\": \"" + username + "\", \"password\": \"" + password +
+                    "\", \"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial +
+                    "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
+                    "\", \"phonenumber\": \"" + phonenumber + "\"}"
+            },
+            beforeSend: function()
+            {
+                $(".register-btn").val("Processing...");
+                $(".register-btn").attr('disabled', true);
+            },
+            success: function(res)
+            {
+                if (res.indexOf("Okay") != -1)
+                {
+                    login_user();
+                    populate_and_open_modal(
+                    {
+                        preventDefault: true
+                    }, 'modal-content-3');
+
+                }
+                else
+                {
+                    setError(".register-error", res);
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $(".register-btn").val("Create Account");
+                $(".register-btn").attr('disabled', false);
+
+                set_default_button_on_enter("");
+            }
+        });
+    }
+
+}
+
+function set_default_button_on_enter(modal)
+{
+    if (which_modal != "")
+        $(document).unbind("keypress");
+
+    switch (modal)
+    {
+        case "login":
+            $(document).on("keypress", function(e)
+            {
+                var code = e.keyCode || e.which;
+                if (code == 13)
+                {
+                    $($(".login-btn")[0]).click();
+                }
+            });
+            which_modal = ".login-btn";
+            break;
+        case "register":
+            $(document).on("keypress", function(e)
+            {
+                var code = e.keyCode || e.which;
+                if (code == 13)
+                {
+                    $($(".register-btn")[0]).click();
+                }
+            });
+            which_modal = ".register-btn";
+            break;
+        default:
+
+            which_modal = "";
+            break;
+    }
+}
+
+function isValidEmail(em)
+{
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(em);
+}
+
+function isValidPhoneNumber(pn)
+{
+    /*
+	Valid Formats are...
+	(123) 456-7890
+	123-456-7890
+	123.456.7890
+	1234567890
+	+31636363634
+	075-63546725
+	*/
+
+    return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
+}
+
+function setError(el, msg)
+{
+    $(el).text(msg);
+    $(el).show();
+
+    //reset the height because the error bar increases it...
+    modal_backdrop_height($('#common-modal.modal'));
+}
+
+function checkCookie()
+{
+    var value = readCookie("enhabit-user");
+    if (value != null)
+    {
+        createCookie("enhabit-user", value, 7); //reinit cookie to be another 7 days
+        $("#login-create").text("Log Out");
+        $("#login-create-function").attr("onclick", "logout_user()");
+    }
+}
+
+function createCookie(name, value, days)
+{
+    if (days)
+    {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    }
+    else
+    {
+        var expires = "";
+    }
+
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name)
+{
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++)
+    {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function eraseCookie(name)
+{
+    createCookie(name, "", -1);
 }
