@@ -193,11 +193,13 @@
             }
             
             
-            function insertMarkers(res) {
+            function insertMarkers(res)
+            {
             	if (res != "")
             	{
             		data = JSON.parse(res.replace(/=>/g, ":"))["data"]; //sanitize the data for the Json Parser
-            		data.forEach(function(d) {
+            		data.forEach(function(d)
+            		{
             			L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
             		});
             	}
