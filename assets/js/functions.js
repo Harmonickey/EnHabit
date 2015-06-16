@@ -1402,7 +1402,7 @@ function login_user()
             },
             beforeSend: function()
             {
-                $(".login-btn").text("Logging in...");
+                $(".login-btn").val("Logging in...");
                 $(".login-btn").attr("disabled", true);
             },
             success: function(res)
