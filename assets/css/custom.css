@@ -26,3 +26,25 @@
 	width: 50%;
 	margin: 0 auto;
 }
+
+.login-btn-facebook .facebook-icon-for-button 
+{
+    background: url('../../assets/images/other_images/facebook-button-transparent-background.png'); 
+    height: 25px; 
+    width: 25px; 
+    margin-right: 10px;
+    top: 2px;
+}
+
+.login-btn-facebook .facebook-icon-for-button,
+.login-btn-facebook .facebook-login-text
+{
+    display: inline-block;
+    position: relative;
+}
+
+.login-btn-facebook .facebook-login-text
+{
+    position: relative;
+    top: -3px;
+}

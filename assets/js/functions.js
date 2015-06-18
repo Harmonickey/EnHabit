@@ -1410,7 +1410,7 @@ function login_user()
 
                 if (res.indexOf("Okay") != -1)
                 {
-                    //set cookie?
+                    
                     $("#login-create").text("Log Out");
                     $("#login-create-function").attr("onclick", "logout_user()");
 
@@ -1419,6 +1419,8 @@ function login_user()
                     createCookie("enhabit-user", randomValue, 7);
 
                     $("#common-modal").modal('hide');
+                    
+                    $("#update-function").show();
                 }
                 else
                 {
@@ -1443,6 +1445,60 @@ function login_user()
     }
 }
 
+function login_facebook_user(userID, accessToken)
+{
+    
+    if (userID != "" && accessToken != "")
+    {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}"
+            },
+            success: function(res)
+            {
+
+                if (res.indexOf("Okay") != -1)
+                {
+                    
+                    $("#login-create").text("Log Out");
+                    $("#login-create-function").attr("onclick", "logout_user()");
+
+                    var randomValue = res.split(":")[1];
+
+                    createCookie("enhabit-user", randomValue, 7);
+
+                    $("#common-modal").modal('hide');
+                    
+                    $("#update-function").show();
+                }
+                else
+                {
+                    setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $(".login-btn").text("Log In");
+                $(".login-btn").attr("disabled", false);
+            }
+        });
+    }
+    else
+    {
+        console.log("Problem with Facebook Login Request.");
+    }
+}
+
 function logout_user()
 {
     var value = readCookie("enhabit-user");
@@ -1461,6 +1517,10 @@ function logout_user()
                 if (res.indexOf("Okay") == -1)
                 {
                     console.log(res);
+                }
+                else
+                {
+                    $("#update-function").hide();
                 }
 
             },
@@ -1487,6 +1547,10 @@ function resetModals()
     $(".login-btn").val("Log In");
     $(".login-btn").attr('disabled', false);
     $(".login-error").hide();
+    
+    $(".update-btn").val("Update Account");
+    $(".update-btn").attr('disabled', false);
+    $(".update-error").hide();
 }
 
 function create_account()
@@ -1579,6 +1643,134 @@ function create_account()
 
 }
 
+function load_update_modal(event)
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "api.php",
+        data:
+        {
+            data_update_load: "load"
+        },
+        success: function(res)
+        {
+            populate_and_open_modal(event, 'modal-content-4');
+            
+            fill_update_modal(res);
+         
+            resetModals();
+            
+            set_default_button_on_enter('update');
+        },
+        error: function(err, res)
+        {
+            console.log(err);
+            console.log(res);
+        },
+        complete: function()
+        {
+            $(".update-btn").val("Update Account");
+            $(".update-btn").attr('disabled', false);
+
+            set_default_button_on_enter("");
+        }
+    });
+}
+
+function fill_update_modal(data)
+{
+    var firstname = data.firstname;
+    var middleinitial = data.middleinitial;
+    var lastname = data.lastname;
+    var email = data.email;
+    var phonenumber = data.phonenumber;
+    
+    $(".modal-body .firstname").val(firstname);
+    $(".modal-body .middleinitial").val(middleinitial);
+    $(".modal-body .lastname").val(lastname);
+    $(".modal-body .email").val(email);
+    $(".modal-body .phonenumber").val(phonenumber);
+}
+
+function update_account()
+{
+    //first validate that the fields are filled out
+    var firstname = $(".modal-body .firstname").val().trim();
+    var middleinitial = $(".modal-body .middleinitial").val().trim();
+    var lastname = $(".modal-body .lastname").val().trim();
+    var email = $(".modal-body .email").val().trim();
+    var phonenumber = $(".modal-body .phonenumber").val().trim();
+    var cookie = readCookie("enhabit-user");
+
+    if (!firstname)
+    {
+        setError(".update-error", "Please Enter a First Name!");
+    }
+    else if (!middleinitial)
+    {
+        setError(".update-error", "Please Enter a Middle Initial!");
+    }
+    else if (!lastname)
+    {
+        setError(".update-error", "Please Enter a Last Name!");
+    }
+    else if (!email || !isValidEmail(email))
+    {
+        setError(".update-error", "Please Enter a Valid Email!");
+    }
+    else if (!phonenumber || !isValidPhoneNumber(phonenumber))
+    {
+        setError(".update-error", "Please Enter a Valid Phone Number!");
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_update: "{\"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial +
+                    "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
+                    "\", \"phonenumber\": \"" + phonenumber + "\", \"cookie\": \"" + cookie + "\"}"
+            },
+            beforeSend: function()
+            {
+                $(".update-btn").val("Processing...");
+                $(".update-btn").attr('disabled', true);
+            },
+            success: function(res)
+            {
+                if (res.indexOf("Okay") != -1)
+                {
+                    populate_and_open_modal(
+                    {
+                        preventDefault: true
+                    }, 'modal-content-5');
+
+                }
+                else
+                {
+                    setError(".update-error", res);
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $(".update-btn").val("Update Account");
+                $(".update-btn").attr('disabled', false);
+
+                set_default_button_on_enter("");
+            }
+        });
+    }
+}
+
 function set_default_button_on_enter(modal)
 {
     if (which_modal != "")
@@ -1607,6 +1799,17 @@ function set_default_button_on_enter(modal)
                 }
             });
             which_modal = ".register-btn";
+            break;
+        case "register":
+            $(document).on("keypress", function(e)
+            {
+                var code = e.keyCode || e.which;
+                if (code == 13)
+                {
+                    $($(".update-btn")[0]).click();
+                }
+            });
+            which_modal = ".update-btn";
             break;
         default:
 

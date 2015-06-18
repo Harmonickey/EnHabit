@@ -2,7 +2,6 @@
 
 if (isset($_POST["data_query"]))
 {
-
     $data = $_POST["data_query"];
 
     $data = remove_malicious_characters($data);
@@ -11,7 +10,6 @@ if (isset($_POST["data_query"]))
 }
 else if (isset($_POST["data_login"]))
 {
-	
     $data = $_POST["data_login"];
 	
     $data = remove_malicious_characters($data);
@@ -33,6 +31,22 @@ else if (isset($_POST["data_delete"]))
     $data = remove_malicious_characters($data);
 	
     echo shell_exec("ruby delete_cookie.rb '$data'");
+}
+else if (isset($_POST["data_update"]))
+{
+    $data = $_POST["data_update"];
+	
+    $data = remove_malicious_characters($data);
+	
+    echo shell_exec("ruby update.rb '$data'");
+}
+else if (isset($_POST["data_facebook_login"]))
+{
+    $data = $_POST["data_facebook_login"];
+	
+    $data = remove_malicious_characters($data);
+	
+    echo shell_exec("ruby facebook_login.rb '$data'");
 }
 
 function remove_malicious_characters($data)

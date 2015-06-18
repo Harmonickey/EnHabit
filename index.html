@@ -33,6 +33,61 @@
         <![endif]-->
     </head>
     <body>
+	    <script>
+		
+        window.fbAsyncInit = function() 
+        {
+            FB.init(
+            {
+                appId      : '884055151683178',
+                xfbml      : true,
+                version    : 'v2.3'
+            });
+           
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        
+        function checkLoginState() 
+        {
+            FB.getLoginStatus(function(response) 
+            {
+                statusChangeCallback(response);
+            });
+        }
+        
+        function login_facebook()
+        {
+            FB.login(function(response) 
+            {
+                if (response.status === 'connected') 
+                {
+                    //we are good to login!
+                    var userID = response.authResponse.userID;
+                    var accessToken = response.authResponse.accessToken;
+                    
+                    login_facebook_user(userID, accessToken);
+                } 
+                else if (response.status === 'not_authorized') 
+                {
+                    // The person is logged into Facebook, but they are
+                    //  not authorized to use our website login feature
+                } 
+                else 
+                {
+                    // The person is not logged into Facebook, so we cannot
+                    // log them into our website
+                }
+            });
+        }
+		
+	    </script>
         <div id="map">
             <!-- Outer Container -->
             <div id="outer-container">
@@ -48,6 +103,7 @@
                         <li id="menu-item-text" class="menu-item scroll"><a href="#text">Area for Filters</a></li>
                         <li class="menu-item scroll"><input type="text" class="form-control" id="address" /></li>
                         <li id="login-create-function" class="menu-item scroll" onclick="populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
+                        <li id="update-function" class="menu-item scroll" style="display: none;" onclick="load_update_modal(event);"><a id="update-create" class="btn btn-outline-inverse btn-sm">Update Account</a></li>
                     </ul>
                     <!-- #main-menu -->
                 </section>
@@ -58,6 +114,8 @@
                     <label>Username: </label><input type="textbox" class="form-control username" />
                     <label>Password: </label><input type="password" class="form-control password" />
                     <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user();" style="margin-top: 15px;"/>
+                    <p style="text-align: center;">Or</p>
+                    <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
                     <p class="login-error alert alert-danger" style="display: none;"></p>
                     <div></div>
                     <label for="create" style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a href="" onclick="populate_and_open_modal(event, 'modal-content-2'); modal_backdrop_height($('#common-modal.modal')); resetModals(); set_default_button_on_enter('login');">Create an Account</a>
@@ -83,6 +141,23 @@
                     <p> You now have an account with EnHabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
                 </div>
                 <!-- #modal-content-3 -->
+                <!-- Update -->
+                <div class="content-to-populate-in-modal" id="modal-content-4">
+                    <h1>Update Account Info</h1>
+                    <label for="firstname">First Name: </label><input type="text" class="form-control firstname" />
+                    <label for="middleinitial">Middle Initial: </label><input type="text" class="form-control middleinitial" />
+                    <label for="lastname">Last Name: </label><input type="text" class="form-control lastname" />
+                    <label for="email">Email: </label><input type="text" class="form-control email" />
+                    <label for="phonenumber">Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg update-btn" onclick="update_account()" value="Update Account" style="margin-top: 15px;" />
+                    <p class="update-error alert alert-danger" style="display: none;"></p>
+                </div>
+                <!-- #modal-content-4 -->
+                <!-- Update -->
+                <div class="content-to-populate-in-modal" id="modal-content-5">
+                    <h1>Account Update Success!</h1>
+                </div>
+                <!-- #modal-content-5 -->
                 <!-- end: Left Sidebar -->
                 <!-- Footer -->
                 <section id="footer">
@@ -116,7 +191,8 @@
             </div>
             <!-- .modal-dialog -->
         </div>
-        <!-- .modal -->    
+        <!-- .modal --> 
+         <div id="fb-root" class="fb-reset"></div>
         <!-- Javascripts
             ================================================== -->
         <!-- Jquery and Bootstrap JS -->
