@@ -1372,13 +1372,6 @@ function tabs_uniform_height()
     }
 }
 
-$(function()
-{
-
-    checkCookie();
-
-});
-
 /*
  * ================================================================
  * Login User
@@ -1391,14 +1384,15 @@ function login_user()
 
     if (username != "" && password != "")
     {
-
+//url: "api.php",
         $.ajax(
         {
             type: "POST",
-            url: "api.php",
+            url: "login.php",
             data:
             {
-                data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"
+                data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}",
+                user: username //to be used as session variable later
             },
             beforeSend: function()
             {
@@ -1407,16 +1401,12 @@ function login_user()
             },
             success: function(res)
             {
-
+                console.log(res);
                 if (res.indexOf("Okay") != -1)
                 {
                     
                     $("#login-create").text("Log Out");
                     $("#login-create-function").attr("onclick", "logout_user()");
-
-                    var randomValue = res.split(":")[1];
-
-                    createCookie("enhabit-user", randomValue, 7);
 
                     $("#common-modal").modal('hide');
                     
@@ -1468,15 +1458,6 @@ function login_facebook_user(userID, accessToken)
                     $("#login-create").text("Log Out");
                     $("#login-create-function").attr("onclick", "logout_user()");
 
-                    var randomValue = res.split(":")[1];
-
-                    var now = new Date();
-                    var time = now.getTime();
-                    time += 3600 * 1000;
-                    now.setTime(time);
-                    
-                    createCookie("enhabit-user", randomValue, now.toUTCString());
-
                     $("#common-modal").modal('hide');
                     
                     $("#update-function").show();
@@ -1506,26 +1487,20 @@ function login_facebook_user(userID, accessToken)
 
 function logout_user()
 {
-    var value = readCookie("enhabit-user");
-
-    $.ajax( //extremely dangerous command
+    $.ajax(
         {
             type: "POST",
-            url: "api.php",
-            data:
-            {
-                data_delete: "{\"entryname\": \"" + value + "\"}"
-            },
+            url: "logout.php",
             success: function(res)
             {
 
-                if (res.indexOf("Okay") == -1)
+                if (res.indexOf("Successfully") != -1)
                 {
-                    console.log(res);
+                    console.log(res); //print the error
                 }
                 else
                 {
-                    $("#update-function").hide();
+                    removeLoginFeatures();
                 }
 
             },
@@ -1539,6 +1514,11 @@ function logout_user()
     $("#login-create").text("Log In");
     $("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');");
 
+}
+
+function removeLoginFeatures()
+{
+    $("#update-function").hide();
 }
 
 function resetModals()
