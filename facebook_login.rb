@@ -9,8 +9,6 @@ $: << "."
 require 'json'
 require 'moped'
 require 'bson'
-require 'securerandom'
-require 'date'
 
 def create_user_from_facebook_credentials(user, pass)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
@@ -31,7 +29,7 @@ def create_user_from_facebook_credentials(user, pass)
         end
     rescue Moped::Errors::OperationFailure
         #username and email will be guaranteed to be unique
-        #if we're here that means we're inserting a user redundantly, no conflict actually
+        #if we're here that means we're inserting a user redundantly
         #do nothing else
     end
 end
@@ -42,30 +40,8 @@ begin
 	
     #create a user from the facebook credentials if there isn't one already
     create_user_from_facebook_credentials(data["username"], data["password"])
-    
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])
-    mongo_session.use("enhabit")
-    
-    randomValue = ""
-    while (randomValue == "" or File.exists?(randomValue))
-        randomValue = SecureRandom.hex
-    end
 
-    cookie_obj = Hash.new
-    cookie_obj["cookie"] = randomValue
-    cookie_obj["credentials"] = "#{data["username"]},#{data["password"]}"
-    cookie_obj["expires"] = (Date.today + 7).to_s
-    
-    begin
-        mongo_session.with(safe: true) do |session|
-            session[:cookies].insert(cookie_obj)
-        end
-    rescue Moped::Errors::OperationFailure => e
-        puts e.message
-    end
-
-    puts "Okay:#{randomValue}"
-
+    puts "Okay"
 rescue Exception => e
     puts e.message
 end

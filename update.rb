@@ -44,33 +44,11 @@ def update_user(user, fn, mi, ln, em, pn)
     return ret_msg
 end
 
-def get_username_from_cookie(cookie_value)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
-    
-    cookie_obj = Hash.new
-    cookie_obj["cookie"] = cookie_value
-
-    ret_msg = Hash.new
-    
-    #Username has a unique constraint attached, so we want to catch the raised error just in case
-    begin
-        mongo_session.with(safe: true) do |session|
-            ret_msg = session[:cookies].find(cookie_obj).first
-        end
-
-    rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
-    end
-	
-    return ret_msg
-end
-
 begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
 
-    ret = get_username_from_cookie(data["cookie"])
+    #ret = get_username_from_session()
     
     raise Exception.new(ret.message) if ret.credentials.nil?
     

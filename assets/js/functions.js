@@ -1470,7 +1470,12 @@ function login_facebook_user(userID, accessToken)
 
                     var randomValue = res.split(":")[1];
 
-                    createCookie("enhabit-user", randomValue, 7);
+                    var now = new Date();
+                    var time = now.getTime();
+                    time += 3600 * 1000;
+                    now.setTime(time);
+                    
+                    createCookie("enhabit-user", randomValue, now.toUTCString());
 
                     $("#common-modal").modal('hide');
                     
@@ -1531,8 +1536,6 @@ function logout_user()
             }
         });
 
-    //unset cookie 
-    eraseCookie("enhabit-user");
     $("#login-create").text("Log In");
     $("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');");
 
@@ -1701,8 +1704,7 @@ function update_account()
     var lastname = $(".modal-body .lastname").val().trim();
     var email = $(".modal-body .email").val().trim();
     var phonenumber = $(".modal-body .phonenumber").val().trim();
-    var cookie = readCookie("enhabit-user");
-
+    
     if (!firstname)
     {
         setError(".update-error", "Please Enter a First Name!");
@@ -1733,7 +1735,7 @@ function update_account()
             {
                 data_update: "{\"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial +
                     "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
-                    "\", \"phonenumber\": \"" + phonenumber + "\", \"cookie\": \"" + cookie + "\"}"
+                    "\", \"phonenumber\": \"" + phonenumber + "\"}"
             },
             beforeSend: function()
             {
@@ -1846,49 +1848,4 @@ function setError(el, msg)
 
     //reset the height because the error bar increases it...
     modal_backdrop_height($('#common-modal.modal'));
-}
-
-function checkCookie()
-{
-    var value = readCookie("enhabit-user");
-    if (value != null)
-    {
-        createCookie("enhabit-user", value, 7); //reinit cookie to be another 7 days
-        $("#login-create").text("Log Out");
-        $("#login-create-function").attr("onclick", "logout_user()");
-    }
-}
-
-function createCookie(name, value, days)
-{
-    if (days)
-    {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "; expires=" + date.toGMTString();
-    }
-    else
-    {
-        var expires = "";
-    }
-
-    document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-function readCookie(name)
-{
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++)
-    {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
-
-function eraseCookie(name)
-{
-    createCookie(name, "", -1);
 }

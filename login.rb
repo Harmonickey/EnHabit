@@ -10,7 +10,6 @@ require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
-require 'securerandom'
 require 'date'
 
 def user_exists(user, pass)
@@ -30,35 +29,13 @@ def user_exists(user, pass)
     else
         return PasswordHash.validatePassword(pass, documents[0]["Password"])
     end
-
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
 	
     if user_exists(data["username"], data["password"])
-
-        randomValue = ""
-        while (randomValue == "" or File.exists?(randomValue))
-            randomValue = SecureRandom.hex
-        end
-
-        cookie_obj = Hash.new
-        cookie_obj["cookie"] = randomValue
-        cookie_obj["credentials"] = "#{data["username"]},#{data["password"]}"
-        cookie_obj["expires"] = (Date.today + 7).to_s
-		
-        begin
-            mongo_session = Moped::Session.new(['127.0.0.1:27017'])
-            mongo_session.use("enhabit")
-            mongo_session.with(safe: true) do |session|
-                session[:cookies].insert(cookie_obj)
-            end
-        rescue Moped::Errors::OperationFailure => e
-            puts e.message
-        end
-
-        puts "Okay:#{randomValue}"
+        puts "Okay"
     else
         puts "Incorrect Username/Password"
     end
