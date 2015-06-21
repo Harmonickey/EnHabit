@@ -48,3 +48,9 @@
     position: relative;
     top: -3px;
 }
+
+.footer-text-line
+{
+    color: white;
+    font-size: 1.3em;
+}

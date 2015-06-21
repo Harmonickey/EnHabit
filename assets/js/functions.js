@@ -1547,34 +1547,13 @@ function create_account()
     var lastname = $(".modal-body .lastname").val().trim();
     var email = $(".modal-body .email").val().trim();
     var phonenumber = $(".modal-body .phonenumber").val().trim();
-
-    if (!username)
+    var error = buildError({"username": username, "password": password, "firstname": firstname,
+                                      "middleinitial": middleinitial, "lastname": lastname, "email": email,
+                                      "phonenumber": phonenumber});
+    
+    if (error != "Please Include<br>")
     {
-        setError(".register-error", "Please Enter a Username!");
-    }
-    else if (!password)
-    {
-        setError(".register-error", "Please Enter a Password!");
-    }
-    else if (!firstname)
-    {
-        setError(".register-error", "Please Enter a First Name!");
-    }
-    else if (!middleinitial)
-    {
-        setError(".register-error", "Please Enter a Middle Initial!");
-    }
-    else if (!lastname)
-    {
-        setError(".register-error", "Please Enter a Last Name!");
-    }
-    else if (!email || !isValidEmail(email))
-    {
-        setError(".register-error", "Please Enter a Valid Email!");
-    }
-    else if (!phonenumber || !isValidPhoneNumber(phonenumber))
-    {
-        setError(".register-error", "Please Enter a Valid Phone Number!");
+        setError(".create-error", error);
     }
     else
     {
@@ -1701,26 +1680,12 @@ function update_account()
     var lastname = $(".modal-body .lastname").val().trim();
     var email = $(".modal-body .email").val().trim();
     var phonenumber = $(".modal-body .phonenumber").val().trim();
+    var error = buildError({"firstname": firstname, "middleinitial": middleinitial, "lastname": lastname, 
+                                      "email": email, "phonenumber": phonenumber});
     
-    if (!firstname)
+    if (error != "Please Include<br>")
     {
-        setError(".update-error", "Please Enter a First Name!");
-    }
-    else if (!middleinitial)
-    {
-        setError(".update-error", "Please Enter a Middle Initial!");
-    }
-    else if (!lastname)
-    {
-        setError(".update-error", "Please Enter a Last Name!");
-    }
-    else if (!email || !isValidEmail(email))
-    {
-        setError(".update-error", "Please Enter a Valid Email!");
-    }
-    else if (!phonenumber || !isValidPhoneNumber(phonenumber))
-    {
-        setError(".update-error", "Please Enter a Valid Phone Number!");
+        setError(".update-error", error);
     }
     else
     {
@@ -1838,6 +1803,42 @@ function isValidPhoneNumber(pn)
 	*/
 
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
+}
+
+function buildError(fields)
+{
+    var error = "Please Include<br>";
+    
+    if (fields.username == "")
+    {
+        error += "&nbsp;&nbsp;Username<br>";
+    }
+     if (fields.password == "")
+    {
+        error += "&nbsp;&nbsp;Password<br>";
+    }
+    if (fields.firstname == "")
+    {
+        error += "&nbsp;&nbsp;First Name<br>";
+    }
+    if (fields.middleinitial == "")
+    {
+        error += "&nbsp;&nbsp;Middle Initial<br>";
+    }
+    if (fields.lastname == "")
+    {
+        error += "&nbsp;&nbsp;Last Name<br>";
+    }
+    if (fields.email == "" || !isValidEmail(fields.email))
+    {
+        error += "&nbsp;&nbsp;Valid Email<br>";
+    }
+    if (fields.phonenumber == "" || !isValidPhoneNumber(fields.phonenumber))
+    {
+        error += "&nbsp;&nbsp;Valid Phone Number<br>";
+    }
+    
+    return error;
 }
 
 function setError(el, msg)
