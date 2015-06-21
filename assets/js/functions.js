@@ -1382,7 +1382,13 @@ function login_user()
     var username = $(".modal-body .username").val().trim();
     var password = $(".modal-body .password").val().trim();
 
-    if (username != "" && password != "")
+    var error = buildError({"username": username, "password": password});
+    
+    if (error != "Please Include<br>")
+    {
+        setError(".login-error", error);
+    }
+    else
     {
         $.ajax(
         {
@@ -1420,10 +1426,6 @@ function login_user()
                 $(".login-btn").attr("disabled", false);
             }
         });
-    }
-    else
-    {
-        console.log("Need both username and password");
     }
 }
 
@@ -1553,7 +1555,7 @@ function create_account()
     
     if (error != "Please Include<br>")
     {
-        setError(".create-error", error);
+        setError(".register-error", error);
     }
     else
     {
@@ -1807,35 +1809,36 @@ function isValidPhoneNumber(pn)
 
 function buildError(fields)
 {
+    console.log(fields);
     var error = "Please Include<br>";
     
     if (fields.username == "")
     {
-        error += "&nbsp;&nbsp;Username<br>";
+        error += "Username<br>";
     }
      if (fields.password == "")
     {
-        error += "&nbsp;&nbsp;Password<br>";
+        error += "Password<br>";
     }
     if (fields.firstname == "")
     {
-        error += "&nbsp;&nbsp;First Name<br>";
+        error += "First Name<br>";
     }
     if (fields.middleinitial == "")
     {
-        error += "&nbsp;&nbsp;Middle Initial<br>";
+        error += "Middle Initial<br>";
     }
     if (fields.lastname == "")
     {
-        error += "&nbsp;&nbsp;Last Name<br>";
+        error += "Last Name<br>";
     }
-    if (fields.email == "" || !isValidEmail(fields.email))
+    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
     {
-        error += "&nbsp;&nbsp;Valid Email<br>";
+        error += "Valid Email<br>";
     }
-    if (fields.phonenumber == "" || !isValidPhoneNumber(fields.phonenumber))
+    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
     {
-        error += "&nbsp;&nbsp;Valid Phone Number<br>";
+        error += "Valid Phone Number<br>";
     }
     
     return error;
@@ -1843,7 +1846,7 @@ function buildError(fields)
 
 function setError(el, msg)
 {
-    $(el).text(msg);
+    $(el).html(msg);
     $(el).show();
 
     //reset the height because the error bar increases it...
