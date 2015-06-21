@@ -1,5 +1,19 @@
 <!DOCTYPE html>
-<?php session_start(); ?> 
+<?php 
+
+session_start(); 
+
+$one_hour = 3600;
+
+if (!isset($_SESSION['CREATED'])) {
+    $_SESSION['CREATED'] = time();
+} else if (time() - $_SESSION['CREATED'] > $one_hour) {
+    // session started more than 1 hour ago
+    session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+    $_SESSION['CREATED'] = time();  // update creation time
+}
+
+?> 
 <html lang="en">
     <head>
         <meta charset="utf-8">
