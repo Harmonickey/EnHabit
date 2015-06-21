@@ -1372,13 +1372,6 @@ function tabs_uniform_height()
     }
 }
 
-$(function()
-{
-
-    checkCookie();
-
-});
-
 /*
  * ================================================================
  * Login User
@@ -1389,16 +1382,22 @@ function login_user()
     var username = $(".modal-body .username").val().trim();
     var password = $(".modal-body .password").val().trim();
 
-    if (username != "" && password != "")
+    var error = buildError({"username": username, "password": password});
+    
+    if (error != "Please Include<br>")
     {
-
+        setError(".login-error", error);
+    }
+    else
+    {
         $.ajax(
         {
             type: "POST",
-            url: "api.php",
+            url: "login.php",
             data:
             {
-                data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}"
+                data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}",
+                user: username //to be used as session variable later
             },
             beforeSend: function()
             {
@@ -1407,18 +1406,9 @@ function login_user()
             },
             success: function(res)
             {
-
-                if (res.indexOf("Okay") != -1)
+                if (contains(res, "Okay"))
                 {
-                    //set cookie?
-                    $("#login-create").text("Log Out");
-                    $("#login-create-function").attr("onclick", "logout_user()");
-
-                    var randomValue = res.split(":")[1];
-
-                    createCookie("enhabit-user", randomValue, 7);
-
-                    $("#common-modal").modal('hide');
+                    showLoginFeatures();
                 }
                 else
                 {
@@ -1437,30 +1427,68 @@ function login_user()
             }
         });
     }
+}
+
+function login_facebook_user(userID, accessToken)
+{
+    
+    if (userID != "" && accessToken != "")
+    {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "login.php",
+            data:
+            {
+                data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}",
+                user: userID
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    
+                    showLoginFeatures();
+                }
+                else
+                {
+                    setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $(".login-btn").val("Log In");
+                $(".login-btn").attr("disabled", false);
+            }
+        });
+    }
     else
     {
-        console.log("Need both username and password");
+        console.log("Problem with Facebook Login Request.");
     }
 }
 
 function logout_user()
 {
-    var value = readCookie("enhabit-user");
-
-    $.ajax( //extremely dangerous command
+    $.ajax(
         {
             type: "POST",
-            url: "api.php",
-            data:
-            {
-                data_delete: "{\"entryname\": \"" + value + "\"}"
-            },
+            url: "logout.php",
             success: function(res)
             {
-
-                if (res.indexOf("Okay") == -1)
+                if (contains(res, "Successfully"))
                 {
-                    console.log(res);
+                    removeLoginFeatures();
+                }
+                else
+                {
+                    console.log(res); //print the error
                 }
 
             },
@@ -1471,11 +1499,29 @@ function logout_user()
             }
         });
 
-    //unset cookie 
-    eraseCookie("enhabit-user");
     $("#login-create").text("Log In");
     $("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');");
 
+}
+
+function removeLoginFeatures()
+{
+    $("#update-function").hide();
+}
+
+function showLoginFeatures()
+{
+    $("#login-create").text("Log Out");
+    $("#login-create-function").attr("onclick", "logout_user()");
+
+    hideMainModal();
+    
+    $("#update-function").show();
+}
+
+function hideMainModal()
+{
+    $("#common-modal").modal('hide');
 }
 
 function resetModals()
@@ -1487,6 +1533,10 @@ function resetModals()
     $(".login-btn").val("Log In");
     $(".login-btn").attr('disabled', false);
     $(".login-error").hide();
+    
+    $(".update-btn").val("Update Account");
+    $(".update-btn").attr('disabled', false);
+    $(".update-error").hide();
 }
 
 function create_account()
@@ -1499,34 +1549,13 @@ function create_account()
     var lastname = $(".modal-body .lastname").val().trim();
     var email = $(".modal-body .email").val().trim();
     var phonenumber = $(".modal-body .phonenumber").val().trim();
-
-    if (!username)
+    var error = buildError({"username": username, "password": password, "firstname": firstname,
+                                      "middleinitial": middleinitial, "lastname": lastname, "email": email,
+                                      "phonenumber": phonenumber});
+    
+    if (error != "Please Include<br>")
     {
-        setError(".register-error", "Please Enter a Username!");
-    }
-    else if (!password)
-    {
-        setError(".register-error", "Please Enter a Password!");
-    }
-    else if (!firstname)
-    {
-        setError(".register-error", "Please Enter a First Name!");
-    }
-    else if (!middleinitial)
-    {
-        setError(".register-error", "Please Enter a Middle Initial!");
-    }
-    else if (!lastname)
-    {
-        setError(".register-error", "Please Enter a Last Name!");
-    }
-    else if (!email || !isValidEmail(email))
-    {
-        setError(".register-error", "Please Enter a Valid Email!");
-    }
-    else if (!phonenumber || !isValidPhoneNumber(phonenumber))
-    {
-        setError(".register-error", "Please Enter a Valid Phone Number!");
+        setError(".register-error", error);
     }
     else
     {
@@ -1548,7 +1577,7 @@ function create_account()
             },
             success: function(res)
             {
-                if (res.indexOf("Okay") != -1)
+                if (contains(res, "Okay"))
                 {
                     login_user();
                     populate_and_open_modal(
@@ -1579,10 +1608,141 @@ function create_account()
 
 }
 
+function load_update_modal(event)
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "api.php",
+        data:
+        {
+            data_update_load: "load"
+        },
+        success: function(res)
+        {
+            if (contains(res, "Error") || !res)
+            {
+                if (res == "")
+                {
+                    console.log("No info for user");
+                }
+                else
+                {
+                    console.log(res);
+                }
+            }
+            else
+            {
+                populate_and_open_modal(event, 'modal-content-4');
+                
+                fill_update_modal(JSON.parse(res).data);
+             
+                resetModals();
+                
+                set_default_button_on_enter('update');
+            }
+        },
+        error: function(err, res)
+        {
+            console.log(err);
+            console.log(res);
+        }
+    });
+}
+
+function fill_update_modal(data)
+{
+    var firstname = data["FirstName"];
+    var middleinitial = data["MiddleInitial"];
+    var lastname = data["LastName"];
+    var email = data["Email"];
+    var phonenumber = data["PhoneNumber"];
+    
+    //handles facebook_login case
+    //  in order for a user to be created on the 
+    //  fly with facebook login in our app, I needed
+    //  to create a fake email without an @
+    if (!contains(email, "@")) 
+    {
+        email = "";
+    }
+    
+    $(".modal-body .firstname").val(firstname);
+    $(".modal-body .middleinitial").val(middleinitial);
+    $(".modal-body .lastname").val(lastname);
+    $(".modal-body .email").val(email);
+    $(".modal-body .phonenumber").val(phonenumber);
+}
+
+function update_account()
+{
+    //first validate that the fields are filled out
+    var firstname = $(".modal-body .firstname").val().trim();
+    var middleinitial = $(".modal-body .middleinitial").val().trim();
+    var lastname = $(".modal-body .lastname").val().trim();
+    var email = $(".modal-body .email").val().trim();
+    var phonenumber = $(".modal-body .phonenumber").val().trim();
+    var error = buildError({"firstname": firstname, "middleinitial": middleinitial, "lastname": lastname, 
+                                      "email": email, "phonenumber": phonenumber});
+    
+    if (error != "Please Include<br>")
+    {
+        setError(".update-error", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_update: "{\"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial +
+                    "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
+                    "\", \"phonenumber\": \"" + phonenumber + "\"}"
+            },
+            beforeSend: function()
+            {
+                $(".update-btn").val("Processing...");
+                $(".update-btn").attr('disabled', true);
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    populate_and_open_modal(
+                    {
+                        preventDefault: true
+                    }, 'modal-content-5');
+
+                }
+                else
+                {
+                    setError(".update-error", res);
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $(".update-btn").val("Update Account");
+                $(".update-btn").attr('disabled', false);
+
+                set_default_button_on_enter("");
+            }
+        });
+    }
+}
+
 function set_default_button_on_enter(modal)
 {
     if (which_modal != "")
+    {
         $(document).unbind("keypress");
+    }
 
     switch (modal)
     {
@@ -1607,6 +1767,17 @@ function set_default_button_on_enter(modal)
                 }
             });
             which_modal = ".register-btn";
+            break;
+        case "register":
+            $(document).on("keypress", function(e)
+            {
+                var code = e.keyCode || e.which;
+                if (code == 13)
+                {
+                    $($(".update-btn")[0]).click();
+                }
+            });
+            which_modal = ".update-btn";
             break;
         default:
 
@@ -1636,56 +1807,53 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
+function buildError(fields)
+{
+    console.log(fields);
+    var error = "Please Include<br>";
+    
+    if (fields.username == "")
+    {
+        error += "Username<br>";
+    }
+     if (fields.password == "")
+    {
+        error += "Password<br>";
+    }
+    if (fields.firstname == "")
+    {
+        error += "First Name<br>";
+    }
+    if (fields.middleinitial == "")
+    {
+        error += "Middle Initial<br>";
+    }
+    if (fields.lastname == "")
+    {
+        error += "Last Name<br>";
+    }
+    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
+    {
+        error += "Valid Email<br>";
+    }
+    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    {
+        error += "Valid Phone Number<br>";
+    }
+    
+    return error;
+}
+
 function setError(el, msg)
 {
-    $(el).text(msg);
+    $(el).html(msg);
     $(el).show();
 
     //reset the height because the error bar increases it...
     modal_backdrop_height($('#common-modal.modal'));
 }
 
-function checkCookie()
+function contains(haystack, needle)
 {
-    var value = readCookie("enhabit-user");
-    if (value != null)
-    {
-        createCookie("enhabit-user", value, 7); //reinit cookie to be another 7 days
-        $("#login-create").text("Log Out");
-        $("#login-create-function").attr("onclick", "logout_user()");
-    }
-}
-
-function createCookie(name, value, days)
-{
-    if (days)
-    {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "; expires=" + date.toGMTString();
-    }
-    else
-    {
-        var expires = "";
-    }
-
-    document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-function readCookie(name)
-{
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++)
-    {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
-
-function eraseCookie(name)
-{
-    createCookie(name, "", -1);
+    return (haystack.indexOf(needle) != -1)
 }

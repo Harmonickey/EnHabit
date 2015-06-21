@@ -4,31 +4,23 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./includes"
+$: << "."
 
 require 'json'
 require 'moped'
 require 'bson'
-require 'PasswordHash'
 
-def insert_user(user, pass, fn, mi, ln, em, pn)
-
+def create_user_from_facebook_credentials(user, pass)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     usr_obj = Hash.new
     usr_obj["Username"] = user
-    usr_obj["Password"] = PasswordHash.createHash(pass)
-    usr_obj["FirstName"] = fn
-    usr_obj["MiddleInitial"] = mi
-    usr_obj["LastName"] = ln
-    usr_obj["Email"] = em
-    usr_obj["PhoneNumber"] = pn
+    usr_obj["Password"] = pass
     usr_obj["Landlord"] = false
+    usr_obj["Email"] = SecureRandom.hex  #just so we can insert it...
     usr_obj["Active"] = true
     #usr_obj["Verified"] = false
- 
-    ret_msg = ""
  
     #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
@@ -36,26 +28,21 @@ def insert_user(user, pass, fn, mi, ln, em, pn)
             session[:accounts].insert(usr_obj)
         end
         mongo_session.disconnect
-        ret_msg = "Okay"
-    rescue Moped::Errors::OperationFailure => e
-        if e.message.include? "enhabit.accounts.$Username_1"
-            ret_msg = "That username already exists!"
-        elsif e.message.include? "enhabit.accounts.$email_1"
-            ret_msg = "That email is already registered with another user!"
-        end
+    rescue Moped::Errors::OperationFailure
+        #username and email will be guaranteed to be unique
+        #if we're here that means we're inserting a user redundantly
+        #do nothing else
     end
-	
-    return ret_msg
 end
 
 begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
+	
+    #create a user from the facebook credentials if there isn't one already
+    create_user_from_facebook_credentials(data["username"], data["password"])
 
-    result = insert_user(data["username"], data["password"], data["firstname"], data["middleinitial"], data["lastname"], data["email"], data["phonenumber"])
-
-    puts result
-
+    puts "Okay"
 rescue Exception => e
-    puts e.inspect
+    puts e.message
 end

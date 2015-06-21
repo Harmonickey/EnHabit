@@ -10,6 +10,7 @@ require 'moped'
 require 'bson'
 
 data = JSON.parse(ARGV[0].delete('\\'))
+user = ARGV[1] if not ARGV[1].nil?
 
 @lower = data["lower"]
 @upper = data["upper"]
@@ -95,20 +96,15 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).to_a
+    documents = listings.find(@main_filter).select(_id: 0, worldCoordinates: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0
         puts "No Matching Entries"
     else
-        result_data = {"data" => []}
-        documents.each do |doc|
-            doc["_id"] = "empty"
-            doc["start"] = "#{doc["start"]}"
-            result_data["data"] << doc
-        end
-
-        puts result_data
+        result_data = Hash.new
+        result_data["data"] = documents
+        puts result_data.to_json
     end
 
 rescue Exception => e
