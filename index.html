@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>EnHabit</title>
+        <title>Enhabit</title>
         <!-- favicon -->
         <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
         <!-- Bootstrap core CSS -->
@@ -35,7 +35,7 @@
     </head>
     <body>
 	    <script>
-		
+       
         window.fbAsyncInit = function() 
         {
             FB.init(
@@ -95,7 +95,7 @@
                 <!-- Left Sidebar -->
                 <section id="left-sidebar">
                     <div class="logo">
-                        <a href="#intro" class="link-scroll"><img src="assets/images/other_images/logo.png" alt="EnHabit"></a>
+                        <a href="#intro" class="link-scroll"><img src="assets/images/other_images/logo.png" alt="Enhabit"></a>
                     </div>
                     <!-- .logo -->
                     <!-- Menu Icon for smaller viewports -->
@@ -139,7 +139,7 @@
                 <!-- Register -->
                 <div class="content-to-populate-in-modal" id="modal-content-3">
                     <h1>Account Creation Success!</h1>
-                    <p> You now have an account with EnHabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
+                    <p> You now have an account with Enhabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
                 </div>
                 <!-- #modal-content-3 -->
                 <!-- Update -->
@@ -170,7 +170,7 @@
                         <li><a href="#" target="_blank" title="Google+"><img src="assets/images/theme_images/social_icons/googleplus.png" alt="Google+"></a></li>
                     </ul>
                     <!-- copyright text -->
-                    <div class="footer-text-line">LbKStudios LLC &amp; EnHabit LLC</div>
+                    <div class="footer-text-line">LbKStudios LLC &amp; Enhabit LLC</div>
                 </section>
                 <!-- end: Footer -->      
             </div>
@@ -229,11 +229,7 @@
             		data: {data_query: "{\"extensions\": {\"university\": \"Northwestern\"}}"},
             		success: function(res) 
             		{
-            			if (res.indexOf("No Matching Entries") == -1)
-            			{
-            				insertMarkers(res);
-            			}
-            			else
+            			if (contains(res, "No Matching Entries"))
             			{
             				if (res == "")
             				{
@@ -244,6 +240,10 @@
             					console.log(res);
             				}
             			}
+            			else
+            			{
+                            insertMarkers(res);
+            			}
             		},
             		error: function(res, err) 
             		{
@@ -251,6 +251,13 @@
             			console.log(err);
             		}			
             	});
+                
+                <?php 
+                    if (isset($_SESSION['user']))
+                    {
+                        echo "showLoginFeatures();\n";
+                    }
+                ?>
             });
             
             function loadDataWithFilter()
@@ -310,7 +317,7 @@
             {
             	if (res != "")
             	{
-            		data = JSON.parse(res.replace(/=>/g, ":"))["data"]; //sanitize the data for the Json Parser
+                    var data = JSON.parse(res).data;
             		data.forEach(function(d)
             		{
             			L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
@@ -339,7 +346,7 @@
             		var long = result.geometry.location.F; //longitude
             		
             		//do something with it here...
-            });
+                });
             
         </script>
         <!-- detect mobile browsers -->

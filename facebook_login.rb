@@ -27,6 +27,7 @@ def create_user_from_facebook_credentials(user, pass)
         mongo_session.with(safe: true) do |session|
             session[:accounts].insert(usr_obj)
         end
+        mongo_session.disconnect
     rescue Moped::Errors::OperationFailure
         #username and email will be guaranteed to be unique
         #if we're here that means we're inserting a user redundantly

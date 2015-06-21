@@ -4,7 +4,7 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "."
+$: << "./includes"
 
 require 'json'
 require 'moped'
@@ -23,7 +23,7 @@ def user_exists(user, pass)
     query["Username"] = user
 	
     documents = accounts.find(query).to_a
-	
+	mongo_session.disconnect
     if documents.count == 0
         return false
     else

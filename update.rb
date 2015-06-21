@@ -34,6 +34,7 @@ def update_user(user, fn, mi, ln, em, pn)
         mongo_session.with(safe: true) do |session|
             session[:accounts].find(query_obj).update('$set' => usr_obj)
         end
+        mongo_session.disconnect
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$email_1"
@@ -47,12 +48,9 @@ end
 begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
-
-    #ret = get_username_from_session()
+    username = ARGV[1];
     
-    raise Exception.new(ret.message) if ret.credentials.nil?
-    
-    result = update_user(ret.credentials.split(",")[0], data["firstname"], data["middleinitial"], data["lastname"], data["email"], data["phonenumber"])
+    result = update_user(username, data["firstname"], data["middleinitial"], data["lastname"], data["email"], data["phonenumber"])
 
     puts result
 

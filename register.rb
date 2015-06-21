@@ -4,7 +4,7 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "."
+$: << "./includes"
 
 require 'json'
 require 'moped'
@@ -35,6 +35,7 @@ def insert_user(user, pass, fn, mi, ln, em, pn)
         mongo_session.with(safe: true) do |session|
             session[:accounts].insert(usr_obj)
         end
+        mongo_session.disconnect
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Username_1"

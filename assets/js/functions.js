@@ -1384,7 +1384,6 @@ function login_user()
 
     if (username != "" && password != "")
     {
-//url: "api.php",
         $.ajax(
         {
             type: "POST",
@@ -1401,16 +1400,9 @@ function login_user()
             },
             success: function(res)
             {
-                console.log(res);
-                if (res.indexOf("Okay") != -1)
+                if (contains(res, "Okay"))
                 {
-                    
-                    $("#login-create").text("Log Out");
-                    $("#login-create-function").attr("onclick", "logout_user()");
-
-                    $("#common-modal").modal('hide');
-                    
-                    $("#update-function").show();
+                    showLoginFeatures();
                 }
                 else
                 {
@@ -1444,23 +1436,18 @@ function login_facebook_user(userID, accessToken)
         $.ajax(
         {
             type: "POST",
-            url: "api.php",
+            url: "login.php",
             data:
             {
-                data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}"
+                data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}",
+                user: userID
             },
             success: function(res)
             {
-
-                if (res.indexOf("Okay") != -1)
+                if (contains(res, "Okay"))
                 {
                     
-                    $("#login-create").text("Log Out");
-                    $("#login-create-function").attr("onclick", "logout_user()");
-
-                    $("#common-modal").modal('hide');
-                    
-                    $("#update-function").show();
+                    showLoginFeatures();
                 }
                 else
                 {
@@ -1474,7 +1461,7 @@ function login_facebook_user(userID, accessToken)
             },
             complete: function()
             {
-                $(".login-btn").text("Log In");
+                $(".login-btn").val("Log In");
                 $(".login-btn").attr("disabled", false);
             }
         });
@@ -1493,14 +1480,13 @@ function logout_user()
             url: "logout.php",
             success: function(res)
             {
-
-                if (res.indexOf("Successfully") != -1)
+                if (contains(res, "Successfully"))
                 {
-                    console.log(res); //print the error
+                    removeLoginFeatures();
                 }
                 else
                 {
-                    removeLoginFeatures();
+                    console.log(res); //print the error
                 }
 
             },
@@ -1519,6 +1505,21 @@ function logout_user()
 function removeLoginFeatures()
 {
     $("#update-function").hide();
+}
+
+function showLoginFeatures()
+{
+    $("#login-create").text("Log Out");
+    $("#login-create-function").attr("onclick", "logout_user()");
+
+    hideMainModal();
+    
+    $("#update-function").show();
+}
+
+function hideMainModal()
+{
+    $("#common-modal").modal('hide');
 }
 
 function resetModals()
@@ -1595,7 +1596,7 @@ function create_account()
             },
             success: function(res)
             {
-                if (res.indexOf("Okay") != -1)
+                if (contains(res, "Okay"))
                 {
                     login_user();
                     populate_and_open_modal(
@@ -1638,36 +1639,52 @@ function load_update_modal(event)
         },
         success: function(res)
         {
-            populate_and_open_modal(event, 'modal-content-4');
-            
-            fill_update_modal(res);
-         
-            resetModals();
-            
-            set_default_button_on_enter('update');
+            if (contains(res, "Error") || !res)
+            {
+                if (res == "")
+                {
+                    console.log("No info for user");
+                }
+                else
+                {
+                    console.log(res);
+                }
+            }
+            else
+            {
+                populate_and_open_modal(event, 'modal-content-4');
+                
+                fill_update_modal(JSON.parse(res).data);
+             
+                resetModals();
+                
+                set_default_button_on_enter('update');
+            }
         },
         error: function(err, res)
         {
             console.log(err);
             console.log(res);
-        },
-        complete: function()
-        {
-            $(".update-btn").val("Update Account");
-            $(".update-btn").attr('disabled', false);
-
-            set_default_button_on_enter("");
         }
     });
 }
 
 function fill_update_modal(data)
 {
-    var firstname = data.firstname;
-    var middleinitial = data.middleinitial;
-    var lastname = data.lastname;
-    var email = data.email;
-    var phonenumber = data.phonenumber;
+    var firstname = data["FirstName"];
+    var middleinitial = data["MiddleInitial"];
+    var lastname = data["LastName"];
+    var email = data["Email"];
+    var phonenumber = data["PhoneNumber"];
+    
+    //handles facebook_login case
+    //  in order for a user to be created on the 
+    //  fly with facebook login in our app, I needed
+    //  to create a fake email without an @
+    if (!contains(email, "@")) 
+    {
+        email = "";
+    }
     
     $(".modal-body .firstname").val(firstname);
     $(".modal-body .middleinitial").val(middleinitial);
@@ -1724,7 +1741,7 @@ function update_account()
             },
             success: function(res)
             {
-                if (res.indexOf("Okay") != -1)
+                if (contains(res, "Okay"))
                 {
                     populate_and_open_modal(
                     {
@@ -1756,7 +1773,9 @@ function update_account()
 function set_default_button_on_enter(modal)
 {
     if (which_modal != "")
+    {
         $(document).unbind("keypress");
+    }
 
     switch (modal)
     {
@@ -1828,4 +1847,9 @@ function setError(el, msg)
 
     //reset the height because the error bar increases it...
     modal_backdrop_height($('#common-modal.modal'));
+}
+
+function contains(haystack, needle)
+{
+    return (haystack.indexOf(needle) != -1)
 }
