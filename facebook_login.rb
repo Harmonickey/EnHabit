@@ -22,17 +22,24 @@ def create_user_from_facebook_credentials(user, pass)
     usr_obj["Active"] = true
     #usr_obj["Verified"] = false
  
+    ret_msg = ""
+ 
     #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongo_session.with(safe: true) do |session|
             session[:accounts].insert(usr_obj)
         end
-        mongo_session.disconnect
+        ret_msg = "Needs Update"
     rescue Moped::Errors::OperationFailure
         #username and email will be guaranteed to be unique
         #if we're here that means we're inserting a user redundantly
         #do nothing else
+        ret_msg = "Okay"
     end
+    
+    mongo_session.disconnect
+    
+    return ret_msg
 end
 
 begin
@@ -40,9 +47,9 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
 	
     #create a user from the facebook credentials if there isn't one already
-    create_user_from_facebook_credentials(data["username"], data["password"])
+    message = create_user_from_facebook_credentials(data["username"], data["password"])
 
-    puts "Okay"
+    puts message
 rescue Exception => e
     puts e.message
 end

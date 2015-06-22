@@ -1408,7 +1408,7 @@ function login_user()
             {
                 if (contains(res, "Okay"))
                 {
-                    showLoginFeatures();
+                    showLoginFeatures(true);
                 }
                 else
                 {
@@ -1445,7 +1445,10 @@ function login_facebook_user(userID, accessToken)
         {
             if (contains(res, "Okay"))
             {
-                showLoginFeatures();
+                showLoginFeatures(true);
+            }
+            else if (contains(res, "Needs Update"))
+            {
                 showUpdateScreen();
             }
             else
@@ -1493,7 +1496,6 @@ function logout_user()
 
     $("#login-create").text("Log In");
     $("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');");
-
 }
 
 function removeLoginFeatures()
@@ -1501,19 +1503,22 @@ function removeLoginFeatures()
     $("#update-function").hide();
 }
 
-function showLoginFeatures()
+function showLoginFeatures(hide_main_modal)
 {
     $("#login-create").text("Log Out");
     $("#login-create-function").attr("onclick", "logout_user()");
 
-    hideMainModal();
+    if (hide_main_modal)
+        hideMainModal();
     
     $("#update-function").show();
 }
 
 function showUpdateScreen()
 {
-    load_update_modal(null);
+    showLoginFeatures(false);
+   
+    $("#update-function").click();
 }
 
 function hideMainModal()
@@ -1799,7 +1804,6 @@ function isValidPhoneNumber(pn)
 
 function buildError(fields)
 {
-    console.log(fields);
     var error = "Please Include<br>";
     
     if (fields.username == "")

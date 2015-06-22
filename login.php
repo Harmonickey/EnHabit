@@ -35,7 +35,8 @@ else if(isset($_POST['data_facebook_login']) && !isset($_SESSION['user']))
     
     $user = $_POST["user"];
     
-    if (strpos($result, "Okay") === 0)
+    if (strpos($result, "Okay") === 0 ||
+        strpos($result, "Needs Update") === 0)
     {
         $_SESSION['user']=$user;
         echo $result;

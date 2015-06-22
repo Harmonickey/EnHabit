@@ -11,7 +11,7 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-def insert_user(user, pass, fn, mi, ln, em, pn)
+def insert_user(user, pass, fn, ln, em, pn)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -34,16 +34,18 @@ def insert_user(user, pass, fn, mi, ln, em, pn)
         mongo_session.with(safe: true) do |session|
             session[:accounts].insert(usr_obj)
         end
-        mongo_session.disconnect
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Username_1"
             ret_msg = "That username already exists!"
-        elsif e.message.include? "enhabit.accounts.$email_1"
+        elsif e.message.include? "enhabit.accounts.$Email_1"
             ret_msg = "That email is already registered with another user!"
+        elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
+            ret_msg = "That phone number is already registered with another user!"
         end
     end
-	
+    
+	mongo_session.disconnect
     return ret_msg
 end
 

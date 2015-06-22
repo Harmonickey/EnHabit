@@ -19,7 +19,7 @@ if (isset($_SESSION["user"])) //must have session in order to use the api!
     else if (isset($_POST["data_update"]))
     {
         $data = $_POST["data_update"];
-        
+
         $data = remove_malicious_characters($data);
         
         echo shell_exec("ruby update.rb '$data' $user");

@@ -10,7 +10,7 @@ require 'json'
 require 'moped'
 require 'bson'
 
-def update_user(user, fn, mi, ln, em, pn)
+def update_user(user, fn, ln, em, pn)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -33,14 +33,16 @@ def update_user(user, fn, mi, ln, em, pn)
         mongo_session.with(safe: true) do |session|
             session[:accounts].find(query_obj).update('$set' => usr_obj)
         end
-        mongo_session.disconnect
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
-        if e.message.include? "enhabit.accounts.$email_1"
+        if e.message.include? "enhabit.accounts.$Email_1"
             ret_msg = "That email is already registered with another user!"
+        elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
+            ret_msg = "That phone number is already registered with another user!" 
         end
     end
-	
+    
+	mongo_session.disconnect
     return ret_msg
 end
 
