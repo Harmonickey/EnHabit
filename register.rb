@@ -20,7 +20,6 @@ def insert_user(user, pass, fn, mi, ln, em, pn)
     usr_obj["Username"] = user
     usr_obj["Password"] = PasswordHash.createHash(pass)
     usr_obj["FirstName"] = fn
-    usr_obj["MiddleInitial"] = mi
     usr_obj["LastName"] = ln
     usr_obj["Email"] = em
     usr_obj["PhoneNumber"] = pn
@@ -52,7 +51,7 @@ begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
 
-    result = insert_user(data["username"], data["password"], data["firstname"], data["middleinitial"], data["lastname"], data["email"], data["phonenumber"])
+    result = insert_user(data["username"], data["password"], data["firstname"], data["lastname"], data["email"], data["phonenumber"])
 
     puts result
 

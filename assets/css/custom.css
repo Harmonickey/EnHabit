@@ -9,9 +9,21 @@
 }
 
 #left-sidebar,
-#footer 
+#footer,
+#mobile-menu-icon
 {
 	z-index: 1;
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    #left-sidebar,
+    #footer,
+    #mobile-menu-icon
+    {
+        z-index: 1;
+        position: fixed;
+    }
 }
 
 .username, 

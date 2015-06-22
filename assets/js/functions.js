@@ -824,7 +824,7 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
 
     }
     // end: if modal and content container exists
-    if (event != null)
+    if (event != null && event.returnValue != null)
         event.preventDefault ? event.preventDefault() : event.returnValue = false;
     return false;
 }
@@ -1432,46 +1432,38 @@ function login_user()
 function login_facebook_user(userID, accessToken)
 {
     
-    if (userID != "" && accessToken != "")
+    $.ajax(
     {
-
-        $.ajax(
+        type: "POST",
+        url: "login.php",
+        data:
         {
-            type: "POST",
-            url: "login.php",
-            data:
+            data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}",
+            user: userID
+        },
+        success: function(res)
+        {
+            if (contains(res, "Okay"))
             {
-                data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}",
-                user: userID
-            },
-            success: function(res)
-            {
-                if (contains(res, "Okay"))
-                {
-                    
-                    showLoginFeatures();
-                }
-                else
-                {
-                    setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
-                }
-            },
-            error: function(err, res)
-            {
-                console.log(err);
-                console.log(res);
-            },
-            complete: function()
-            {
-                $(".login-btn").val("Log In");
-                $(".login-btn").attr("disabled", false);
+                showLoginFeatures();
+                showUpdateScreen();
             }
-        });
-    }
-    else
-    {
-        console.log("Problem with Facebook Login Request.");
-    }
+            else
+            {
+                setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+            }
+        },
+        error: function(err, res)
+        {
+            console.log(err);
+            console.log(res);
+        },
+        complete: function()
+        {
+            $(".login-btn").val("Log In");
+            $(".login-btn").attr("disabled", false);
+        }
+    });
 }
 
 function logout_user()
@@ -1519,6 +1511,11 @@ function showLoginFeatures()
     $("#update-function").show();
 }
 
+function showUpdateScreen()
+{
+    load_update_modal(null);
+}
+
 function hideMainModal()
 {
     $("#common-modal").modal('hide');
@@ -1545,13 +1542,11 @@ function create_account()
     var username = $(".modal-body .username").val().trim();
     var password = $(".modal-body .password").val().trim();
     var firstname = $(".modal-body .firstname").val().trim();
-    var middleinitial = $(".modal-body .middleinitial").val().trim();
     var lastname = $(".modal-body .lastname").val().trim();
     var email = $(".modal-body .email").val().trim();
     var phonenumber = $(".modal-body .phonenumber").val().trim();
     var error = buildError({"username": username, "password": password, "firstname": firstname,
-                                      "middleinitial": middleinitial, "lastname": lastname, "email": email,
-                                      "phonenumber": phonenumber});
+                                       "lastname": lastname, "email": email, "phonenumber": phonenumber});
     
     if (error != "Please Include<br>")
     {
@@ -1566,9 +1561,8 @@ function create_account()
             data:
             {
                 data_register: "{\"username\": \"" + username + "\", \"password\": \"" + password +
-                    "\", \"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial +
-                    "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
-                    "\", \"phonenumber\": \"" + phonenumber + "\"}"
+                    "\", \"firstname\": \"" + firstname + "\", \"lastname\": \"" + lastname + 
+                    "\", \"email\": \"" + email + "\", \"phonenumber\": \"" + phonenumber + "\"}"
             },
             beforeSend: function()
             {
@@ -1653,7 +1647,6 @@ function load_update_modal(event)
 function fill_update_modal(data)
 {
     var firstname = data["FirstName"];
-    var middleinitial = data["MiddleInitial"];
     var lastname = data["LastName"];
     var email = data["Email"];
     var phonenumber = data["PhoneNumber"];
@@ -1668,7 +1661,6 @@ function fill_update_modal(data)
     }
     
     $(".modal-body .firstname").val(firstname);
-    $(".modal-body .middleinitial").val(middleinitial);
     $(".modal-body .lastname").val(lastname);
     $(".modal-body .email").val(email);
     $(".modal-body .phonenumber").val(phonenumber);
@@ -1678,11 +1670,10 @@ function update_account()
 {
     //first validate that the fields are filled out
     var firstname = $(".modal-body .firstname").val().trim();
-    var middleinitial = $(".modal-body .middleinitial").val().trim();
     var lastname = $(".modal-body .lastname").val().trim();
     var email = $(".modal-body .email").val().trim();
     var phonenumber = $(".modal-body .phonenumber").val().trim();
-    var error = buildError({"firstname": firstname, "middleinitial": middleinitial, "lastname": lastname, 
+    var error = buildError({"firstname": firstname, "lastname": lastname, 
                                       "email": email, "phonenumber": phonenumber});
     
     if (error != "Please Include<br>")
@@ -1697,9 +1688,8 @@ function update_account()
             url: "api.php",
             data:
             {
-                data_update: "{\"firstname\": \"" + firstname + "\", \"middleinitial\": \"" + middleinitial +
-                    "\", \"lastname\": \"" + lastname + "\", \"email\": \"" + email +
-                    "\", \"phonenumber\": \"" + phonenumber + "\"}"
+                data_update: "{\"firstname\": \"" + firstname + "\", \"lastname\": \"" + lastname + 
+                                    "\", \"email\": \"" + email + "\", \"phonenumber\": \"" + phonenumber + "\"}"
             },
             beforeSend: function()
             {
@@ -1823,10 +1813,6 @@ function buildError(fields)
     if (fields.firstname == "")
     {
         error += "First Name<br>";
-    }
-    if (fields.middleinitial == "")
-    {
-        error += "Middle Initial<br>";
     }
     if (fields.lastname == "")
     {

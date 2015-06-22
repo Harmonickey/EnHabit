@@ -115,7 +115,6 @@ if (!isset($_SESSION['CREATED'])) {
                     <!-- Menu Icon for smaller viewports -->
                     <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                     <ul id="main-menu">
-                        <li id="menu-item-text" class="menu-item scroll"><a href="#text">Area for Filters</a></li>
                         <li class="menu-item scroll"><input type="text" class="form-control" id="address" /></li>
                         <li id="login-create-function" class="menu-item scroll" onclick="populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                         <li id="update-function" class="menu-item scroll" style="display: none;" onclick="load_update_modal(event);"><a id="update-create" class="btn btn-outline-inverse btn-sm">Update Account</a></li>
@@ -142,7 +141,6 @@ if (!isset($_SESSION['CREATED'])) {
                     <label for="new_username">Username: </label><input type="text" class="form-control username" />
                     <label for="new_password">Password: </label><input type="password" class="form-control password" />
                     <label for="firstname">First Name: </label><input type="text" class="form-control firstname" />
-                    <label for="middleinitial">Middle Initial: </label><input type="text" class="form-control middleinitial" />
                     <label for="lastname">Last Name: </label><input type="text" class="form-control lastname" />
                     <label for="email">Email: </label><input type="text" class="form-control email" />
                     <label for="phonenumber">Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
@@ -160,7 +158,6 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-4">
                     <h1>Update Account Info</h1>
                     <label for="firstname">First Name: </label><input type="text" class="form-control firstname" />
-                    <label for="middleinitial">Middle Initial: </label><input type="text" class="form-control middleinitial" />
                     <label for="lastname">Last Name: </label><input type="text" class="form-control lastname" />
                     <label for="email">Email: </label><input type="text" class="form-control email" />
                     <label for="phonenumber">Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />

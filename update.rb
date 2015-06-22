@@ -18,7 +18,6 @@ def update_user(user, fn, mi, ln, em, pn)
     usr_obj = Hash.new
     usr_obj["Username"] = user
     usr_obj["FirstName"] = fn
-    usr_obj["MiddleInitial"] = mi
     usr_obj["LastName"] = ln
     usr_obj["Email"] = em
     usr_obj["PhoneNumber"] = pn
@@ -50,7 +49,7 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1];
     
-    result = update_user(username, data["firstname"], data["middleinitial"], data["lastname"], data["email"], data["phonenumber"])
+    result = update_user(username, data["firstname"], data["lastname"], data["email"], data["phonenumber"])
 
     puts result
 

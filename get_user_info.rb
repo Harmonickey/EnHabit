@@ -19,7 +19,7 @@ begin
     document = Hash.new
     
     mongo_session.with(safe: true) do |session|
-        document = session[:accounts].find({"Username" => user}).select(_id: 0, Username: 1, FirstName: 1, MiddleInitial: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
+        document = session[:accounts].find({"Username" => user}).select(_id: 0, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
     end
     mongo_session.disconnect
 
