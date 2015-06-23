@@ -1970,7 +1970,7 @@ function buildError(fields)
     }
     if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
     {
-        error += "Valid Address<br>";
+        error += "Valid Address - Must Select Google's Result<br>";
     }
     if (fields.bedrooms == "")
     {
