@@ -1501,6 +1501,53 @@ function logout_user()
 function removeLoginFeatures()
 {
     $("#update-function").hide();
+    $("#create-function").hide();
+}
+
+function initBoxes()
+{
+    setGeocompleteTextBox();
+    setTextBoxesWithNumbers();
+    setStartDateTextBox();
+}
+
+function setStartDateTextBox()
+{
+    $(".modal-body .starting_date").datepicker();
+}
+
+function setTextBoxesWithNumbers()
+{
+    $('.modal-body .rent').autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $('.modal-body .bedrooms').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    
+    $('.modal-body .bathrooms').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+}
+
+function setGeocompleteTextBox()
+{
+    $(".modal-body .address").geocomplete()
+        .bind("geocode:result", function(event, result){
+            $(".latitude").val(result.geometry.location.A); //latitude
+            $(".longitude").val(result.geometry.location.F); //longitude
+        });
 }
 
 function showLoginFeatures(hide_main_modal)
@@ -1512,6 +1559,7 @@ function showLoginFeatures(hide_main_modal)
         hideMainModal();
     
     $("#update-function").show();
+    $("#create-function").show();
 }
 
 function showUpdateScreen()
@@ -1605,6 +1653,13 @@ function create_account()
         });
     }
 
+}
+
+function load_modal(event, which, enter_default)
+{
+    populate_and_open_modal(event, which); 
+    resetModals(); 
+    set_default_button_on_enter(enter_default);
 }
 
 function load_update_modal(event)
@@ -1732,6 +1787,78 @@ function update_account()
     }
 }
 
+function create_listing()
+{
+    var address = $(".modal-body .address").val().trim();
+    var latitude = $(".modal-body .latitude").val().trim();
+    var longitude = $(".modal-body .longitude").val().trim();
+    var bedrooms = $(".modal-body .bedrooms").val().trim();
+    var bathrooms = $(".modal-body .bathrooms").val().trim();
+    var animals = $(".modal-body .animals").val();
+    var laundry = $(".modal-body .laundry").val();
+    var rent = $(".modal-body .rent").autoNumeric('get');
+    var start_date = $(".modal-body .starting_date").val().trim();
+    var error = buildError({"address": address, "latitude": latitude,
+                                      "longitude": longitude, "bathrooms": bathrooms, 
+                                      "bedrooms": bedrooms, "rent": rent, 
+                                      "start_date": start_date, "animals": animals, 
+                                      "laundry": laundry});
+    
+    if (error != "Please Include<br>")
+    {
+        setError(".listing-error", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            beforeSend: function() 
+            {
+                $(".listing-btn").val("Processing...");
+                $(".listing-btn").attr('disabled', true);
+            },
+            data :
+            {
+                data_create: "{\"address\": \"" + address + "\", \"latitude\": \"" + latitude + 
+                                "\", \"longitude\": \"" + longitude + "\", \"bathrooms\": \"" + bathrooms + 
+                                "\", \"bedrooms\": \"" + bedrooms + "\", \"rent\": \"" + rent + 
+                                "\", \"start_date\": \"" + start_date + "\", \"animals\": \"" + animals + 
+                                "\", \"laundry\": \"" + laundry + "\"}"
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    populate_and_open_modal(
+                    {
+                        preventDefault: true
+                    }, 'modal-content-7');
+                    
+                    L.marker([latitude, longitude]).addTo(map);
+                }
+                else
+                {
+                    setError(".update-error", res);
+                }
+            },
+            error: function(res, err)
+            {
+                console.log(res);
+                console.log(err);
+            },
+            complete: function()
+            {
+                $(".listing-btn").val("Create Listing");
+                $(".listing-btn").attr('disabled', false);
+
+                set_default_button_on_enter("");
+            }
+        });
+    }
+}
+
 function set_default_button_on_enter(modal)
 {
     if (which_modal != "")
@@ -1763,7 +1890,7 @@ function set_default_button_on_enter(modal)
             });
             which_modal = ".register-btn";
             break;
-        case "register":
+        case "update":
             $(document).on("keypress", function(e)
             {
                 var code = e.keyCode || e.which;
@@ -1773,6 +1900,17 @@ function set_default_button_on_enter(modal)
                 }
             });
             which_modal = ".update-btn";
+            break;
+        case "listing":
+            $(document).on("keypress", function(e)
+            {
+                var code = e.keyCode || e.which;
+                if (code == 13)
+                {
+                    $($(".listing-btn")[0]).click();
+                }
+            });
+            which_modal = ".listing-btn";
             break;
         default:
 
@@ -1829,6 +1967,34 @@ function buildError(fields)
     if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
     {
         error += "Valid Phone Number<br>";
+    }
+    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
+    {
+        error += "Valid Address - Must Select Google's Result<br>";
+    }
+    if (fields.bedrooms == "")
+    {
+        error += "Valid Number of Bedrooms<br>";
+    }
+    if (fields.bathrooms == "")
+    {
+        error += "Valid Number of Bathrooms<br>";
+    }
+    if (fields.rent == "")
+    {
+        error += "Valid Monthy Rent Amount<br>";
+    }
+    if (fields.start_date == "")
+    {
+        error += "Valid Lease Start Date<br>";
+    }
+    if (fields.animals == "")
+    {
+        error += "If Animals Are Allowed<br>";
+    }
+    if (fields.laundry == "")
+    {
+        error += "If In-Unit Laundry is Available<br>";
     }
     
     return error;

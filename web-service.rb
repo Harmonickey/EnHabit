@@ -7,6 +7,7 @@ $: << "/home2/lbkstud1/ruby/gems"
 
 require 'json'
 require 'moped'
+require 'mongoid'
 require 'bson'
 
 data = JSON.parse(ARGV[0].delete('\\'))
