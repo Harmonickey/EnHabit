@@ -26,16 +26,22 @@
     }
 }
 
-.username, 
-.password,
-.firstname,
-.lastname,
-.email,
-.phonenumber 
+.username, .password,
+.firstname, .lastname,
+.email, .phonenumber,
+.address, .bedrooms,
+.bathrooms, .rent,
+.starting_date
 {
 	text-align: center;
 	width: 50%;
 	margin: 0 auto;
+}
+
+.animals,
+.laundry
+{
+    width: 45px;
 }
 
 .login-btn-facebook .facebook-icon-for-button 
@@ -64,4 +70,8 @@
 {
     color: white;
     font-size: 1.3em;
+}
+
+.pac-container {
+    z-index: 1041 !important;
 }

@@ -32,6 +32,14 @@ if (isset($_SESSION["user"])) //must have session in order to use the api!
         
         echo shell_exec("ruby get_user_info.rb $user");
     }
+    else if (isset($_POST["data_create"]))
+    {
+        $data = $_POST["data_create"];
+        
+        $data = remove_malicious_characters($data);
+        
+        echo shell_exec("ruby create_listing.rb '$data' $user");
+    }
 }
 else if (isset($_POST["data_register"]))
 {
