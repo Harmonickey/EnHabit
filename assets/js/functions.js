@@ -1547,7 +1547,7 @@ function setGeocompleteTextBox()
         .bind("geocode:result", function(event, result){
             $(".modal-body .latitude").val(result.geometry.location.A); //latitude
             $(".modal-body .longitude").val(result.geometry.location.F); //longitude
-			$(".modal-body .address_result")").val(result.formatted_address);
+			$(".modal-body .address_result").val(result.formatted_address);
         });
 }
 
