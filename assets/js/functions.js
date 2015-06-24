@@ -1545,8 +1545,9 @@ function setGeocompleteTextBox()
 {
     $(".modal-body .address").geocomplete()
         .bind("geocode:result", function(event, result){
-            $(".latitude").val(result.geometry.location.A); //latitude
-            $(".longitude").val(result.geometry.location.F); //longitude
+            $(".modal-body .latitude").val(result.geometry.location.A); //latitude
+            $(".modal-body .longitude").val(result.geometry.location.F); //longitude
+			$(".modal-body .address_result")").val(result.formatted_address);
         });
 }
 
@@ -1790,6 +1791,7 @@ function update_account()
 function create_listing()
 {
     var address = $(".modal-body .address").val().trim();
+	var address_result = $(".modal-body .address_result").val();
     var latitude = $(".modal-body .latitude").val().trim();
     var longitude = $(".modal-body .longitude").val().trim();
     var bedrooms = $(".modal-body .bedrooms").val().trim();
@@ -1798,7 +1800,7 @@ function create_listing()
     var laundry = $(".modal-body .laundry").val();
     var rent = $(".modal-body .rent").autoNumeric('get');
     var start_date = $(".modal-body .starting_date").val().trim();
-    var error = buildError({"address": address, "latitude": latitude,
+    var error = buildError({"address": address, "address_result": address_result, "latitude": latitude,
                                       "longitude": longitude, "bathrooms": bathrooms, 
                                       "bedrooms": bedrooms, "rent": rent, 
                                       "start_date": start_date, "animals": animals, 
@@ -1972,6 +1974,10 @@ function buildError(fields)
     {
         error += "Valid Address - Must Select Google's Result<br>";
     }
+	if (fields.address != "" && fields.address != fields.address_result)
+	{
+		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
+	}
     if (fields.bedrooms == "")
     {
         error += "Valid Number of Bedrooms<br>";
