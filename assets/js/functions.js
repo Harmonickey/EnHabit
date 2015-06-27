@@ -1970,10 +1970,14 @@ function buildError(fields)
     {
         error += "Valid Phone Number<br>";
     }
-    if (fields.address == "" || fields.latitude == "" || fields.longitude == "" || (fields.address != fields.selected_address))
+    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
     {
         error += "Valid Address - Must Select Google's Result<br>";
     }
+	if (fields.address != "" && fields.address != fields.selected_address)
+	{
+		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
+	}
     if (fields.bedrooms == "")
     {
         error += "Valid Number of Bedrooms<br>";
