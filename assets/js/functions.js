@@ -1545,8 +1545,9 @@ function setGeocompleteTextBox()
 {
     $(".modal-body .address").geocomplete()
         .bind("geocode:result", function(event, result){
-            $(".latitude").val(result.geometry.location.A); //latitude
-            $(".longitude").val(result.geometry.location.F); //longitude
+            $(".modal-body .latitude").val(result.geometry.location.A); //latitude
+            $(".modal-body .longitude").val(result.geometry.location.F); //longitude
+            $(".modal-body .selected_address").val($(".modal-body .address").val());
         });
 }
 
@@ -1790,6 +1791,7 @@ function update_account()
 function create_listing()
 {
     var address = $(".modal-body .address").val().trim();
+    var selected_address = $(".modal-body .selected_address").val().trim();
     var latitude = $(".modal-body .latitude").val().trim();
     var longitude = $(".modal-body .longitude").val().trim();
     var bedrooms = $(".modal-body .bedrooms").val().trim();
@@ -1798,12 +1800,12 @@ function create_listing()
     var laundry = $(".modal-body .laundry").val();
     var rent = $(".modal-body .rent").autoNumeric('get');
     var start_date = $(".modal-body .starting_date").val().trim();
-    var error = buildError({"address": address, "latitude": latitude,
-                                      "longitude": longitude, "bathrooms": bathrooms, 
+    var error = buildError({"address": address, "latitude": latitude, "longitude": longitude,
+                                      "selected_address": selected_address, "bathrooms": bathrooms, 
                                       "bedrooms": bedrooms, "rent": rent, 
                                       "start_date": start_date, "animals": animals, 
                                       "laundry": laundry});
-    
+
     if (error != "Please Include<br>")
     {
         setError(".listing-error", error);
@@ -1968,7 +1970,7 @@ function buildError(fields)
     {
         error += "Valid Phone Number<br>";
     }
-    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
+    if (fields.address == "" || fields.latitude == "" || fields.longitude == "" || (fields.address != fields.selected_address))
     {
         error += "Valid Address - Must Select Google's Result<br>";
     }
