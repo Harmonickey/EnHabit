@@ -10,7 +10,6 @@ require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
-require 'date'
 
 def user_exists(user, pass)
 
@@ -31,14 +30,40 @@ def user_exists(user, pass)
     end
 end
 
-begin
-    data = JSON.parse(ARGV[0].delete('\\'))
-	
-    if user_exists(data["username"], data["password"])
-        puts "Okay"
-    else
-        puts "Incorrect Username/Password"
+def delete_user(user)
+
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongo_session.use("enhabit") # this is our current database
+
+    usr_obj = Hash.new
+    usr_obj["Username"] = user
+ 
+    ret_msg = ""
+ 
+    begin
+        mongo_session.with(safe: true) do |session|
+            session[:accounts].find(user_obj).remove
+        end
+        ret_msg = "Okay"
+    rescue Moped::Errors::OperationFailure => e
+        ret_msg = e.message
     end
+    
+	mongo_session.disconnect
+    return ret_msg
+end
+
+begin
+
+    data = JSON.parse(ARGV[0].delete('\\'))
+    username = ARGV[1];
+    
+    if user_exists(username, data["password"])
+        puts delete_user(username)
+    else
+        puts "Incorrect Password"
+    end
+
 rescue Exception => e
-    puts e.message
+    puts e.inspect
 end

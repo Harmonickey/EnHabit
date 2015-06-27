@@ -31,7 +31,7 @@ def create_listing(user, pr, ad, be, ba, an, la, st, lat, lng)
     listing_obj["worldCoordinates"] = {"x" => nil, "y" => nil}
     listing_obj["worldCoordinates"]["x"] = lat.to_f
     listing_obj["worldCoordinates"]["y"] = lng.to_f
-    listing_obj["extensionts"] = {"university" => "Northwestern"}
+    listing_obj["extensions"] = {"university" => "Northwestern"}
     
     ret_msg = ""
  

@@ -11,7 +11,7 @@ if(isset($_POST['data_login']) && !isset($_SESSION['user']))
     $data = $_POST["data_login"];
     $data = remove_malicious_characters($data);
     
-    $result = shell_exec("ruby login.rb '$data'");
+    $result = shell_exec("ruby account_commands/login.rb '$data'");
     
     $user = $_POST["user"];
     
@@ -31,7 +31,7 @@ else if(isset($_POST['data_facebook_login']) && !isset($_SESSION['user']))
     $data = $_POST["data_facebook_login"];
     $data = remove_malicious_characters($data);
     
-    $result = shell_exec("ruby facebook_login.rb '$data'");
+    $result = shell_exec("ruby account_commands/facebook_login.rb '$data'");
     
     $user = $_POST["user"];
     
