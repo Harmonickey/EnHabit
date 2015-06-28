@@ -6,9 +6,9 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 $: << "/home2/lbkstud1/ruby/gems"
 
 require 'json'
+require 'bson'
 require 'moped'
 require 'mongoid'
-require 'bson'
 
 def set_filters
     if @lower.nil? and @upper.nil? 
@@ -97,7 +97,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(_id: 1, worldCoordinates: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0
@@ -105,7 +105,7 @@ begin
     else
         result_data = Hash.new
         result_data["data"] = documents
-        result_data["data"]["_id"] = result_data["data"]["_id"].to_s
+        result_data["data"].map { |listing| listing["_id"] = listing["_id"].to_s }
         puts result_data.to_json
     end
 
