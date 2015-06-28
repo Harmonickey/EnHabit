@@ -22,7 +22,7 @@ def user_exists(user, pass)
     query["Username"] = user
 	
     documents = accounts.find(query).to_a
-	mongo_session.disconnect
+    mongo_session.disconnect
     if documents.count == 0
         return false
     else

@@ -704,7 +704,7 @@ function login_user()
     
     if (error != "Please Include<br>")
     {
-        setError(".login-error", error);
+        setError("login", error);
     }
     else
     {
@@ -715,7 +715,7 @@ function login_user()
             data:
             {
                 data_login: data,
-                user: username //to be used as session variable later
+                user: data["username"] //to be used as session variable later
             },
             beforeSend: function()
             {
@@ -729,17 +729,18 @@ function login_user()
                 }
                 else
                 {
-                    setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                    setError('login', res);
                 }
             },
             error: function(err, res)
             {
                 console.log(err);
                 console.log(res);
+                setError('login', res);
             },
             complete: function()
             {
-                resetModal("login", "Log In");
+                resetModal("login", "Log In", false);
             }
         });
     }
@@ -775,7 +776,7 @@ function login_facebook_user(userID, accessToken)
             }
             else
             {
-                setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                setError('login', 'Error: please notify alex@lbkstudios.net of the issue.');
             }
         },
         error: function(err, res)
@@ -785,7 +786,7 @@ function login_facebook_user(userID, accessToken)
         },
         complete: function()
         {
-            resetModal("login", "Log In");
+            resetModal("login", "Log In", false);
         }
     });
 }
@@ -881,8 +882,8 @@ function showLoginFeatures(hide_main_modal)
     if (hide_main_modal)
         hideMainModal();
     
-    $("#update-function").show();
-    $("#create-function").show();
+    $("#update_account-function").show();
+    $("#create_listing-function").show();
 }
 
 function showUpdateScreen()
@@ -897,11 +898,14 @@ function hideMainModal()
     $("#common-modal").modal('hide');
 }
 
-function resetModal(modal, btnText)
+function resetModal(modal, btnText, hide)
 {  
     $("." + modal + "-btn").val(btnText);
     $("." + modal + "-btn").attr('disabled', false);
-    $("." + modal + "-error").hide();
+    if (hide)
+    {
+        $("." + modal + "-error").hide();
+    }
 }
 
 function disableModalSubmit(modal)
@@ -920,7 +924,7 @@ function create_account()
     
     if (error != "Please Include<br>")
     {
-        setError(".register-error", error);
+        setError("register", error);
     }
     else
     {
@@ -945,7 +949,7 @@ function create_account()
                 }
                 else
                 {
-                    setError(".register-error", res);
+                    setError("register", res);
                 }
             },
             error: function(err, res)
@@ -955,7 +959,7 @@ function create_account()
             },
             complete: function()
             {
-                resetModal("register", "Create Account");
+                resetModal("register", "Create Account", false);
                 
                 set_default_button_on_enter("");
             }
@@ -967,7 +971,7 @@ function create_account()
 function load_modal(event, which, enter_default, btnText)
 {
     populate_and_open_modal(event, which); 
-    resetModal(enter_default, btnText); 
+    resetModal(enter_default, btnText, true); 
     set_default_button_on_enter(enter_default);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
@@ -1003,7 +1007,7 @@ function load_update_account_modal(event)
                 
                 fill_update_modal(JSON.parse(res).data);
              
-                resetModals();
+                resetModals("update_account", "Update Account", true);
                 
                 set_default_button_on_enter('update');
             }
@@ -1046,7 +1050,7 @@ function update_account()
     
     if (error != "Please Include<br>")
     {
-        setError(".update-error", error);
+        setError("update", error);
     }
     else
     {
@@ -1066,15 +1070,11 @@ function update_account()
             {
                 if (contains(res, "Okay"))
                 {
-                    populate_and_open_modal(
-                    {
-                        preventDefault: true
-                    }, 'modal-content-5');
-
+                    populate_and_open_modal(null, 'modal-content-5');
                 }
                 else
                 {
-                    setError(".update-error", res);
+                    setError("update", res);
                 }
             },
             error: function(err, res)
@@ -1084,7 +1084,7 @@ function update_account()
             },
             complete: function()
             {
-                resetModal("update_account", "Update Account");
+                resetModal("update_account", "Update Account", false);
                 
                 set_default_button_on_enter("");
             }
@@ -1101,7 +1101,7 @@ function update_listing()
     
     if (error != "Please Include<br>")
     {
-        setError(".update-error", error);
+        setError("update", error);
     }
     else
     {
@@ -1130,7 +1130,7 @@ function update_listing()
                 }
                 else
                 {
-                    setError(".update-error", res);
+                    setError("update", res);
                 }
             },
             error: function(err, res)
@@ -1140,7 +1140,7 @@ function update_listing()
             },
             complete: function()
             {
-                resetModal("update_listing", "Update Listing");
+                resetModal("update_listing", "Update Listing", false);
                 
                 set_default_button_on_enter("");
             }
@@ -1158,7 +1158,7 @@ function create_listing()
 
     if (error != "Please Include<br>")
     {
-        setError(".listing-error", error);
+        setError("create_listing", error);
     }
     else
     {
@@ -1168,8 +1168,7 @@ function create_listing()
             url: "api.php",
             beforeSend: function() 
             {
-                $(".listing-btn").val("Processing...");
-                $(".listing-btn").attr('disabled', true);
+                disableModalSubmit("listing", "Processing...");
             },
             data :
             {
@@ -1179,16 +1178,13 @@ function create_listing()
             {
                 if (contains(res, "Okay"))
                 {
-                    populate_and_open_modal(
-                    {
-                        preventDefault: true
-                    }, 'modal-content-7');
+                    populate_and_open_modal(null, 'modal-content-7');
                     
                     L.marker([latitude, longitude]).addTo(map);
                 }
                 else
                 {
-                    setError(".update-error", res);
+                    setError("update", res);
                 }
             },
             error: function(res, err)
@@ -1198,7 +1194,7 @@ function create_listing()
             },
             complete: function()
             {
-                resetModal("listing", "Create Listing");
+                resetModal("listing", "Create Listing", false);
                 
                 set_default_button_on_enter("");
             }
@@ -1208,6 +1204,13 @@ function create_listing()
 
 function set_default_button_on_enter(modal)
 {
+    if (modal != "")
+    {
+        //reset for next set
+        $(document).unbind("keypress");
+        which_modal = "." + modal + "-btn";
+    }
+    
     $(document).on("keypress", function(e)
     {
         var code = e.keyCode || e.which;
@@ -1220,11 +1223,6 @@ function set_default_button_on_enter(modal)
     if (modal == "")
     {
         which_modal == "";
-    }
-    else
-    {
-        $(document).unbind("keypress");
-        which_modal = "." + modal + "-btn";
     }
 }
 
@@ -1333,8 +1331,9 @@ function buildError(fields)
 
 function setError(el, msg)
 {
-    $(el).html(msg);
-    $(el).show();
+    var modal = ".modal-body ."
+    $(modal + el + "-error").html(msg);
+    $(modal + el + "-error").show();
 
     //reset the height because the error bar increases it...
     modal_backdrop_height($('#common-modal.modal'));

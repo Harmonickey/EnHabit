@@ -37,9 +37,6 @@ function initialise_document_ready_functions()
         // Main Menu Visiblity on Window Resize
         main_menu_visiblity_on_resize();
 
-        // Set equal height to all carousel slides on small displays
-        set_equal_height_to_all_carousel_slides_on_small_displays();
-
         // Position modal at the centre/middle of the page (if visible)
         position_modal_at_centre();
 
