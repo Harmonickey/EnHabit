@@ -31,7 +31,7 @@
 .email, .phonenumber,
 .address, .bedrooms,
 .bathrooms, .rent,
-.starting_date
+.start_date
 {
 	text-align: center;
 	width: 50%;

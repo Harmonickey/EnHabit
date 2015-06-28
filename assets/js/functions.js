@@ -696,7 +696,7 @@ function getPointsWithinPolygon(e)
     }
 } 
 */ 
-function login_user()
+function login_user(hide_main_modal)
 {
     var data = buildData(["username", "password"]);
     
@@ -725,7 +725,11 @@ function login_user()
             {
                 if (contains(res, "Okay"))
                 {
-                    showLoginFeatures(true);
+                    showLoginFeatures(hide_main_modal);
+                    if (!hide_main_modal)
+                    {
+                        populate_and_open_modal(null, 'modal-content-3');
+                    }
                 }
                 else
                 {
@@ -807,7 +811,6 @@ function logout_user()
                 {
                     console.log(res); //print the error
                 }
-
             },
             error: function(err, res)
             {
@@ -817,7 +820,6 @@ function logout_user()
         });
 
     $("#login-create").text("Log In");
-    load_modal(event, 'modal-content-1', 'login');
     $("#login-create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
@@ -836,7 +838,7 @@ function initBoxes()
 
 function setStartDateTextBox()
 {
-    $(".modal-body .starting_date").datepicker();
+    $(".modal-body .start_date").datepicker();
 }
 
 function setTextBoxesWithNumbers()
@@ -878,9 +880,12 @@ function showLoginFeatures(hide_main_modal)
 {
     $("#login-create").text("Log Out");
     $("#login-create-function").attr("onclick", "logout_user()");
+    $("#login-create-function").show();
 
     if (hide_main_modal)
+    {
         hideMainModal();
+    }
     
     $("#update_account-function").show();
     $("#create_listing-function").show();
@@ -924,7 +929,7 @@ function create_account()
     
     if (error != "Please Include<br>")
     {
-        setError("register", error);
+        setError("create_account", error);
     }
     else
     {
@@ -934,22 +939,22 @@ function create_account()
             url: "api.php",
             data:
             {
-                data_create_user: data
+                data_create_account: data
             },
             beforeSend: function()
             {
-                disableModalSubmit("register");
+                disableModalSubmit("create_account");
             },
             success: function(res)
             {
+                console.log(res);
                 if (contains(res, "Okay"))
                 {
-                    login_user();
-                    populate_and_open_modal(null, 'modal-content-3');
+                    login_user(false);
                 }
                 else
                 {
-                    setError("register", res);
+                    setError("create_account", res);
                 }
             },
             error: function(err, res)
@@ -959,7 +964,7 @@ function create_account()
             },
             complete: function()
             {
-                resetModal("register", "Create Account", false);
+                resetModal("create_account", "Create Account", false);
                 
                 set_default_button_on_enter("");
             }
@@ -1007,7 +1012,7 @@ function load_update_account_modal(event)
                 
                 fill_update_modal(JSON.parse(res).data);
              
-                resetModals("update_account", "Update Account", true);
+                resetModal("update_account", "Update Account", true);
                 
                 set_default_button_on_enter('update');
             }
@@ -1050,7 +1055,7 @@ function update_account()
     
     if (error != "Please Include<br>")
     {
-        setError("update", error);
+        setError("update_account", error);
     }
     else
     {
@@ -1060,11 +1065,11 @@ function update_account()
             url: "api.php",
             data:
             {
-                data_update: data
+                data_update_account: data
             },
             beforeSend: function()
             {
-                disableModalSubmit("update_listing");
+                disableModalSubmit("update_account");
             },
             success: function(res)
             {
@@ -1074,7 +1079,7 @@ function update_account()
                 }
                 else
                 {
-                    setError("update", res);
+                    setError("update_account", res);
                 }
             },
             error: function(err, res)
@@ -1115,22 +1120,18 @@ function update_listing()
             },
             beforeSend: function()
             {
-                $(".update-btn").val("Processing...");
-                $(".update-btn").attr('disabled', true);
+                disableModalSubmit("update_listing");
             },
             success: function(res)
             {
                 if (contains(res, "Okay"))
                 {
-                    populate_and_open_modal(
-                    {
-                        preventDefault: true
-                    }, 'modal-content-5');
+                    populate_and_open_modal(null, 'modal-content-5');
 
                 }
                 else
                 {
-                    setError("update", res);
+                    setError("update_listing", res);
                 }
             },
             error: function(err, res)
@@ -1180,7 +1181,7 @@ function create_listing()
                 {
                     populate_and_open_modal(null, 'modal-content-7');
                     
-                    L.marker([latitude, longitude]).addTo(map);
+                    L.marker([data["latitude"], data["longitude"]]).addTo(map);
                 }
                 else
                 {

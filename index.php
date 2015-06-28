@@ -58,7 +58,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <!-- Menu Icon for smaller viewports -->
                     <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                     <ul id="main-menu">
-                        <li id="login-create-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
+                        <li id="login-create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                         <li id="update_account-function" class="menu-item scroll" style="display: none;" onclick="load_update_account_modal(event);"><a id="update-create" class="btn btn-outline-inverse btn-sm">Update Account</a></li>
                         <li id="create_listing-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();"><a id="listing-create" class="btn btn-outline-inverse btn-sm">Create New Listing</a></li>
                         <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_listing', 'Mange Your Listings');"><a id="manage_listings" class="btn btn-outline-inverse btn-sm">Manage Your Listings</a></li>
@@ -141,7 +141,7 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div style="clear: both;"></div>
                     <label>Monthly Rent: </label><input type="text" class="form-control rent" />
-                    <label>Earliest Available: </label><input type="text" class="form-control starting_date" />
+                    <label>Earliest Available: </label><input type="text" class="form-control start_date" />
                     <input type="button" class="btn btn-outline-inverse btn-lg create_listing-btn" onclick="create_listing()" value="Create Listing" style="margin-top: 15px;" />
                     <p class="create_listing-error alert alert-danger" style="display: none;"></p>
                 </div>
@@ -218,6 +218,10 @@ if (!isset($_SESSION['CREATED'])) {
             if (isset($_SESSION['user']))
             {
                 echo "<script type='text/javascript'>showLoginFeatures(); </script>\n";
+            }
+            else
+            {
+                echo "<script type='text/javascript'>$('#login-create-function').show();</script>\n";
             }
         ?>
     </body>
