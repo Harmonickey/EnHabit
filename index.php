@@ -58,10 +58,9 @@ if (!isset($_SESSION['CREATED'])) {
                     <!-- Menu Icon for smaller viewports -->
                     <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                     <ul id="main-menu">
-                        <li id="login-create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login-create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
-                        <li id="update_account-function" class="menu-item scroll" style="display: none;" onclick="load_update_account_modal(event);"><a id="update-create" class="btn btn-outline-inverse btn-sm">Update Account</a></li>
-                        <li id="create_listing-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();"><a id="listing-create" class="btn btn-outline-inverse btn-sm">Create New Listing</a></li>
-                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_listing', 'Mange Your Listings');"><a id="manage_listings" class="btn btn-outline-inverse btn-sm">Manage Your Listings</a></li>
+                        <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
+                        <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
+                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
                     </ul>
                     <!-- #main-menu -->
                 </section>
@@ -151,6 +150,34 @@ if (!isset($_SESSION['CREATED'])) {
                     <h1>Listing Creation Success!</h1>
                 </div>
                 <!-- #modal-content-7 -->
+                <!-- Manage Account -->
+                <div class="content-to-populate-in-modal" id="modal-content-8">
+                    <h1>Manage Account</h1>
+                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event);" value="Update Account" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg delete_account-btn" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg view_listings-btn" onclick="load_modal(event, 'modal-content-10', 'view_listings', 'View My Listings');" value="View My Listings" style="margin-top: 15px;" />
+                </div>
+                <!-- #modal-content 8 -->
+                <!-- Delete Account -->
+                <div class="content-to-populate-in-modal" id="modal-content-9">
+                    <h1>Are you sure?  Please Confirm.</h1>
+                    <label>Password: </label><input type="password" class="form-control password" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="delete_account()" value="Delete Account" style="margin-top: 15px;" />
+                    <p class="delete_account-error alert alert-danger" style="display: none;"></p>
+                </div>
+                <!-- #modal-content-9 -->
+                <!-- View My Listings -->
+                <div class="content-to-populate-in-modal" id="modal-content-10">
+                    <h1>My Listings</h1>
+                </div>
+                <!-- #modal-content-10 -->
+                <!-- Manage Listings -->
+                <div class="content-to-populate-in-modal" id="modal-content-11">
+                    <h1>Manage Your Listings</h1>
+                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-10', 'view_listings');" value="View My Listings" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes()" value="Create New Listing" style="margin-top: 15px;" />
+                </div>
+                <!-- #modal-content-11 -->
                 
                 <!-- end: Left Sidebar -->
                 <!-- Footer -->
@@ -221,7 +248,7 @@ if (!isset($_SESSION['CREATED'])) {
             }
             else
             {
-                echo "<script type='text/javascript'>$('#login-create-function').show();</script>\n";
+                echo "<script type='text/javascript'>$('#login_create-function').show();</script>\n";
             }
         ?>
     </body>

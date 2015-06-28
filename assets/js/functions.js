@@ -819,14 +819,14 @@ function logout_user()
             }
         });
 
-    $("#login-create").text("Log In");
-    $("#login-create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
+    $("#login_create").text("Log In");
+    $("#login_create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
 function removeLoginFeatures()
 {
-    $("#update_account-function").hide();
-    $("#create_listing-function").hide();
+    $("#manage_account-function").hide();
+    $("#manage_listings-function").hide();
 }
 
 function initBoxes()
@@ -878,24 +878,24 @@ function setGeocompleteTextBox()
 
 function showLoginFeatures(hide_main_modal)
 {
-    $("#login-create").text("Log Out");
-    $("#login-create-function").attr("onclick", "logout_user()");
-    $("#login-create-function").show();
-
+    $("#login_create").text("Log Out");
+    $("#login_create-function").attr("onclick", "logout_user()");
+    $("#login_create-function").show();
+    
     if (hide_main_modal)
     {
         hideMainModal();
     }
     
-    $("#update_account-function").show();
-    $("#create_listing-function").show();
+    $("#manage_account-function").show();
+    $("#manage_listings-function").show();
 }
 
 function showUpdateScreen()
 {
     showLoginFeatures(false);
    
-    $("#update-function").click();
+    load_update_account_modal(null);
 }
 
 function hideMainModal()
@@ -970,7 +970,57 @@ function create_account()
             }
         });
     }
+}
 
+function delete_account(password)
+{
+    var data = buildData(["password"]);
+                                    
+    var error = buildError(data);
+    
+    if (error != "Please Include<br>")
+    {
+        setError("delete_account", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                data_create_account: data
+            },
+            beforeSend: function()
+            {
+                disableModalSubmit("create_account");
+            },
+            success: function(res)
+            {
+                console.log(res);
+                if (contains(res, "Okay"))
+                {
+                    login_user(false);
+                }
+                else
+                {
+                    setError("create_account", res);
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                resetModal("create_account", "Create Account", false);
+                
+                set_default_button_on_enter("");
+            }
+        });
+    }
 }
 
 function load_modal(event, which, enter_default, btnText)
@@ -1015,6 +1065,10 @@ function load_update_account_modal(event)
                 resetModal("update_account", "Update Account", true);
                 
                 set_default_button_on_enter('update');
+                
+                position_modal_at_centre();
+                
+                modal_backdrop_height($('#common-modal.modal'));
             }
         },
         error: function(err, res)
