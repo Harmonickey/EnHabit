@@ -967,7 +967,7 @@ function create_account()
 function load_modal(event, which, enter_default, btnText)
 {
     populate_and_open_modal(event, which); 
-    resetModals(enter_default, btnText); 
+    resetModal(enter_default, btnText); 
     set_default_button_on_enter(enter_default);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
