@@ -154,15 +154,19 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-8">
                     <h1>Manage Account</h1>
                     <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event);" value="Update Account" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg delete_account-btn" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg view_listings-btn" onclick="load_modal(event, 'modal-content-10', 'view_listings', 'View My Listings');" value="View My Listings" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
                 </div>
                 <!-- #modal-content 8 -->
                 <!-- Delete Account -->
                 <div class="content-to-populate-in-modal" id="modal-content-9">
                     <h1>Are you sure?  Please Confirm.</h1>
-                    <label>Password: </label><input type="password" class="form-control password" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="delete_account()" value="Delete Account" style="margin-top: 15px;" />
+                    <?php
+                    if (!isset($_SESSION["facebook"])) 
+                    {
+                        echo "<label>Password: </label><input type='password' class='form-control password' />\n";
+                    }
+                    ?>
+                    <input type="button" class="btn btn-outline-inverse btn-lg delete_account-btn" onclick="delete_account()" value="Delete Account" style="margin-top: 15px;" />
                     <p class="delete_account-error alert alert-danger" style="display: none;"></p>
                 </div>
                 <!-- #modal-content-9 -->

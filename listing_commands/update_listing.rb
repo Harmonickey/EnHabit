@@ -12,7 +12,7 @@ require 'moped'
 Moped::BSON = BSON
 
 def to_boolean(str)
-    str == 'true'
+    str == 'true' or str == true
 end
 
 def update_listing(user, id, pr, ad, be, ba, an, la, st, lat, lng)

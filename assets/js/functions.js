@@ -772,10 +772,22 @@ function login_facebook_user(userID, accessToken)
         {
             if (contains(res, "Okay"))
             {
+                if ($("#modal-content-9 label").length != 0)
+                {
+                    $("#modal-content-9 label").remove();
+                    $("#modal-content-9 .password").remove();
+                }
+                
                 showLoginFeatures(true);
             }
             else if (contains(res, "Needs Update"))
             {
+                if ($("#modal-content-9 label").length != 0)
+                {
+                    $("#modal-content-9 label").remove();
+                    $("#modal-content-9 .password").remove();
+                }
+                
                 showUpdateScreen();
             }
             else
@@ -798,26 +810,26 @@ function login_facebook_user(userID, accessToken)
 function logout_user()
 {
     $.ajax(
+    {
+        type: "POST",
+        url: "logout.php",
+        success: function(res)
         {
-            type: "POST",
-            url: "logout.php",
-            success: function(res)
+            if (contains(res, "Successfully"))
             {
-                if (contains(res, "Successfully"))
-                {
-                    removeLoginFeatures();
-                }
-                else
-                {
-                    console.log(res); //print the error
-                }
-            },
-            error: function(err, res)
-            {
-                console.log(err);
-                console.log(res);
+                removeLoginFeatures();
             }
-        });
+            else
+            {
+                console.log(res); //print the error
+            }
+        },
+        error: function(err, res)
+        {
+            console.log(err);
+            console.log(res);
+        }
+    });
 
     $("#login_create").text("Log In");
     $("#login_create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
@@ -947,7 +959,6 @@ function create_account()
             },
             success: function(res)
             {
-                console.log(res);
                 if (contains(res, "Okay"))
                 {
                     login_user(false);
@@ -972,13 +983,18 @@ function create_account()
     }
 }
 
-function delete_account(password)
+function delete_account()
 {
-    var data = buildData(["password"]);
+    var data = buildData(($('#modal-content-9 .password').length == 0 ? [] : ["password"]));
                                     
     var error = buildError(data);
     
-    if (error != "Please Include<br>")
+    if (data["password"] == null)
+    {
+        data["password"] = "";
+    }
+    
+    if (error != "Please Include<br>" && $('#modal-content-9 .password').length != 0)
     {
         setError("delete_account", error);
     }
@@ -990,22 +1006,21 @@ function delete_account(password)
             url: "api.php",
             data:
             {
-                data_create_account: data
+                data_delete_account: data
             },
             beforeSend: function()
             {
-                disableModalSubmit("create_account");
+                disableModalSubmit("delete_account");
             },
             success: function(res)
             {
-                console.log(res);
                 if (contains(res, "Okay"))
                 {
-                    login_user(false);
+                    logout_user();
                 }
                 else
                 {
-                    setError("create_account", res);
+                    setError("delete_account", res);
                 }
             },
             error: function(err, res)
@@ -1015,9 +1030,11 @@ function delete_account(password)
             },
             complete: function()
             {
-                resetModal("create_account", "Create Account", false);
+                resetModal("delete_account", "Delete Account", false);
                 
                 set_default_button_on_enter("");
+                
+                hideMainModal();
             }
         });
     }

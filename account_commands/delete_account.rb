@@ -11,6 +11,10 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 
+def to_boolean(str)
+    str == 'true' or str == true
+end
+
 def user_exists(user, pass)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
@@ -26,6 +30,7 @@ def user_exists(user, pass)
     if documents.count == 0
         return false
     else
+        return true if to_boolean(documents[0]["IsFacebook"]) #bypass if facebook account
         return PasswordHash.validatePassword(pass, documents[0]["Password"])
     end
 end
@@ -42,8 +47,11 @@ def delete_user(user)
  
     begin
         mongo_session.with(safe: true) do |session|
-            session[:accounts].find(user_obj).remove
+            session[:accounts].find(usr_obj).remove
         end
+        
+        #here we need to do a cascade delete in payments and listings
+        
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
         ret_msg = e.message
@@ -56,7 +64,7 @@ end
 begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1];
+    username = ARGV[1]
     
     if user_exists(username, data["password"])
         puts delete_user(username)

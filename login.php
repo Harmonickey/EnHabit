@@ -39,6 +39,7 @@ else if(isset($_POST['data_facebook_login']) && !isset($_SESSION['user']))
         strpos($result, "Needs Update") === 0)
     {
         $_SESSION['user']=$user;
+        $_SESSION['facebook'] = $user;
         echo $result;
     }
     else

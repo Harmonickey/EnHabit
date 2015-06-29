@@ -7,7 +7,7 @@ session_start();
 if (isset($_SESSION["user"])) //must have session in order to use the api!
 {
     $user = $_SESSION["user"];
-
+    
     if (isset($_POST["data_get_listings"]))
     {
         $data = $_POST["data_get_listings"];
@@ -61,7 +61,7 @@ if (isset($_SESSION["user"])) //must have session in order to use the api!
         $data = $_POST["data_delete_account"];
         
         $data = remove_malicious_characters($data);
-        
+
         echo shell_exec("ruby account_commands/delete_account.rb '$data' $user");
     }
 }
