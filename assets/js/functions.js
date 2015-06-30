@@ -1295,7 +1295,7 @@ function create_listing()
             url: "api.php",
             beforeSend: function() 
             {
-                disableModalSubmit("listing", "Processing...");
+                disableModalSubmit("create_listing", "Processing...");
             },
             data :
             {
@@ -1311,7 +1311,7 @@ function create_listing()
                 }
                 else
                 {
-                    setError("update", res);
+                    setError("create_listing", res);
                 }
             },
             error: function(res, err)
@@ -1321,7 +1321,7 @@ function create_listing()
             },
             complete: function()
             {
-                resetModal("listing", "Create Listing", false);
+                resetModal("create_listing", "Create Listing", false);
                 
                 set_default_button_on_enter("");
             }
