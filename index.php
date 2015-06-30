@@ -71,7 +71,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <h1>Log In</h1>
                     <label>Username: </label><input type="textbox" class="form-control username" />
                     <label>Password: </label><input type="password" class="form-control password" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user();" style="margin-top: 15px;"/>
+                    <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user(false);" style="margin-top: 15px;"/>
                     <p style="text-align: center;">Or</p>
                     <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
                     <p class="login-error alert alert-danger" style="display: none;"></p>
