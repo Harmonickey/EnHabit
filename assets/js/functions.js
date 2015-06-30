@@ -781,7 +781,11 @@ function login_user(hide_main_modal)
                         populate_and_open_modal(null, 'modal-content-3');
                     }
                 }
-                else
+                else if (res == "")
+				{
+					setError('login', "Server Error: Please contact alex@lbkstudios.net");
+				}
+				else
                 {
                     setError('login', res);
                 }
