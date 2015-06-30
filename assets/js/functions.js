@@ -1067,6 +1067,10 @@ function delete_account()
                 if (contains(res, "Okay"))
                 {
                     logout_user();
+					
+					hideMainModal();
+					
+					set_default_button_on_enter("");
                 }
                 else
                 {
@@ -1081,10 +1085,6 @@ function delete_account()
             complete: function()
             {
                 resetModal("delete_account", "Delete Account", false);
-                
-                set_default_button_on_enter("");
-                
-                hideMainModal();
             }
         });
     }
