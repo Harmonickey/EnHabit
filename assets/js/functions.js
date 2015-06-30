@@ -781,10 +781,6 @@ function login_user(hide_main_modal)
                         populate_and_open_modal(null, 'modal-content-3');
                     }
                 }
-                else if (res == "")
-				{
-					setError('login', "Server Error: Please contact alex@lbkstudios.net");
-				}
 				else
                 {
                     setError('login', res);
@@ -992,7 +988,7 @@ function create_account()
                                     "email", "phonenumber"]);
                                     
     var error = buildError(data);
-    
+    console.log(data);
     if (error != "Please Include<br>")
     {
         setError("create_account", error);
@@ -1017,7 +1013,7 @@ function create_account()
                 {
                     login_user(false);
                 }
-                else
+				else
                 {
                     setError("create_account", res);
                 }
@@ -1458,6 +1454,11 @@ function buildError(fields)
 
 function setError(el, msg)
 {
+	if (msg == "")
+	{
+		msg = "Server Error: Please contact alex@lbkstudios.net";
+	}
+	
     var modal = ".modal-body ."
     $(modal + el + "-error").html(msg);
     $(modal + el + "-error").show();

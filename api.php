@@ -71,7 +71,9 @@ else if (isset($_POST["data_create_account"]))
     
     $data = remove_malicious_characters($data);
     
-    echo shell_exec("ruby account_commands/create_account.rb '$data'");
+	echo "ruby account_commands/create_account.rb '$data'";
+	
+    //echo shell_exec("ruby account_commands/create_account.rb '$data'");
 }
 else if (isset($_POST["data_get_listings"]))
 {
