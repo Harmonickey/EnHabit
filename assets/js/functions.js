@@ -776,7 +776,7 @@ function login_user(hide_main_modal)
                 if (contains(res, "Okay"))
                 {
                     showLoginFeatures(hide_main_modal);
-                    if (!hide_main_modal)
+                    if (hide_main_modal === false)
                     {
                         populate_and_open_modal(null, 'modal-content-3');
                     }
@@ -944,7 +944,7 @@ function showLoginFeatures(hide_main_modal)
     $("#login_create-function").attr("onclick", "logout_user()");
     $("#login_create-function").show();
     
-    if (hide_main_modal)
+    if (hide_main_modal === true)
     {
         hideMainModal();
     }
