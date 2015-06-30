@@ -20,6 +20,26 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjM
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
 //map.on('draw:created', getPointsWithinPolygon);
             
+$('#map').on('click', '.popup .cycle a', function() {
+    var $slideshow = $('.slideshow'),
+        $newSlide;
+
+    if ($(this).hasClass('prev')) {
+        $newSlide = $slideshow.find('.active').prev();
+        if ($newSlide.index() < 0) {
+            $newSlide = $('.image').last();
+        }
+    } else {
+        $newSlide = $slideshow.find('.active').next();
+        if ($newSlide.index() < 0) {
+            $newSlide = $('.image').first();
+        }
+    }
+
+    $slideshow.find('.active').removeClass('active').hide();
+    $newSlide.addClass('active').show();
+    return false;
+});
 
 /* 
  * ================================================================
@@ -408,7 +428,7 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
         // when modal is shown, position it in the middle of the page 
         modal.on('shown.bs.modal', function(e)
         {
-            position_modal_at_centre();
+            //position_modal_at_centre();
             // if set, scroll to a given section inside the popup
             if (section_in_modal !== undefined && section_in_modal != "" && $("#common-modal.modal").find(section_in_modal).length > 0)
             {
@@ -489,11 +509,10 @@ function position_modal_at_centre()
         if (viewport().width > window.sm_screen_max && check_if_modal_content_fits_inside_the_page == true)
         {
             var top_margin_to_align_modal_at_middle_of_page = (viewport().height - modal_height) / 2;
-            modal_content_container.css(
-            {
-                "margin-top": top_margin_to_align_modal_at_middle_of_page + "px",
-                "margin-bottom": "20px"
-            });
+            modal_content_container.animate({
+                marginTop: top_margin_to_align_modal_at_middle_of_page + "px",
+                marginBottom: "20px"
+            }, 800, 'easeInOutCubic');
         }
         // end: for large viewports
 
@@ -676,10 +695,41 @@ function insertMarkers(res)
         var data = JSON.parse(res).data;
         data.forEach(function(d)
         {
-            L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
+            var marker = L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
+            
+            var slideshowContent = "";
+            var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+            for(var i = 0; i < images.length; i++) 
+            {
+                var img = images[i];
+
+                slideshowContent += 
+                                    '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                                      '<img src="' + img["src"] + '" />' +
+                                      '<div class="caption">' + img["caption"] + '</div>' +
+                                    '</div>';
+            }
+            
+            var popupContent =  
+                        '<div id="' + d.id + '" class="popup">' +
+                            '<h2>' + d.address + '</h2>' +
+                            '<div class="slideshow">' +
+                                slideshowContent +
+                            '</div>' +
+                            '<div class="cycle">' +
+                                '<a href="#" class="prev">&laquo; Previous</a>' +
+                                '<a href="#" class="next">Next &raquo;</a>' +
+                            '</div>'
+                        '</div>';
+            
+            marker.bindPopup(popupContent, {
+                closeButton: false,
+                minWidth: 320
+            });
         });
     }
 }
+
 /*
 function getPointsWithinPolygon(e) 
 {
@@ -1047,6 +1097,7 @@ function load_modal(event, which, enter_default, btnText)
     set_default_button_on_enter(enter_default);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
+    position_modal_at_centre();
     modal_backdrop_height($('#common-modal.modal'));
 }
 

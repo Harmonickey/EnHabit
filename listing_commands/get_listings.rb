@@ -97,7 +97,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(worldCoordinates: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0

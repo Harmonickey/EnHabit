@@ -61,6 +61,7 @@ if (!isset($_SESSION['CREATED'])) {
                         <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                         <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
                         <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
+                        <li id="view_listings_list-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-12', 'view_listings_list');"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                     </ul>
                     <!-- #main-menu -->
                 </section>
@@ -179,7 +180,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-11">
                     <h1>Manage Your Listings</h1>
                     <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-10', 'view_listings');" value="View My Listings" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes()" value="Create New Listing" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();" value="Create New Listing" style="margin-top: 15px;" />
                 </div>
                 <!-- #modal-content-11 -->
                 
