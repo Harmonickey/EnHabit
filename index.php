@@ -160,13 +160,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- #modal-content 8 -->
                 <!-- Delete Account -->
                 <div class="content-to-populate-in-modal" id="modal-content-9">
-                    <h1>Are you sure?  Please Confirm.</h1>
-                    <?php
-                    if (!isset($_SESSION["facebook"])) 
-                    {
-                        echo "<label>Password: </label><input type='password' class='form-control password' />\n";
-                    }
-                    ?>
+                    <h1 id="delete_account_header">Are you sure?  Please Confirm.</h1>
                     <input type="button" class="btn btn-outline-inverse btn-lg delete_account-btn" onclick="delete_account()" value="Delete Account" style="margin-top: 15px;" />
                     <p class="delete_account-error alert alert-danger" style="display: none;"></p>
                 </div>

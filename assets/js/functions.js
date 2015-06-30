@@ -795,6 +795,8 @@ function login_user(hide_main_modal)
             complete: function()
             {
                 resetModal("login", "Log In", false);
+				
+				$("<label>Password: </label><input type='password' class='form-control password' />").insertAfter("#delete_account_header");
             }
         });
     }
@@ -853,6 +855,9 @@ function login_facebook_user(userID, accessToken)
         complete: function()
         {
             resetModal("login", "Log In", false);
+			
+			$("#delete_account_header").siblings("label").remove();
+			$("#delete_account_header").siblings("input.password").remove();
         }
     });
 }
