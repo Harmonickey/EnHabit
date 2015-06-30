@@ -859,17 +859,16 @@ function login_facebook_user(userID, accessToken)
 
 function logout_user()
 {
+	removeLoginFeatures();
+	
+    
     $.ajax(
     {
         type: "POST",
         url: "logout.php",
         success: function(res)
         {
-            if (contains(res, "Successfully"))
-            {
-                removeLoginFeatures();
-            }
-            else
+            if (!contains(res, "Successfully"))
             {
                 console.log(res); //print the error
             }
@@ -881,7 +880,7 @@ function logout_user()
         }
     });
 
-    $("#login_create").text("Log In");
+	$("#login_create").text("Log In");
     $("#login_create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
