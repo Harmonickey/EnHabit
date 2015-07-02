@@ -4,50 +4,49 @@ include_once "includes/tools.php";
 
 session_start();
 
-if (isset($_SESSION["user"])) //must have session in order to use the api!
+
+if (isset($_SESSION["user"]) && isset($_POST["command"]) && isset($_POST["data"])) 
 {
+    //must have session in order to use the main commands
     $user = $_SESSION["user"];
-
-    if (isset($_POST["data_query"]))
-    {
-        $data = $_POST["data_query"];
-
-        $data = remove_malicious_characters($data);
-
-        echo shell_exec("ruby web-service.rb '$data' $user");
-    }
-    else if (isset($_POST["data_update"]))
-    {
-        $data = $_POST["data_update"];
-
-        $data = remove_malicious_characters($data);
-        
-        echo shell_exec("ruby update.rb '$data' $user");
-    }
-    else if (isset($_POST["data_update_load"]) && $_POST["data_update_load"] == "load")
-    {
-        $data = $_POST["data_update_load"];
-        
-        $data = remove_malicious_characters($data);
-        
-        echo shell_exec("ruby get_user_info.rb $user");
-    }
-}
-else if (isset($_POST["data_register"]))
-{
-    $data = $_POST["data_register"];
-    
+    $data = $_POST["data"];
     $data = remove_malicious_characters($data);
     
-    echo shell_exec("ruby register.rb '$data'");
+    switch ($_POST["command"])
+    {
+        case "get_listings":
+        case "update_listing":
+        case "create_listing":
+        case "delete_listing":
+            echo shell_exec("ruby listing_commands/" . $_POST["command"] . ".rb '$data' $user");
+            break;
+        case "update_listting":
+        case "update_account":
+        case "delete_account":
+            echo shell_exec("ruby account_commands/" . $_POST["command"] . ".rb '$data' $user");
+            break;
+        case "get_user_info":
+            echo shell_exec("ruby account_commands/" . $_POST["command"] . ".rb $user");
+            break;
+    }
 }
-else if (isset($_POST["data_query"]))
+else if (isset($_POST["command"]) && isset($_POST["data"]))
 {
-    $data = $_POST["data_query"];
-
+    //these commands are available without a session
+    $user = $_SESSION["user"];
+    $data = $_POST["data"];
     $data = remove_malicious_characters($data);
+    
+    switch ($_POST["command"])
+    {
+        case "create_account":
+            echo shell_exec("ruby account_commands/" . $_POST["command"] . ".rb '$data'");
+            break;
+        case "get_listings":
+        case "get_listing_info":
+            echo shell_exec("ruby listing_commands/" . $_POST["command"] . ".rb '$data'");
+            break;
+    }
 
-    echo shell_exec("ruby web-service.rb '$data'");
 }
-
 ?>

@@ -20,6 +20,7 @@ def create_user_from_facebook_credentials(user, pass)
     usr_obj["Landlord"] = false
     usr_obj["Email"] = SecureRandom.hex  #just so we can insert it...
     usr_obj["Active"] = true
+    usr_obj["IsFacebook"] = true
     #usr_obj["Verified"] = false
  
     ret_msg = ""
