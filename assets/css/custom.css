@@ -26,11 +26,16 @@
     }
 }
 
-.username, .password,
-.firstname, .lastname,
-.email, .phonenumber,
-.address, .bedrooms,
-.bathrooms, .rent,
+.username, 
+.password,
+.firstname, 
+.lastname,
+.email, 
+.phonenumber,
+.address, 
+.bedrooms,
+.bathrooms, 
+.rent,
 .start_date
 {
 	text-align: center;

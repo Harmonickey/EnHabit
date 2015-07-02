@@ -15,7 +15,6 @@ def to_boolean(str)
 end
 
 def create_listing(user, pr, ad, be, ba, an, la, st, lat, lng)
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -50,14 +49,12 @@ def create_listing(user, pr, ad, be, ba, an, la, st, lat, lng)
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
     result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["start_date"], data["latitude"], data["longitude"])
 
     puts result
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

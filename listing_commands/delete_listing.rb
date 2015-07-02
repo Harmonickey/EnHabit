@@ -12,7 +12,6 @@ require 'moped'
 Moped::BSON = BSON
 
 def delete_listing(id, username)
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -38,19 +37,17 @@ def delete_listing(id, username)
         ret_msg = e.message
     end
     
-	mongo_session.disconnect
+    mongo_session.disconnect
     return ret_msg
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
     result = delete_listing(data["id"], username)
 
     puts result
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

@@ -16,7 +16,6 @@ def to_boolean(str)
 end
 
 def update_listing(user, id, pr, ad, be, ba, an, la, st, lat, lng)
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -52,14 +51,12 @@ def update_listing(user, id, pr, ad, be, ba, an, la, st, lat, lng)
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
     result = update_listing(username, data["id"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["start_date"], data["latitude"], data["longitude"])
 
     puts result
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

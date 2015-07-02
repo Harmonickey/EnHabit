@@ -12,7 +12,6 @@ require 'moped'
 Moped::BSON = BSON
 
 def get_listing_info(id)
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -34,17 +33,14 @@ def get_listing_info(id)
     
 	mongo_session.disconnect
     return ret_msg
-
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
  
     result = get_listing_info(data["id"])
 
     puts result.to_json
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

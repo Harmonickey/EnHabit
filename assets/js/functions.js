@@ -20,18 +20,24 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjM
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
 //map.on('draw:created', getPointsWithinPolygon);
             
-$('#map').on('click', '.popup .cycle a', function() {
-    var $slideshow = $('.slideshow'),
-        $newSlide;
-
-    if ($(this).hasClass('prev')) {
+$('#map').on('click', '.popup .cycle a', function() 
+{
+    var $slideshow = $('.slideshow');
+    var $newSlide;
+    
+    if ($(this).hasClass('prev')) 
+    {
         $newSlide = $slideshow.find('.active').prev();
-        if ($newSlide.index() < 0) {
+        if ($newSlide.index() < 0) 
+        {
             $newSlide = $('.image').last();
         }
-    } else {
+    } 
+    else 
+    {
         $newSlide = $slideshow.find('.active').next();
-        if ($newSlide.index() < 0) {
+        if ($newSlide.index() < 0) 
+        {
             $newSlide = $('.image').first();
         }
     }
@@ -49,13 +55,15 @@ $('#map').on('click', '.popup .cycle a', function() {
  */
 function viewport()
 {
-    var e = window,
-        a = 'inner';
+    var e = window;
+    var a = 'inner';
+    
     if (!('innerWidth' in window))
     {
         a = 'client';
         e = document.documentElement || document.body;
     }
+    
     return {
         width: e[a + 'Width'],
         height: e[a + 'Height']
@@ -574,7 +582,8 @@ $(function()
         url: "api.php",
         data: 
         {
-            data_get_listings: data
+            command: "get_listings",
+            data: data
         },
         success: function(res) 
         {
@@ -612,32 +621,38 @@ function checkLoginState()
 
 function login_facebook()
 {
-    FB.login(function(response) 
+    try
     {
-        if (response.status === 'connected') 
+        FB.login(function(response) 
         {
-            //we are good to login!
-            var userID = response.authResponse.userID;
-            var accessToken = response.authResponse.accessToken;
-            
-            login_facebook_user(userID, accessToken);
-        } 
-        else if (response.status === 'not_authorized') 
-        {
-            // The person is logged into Facebook, but they are
-            //  not authorized to use our website login feature
-        } 
-        else 
-        {
-            // The person is not logged into Facebook, so we cannot
-            // log them into our website
-        }
-    });
+            if (response.status === 'connected') 
+            {
+                //we are good to login!
+                var userID = response.authResponse.userID;
+                var accessToken = response.authResponse.accessToken;
+                
+                login_facebook_user(userID, accessToken);
+            } 
+            else if (response.status === 'not_authorized') 
+            {
+                // The person is logged into Facebook, but they are
+                //  not authorized to use our website login feature
+            } 
+            else 
+            {
+                // The person is not logged into Facebook, so we cannot
+                // log them into our website
+            }
+        });
+    }
+    catch (e)
+    {
+        console.log(e);
+    }
 }
  
 function loadDataWithFilter()
 {
-
     var query = createQuery();
 
     /*
@@ -764,7 +779,8 @@ function login_user(hide_main_modal)
             url: "login.php",
             data:
             {
-                data_login: data,
+                command: "login",
+                data: data,
                 user: data["username"] //to be used as session variable later
             },
             beforeSend: function()
@@ -817,7 +833,8 @@ function login_facebook_user(userID, accessToken)
         url: "login.php",
         data:
         {
-            data_facebook_login: data,
+            command: "facebook_login",
+            data: data,
             user: userID
         },
         success: function(res)
@@ -866,7 +883,6 @@ function logout_user()
 {
 	removeLoginFeatures();
 	
-    
     $.ajax(
     {
         type: "POST",
@@ -885,7 +901,7 @@ function logout_user()
         }
     });
 
-	$("#login_create").text("Log In");
+    $("#login_create").text("Log In");
     $("#login_create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
@@ -992,7 +1008,7 @@ function create_account()
                                     "email", "phonenumber"]);
                                     
     var error = buildError(data);
-    console.log(data);
+    
     if (error != "Please Include<br>")
     {
         setError("create_account", error);
@@ -1005,7 +1021,8 @@ function create_account()
             url: "api.php",
             data:
             {
-                data_create_account: data
+                command: "create_account",
+                data: data
             },
             beforeSend: function()
             {
@@ -1060,7 +1077,8 @@ function delete_account()
             url: "api.php",
             data:
             {
-                data_delete_account: data
+                command: "delete_account",
+                data: data
             },
             beforeSend: function()
             {
@@ -1113,7 +1131,8 @@ function load_update_account_modal(event)
         url: "api.php",
         data:
         {
-            data_get_user_info: "load"
+            command: "get_user_info",
+            data: "load"
         },
         success: function(res)
         {
@@ -1191,7 +1210,8 @@ function update_account()
             url: "api.php",
             data:
             {
-                data_update_account: data
+                command: "update_account",
+                data: data
             },
             beforeSend: function()
             {
@@ -1242,7 +1262,8 @@ function update_listing()
             url: "api.php",
             data:
             {
-                data_update_listing: data
+                command: "update_listing",
+                data: data
             },
             beforeSend: function()
             {
@@ -1253,7 +1274,6 @@ function update_listing()
                 if (contains(res, "Okay"))
                 {
                     populate_and_open_modal(null, 'modal-content-5');
-
                 }
                 else
                 {
@@ -1299,7 +1319,8 @@ function create_listing()
             },
             data :
             {
-                data_create_listing: data
+                command: "create_listing",
+                data: data
             },
             success: function(res)
             {
@@ -1337,6 +1358,10 @@ function set_default_button_on_enter(modal)
         $(document).unbind("keypress");
         which_modal = "." + modal + "-btn";
     }
+    else
+    {
+        which_modal = "";
+    }
     
     $(document).on("keypress", function(e)
     {
@@ -1346,11 +1371,6 @@ function set_default_button_on_enter(modal)
             $(".modal-body ." + modal + "-btn").click();
         }
     });
-    
-    if (modal == "")
-    {
-        which_modal == "";
-    }
 }
 
 function isValidEmail(em)
@@ -1378,7 +1398,8 @@ function buildData(elements)
 {
     var modalAttr = ".modal-body .";
     
-    var arr = $.map(elements, function(element) {
+    var arr = $.map(elements, function(element) 
+    {
         return $(modalAttr + element).val().trim();
     });
     
@@ -1400,7 +1421,7 @@ function buildError(fields)
     {
         error += "Username<br>";
     }
-     if (fields.password == "")
+    if (fields.password == "")
     {
         error += "Password<br>";
     }
@@ -1424,7 +1445,7 @@ function buildError(fields)
     {
         error += "Valid Address - Must Select Google's Result<br>";
     }
-	if (fields.address != "" && fields.address != fields.selected_address)
+    if (fields.address != "" && fields.address != fields.selected_address)
 	{
 		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
 	}
@@ -1458,7 +1479,7 @@ function buildError(fields)
 
 function setError(el, msg)
 {
-	if (msg == "")
+    if (msg == "")
 	{
 		msg = "Server Error: Please contact alex@lbkstudios.net";
 	}

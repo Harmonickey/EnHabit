@@ -16,7 +16,6 @@ def to_boolean(str)
 end
 
 def user_exists(user, pass)
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -36,7 +35,6 @@ def user_exists(user, pass)
 end
 
 def delete_user(user)
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -50,19 +48,18 @@ def delete_user(user)
             session[:accounts].find(usr_obj).remove
         end
         
-        #here we need to do a cascade delete in payments and listings
+        #TODO here we need to do a cascade delete in payments and listings
         
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
         ret_msg = e.message
     end
     
-	mongo_session.disconnect
+    mongo_session.disconnect
     return ret_msg
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
@@ -71,7 +68,6 @@ begin
     else
         puts "Incorrect Password"
     end
-
 rescue Exception => e
     puts e.inspect
 end

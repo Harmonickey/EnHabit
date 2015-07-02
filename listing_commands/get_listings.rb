@@ -69,9 +69,7 @@ def combine_filters_into_query
     end
 end
 
-
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
     user = ARGV[1] if not ARGV[1].nil?
 
@@ -108,7 +106,6 @@ begin
         result_data["data"].map { |listing| listing["_id"] = listing["_id"].to_s }
         puts result_data.to_json
     end
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
