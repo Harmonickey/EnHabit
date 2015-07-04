@@ -1,3 +1,14 @@
+<?php
+
+    session_start();
+    
+    if (!isset($_SESSION["admin"]))
+    {
+        header("Location: ../", FALSE);
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -113,7 +124,6 @@
 
 </div> <!-- /subnavbar -->
     
-    
 <div class="main">
 
     <div class="container">
@@ -173,7 +183,7 @@
 						
 				<div class="widget-header">
 					<i class="icon-list-alt"></i>
-					<h3>Recent News</h3>
+					<h3>Transactions Summary</h3>
 				</div> <!-- /widget-header -->
 				
 				<div class="widget-content">
@@ -224,7 +234,7 @@
 				
 				<div class="widget-header">
 					<i class="icon-file"></i>
-					<h3>Content</h3>
+					<h3>Users Summary</h3>
 				</div> <!-- /widget-header -->
 				
 				<div class="widget-content">

@@ -4,8 +4,6 @@ $(function () {
 	
 });
 
-
-
 var Application = function () {
 	
 	var validationRules = getValidationRules ();
