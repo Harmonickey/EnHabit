@@ -28,14 +28,25 @@
 
 .username, 
 .password,
-.firstname,
+.firstname, 
 .lastname,
-.email,
-.phonenumber 
+.email, 
+.phonenumber,
+.address, 
+.bedrooms,
+.bathrooms, 
+.rent,
+.start_date
 {
 	text-align: center;
 	width: 50%;
 	margin: 0 auto;
+}
+
+.animals,
+.laundry
+{
+    width: 45px;
 }
 
 .login-btn-facebook .facebook-icon-for-button 
@@ -64,4 +75,55 @@
 {
     color: white;
     font-size: 1.3em;
+}
+
+.pac-container 
+{
+    z-index: 1041 !important;
+}
+
+.popup 
+{
+    text-align:center;
+}
+
+.popup .slideshow .image        
+{ 
+    display:none; 
+}
+
+.popup .slideshow .image.active 
+{ 
+    display:block; 
+}
+
+.popup .slideshow img 
+{
+    width:100%;
+}
+
+.popup .slideshow .caption 
+{
+    background:#eee;
+    padding:10px;
+}
+
+.popup .cycle 
+{
+    padding:10px 0 20px;
+}
+
+.popup .cycle a.prev 
+{ 
+    float:left; 
+}
+
+.popup .cycle a.next 
+{ 
+    float:right; 
+}
+
+.leaflet-popup-tip
+{
+    display: none;  /* for now I dunno what is wrong with it... */
 }
