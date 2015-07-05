@@ -16,6 +16,36 @@ var background_settings = {
     use_script: true, // set to false if you want to set a custom background (css, video, etc)
 }
 
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
+var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
+//map.on('draw:created', getPointsWithinPolygon);
+            
+$('#map').on('click', '.popup .cycle a', function() 
+{
+    var $slideshow = $('.slideshow');
+    var $newSlide;
+    
+    if ($(this).hasClass('prev')) 
+    {
+        $newSlide = $slideshow.find('.active').prev();
+        if ($newSlide.index() < 0) 
+        {
+            $newSlide = $('.image').last();
+        }
+    } 
+    else 
+    {
+        $newSlide = $slideshow.find('.active').next();
+        if ($newSlide.index() < 0) 
+        {
+            $newSlide = $('.image').first();
+        }
+    }
+
+    $slideshow.find('.active').removeClass('active').hide();
+    $newSlide.addClass('active').show();
+    return false;
+});
 
 /* 
  * ================================================================
@@ -25,13 +55,15 @@ var background_settings = {
  */
 function viewport()
 {
-    var e = window,
-        a = 'inner';
+    var e = window;
+    var a = 'inner';
+    
     if (!('innerWidth' in window))
     {
         a = 'client';
         e = document.documentElement || document.body;
     }
+    
     return {
         width: e[a + 'Width'],
         height: e[a + 'Height']
@@ -311,326 +343,6 @@ function scroll_to_section(target_section_id, clicked_menu_item_id, change_backg
 
 /*
  * ================================================================
- * Set Section to Active
- *
- * When a user scrolls or clicks to scroll to a section, this function is called to set that particular section to active
- *
- * - sets menu item to active
- * - sets active class to section wrapper
- * - change background image of page (if set for that particular section)
- *
- * @param target_section - section id - the id of the active section wrapper
- * @param clicked_menu_item_id - menu item id - the id of the clicked menu item (if function called after clicking on a menu item)
- * @param called_on_scroll - true or false - if set to true, this function was called when scrolling, hence background changes should be faster
- * @param change_background - true or false - (default true) if false, do not change background on scroll
- */
-function set_section_to_active(target_section_id, clicked_menu_item_id, called_on_scroll, change_background)
-{
-    // only works if the target_section is provided
-    if (target_section_id !== undefined && target_section_id != "")
-    {
-        var section_wrapper = $("#main-content " + target_section_id + ".section-wrapper");
-
-        // remove current active classes
-        $("#main-menu .menu-item").removeClass("active");
-        $("#main-content .section-wrapper").removeClass("active");
-
-        // ------ set menu item to active ---------
-        // if clicked menu item id is provided and exists
-        var clicked_menu_item_object = (clicked_menu_item_id != undefined && clicked_menu_item_id != "") ? $("#main-menu #" + clicked_menu_item_id + ".menu-item") : "";
-        if (clicked_menu_item_object != "" && clicked_menu_item_object.length != 0)
-        {
-            clicked_menu_item_object.addClass("active");
-        }
-
-        // if clicked menu item id is not provided, find menu item corresponding to the target section id
-        else
-        {
-            var section_name = target_section_id.substr(1); // section ids (links) start with "#"
-            $("#main-menu #menu-item-" + section_name + ".menu-item").addClass("active"); // assuming menu items ids start with "menu-item-"
-        }
-
-        // ------ set section wrapper to active ---------
-        section_wrapper.addClass("active");
-
-        // Hide/Show Main Menu "TOP" icon
-        toggle_top_icon_in_main_menu();
-
-        var overlay_enabled = ($("body").attr("data-overlay") != "false") ? true : false;
-        var overlay_opacity_value = $("body").attr("data-overlay-opacity");
-        var overlay_opacity = (overlay_opacity_value !== undefined && overlay_opacity_value != "") ? parseFloat(overlay_opacity_value) : 0.35;
-
-        // ------ change custom background ------
-        if (change_background != false && change_bg_check())
-        {
-            var section_custom_background_attr = section_wrapper.attr("data-custom-background-img");
-            var section_custom_background = (section_custom_background_attr !== undefined && section_custom_background_attr != "") ? section_custom_background_attr : $("body").attr("data-default-background-img"); // use #outer-background-container default image if custom background not set
-
-            // if target section wrapper has custom background set
-            if (section_custom_background !== undefined && section_custom_background != "")
-            {
-                var transition_speed = (called_on_scroll != true) ? 1500 : 550; // crossfading speed should be faster when function called on scroll
-
-                $(function()
-                {
-                    $.vegas(
-                    {
-                        src: section_custom_background,
-                        fade: transition_speed,
-                    });
-                    if (overlay_enabled) $.vegas('overlay',
-                    {
-                        src: 'assets/images/theme_images/background-image-overlay-full.png',
-                        opacity: overlay_opacity
-                    });
-                });
-            }
-            // end: if target section wrapper has custom background set
-        }
-        // end: change custom background
-
-        // background change disabled
-        else if (background_settings.use_script && !$("body").hasClass("defualt-bg-set"))
-        {
-            var default_bg = $("body").attr("data-default-background-img");
-            if (default_bg != "" && default_bg !== undefined)
-            {
-                $(function()
-                {
-                    $.vegas(
-                    {
-                        src: default_bg,
-                        fade: 1500,
-                    });
-                    if (overlay_enabled) $.vegas('overlay',
-                    {
-                        src: 'assets/images/theme_images/background-image-overlay-full.png',
-                        opacity: overlay_opacity
-                    });
-                });
-                $("body").addClass("defualt-bg-set");
-            }
-        } // end: background change disabled
-
-    }
-    // end: only works if the target_section is provided
-}
-
-
-/*
- * ================================================================
- * Get All Section Wrappers in Page
- *
- * This function returns an array of all the section wrappers in the page
- *
- */
-function get_all_section_wrappers_in_page()
-{
-    var section_wrappers = $("#main-content").find(".section-wrapper");
-    return section_wrappers;
-}
-
-/*
- * ================================================================
- * Update Active Sections on Scroll
- *
- * This function is fired when the user scrolls, and updates the active section depending on the vertical scroll position
- *
- * @param section_wrappers - all the section wrappers in a page
- * @param amount_of_pixels_as_buffer_between_sections - integer - a proportion of the website height, used to match visible sections more accurately
- */
-function update_active_sections_on_scroll(section_wrappers, amount_of_pixels_as_buffer_between_sections)
-{
-    // first check if already loaded (to make function faster), otherwise search for all the section wrappers
-    var all_section_wrappers = (section_wrappers !== undefined && section_wrappers != "") ? section_wrappers : $("#main-content").find(".section-wrapper");
-
-    // see comment above
-    var amount_of_pixels_as_buffer_between_sections = (amount_of_pixels_as_buffer_between_sections !== amount_of_pixels_as_buffer_between_sections && amount_of_pixels_as_buffer_between_sections != "") ? amount_of_pixels_as_buffer_between_sections : 0.25 * ($(window).height());
-
-    var scroll_from_top = $(document).scrollTop();
-
-    // get the visible section
-    var current_scroll_section = all_section_wrappers.map(function()
-    {
-        var offset_from_top = ($(this).offset().top) - amount_of_pixels_as_buffer_between_sections;
-        var section_height = $(this).height();
-        var offset_from_bottom = offset_from_top + section_height;
-
-        if (scroll_from_top > offset_from_top && scroll_from_top <= offset_from_bottom)
-            return this;
-    });
-
-    // update such section to active
-    if (current_scroll_section !== undefined && current_scroll_section != "")
-    {
-        var active_section_id = "#" + current_scroll_section.attr("id");
-
-        // DON'T do update if visible section is already active
-        if (!current_scroll_section.hasClass("active"))
-        {
-            set_section_to_active(active_section_id, '', true);
-        }
-    }
-}
-
-/*
- * ================================================================
- * Hide/Show Main Menu "TOP" icon
- *
- * This function hides the top "^" icon in the main menu when the user is at the top of the page, and shows it when the user scrolls down.
- */
-function toggle_top_icon_in_main_menu()
-{
-    var intro_menu_item = $("#main-menu #menu-item-intro");
-    if (intro_menu_item.hasClass("active"))
-    {
-        intro_menu_item.css(
-        {
-            "opacity": 0
-        }).addClass("main-menu-top-icon-active")
-    }
-    else
-    {
-        intro_menu_item.css(
-        {
-            "opacity": 0.7
-        }).removeClass("main-menu-top-icon-active")
-    }
-}
-
-
-/*
- * ================================================================
- * Preload All Sections Background Images
- *
- * This function preloads all the background images set for all section wrappers in the page
- *
- */
-function preload_section_backgrounds()
-{
-    var section_wrappers = get_all_section_wrappers_in_page();
-
-    // if there are sections
-    if (section_wrappers.length > 0)
-    {
-        // for each section wrapper
-        section_wrappers.each(function()
-        {
-            // if a custom background image is set, load it
-            var section_custom_background = $(this).attr("data-custom-background-img");
-            if (section_custom_background !== undefined && section_custom_background != "")
-            {
-                var img = new Image();
-                img.src = section_custom_background;
-            }
-        });
-    }
-
-}
-
-/*
- * ================================================================
- * Grid Items Clearfix
- *
- * This function adds clearfixes after the grid items to fix issues with different grid items heights
- *
- */
-function add_clear_items_to_fix_grid_items_different_heights_issue()
-{
-    // if there are grid items
-    if ($("#main-content .grid .grid-item").length > 0)
-    {
-        var list_grid = $("#main-content .grid");
-
-        // 2 columns
-        if (list_grid.hasClass("clearfix-for-2cols"))
-        {
-
-            // add clearfixes after every 2 items (for 2 cols grid)
-            list_grid.find(".grid-item:nth-of-type(2n+2)").after('<article class="clearfix"></article>');
-            return false;
-        }
-
-        // 3 columns
-        else if (list_grid.hasClass("clearfix-for-3cols"))
-        {
-
-            // add clearfixes after every 2 items (for 2 cols grid)
-            list_grid.find(".grid-item:nth-of-type(3n+3)").after('<article class="clearfix"></article>');
-            return false;
-        }
-
-    }
-    // end: if there are grid items   
-}
-
-/*
- * ================================================================
- * Effect Fade Out Inactive Grid Items
- *
- * On hover of a grid item, the other grid items are faded out.
- * It is applied to .project-grid containers with class ".effect-fade-inactive"
- *
- */
-function effect_fade_out_inactive_grid_items()
-{
-    // if there are project-grid sections with effect activated
-    if ($("#main-content .projects-grid.effect-fade-inactive").length > 0)
-    {
-        // for each projects grid with effect
-        $("#main-content .projects-grid.effect-fade-inactive").each(function()
-        {
-            var this_project_grid = $(this);
-
-            // on hover of each grid-item content
-            this_project_grid.find(".grid-item .item-content").hover(function()
-            {
-                // on mouse over
-                var this_item_content = $(this);
-
-                this_item_content.css(
-                {
-                    "opacity": 1
-                }); // fade in this item
-
-                this_project_grid.find(".grid-item .item-content").not(this_item_content).css(
-                {
-                    "opacity": 0.3
-                }); // fade out other items
-
-            }, function()
-            {
-                // on mouse out
-                var this_item_content = $(this);
-
-                this_item_content.css(
-                {
-                    "opacity": 0.3
-                }); // fade out this              
-
-            });
-            // end: on hover of each grid-item content            
-
-            // ensure that on mouse out of grid, all its items are not faded
-            this_project_grid.hover(function() {}, function()
-            {
-                setTimeout(function()
-                {
-                    this_project_grid.find(".grid-item .item-content").css(
-                    {
-                        "opacity": 1
-                    });
-                }, 200);
-            });
-
-        });
-        // end: for each projects grid with effect
-    }
-    // end: if there are project-grid sections with effect activated  
-}
-
-/*
- * ================================================================
  * Set height of parent content wrappers
  *
  * This function looks for any elements (in main content) with .max-height set as class, looks for the parent .content-wrapper and sets its percentage height to fill the page
@@ -672,67 +384,6 @@ function set_height_of_parent_content_wrappers()
         // end: if parent .content-wrapper is found
     });
     // end: for each element
-}
-
-/*
- * ================================================================
- * Set equal height to all carousel slides on small displays
- *
- * In order to avoid adjusting height on slide change on small displays, find the largest height among all slides in the carousel, and set all slides' height to that particular height
- *
- */
-function set_equal_height_to_all_carousel_slides_on_small_displays()
-{
-    var carousels = $("#main-content .carousel");
-
-    // for each carousel
-    carousels.each(function()
-    {
-        var visible_set_percentage_height = ($(this).attr("data-height-percent") !== undefined && $(this).attr("data-height-percent") != "" && !isNaN($(this).attr("data-height-percent"))) ? $(this).attr("data-height-percent") : 80; // the carousel height (percentage) in proportion of the screen height (default is 80)
-        var visible_set_height = (visible_set_percentage_height / 100) * viewport().height;
-
-        var carousel_slides = $(this).find(".item .carousel-text-content");
-        $(this).find(".item:not(.active)").css(
-        {
-            "opacity": "0",
-            "position": "absolute",
-            "display": "block"
-        }); // temporary fix to get the hidden slides' height
-        carousel_slides.css(
-        {
-            "height": "auto"
-        }); // reset previously set height before getting actual height
-
-        var all_slides_height = [];
-        // for each slide, get their height and store them in an array
-        carousel_slides.each(function()
-        {
-            all_slides_height.push($(this).height());
-        });
-        var largest_slide_height = Math.max.apply(Math, all_slides_height) + 40; // get largest height among all slides (add 40px to make sure no content is hidden)
-
-        $(this).find(".item:not(.active)").attr("style", ""); // reset the temporary fix to get the hidden slides' height
-
-        // if on small displays or small heights (slide height larger than visible height)
-        if (viewport().width <= window.sm_screen_max || largest_slide_height >= visible_set_height)
-        {
-            $(this).parents(".section-wrapper").addClass("modified-height");
-            carousel_slides.height(largest_slide_height); // apply the largest height to all slides
-        }
-        // end: if on small displays
-
-        // on larger displays
-        else
-        {
-            $(this).parents(".section-wrapper").removeClass("modified-height");
-            $(this).removeClass("slides-height-modified").find(".item .carousel-text-content").css(
-            {
-                "height": "100%"
-            });
-        }
-
-    });
-    // end: for each carousel
 }
 
 /*
@@ -785,7 +436,7 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
         // when modal is shown, position it in the middle of the page 
         modal.on('shown.bs.modal', function(e)
         {
-            position_modal_at_centre();
+            //position_modal_at_centre();
             // if set, scroll to a given section inside the popup
             if (section_in_modal !== undefined && section_in_modal != "" && $("#common-modal.modal").find(section_in_modal).length > 0)
             {
@@ -866,11 +517,10 @@ function position_modal_at_centre()
         if (viewport().width > window.sm_screen_max && check_if_modal_content_fits_inside_the_page == true)
         {
             var top_margin_to_align_modal_at_middle_of_page = (viewport().height - modal_height) / 2;
-            modal_content_container.css(
-            {
-                "margin-top": top_margin_to_align_modal_at_middle_of_page + "px",
-                "margin-bottom": "20px"
-            });
+            modal_content_container.animate({
+                marginTop: top_margin_to_align_modal_at_middle_of_page + "px",
+                marginBottom: "20px"
+            }, 800, 'easeInOutCubic');
         }
         // end: for large viewports
 
@@ -885,508 +535,241 @@ function position_modal_at_centre()
 
 /*
  * ================================================================
- * Go To Top Icon Visibility
+ * Get All Section Wrappers in Page
  *
- * - icon is hidden at the top of the page, shown when scrolling further down
+ * This function returns an array of all the section wrappers in the page
+ *
  */
-function go_to_top_visibility()
+function get_all_section_wrappers_in_page()
 {
-    var go_to_top_icon = $("#go-to-top");
-
-    // if icon exists
-    if (go_to_top_icon.length > 0)
-    {
-        var scroll_from_top = $(document).scrollTop();
-
-        // if at the top section of the page, hide icon
-        if (scroll_from_top < viewport().height)
-        {
-            go_to_top_icon.removeClass("active");
-        }
-
-        // if further down the page, show icon
-        else
-        {
-            go_to_top_icon.addClass("active");
-        }
-    }
+    var section_wrappers = $("#main-content").find(".section-wrapper");
+    return section_wrappers;
 }
 
 /*
- * ================================================================
- * Scroll to Top of the Page
- *
- * - scrolls to top of the page (#outer-container)
+ * CUSTOM FUNCTIONS
+ * =============================================
  */
-function scroll_to_top()
+ 
+/* INIT FACEBOOK STUFF */
+window.fbAsyncInit = function() 
 {
-    $('html, body').stop().animate(
+    FB.init(
     {
-        scrollTop: 0
-    }, 1500, 'easeInOutCubic', function()
-    {
-        $("#go-to-top").removeClass("active"); // deactive scroll to top icin     
+        appId      : '884055151683178',
+        xfbml      : true,
+        version    : 'v2.3'
     });
-}
+};
 
-/*
- * ================================================================
- * Load Images
- *
- * - <img> elements with a particular class and "data-img-src" attribute are loaded
- *
- * @param images_objects_selector_class - the selector class of the <img> objects which will be loaded
- * @param remove_selector_class_after_image_loaded - if set to true, the selector class used to load images will be removed after the image is loaded (for css purposes)
- * @param vertical_layout_positioning_check - if set to true, fire sections_content_vertical_position() function correct vertical positioning of sections
- */
-function load_images(images_objects_selector_class, remove_selector_class_after_image_loaded, vertical_layout_positioning_check)
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+/* INIT OUR STUFF */
+$(function() 
 {
-    // if images exist
-    var images_objects = $("." + images_objects_selector_class);
-    if (images_objects.length > 0)
+    var data = {"extensions": {"university": "Northwestern"}};
+    
+    //upon load, get all the entries that are at Northwestern
+    $.ajax(
     {
-        // prepare image sources
-        var images = new Array();
-        images_objects.each(function()
+        type: "POST",
+        url: "api.php",
+        data: 
         {
-            var image_src = $(this).attr("data-img-src");
-            if (image_src !== undefined && image_src != "")
-            {
-                var image_object_data = new Array();
-                image_object_data["img_object"] = $(this); // image as an object (to use after load)
-                image_object_data["img_src"] = image_src;
-                images.push(image_object_data); // add to images array
-            }
-        });
-
-        // load images
-        var count_images_to_load = images.length;
-        for (i = 0; i < count_images_to_load; i++)
+            command: "get_listings",
+            data: data
+        },
+        success: function(res) 
         {
-            var new_image_object = new Image();
-            new_image_object.src = images[i]["img_src"];
-            images[i]["img_object"].attr("src", images[i]["img_src"]);
-
-            // if enabled, remove selector class after the image is loaded
-            if (remove_selector_class_after_image_loaded == true)
+            if (contains(res, "No Matching Entries"))
             {
-                images[i]["img_object"].removeClass(images_objects_selector_class);
-            }
-
-            // if enabled, correct vertical positioning of sections (after last image is completely loaded) (only when not viewing on mobile viewport)
-            if (vertical_layout_positioning_check == true && i == count_images_to_load - 1 && (!jQuery.browser.mobile || viewport().width > window.xs_screen_max))
-            {
-                new_image_object.onload = function()
+                if (res == "")
                 {
-                    sections_content_vertical_position();
+                    console.log("No Matching Entries");
+                }
+                else
+                {
+                    console.log(res);
                 }
             }
-        }
-        // end: load images
-    }
-    // end: if images exist
-}
-
-/*
- * ================================================================
- * Form validation and submit actions
- *
- * @param form_object - objects -  if set, validate and submit this form only. Otherwise search for all forms with class .validate-form
- */
-function validate_and_submit_forms(form_object)
-{
-    var forms = (form_object !== undefined && form_object.length > 0) ? form_object : $("form.validate-form");
-
-    // for each form 
-    forms.each(function()
+            else
+            {
+                insertMarkers(res);
+            }
+        },
+        error: function(res, err) 
         {
+            console.log(res);
+            console.log(err);
+        }			
+    });
+});
 
-            var this_form = $(this);
-
-            // -------------- onChange of each form field with validation enabled (with class .validate) --------------
-            this_form.find(".validate-field").each(function()
-            {
-                $(this).change(function()
-                {
-                    // first empty any error containers
-                    $(this).siblings(".alert").fadeOut("fast", function()
-                    {
-                        $(this).remove();
-                    });
-
-                    // value is not empty, validate it
-                    if ($(this).val().trim() != "")
-                    {
-                        var validation_message = validate_fields(this_form, $(this));
-                        if (validation_message.length > 0)
-                        {
-                            // if there are errors (not successfull)
-                            if (validation_message[0]["message"] !== undefined && validation_message[0]["message"] != "" && validation_message[0]["message"] != "success")
-                            {
-                                // create error field
-                                var error_field_html = '<div class="alert">' + validation_message[0]["message"] + '</div>';
-                                $(this).after(error_field_html);
-                                $(this).siblings(".alert").fadeIn("fast");
-                            }
-                            // end: if there are errors
-                        }
-                    }
-                    // end: if value is not empty
-                });
-            });
-            // -------------- end: onChange of each form field --------------
-
-            // -------------- reload captcha --------------
-            this_form.find("#form-captcha-refresh").click(function()
-            {
-                reset_captcha(this_form);
-            });
-
-            // -------------- on Submit of form --------------
-            this_form.submit(function(event)
-            {
-                event.preventDefault ? event.preventDefault() : event.returnValue = false; // stop default action (will be handled via AJAX below)
-
-                // show form loader
-                $(this).find(".form-loader").fadeIn("fast");
-
-                var form_action = $(this).attr("action");
-                // if action is not set (URL to mail.php), stop form action
-                if (form_action === undefined && form_action == "") return false;
-
-                // clear all errors
-                $(this).find(".alert").fadeOut("fast", function()
-                {
-                    $(this).remove();
-                });
-                $(this).find(".form-general-error-container").fadeOut("fast", function()
-                {
-                    $(this).empty();
-                });
-
-                var errors_found = false;
-
-                // for each field with validation enabled (with class .validate)
-                $(this).find(".validate-field").each(function()
-                {
-                    var validation_message = validate_fields(this_form, $(this));
-                    if (validation_message.length > 0)
-                    {
-                        // if there are errors (not successfull)
-                        if (validation_message[0]["message"] !== undefined && validation_message[0]["message"] != "" && validation_message[0]["message"] != "success")
-                        {
-                            // create error field
-                            var error_field_html = '<div class="alert">' + validation_message[0]["message"] + '</div>';
-                            $(this).after(error_field_html);
-                            $(this).siblings(".alert").fadeIn("fast");
-
-                            errors_found = true;
-                        }
-                        // end: if there are errors
-                    }
-                });
-                // end: for each field
-
-                // if errors were found, stop form from being submitted
-                if (errors_found == true)
-                {
-                    // hide loader
-                    $(this).find(".form-loader").fadeOut("fast");
-                    return false;
-                }
-
-                // submit form
-                $.ajax(
-                {
-                    type: 'POST',
-                    url: form_action,
-                    data: $(this).serialize(),
-                    dataType: 'html',
-                    success: function(data)
-                    {
-                        // if form submission was processed (successfully or not)
-
-                        // hide loader
-                        this_form.find(".form-loader").fadeOut("fast");
-
-                        var submission_successful = (data == "success") ? true : false;
-                        var captcha_success = (data == "captcha") ? false : true;
-
-                        var message = "";
-                        switch (data)
-                        {
-                            case "success":
-                                message = "Form submitted successfully.";
-                                break;
-                            case "captcha":
-                                message = "Incorrect text entered. (Case-sensitive)";
-                                break;
-                            case "incomplete":
-                                message = "Please fill in all required fields.";
-                                break;
-                            case "error":
-                                message = "An error occured. Please try again later.";
-                                break;
-                        }
-
-                        // prepare message to show after form processed
-                        var message_field_html = '<div class="alert ';
-                        message_field_html += (submission_successful == true) ? 'success' : 'error';
-                        message_field_html += '">' + message + '</div>';
-
-                        // incorrect captcha
-                        if (!captcha_success)
-                        {
-                            this_form.find("#form-captcha").parent(".form-group").append(message_field_html);
-                            this_form.find("#form-captcha").siblings(".alert").fadeIn("fast");
-                        }
-                        // general message
-                        else
-                        {
-                            this_form.find(".form-general-error-container").html(message_field_html).fadeIn("fast", function()
-                            {
-                                // if submission was successful, hide message after some time
-                                $(this).delay(10000).fadeOut("fast", function()
-                                {
-                                    $(this).html("");
-                                });
-                            });
-                        }
-
-                        // refresh captcha
-                        reset_captcha(this_form);
-
-                        // if form submitted successfully, empty fields
-                        if (submission_successful == true) this_form.find(".form-control").val("");
-                    },
-                    error: function(data)
-                    {
-                        // if form submission wasn't processed
-
-                        // hide loader
-                        this_form.find(".form-loader").fadeOut("fast");
-
-                        // show error message
-                        var error_field_html = '<div class="alert">An error occured. Please try again later.</div>';
-                        this_form.find(".form-general-error-container").html(error_field_html).fadeIn("fast");
-
-                    }
-                });
-                // end: submit form           
-            });
-            // -------------- end: on Submit of form --------------
-
-        })
-        // end: for each form
-}
-
-/*
- * ================================================================
- * Reset forms
- *
- * @param form_object - object - required - the form which will be reset
- */
-function reset_forms(form_object)
+function checkLoginState() 
 {
-    // if form exists
-    if (form_object !== undefined && form_object.length > 0)
+    FB.getLoginStatus(function(response) 
     {
-        var form = form_object;
-        form.find("input").val('');
-        form.find(".alert").remove();
-        form.find(".form-general-error-container").empty().hide();
-        reset_captcha(form_object);
-    }
-}
-
-/*
- * ================================================================
- * Reset form captchas
- *
- * @param form_object - object - required - the form which will be reset
- */
-function reset_captcha(form_object)
-{
-    var forms = (form_object !== undefined && form_object.length > 0) ? form_object : $("form.validate-form");
-    // for each form 
-    forms.each(function()
-    {
-        var this_form = $(this);
-        var captcha = this_form.find("#form-captcha-img");
-        if (captcha.length > 0 && this_form.is(":visible"))
-        {
-            var d = new Date().getTime();
-            captcha.replaceWith('<img id="form-captcha-img" src="assets/php/form_captcha/captcha_img.php?t=' + d + '" style="display:none">');
-            this_form.find("#form-captcha").val("");
-            setTimeout(function()
-            {
-                this_form.find("#form-captcha-img").show();
-            }, 500);
-        }
+        statusChangeCallback(response);
     });
 }
 
-/*
- * ================================================================
- * Form validation - separate fields
- *
- * @param form_object - object - required - the form in which the fields relate to
- * @param single_field - object - if set, the function will validate only that particular field. Otherwise the function will validate all the fields with class .validate
- */
-function validate_fields(form_object, single_field)
+function login_facebook()
 {
-    // if form exists
-    if (form_object !== undefined && form_object.length > 0)
+    try
     {
-        var form_fields_to_validate = (single_field !== undefined && single_field.length > 0) ? single_field : form_object.find(".validate"); // if single field is set, the function will validate only that particular field. Otherwise the function will validate all the fields with class .validate
-
-        var validation_messages = new Array();
-
-        // for each field to validate
-        form_fields_to_validate.each(function()
+        FB.login(function(response) 
         {
-            var validation_type = $(this).attr("data-validation-type");
-            var field_required = $(this).hasClass("required");
-            var field_value = $(this).val().trim();
-
-            var single_field_error_details = new Array(); // will contain this field and its error
-            single_field_error_details["field_object"] = $(this);
-
-            single_field_error_details["message"] = "success"; // default is success. If the above tests fail, replace message with error
-
-            // if field is required and value is empty
-            if (field_required == true && (field_value == "" || field_value === null || field_value === undefined)) single_field_error_details["message"] = "This field is required";
-
-            // string validation
-            if (validation_type == "string" && (field_value != "" && field_value !== null && field_value !== undefined))
+            if (response.status === 'connected') 
             {
-                if (field_value.match(/^[a-z0-9 .\-]+$/i) == null) single_field_error_details["message"] = "Invalid characters found.";
-            }
-
-            // email validation
-            else if (validation_type == "email" && (field_value != "" && field_value !== null && field_value !== undefined))
+                //we are good to login!
+                var userID = response.authResponse.userID;
+                var accessToken = response.authResponse.accessToken;
+                
+                login_facebook_user(userID, accessToken);
+            } 
+            else if (response.status === 'not_authorized') 
             {
-                if (field_value.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null) single_field_error_details["message"] = "Please enter a valid email address.";
-            }
-
-            // phone validation
-            else if (validation_type == "phone" && (field_value != "" && field_value !== null && field_value !== undefined))
+                // The person is logged into Facebook, but they are
+                //  not authorized to use our website login feature
+            } 
+            else 
             {
-                if (field_value.match(/^\(?\+?[\d\(\-\s\)]+$/) == null) single_field_error_details["message"] = "Invalid characters found.";
+                // The person is not logged into Facebook, so we cannot
+                // log them into our website
             }
-
-            validation_messages.push(single_field_error_details); // if none of the above fail, return validation successfull
-
         });
-        // end: for each field to validate
-
-        return validation_messages;
     }
-    // end: if form exists
-}
-
-/*
- * ================================================================
- * IE9: Contact Form Fields Placeholders
- *
- * Since IE9 or less browsers do not support "placeholders" for form input fields, set replace "placeholder" value inside the field value.
- */
-function contact_form_IE9_placeholder_fix()
-{
-    var forms = $("form");
-
-    // for each form 
-    forms.each(function()
+    catch (e)
     {
-        var this_form = $(this);
-
-        // for each input field
-        $(this).find(".form-control").each(function()
-        {
-            var field_placeholder = $(this).attr("placeholder");
-            // if a placeholder is set
-            if (field_placeholder !== undefined && field_placeholder != "")
-            {
-                // set default value to input field
-                $(this).val(field_placeholder);
-
-                // set an onfocus event to clear input field
-                $(this).focus(function()
-                {
-                    if ($(this).val() == field_placeholder) $(this).val("");
-                });
-
-                // set an onblur event to insert placeholder if field is empty
-                $(this).blur(function()
-                {
-                    if ($(this).val() == "") $(this).val(field_placeholder);
-                });
-            }
-        });
-        // end: for each input field
-    });
+        console.log(e);
+    }
 }
-
-/*
- * ================================================================
- * Change Background check
- *
- * checks whether to change background or not
- * - on mobile, change only if 'mobile_change_bg' is set to 'true'
- * - on desktop, always change (if bg available)
- */
-function change_bg_check()
+ 
+function loadDataWithFilter()
 {
-    return ((jQuery.browser.mobile && background_settings.change_on_mobile) || (!jQuery.browser.mobile && background_settings.change_on_nonmobile)) ? true : false;
-}
+    var query = createQuery();
 
-/*
- * ================================================================
- * Tabs - uniform height
- *
- * to prevent jumping when switching between tabs
- */
-function tabs_uniform_height()
-{
-    var tabs = $(".tabpanel.uniform-height");
-    for (var i = 0, l = tabs.length; i < l; i++)
+    /*
+    $.ajax(
     {
-        var max_height = 0;
-        var panes = $(tabs[i]).find(".tab-pane");
-        for (var j = 0, k = panes.length; j < k; j++)
+        type: "POST",
+        url: "api.php",
+        data: {data: query},
+        success: function(res) 
         {
-            var prev_css = $(panes[j]).attr("style");
-            $(panes[j]).css(
-            {
-                position: 'absolute',
-                visibility: 'hidden',
-                display: 'block'
-            });
-            max_height = ($(panes[j]).outerHeight(true) > max_height) ? $(panes[j]).outerHeight(true) : max_height;
-            $(panes[j]).attr("style", prev_css ? prev_css : "");
+            insertMarkers(res);
+        },
+        error: function(res, err) 
+        {
+            console.log(res);
+            console.log(err);
         }
-        panes.css(
+    });
+    */
+}
+
+function createQuery()
+{
+    var query = "{}";
+    
+    if ($("#lower").val())
+    {
+        query += "\"lower\": " + $("#lower").val();
+    }
+    if ($("#upper").val())
+    {
+        query += "\"upper\": " + $("#upper").val();
+    }
+    if ($("#bedrooms").val())
+    {
+        query += "\"bedrooms\": " + $("#bedrooms").val();
+    }
+    if ($("#bathrooms").val())
+    {
+        query += "\"bathrooms\": " + $("#bathrooms").val();
+    }
+    if ($("#start_date").val())
+    {
+        query += "\"start_date\": " + $("#start_date").val();
+    }
+    
+    return query;
+}
+
+
+function insertMarkers(res)
+{
+    if (res != "")
+    {
+        var data = JSON.parse(res).data;
+        data.forEach(function(d)
         {
-            'min-height': max_height + 'px'
+            var marker = L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
+            
+            var slideshowContent = "";
+            var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+            for(var i = 0; i < images.length; i++) 
+            {
+                var img = images[i];
+
+                slideshowContent += 
+                                    '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                                      '<img src="' + img["src"] + '" />' +
+                                      '<div class="caption">' + img["caption"] + '</div>' +
+                                    '</div>';
+            }
+            
+            var popupContent =  
+                        '<div id="' + d.id + '" class="popup">' +
+                            '<h2>' + d.address + '</h2>' +
+                            '<div class="slideshow">' +
+                                slideshowContent +
+                            '</div>' +
+                            '<div class="cycle">' +
+                                '<a href="#" class="prev">&laquo; Previous</a>' +
+                                '<a href="#" class="next">Next &raquo;</a>' +
+                            '</div>'
+                        '</div>';
+            
+            marker.bindPopup(popupContent, {
+                closeButton: false,
+                minWidth: 320
+            });
         });
     }
 }
 
 /*
- * ================================================================
- * Login User
- *
- */
-function login_user()
+function getPointsWithinPolygon(e) 
 {
-    var username = $(".modal-body .username").val().trim();
-    var password = $(".modal-body .password").val().trim();
-
-    var error = buildError({"username": username, "password": password});
+    var currentPolyLayer = e.layers[0];
+    for each lat and long in db.listings that are at this school
+    {
+        var latlng = L.latLng(lat, long);
+        var layer = leafletPip.pointInLayer(latlng, currentPolyLayer, true);
+        if (layer.length) 
+        {
+          // we have found a point in the polygon, now add the marker to the map
+          L.marker([lat, long]).addTo(map);
+        } 
+    }
+} 
+*/ 
+function login_user(hide_main_modal)
+{
+    var data = buildData(["username", "password"]);
+    
+    var error = buildError(data);
     
     if (error != "Please Include<br>")
     {
-        setError(".login-error", error);
+        setError("login", error);
     }
     else
     {
@@ -1396,34 +779,40 @@ function login_user()
             url: "login.php",
             data:
             {
-                data_login: "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}",
-                user: username //to be used as session variable later
+                command: "login",
+                data: data,
+                user: data["username"] //to be used as session variable later
             },
             beforeSend: function()
             {
-                $(".login-btn").val("Logging in...");
-                $(".login-btn").attr("disabled", true);
+                disableModalSubmit('login');
             },
             success: function(res)
             {
                 if (contains(res, "Okay"))
                 {
-                    showLoginFeatures(true);
+                    showLoginFeatures(hide_main_modal);
+                    if (hide_main_modal === false)
+                    {
+                        populate_and_open_modal(null, 'modal-content-3');
+                    }
                 }
-                else
+				else
                 {
-                    setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                    setError('login', res);
                 }
             },
             error: function(err, res)
             {
                 console.log(err);
                 console.log(res);
+                setError('login', res);
             },
             complete: function()
             {
-                $(".login-btn").text("Log In");
-                $(".login-btn").attr("disabled", false);
+                resetModal("login", "Log In", false);
+				
+				$("<label>Password: </label><input type='password' class='form-control password' />").insertAfter("#delete_account_header");
             }
         });
     }
@@ -1431,6 +820,12 @@ function login_user()
 
 function login_facebook_user(userID, accessToken)
 {
+    var data = {"username": userID, "password": accessToken};
+    
+    //facebook already does the validation of username and password
+    // in addition, we don't need to check for null values because it's
+    // already handled on the facebook side, the code would not reach
+    // here if that was the case...
     
     $.ajax(
     {
@@ -1438,22 +833,35 @@ function login_facebook_user(userID, accessToken)
         url: "login.php",
         data:
         {
-            data_facebook_login: "{\"username\": \"" + userID + "\", \"password\": \"" + accessToken + "\"}",
+            command: "facebook_login",
+            data: data,
             user: userID
         },
         success: function(res)
         {
             if (contains(res, "Okay"))
             {
+                if ($("#modal-content-9 label").length != 0)
+                {
+                    $("#modal-content-9 label").remove();
+                    $("#modal-content-9 .password").remove();
+                }
+                
                 showLoginFeatures(true);
             }
             else if (contains(res, "Needs Update"))
             {
+                if ($("#modal-content-9 label").length != 0)
+                {
+                    $("#modal-content-9 label").remove();
+                    $("#modal-content-9 .password").remove();
+                }
+                
                 showUpdateScreen();
             }
             else
             {
-                setError('.login-error', 'Error: please notify alex@lbkstudios.net of the issue.');
+                setError('login', 'Error: please notify alex@lbkstudios.net of the issue.');
             }
         },
         error: function(err, res)
@@ -1463,62 +871,113 @@ function login_facebook_user(userID, accessToken)
         },
         complete: function()
         {
-            $(".login-btn").val("Log In");
-            $(".login-btn").attr("disabled", false);
+            resetModal("login", "Log In", false);
+			
+			$("#delete_account_header").siblings("label").remove();
+			$("#delete_account_header").siblings("input.password").remove();
         }
     });
 }
 
 function logout_user()
 {
+	removeLoginFeatures();
+	
     $.ajax(
+    {
+        type: "POST",
+        url: "logout.php",
+        success: function(res)
         {
-            type: "POST",
-            url: "logout.php",
-            success: function(res)
+            if (!contains(res, "Successfully"))
             {
-                if (contains(res, "Successfully"))
-                {
-                    removeLoginFeatures();
-                }
-                else
-                {
-                    console.log(res); //print the error
-                }
-
-            },
-            error: function(err, res)
-            {
-                console.log(err);
-                console.log(res);
+                console.log(res); //print the error
             }
-        });
+        },
+        error: function(err, res)
+        {
+            console.log(err);
+            console.log(res);
+        }
+    });
 
-    $("#login-create").text("Log In");
-    $("#login-create-function").attr("onclick", "populate_and_open_modal(event, 'modal-content-1'); resetModals(); set_default_button_on_enter('login');");
+    $("#login_create").text("Log In");
+    $("#login_create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
 function removeLoginFeatures()
 {
-    $("#update-function").hide();
+    $("#manage_account-function").hide();
+    $("#manage_listings-function").hide();
+}
+
+function initBoxes()
+{
+    setGeocompleteTextBox();
+    setTextBoxesWithNumbers();
+    setStartDateTextBox();
+}
+
+function setStartDateTextBox()
+{
+    $(".modal-body .start_date").datepicker();
+}
+
+function setTextBoxesWithNumbers()
+{
+    $('.modal-body .rent').autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $('.modal-body .bedrooms').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    
+    $('.modal-body .bathrooms').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+}
+
+function setGeocompleteTextBox()
+{
+    $(".modal-body .address").geocomplete()
+        .bind("geocode:result", function(event, result){
+            $(".modal-body .latitude").val(result.geometry.location.A); //latitude
+            $(".modal-body .longitude").val(result.geometry.location.F); //longitude
+            $(".modal-body .selected_address").val($(".modal-body .address").val());
+        });
 }
 
 function showLoginFeatures(hide_main_modal)
 {
-    $("#login-create").text("Log Out");
-    $("#login-create-function").attr("onclick", "logout_user()");
-
-    if (hide_main_modal)
-        hideMainModal();
+    $("#login_create").text("Log Out");
+    $("#login_create-function").attr("onclick", "logout_user()");
+    $("#login_create-function").show();
     
-    $("#update-function").show();
+    if (hide_main_modal === true)
+    {
+        hideMainModal();
+    }
+    
+    $("#manage_account-function").show();
+    $("#manage_listings-function").show();
 }
 
 function showUpdateScreen()
 {
     showLoginFeatures(false);
    
-    $("#update-function").click();
+    load_update_account_modal(null);
 }
 
 function hideMainModal()
@@ -1526,36 +985,33 @@ function hideMainModal()
     $("#common-modal").modal('hide');
 }
 
-function resetModals()
-{
-    $(".register-btn").val("Create Account");
-    $(".register-btn").attr('disabled', false);
-    $(".register-error").hide();
+function resetModal(modal, btnText, hide)
+{  
+    $("." + modal + "-btn").val(btnText);
+    $("." + modal + "-btn").attr('disabled', false);
+    if (hide)
+    {
+        $("." + modal + "-error").hide();
+    }
+}
 
-    $(".login-btn").val("Log In");
-    $(".login-btn").attr('disabled', false);
-    $(".login-error").hide();
-    
-    $(".update-btn").val("Update Account");
-    $(".update-btn").attr('disabled', false);
-    $(".update-error").hide();
+function disableModalSubmit(modal)
+{
+    $("." + modal + "-btn")
+        .val("Processing...")
+        .attr("disabled", true);
 }
 
 function create_account()
 {
-    //first validate that the fields are filled out
-    var username = $(".modal-body .username").val().trim();
-    var password = $(".modal-body .password").val().trim();
-    var firstname = $(".modal-body .firstname").val().trim();
-    var lastname = $(".modal-body .lastname").val().trim();
-    var email = $(".modal-body .email").val().trim();
-    var phonenumber = $(".modal-body .phonenumber").val().trim();
-    var error = buildError({"username": username, "password": password, "firstname": firstname,
-                                       "lastname": lastname, "email": email, "phonenumber": phonenumber});
+    var data = buildData(["username", "password", "firstname", "lastname",
+                                    "email", "phonenumber"]);
+                                    
+    var error = buildError(data);
     
     if (error != "Please Include<br>")
     {
-        setError(".register-error", error);
+        setError("create_account", error);
     }
     else
     {
@@ -1565,29 +1021,22 @@ function create_account()
             url: "api.php",
             data:
             {
-                data_register: "{\"username\": \"" + username + "\", \"password\": \"" + password +
-                    "\", \"firstname\": \"" + firstname + "\", \"lastname\": \"" + lastname + 
-                    "\", \"email\": \"" + email + "\", \"phonenumber\": \"" + phonenumber + "\"}"
+                command: "create_account",
+                data: data
             },
             beforeSend: function()
             {
-                $(".register-btn").val("Processing...");
-                $(".register-btn").attr('disabled', true);
+                disableModalSubmit("create_account");
             },
             success: function(res)
             {
                 if (contains(res, "Okay"))
                 {
-                    login_user();
-                    populate_and_open_modal(
-                    {
-                        preventDefault: true
-                    }, 'modal-content-3');
-
+                    login_user(false);
                 }
-                else
+				else
                 {
-                    setError(".register-error", res);
+                    setError("create_account", res);
                 }
             },
             error: function(err, res)
@@ -1597,17 +1046,84 @@ function create_account()
             },
             complete: function()
             {
-                $(".register-btn").val("Create Account");
-                $(".register-btn").attr('disabled', false);
-
+                resetModal("create_account", "Create Account", false);
+                
                 set_default_button_on_enter("");
             }
         });
     }
-
 }
 
-function load_update_modal(event)
+function delete_account()
+{
+    var data = buildData(($('#modal-content-9 .password').length == 0 ? [] : ["password"]));
+                                    
+    var error = buildError(data);
+    
+    if (data["password"] == null)
+    {
+        data["password"] = "";
+    }
+    
+    if (error != "Please Include<br>" && $('#modal-content-9 .password').length != 0)
+    {
+        setError("delete_account", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                command: "delete_account",
+                data: data
+            },
+            beforeSend: function()
+            {
+                disableModalSubmit("delete_account");
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    logout_user();
+					
+					hideMainModal();
+					
+					set_default_button_on_enter("");
+                }
+                else
+                {
+                    setError("delete_account", res);
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                resetModal("delete_account", "Delete Account", false);
+            }
+        });
+    }
+}
+
+function load_modal(event, which, enter_default, btnText)
+{
+    populate_and_open_modal(event, which); 
+    resetModal(enter_default, btnText, true); 
+    set_default_button_on_enter(enter_default);
+    //also try to reset the modal backdrop height 
+    //      because it's different for each modal
+    position_modal_at_centre();
+    modal_backdrop_height($('#common-modal.modal'));
+}
+
+function load_update_account_modal(event)
 {
     $.ajax(
     {
@@ -1615,7 +1131,8 @@ function load_update_modal(event)
         url: "api.php",
         data:
         {
-            data_update_load: "load"
+            command: "get_user_info",
+            data: "load"
         },
         success: function(res)
         {
@@ -1636,9 +1153,13 @@ function load_update_modal(event)
                 
                 fill_update_modal(JSON.parse(res).data);
              
-                resetModals();
+                resetModal("update_account", "Update Account", true);
                 
                 set_default_button_on_enter('update');
+                
+                position_modal_at_centre();
+                
+                modal_backdrop_height($('#common-modal.modal'));
             }
         },
         error: function(err, res)
@@ -1673,17 +1194,13 @@ function fill_update_modal(data)
 
 function update_account()
 {
-    //first validate that the fields are filled out
-    var firstname = $(".modal-body .firstname").val().trim();
-    var lastname = $(".modal-body .lastname").val().trim();
-    var email = $(".modal-body .email").val().trim();
-    var phonenumber = $(".modal-body .phonenumber").val().trim();
-    var error = buildError({"firstname": firstname, "lastname": lastname, 
-                                      "email": email, "phonenumber": phonenumber});
+    var data = buildData(["firstname", "lastname", "email", "phonenumber"]);
+
+    var error = buildError(data);
     
     if (error != "Please Include<br>")
     {
-        setError(".update-error", error);
+        setError("update_account", error);
     }
     else
     {
@@ -1693,27 +1210,22 @@ function update_account()
             url: "api.php",
             data:
             {
-                data_update: "{\"firstname\": \"" + firstname + "\", \"lastname\": \"" + lastname + 
-                                    "\", \"email\": \"" + email + "\", \"phonenumber\": \"" + phonenumber + "\"}"
+                command: "update_account",
+                data: data
             },
             beforeSend: function()
             {
-                $(".update-btn").val("Processing...");
-                $(".update-btn").attr('disabled', true);
+                disableModalSubmit("update_account");
             },
             success: function(res)
             {
                 if (contains(res, "Okay"))
                 {
-                    populate_and_open_modal(
-                    {
-                        preventDefault: true
-                    }, 'modal-content-5');
-
+                    populate_and_open_modal(null, 'modal-content-5');
                 }
                 else
                 {
-                    setError(".update-error", res);
+                    setError("update_account", res);
                 }
             },
             error: function(err, res)
@@ -1723,9 +1235,115 @@ function update_account()
             },
             complete: function()
             {
-                $(".update-btn").val("Update Account");
-                $(".update-btn").attr('disabled', false);
+                resetModal("update_account", "Update Account", false);
+                
+                set_default_button_on_enter("");
+            }
+        });
+    }
+}
 
+function update_listing()
+{
+    var data = buildData(["firstname", "lastname", "email", "phonenumber"]);
+    
+    //first validate that the fields are filled out
+    var error = buildError(data);
+    
+    if (error != "Please Include<br>")
+    {
+        setError("update", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            data:
+            {
+                command: "update_listing",
+                data: data
+            },
+            beforeSend: function()
+            {
+                disableModalSubmit("update_listing");
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    populate_and_open_modal(null, 'modal-content-5');
+                }
+                else
+                {
+                    setError("update_listing", res);
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                resetModal("update_listing", "Update Listing", false);
+                
+                set_default_button_on_enter("");
+            }
+        });
+    }
+}
+
+function create_listing()
+{
+    var data = buildData(["address", "selected_address", "latitude", "longitude",
+                                    "bedrooms", "bathrooms", "animals", "laundry", "rent",
+                                    "start_date"]);
+   
+    var error = buildError(data);
+
+    if (error != "Please Include<br>")
+    {
+        setError("create_listing", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "api.php",
+            beforeSend: function() 
+            {
+                disableModalSubmit("create_listing", "Processing...");
+            },
+            data :
+            {
+                command: "create_listing",
+                data: data
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    populate_and_open_modal(null, 'modal-content-7');
+                    
+                    L.marker([data["latitude"], data["longitude"]]).addTo(map);
+                }
+                else
+                {
+                    setError("create_listing", res);
+                }
+            },
+            error: function(res, err)
+            {
+                console.log(res);
+                console.log(err);
+            },
+            complete: function()
+            {
+                resetModal("create_listing", "Create Listing", false);
+                
                 set_default_button_on_enter("");
             }
         });
@@ -1734,51 +1352,25 @@ function update_account()
 
 function set_default_button_on_enter(modal)
 {
-    if (which_modal != "")
+    if (modal != "")
     {
+        //reset for next set
         $(document).unbind("keypress");
+        which_modal = "." + modal + "-btn";
     }
-
-    switch (modal)
+    else
     {
-        case "login":
-            $(document).on("keypress", function(e)
-            {
-                var code = e.keyCode || e.which;
-                if (code == 13)
-                {
-                    $($(".login-btn")[0]).click();
-                }
-            });
-            which_modal = ".login-btn";
-            break;
-        case "register":
-            $(document).on("keypress", function(e)
-            {
-                var code = e.keyCode || e.which;
-                if (code == 13)
-                {
-                    $($(".register-btn")[0]).click();
-                }
-            });
-            which_modal = ".register-btn";
-            break;
-        case "register":
-            $(document).on("keypress", function(e)
-            {
-                var code = e.keyCode || e.which;
-                if (code == 13)
-                {
-                    $($(".update-btn")[0]).click();
-                }
-            });
-            which_modal = ".update-btn";
-            break;
-        default:
-
-            which_modal = "";
-            break;
+        which_modal = "";
     }
+    
+    $(document).on("keypress", function(e)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            $(".modal-body ." + modal + "-btn").click();
+        }
+    });
 }
 
 function isValidEmail(em)
@@ -1802,6 +1394,25 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
+function buildData(elements)
+{
+    var modalAttr = ".modal-body .";
+    
+    var arr = $.map(elements, function(element) 
+    {
+        return $(modalAttr + element).val().trim();
+    });
+    
+    var data = {};
+    
+    for (var i = 0; i < arr.length; i++)
+    {
+        data[elements[i]] = arr[i];
+    }
+    
+    return data;
+}
+
 function buildError(fields)
 {
     var error = "Please Include<br>";
@@ -1810,7 +1421,7 @@ function buildError(fields)
     {
         error += "Username<br>";
     }
-     if (fields.password == "")
+    if (fields.password == "")
     {
         error += "Password<br>";
     }
@@ -1830,14 +1441,52 @@ function buildError(fields)
     {
         error += "Valid Phone Number<br>";
     }
+    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
+    {
+        error += "Valid Address - Must Select Google's Result<br>";
+    }
+    if (fields.address != "" && fields.address != fields.selected_address)
+	{
+		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
+	}
+    if (fields.bedrooms == "")
+    {
+        error += "Valid Number of Bedrooms<br>";
+    }
+    if (fields.bathrooms == "")
+    {
+        error += "Valid Number of Bathrooms<br>";
+    }
+    if (fields.rent == "")
+    {
+        error += "Valid Monthy Rent Amount<br>";
+    }
+    if (fields.start_date == "")
+    {
+        error += "Valid Lease Start Date<br>";
+    }
+    if (fields.animals == "")
+    {
+        error += "If Animals Are Allowed<br>";
+    }
+    if (fields.laundry == "")
+    {
+        error += "If In-Unit Laundry is Available<br>";
+    }
     
     return error;
 }
 
 function setError(el, msg)
 {
-    $(el).html(msg);
-    $(el).show();
+    if (msg == "")
+	{
+		msg = "Server Error: Please contact alex@lbkstudios.net";
+	}
+	
+    var modal = ".modal-body ."
+    $(modal + el + "-error").html(msg);
+    $(modal + el + "-error").show();
 
     //reset the height because the error bar increases it...
     modal_backdrop_height($('#common-modal.modal'));

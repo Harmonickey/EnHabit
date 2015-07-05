@@ -10,7 +10,6 @@ require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
-require 'date'
 
 def user_exists(user, pass)
 
@@ -23,7 +22,7 @@ def user_exists(user, pass)
     query["Username"] = user
 	
     documents = accounts.find(query).to_a
-	mongo_session.disconnect
+    mongo_session.disconnect
     if documents.count == 0
         return false
     else

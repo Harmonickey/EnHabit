@@ -6,25 +6,9 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 $: << "/home2/lbkstud1/ruby/gems"
 
 require 'json'
-require 'moped'
 require 'bson'
-
-data = JSON.parse(ARGV[0].delete('\\'))
-user = ARGV[1] if not ARGV[1].nil?
-
-@lower = data["lower"]
-@upper = data["upper"]
-@bedrooms = data["bedrooms"]
-@bathrooms = data["bathrooms"]
-@start_date = data["start_date"]
-@extensions = data["extensions"]
-
-@price_filter = {}
-@bedroom_filter = {}
-@bathrooms_filter = {}
-@start_filter = {}
-@main_filter = {}
-@extensions_filter = {}
+require 'moped'
+require 'mongoid'
 
 def set_filters
     if @lower.nil? and @upper.nil? 
@@ -85,8 +69,23 @@ def combine_filters_into_query
     end
 end
 
-
 begin
+    data = JSON.parse(ARGV[0].delete('\\'))
+    user = ARGV[1] if not ARGV[1].nil?
+
+    @lower = data["lower"]
+    @upper = data["upper"]
+    @bedrooms = data["bedrooms"]
+    @bathrooms = data["bathrooms"]
+    @start_date = data["start_date"]
+    @extensions = data["extensions"]
+
+    @price_filter = {}
+    @bedroom_filter = {}
+    @bathrooms_filter = {}
+    @start_filter = {}
+    @main_filter = {}
+    @extensions_filter = {}
 
     set_filters()
     combine_filters_into_query()
@@ -96,7 +95,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(_id: 0, worldCoordinates: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0
@@ -104,9 +103,9 @@ begin
     else
         result_data = Hash.new
         result_data["data"] = documents
+        result_data["data"].map { |listing| listing["_id"] = listing["_id"].to_s }
         puts result_data.to_json
     end
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
