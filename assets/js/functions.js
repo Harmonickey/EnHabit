@@ -892,7 +892,6 @@ function login_facebook_user(userID, accessToken)
 function logout_user(isDeleting)
 {
 	removeLoginFeatures();
-	console.log(isDeleting);
     $.ajax(
     {
         type: "POST",
