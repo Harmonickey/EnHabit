@@ -135,3 +135,36 @@ function delete_user(id)
         }
     });
 }
+
+function login_admin()
+{
+    var username = $("#username").val().trim();
+    var password = $("#password").val().trim();
+    
+    if (!username || !password)
+    {
+        
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "admin_api.php",
+            data:
+            {
+                command: "login_admin",
+                data: id
+            },
+            success: function(res)
+            {
+                console.log(res);
+            },
+            error: function(res, err)
+            {
+                console.log(res);
+                console.log(err);
+            }
+        });
+    }
+}
