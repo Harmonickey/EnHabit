@@ -998,7 +998,7 @@ function showUpdateScreen()
 {
     showLoginFeatures(false);
    
-    load_update_account_modal(null);
+    load_update_account_modal(null, "Create Account Info");
 }
 
 function hideMainModal()
@@ -1174,7 +1174,7 @@ function load_listings_list()
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 
-function load_update_account_modal(event)
+function load_update_account_modal(event, title)
 {
     $.ajax(
     {
@@ -1201,6 +1201,8 @@ function load_update_account_modal(event)
             else
             {
                 populate_and_open_modal(event, 'modal-content-4');
+                
+                $(".modal-content h1").text(title);
                 
                 fill_update_modal(JSON.parse(res).data);
              

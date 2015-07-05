@@ -78,7 +78,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
                     <p class="login-error alert alert-danger" style="display: none;"></p>
                     <div></div>
-                    <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a href="" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
+                    <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
                 </div>
                 <!-- #modal-content-1 -->
                 <!-- Register -->
@@ -158,7 +158,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Manage Account -->
                 <div class="content-to-populate-in-modal" id="modal-content-8">
                     <h1>Manage Account</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event);" value="Update Account" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event, 'Update Account Info');" value="Update Account" style="margin-top: 15px;" />
                 </div>
                 <!-- #modal-content 8 -->
                 <!-- Delete Account -->
