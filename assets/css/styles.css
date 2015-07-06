@@ -363,7 +363,6 @@ table {
     font-family: 'open_sanslight', sans-serif;
     font-size:0.86em;
     line-height:1.05;
-    text-transform: lowercase;
     background: rgba(0,0,0,0.1);
     width:100%;
 }
