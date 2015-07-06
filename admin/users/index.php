@@ -1,5 +1,4 @@
 <?php
-
     session_start();
     
     if (!isset($_SESSION["admin"]))
@@ -18,7 +17,6 @@
             $_SESSION['CREATED'] = time();  // update creation time
         }
     }
-
 ?>
 
 <!DOCTYPE html>

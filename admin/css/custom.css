@@ -7,3 +7,9 @@ Last change:	03/25/2013
 Assigned to:	You
 
 -------------------------------------------------------------------*/
+
+textarea
+{
+    resize:none;
+    word-wrap: normal;
+}

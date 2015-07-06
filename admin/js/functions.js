@@ -29,11 +29,11 @@ function get_all_users()
                 //fill in all user data
                 $("#user-list tr:last").after(
                     "<tr id='" + data[i]._id.$oid + "'>"   +
-                        "<td><textarea style='resize:none;' class='form-control'>" + data[i].Username + "</textarea></td>" +
-                        "<td><textarea style='resize:none;' class='form-control'>" + data[i].FirstName + "</textarea></td>" +
-                        "<td><textarea style='resize:none;' class='form-control'>" + data[i].LastName + "</textarea></td>" +
-                        "<td><textarea style='resize:none;' class='form-control'>" + data[i].PhoneNumber + "</textarea></td>" +
-                        "<td><textarea style='resize:none;' class='form-control'>" + data[i].Email + "</textarea></td>" +
+                        "<td><textarea class='form-control'>" + data[i].Username + "</textarea></td>" +
+                        "<td><textarea class='form-control'>" + data[i].FirstName + "</textarea></td>" +
+                        "<td><textarea class='form-control'>" + data[i].LastName + "</textarea></td>" +
+                        "<td><textarea class='form-control'>" + data[i].PhoneNumber + "</textarea></td>" +
+                        "<td><textarea class='form-control'>" + data[i].Email + "</textarea></td>" +
                         "<td><input type='checkbox' " + (data[i].Landlord ? "checked" : "") + " data-size='mini'></td>" +
                         "<td><input type='checkbox' " + (data[i].Active ? "checked" : "") + " data-size='mini'></td>" +
                         "<td><input type='checkbox' " + (data[i].IsAdmin ? "checked" : "") + " data-size='mini'></td>" +
