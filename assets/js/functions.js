@@ -1317,7 +1317,7 @@ function create_listing()
             {
                 disableModalSubmit("create_listing", "Processing...");
             },
-            data :
+            data:
             {
                 command: "create_listing",
                 data: data

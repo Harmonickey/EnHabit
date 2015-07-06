@@ -26,6 +26,7 @@ def insert_user(user, pass, fn, ln, em, pn)
     usr_obj["Landlord"] = false
     usr_obj["Active"] = true
     usr_obj["IsFacebook"] = false
+    usr_obj["IsAdmin"] = false
     #usr_obj["Verified"] = false
  
     ret_msg = ""

@@ -4,9 +4,20 @@
     
     if (!isset($_SESSION["admin"]))
     {
-        header("Location: ../", FALSE);
+        header("Location: /admin/login.php", FALSE); // just redirect if the user isn't authorized to go here....
     }
+    else
+    {
+        $one_hour = 3600;
 
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > $one_hour) {
+            // session started more than 1 hour ago
+            session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+            $_SESSION['CREATED'] = time();  // update creation time
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +77,7 @@
 			</a>
 			
 			<ul class="dropdown-menu">
-				<li><a href="javascript:;">Logout</a></li> <!-- this would link to logout.php and then to /index.html -->
+				<li><a style="cursor: pointer;" onclick="logout_admin()">Logout</a></li>
 			</ul>
 		</li>
     </ul>
@@ -136,7 +147,7 @@
 					
 				<div class="widget-header">
 					<i class="icon-star"></i>
-					<h3>Quick Stats</h3>
+					<h3>Site Analytics</h3>
 				</div> <!-- /widget-header -->
 				
 				<div class="widget-content">
@@ -528,6 +539,7 @@
 <script src="./js/plugins/flot/jquery.flot.resize.js"></script>
 
 <script src="./js/Application.js"></script>
+<script src="./js/functions.js"></script>
 
 <script src="./js/charts/area.js"></script>
 <script src="./js/charts/donut.js"></script>

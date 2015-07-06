@@ -5,7 +5,7 @@ function remove_malicious_characters($data)
     $temp_data = json_encode($data);
     
     //blacklist all characters that could be used for shell injection
-    $blacklist = ["|", "$", "&", ";", "<", ">", "`"];
+    $blacklist = array("|", "$", "&", ";", "<", ">", "`");
 
     for ($i = 0; $i < count($blacklist); $i++)
     {

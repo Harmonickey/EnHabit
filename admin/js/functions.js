@@ -1,4 +1,12 @@
 
+$(document).on("keypress", function(e)
+{
+    var code = e.keyCode || e.which;
+    if (code == 13)
+    {
+        $(".login-action").click();
+    }
+});
 
 function get_all_users()
 {
@@ -143,7 +151,7 @@ function login_admin()
     
     if (!username || !password)
     {
-        
+        $("#admin-login-error").text("Please enter Username and Password");
     }
     else
     {
@@ -151,20 +159,71 @@ function login_admin()
         {
             type: "POST",
             url: "admin_api.php",
+            beforeSend: function ()
+            {
+                $(".login-action").text("Processing...");
+                $(".login-action").prop("disabled", true);
+            },
             data:
             {
                 command: "login_admin",
-                data: id
+                data: {"username": username, "password": password},
+                user: username
             },
             success: function(res)
             {
                 console.log(res);
+                if (contains(res, "Okay"))
+                {
+                    //session variable should be set now
+                    location.href="/admin"; // goto admin landing
+                }
+                else
+                {
+                    $("#admin-login-error").show();
+                    $("#admin-login-error").text(res);
+                }
             },
             error: function(res, err)
             {
                 console.log(res);
                 console.log(err);
+            },
+            complete: function() 
+            {
+                $(".login-action").text("Sign In");
+                $(".login-action").prop("disabled", false);
             }
         });
     }
+}
+
+function logout_admin()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "logout.php",
+        success: function(res)
+        {
+            if (contains(res, "Successfully"))
+            {
+                location.href = "login.php";
+            }
+            else
+            {
+                console.log(res); //print the error
+            }
+        },
+        error: function(err, res)
+        {
+            console.log(err);
+            console.log(res);
+        }
+    });
+}
+
+function contains(haystack, needle)
+{
+    return (haystack.indexOf(needle) != -1)
 }

@@ -1,3 +1,17 @@
+<?php
+    session_start();
+    
+    $one_hour = 3600;
+
+    if (!isset($_SESSION['CREATED'])) {
+        $_SESSION['CREATED'] = time();
+    } else if (time() - $_SESSION['CREATED'] > $one_hour) {
+        // session started more than 1 hour ago
+        session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+        $_SESSION['CREATED'] = time();  // update creation time
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,7 +52,6 @@
 
 <div class="account-container stacked">
 	<div class="content clearfix">
-		<form action="./index.html" method="post">
 			<h1>Sign In</h1>		
 			<div class="login-fields">
 				<p>Welcome Admin - Please Sign In:</p>
@@ -52,18 +65,9 @@
 				</div> <!-- /password -->
 			</div> <!-- /login-fields -->
 			<div class="login-actions">
-				<button class="login-action btn btn-primary">Sign In</button>
+				<button class="login-action btn btn-primary" onclick="login_admin()">Sign In</button>
 			</div> <!-- .actions -->
-			<div class="login-social">
-				<p>Sign in using social network:</p>
-				<div class="twitter">
-					<a href="#" class="btn_1">Login with Twitter</a>				
-				</div>
-				<div class="fb">
-					<a href="#" class="btn_2">Login with Facebook</a>				
-				</div>
-			</div>
-		</form>
+            <p class="admin-login-error alert alert-danger" style="display: none;"></p>
 	</div> <!-- /content -->
 </div> <!-- /account-container -->
 
