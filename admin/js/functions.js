@@ -124,11 +124,13 @@ function update_user(id)
     
     var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"]);
     
+    data["id"] = id;
+    
     var error = buildError(data);
     
     if (error != "Please Include<br>")
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
     }
     else
     {
@@ -152,11 +154,11 @@ function update_user(id)
                 
                 if (data["error"])
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"]});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
                 }
                 else if (!res)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User!"});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User!", position: 'bottom-right'});
                 }
                 else
                 {
@@ -172,7 +174,7 @@ function update_user(id)
                        $($(userfield)[7]).prop("checked", data[i].IsAdmin);
                     }
                     
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!"});
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
                 }
             },
             error: function(res, err)
@@ -204,9 +206,7 @@ function delete_user(id)
 	}, 
     function(result) 
     {
-        console.log(result);
-        /*
-        if (result === "Yes")
+        if (result === true)
         {
             $.ajax(
             {
@@ -225,11 +225,11 @@ function delete_user(id)
                     if (contains(res, "Okay"))
                     {
                         $("#" + id).remove();
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!"});
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'bottom-right'});
                     }
                     else
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: res});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
                     }
                     
                 },
@@ -240,7 +240,6 @@ function delete_user(id)
                 }
             });
         }
-        */
     });
     
     
@@ -256,7 +255,7 @@ function create_user()
     
     if (error != "Please Include<br>")
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
     }
     else
     {
@@ -280,11 +279,11 @@ function create_user()
                 
                 if (data["error"])
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"]});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
                 }
                 else if (!res)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Create User!"});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Create User!", position: 'bottom-right'});
                 }
                 else
                 {
@@ -305,7 +304,7 @@ function create_user()
                         
                     $("#user-list tr:second input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
                    
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "User Created Successfully!"});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "User Created Successfully!", position: 'bottom-right'});
                 }
             },
             error: function(res, err)

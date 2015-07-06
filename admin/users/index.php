@@ -37,6 +37,9 @@
     
     <link href="../css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
+    <link href="../js/plugins/msgGrowl/css/msgGrowl.css" rel="stylesheet">
+    <link href="../js/plugins/msgbox/jquery.msgbox.css" rel="stylesheet">
+    
     <link href="../css/base-admin-3.css" rel="stylesheet">
     <link href="../css/base-admin-3-responsive.css" rel="stylesheet">
     
