@@ -16,7 +16,8 @@
     position: relative;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) 
+{
     #left-sidebar,
     #footer,
     #mobile-menu-icon
@@ -126,4 +127,22 @@
 .leaflet-popup-tip
 {
     display: none;  /* for now I dunno what is wrong with it... */
+}
+
+#listings_list 
+{
+    position: fixed;
+    z-index: 1;
+    width: 1px;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0,0,0,0.79);
+}
+
+@media (min-width: 992px)
+{
+    #left-sidebar .logo
+    {
+        padding: 28px 0 0 0;
+    }
 }
