@@ -19,7 +19,42 @@ var background_settings = {
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
 //map.on('draw:created', getPointsWithinPolygon);
-            
+
+// Disable dragging when user's cursor enters the element
+$("#left-sidebar").bind('mouseover',
+    function ()
+    {
+        map.dragging.disable();
+    }
+);
+
+// Re-enable dragging when user's cursor leaves the element
+$("#left-sidebar").bind('mouseout',
+    function () 
+    {
+        map.dragging.enable();
+    }
+);
+
+$(function ()
+{
+    /* Horizontal Slider */
+    $( "#PriceRangeSlider" ).slider(
+    {
+        range: true,
+        min: 400,
+        max: 3000,
+        values: [ 800, 1500 ],
+        slide: function( event, ui )
+        {
+            $( "#amount" ).text ( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        }
+    });
+    
+    /* DatePicker */
+    $( "#datepicker-inline" ).datepicker();
+});
+
 $('#map').on('click', '.popup .cycle a', function() 
 {
     var $slideshow = $('.slideshow');
@@ -701,7 +736,6 @@ function createQuery()
     
     return query;
 }
-
 
 function insertMarkers(res)
 {
@@ -1495,4 +1529,14 @@ function setError(el, msg)
 function contains(haystack, needle)
 {
     return (haystack.indexOf(needle) != -1)
+}
+
+function SetBedrooms(bedrooms)
+{
+    $('Bedrooms').innerHTML = "Bedrooms: " + bedrooms + "<span class='caret'></span>";
+}
+
+function SetBathrooms(bathrooms)
+{
+    $('Bathrooms').innerHTML = "Bathrooms: " + bathrooms + "<span class='caret'></span>";
 }

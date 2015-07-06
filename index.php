@@ -19,7 +19,7 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Enhabit</title>
+        <title>Enhabit | Find Your Perfect Home</title>
         <!-- favicon -->
         <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
         <!-- Bootstrap core CSS -->
@@ -63,6 +63,66 @@ if (!isset($_SESSION['CREATED'])) {
                         <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
                         <li id="view_listings_list-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-12', 'view_listings_list');"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                     </ul>
+                    <div id="Filters">
+                        <h1>Filter listings:</h1>
+                        <div class="item-content">
+                            <span>Price Range</span>
+                            <span id="amount" style="border:0; color:#f6931f; font-weight:bold;"></span>
+                            <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="Bedrooms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Select Number of Bedrooms
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="Bedrooms">
+                                <li><a href="#" onclick="SetBedrooms(1)">1</a></li>
+                                <li><a href="#" onclick="SetBedrooms(2)">2</a></li>
+                                <li><a href="#" onclick="SetBedrooms(3)">3</a></li>
+                                <li><a href="#" onclick="SetBedrooms(4)">4</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="Bathrooms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Select Number of Bathrooms
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="Bathrooms">
+                                <li><a href="#" onclick="SetBathrooms(1)">1</a></li>
+                                <li><a href="#" onclick="SetBathrooms(1.5)">1.5</a></li>
+                                <li><a href="#" onclick="SetBathrooms(2)">2</a></li>
+                                <li><a href="#" onclick="SetBathrooms(2.5)">2.5</a></li>
+                                <li><a href="#" onclick="SetBathrooms(3)">3</a></li>
+                                <li><a href="#" onclick="SetBathrooms(4)">4</a></li>
+                            </ul>
+                        </div>
+                        <h3>Animals Allowed:</h3>
+                        <form action="">
+                            <input type="radio" name="AnimalsAllowed" value="1">Yes
+                            <input type="radio" name="AnimalsAllowed" value="0">No
+                        </form>
+                        <h3>Laundry in Unit:</h3>
+                        <form action="">
+                            <input type="radio" name="LaundryInUnit" value="1">Yes
+                            <input type="radio" name="LaundryInUnit" value="0">No
+                        </form>
+                        <h3>Parking:</h3>
+                        <form action="">
+                            <input type="radio" name="Parking" value="1">Yes
+                            <input type="radio" name="Parking" value="0">No
+                        </form>
+                        <h3>Available starting on:</h3>
+                        <div id="datepicker-inline"></div>
+                        <h3>SubLease:</h3>
+                        <form action="">
+                            <input type="radio" name="SubLease" value="1">Yes
+                            <input type="radio" name="SubLease" value="0">No
+                        </form>
+                        <h3>Tags: Text Box</h3>
+                        <button class="btn btn-default" type="button" id="RefreshListings">
+                            Refresh Listings
+                        </button>
+                    </div>
                     <!-- #main-menu -->
                 </section>
                 <!-- #left-sidebar -->
@@ -95,7 +155,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Register -->
                 <div class="content-to-populate-in-modal" id="modal-content-3">
                     <h1>Account Creation Success!</h1>
-                    <p> You now have an account with Enhabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
+                    <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
                 </div>
                 <!-- #modal-content-3 -->
                 <!-- Update -->
@@ -113,6 +173,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-5">
                     <h1>Account Update Success!</h1>
                 </div>
+<!--TODO: REMOVE CREATE NEW LISTING -->
                 <!-- #modal-content-5 -->
                 <!-- Create New Listing -->
                 <div class="content-to-populate-in-modal" id="modal-content-6">
@@ -169,6 +230,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-10">
                     <h1>My Listings</h1>
                 </div>
+<!--TODO: REMOVE MANAGE LISTINGS-->
                 <!-- #modal-content-10 -->
                 <!-- Manage Listings -->
                 <div class="content-to-populate-in-modal" id="modal-content-11">
@@ -184,7 +246,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <!-- Go to Top -->
                     <div id="go-to-top" onclick="scroll_to_top();"><span class="icon glyphicon glyphicon-chevron-up"></span></div>
                     <!-- copyright text -->
-                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by LbKStudios LLC</div>
+                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudio.net" target="_blank">LbKStudios LLC</a></div>
                 </section>
                 <!-- end: Footer -->      
             </div>
@@ -239,6 +301,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="assets/js/jquery.autoNumeric.js"></script>
         <!-- Custom functions for this theme -->
         <script src="assets/js/functions.js"></script>
+        <script src="assets/js/sliders.js"></script>
         <script src="assets/js/initialise-functions.js"></script>
         <?php 
             if (isset($_SESSION['user']))
