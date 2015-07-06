@@ -132,8 +132,6 @@
 					<h3>Registered Users</h3>
 				</div> <!-- /widget-header -->
 				<div class="widget-content">
-                    <p class="user-error alert alert-danger" style="display: none;" role="alert"></p>
-                    <p class="user-success alert alert-success" style="display: none;" role="alert"></p>
                     <table class="table">
                         <tr>
                             <th>Username</th>
@@ -203,6 +201,9 @@
 <script src="../js/libs/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="../js/libs/bootstrap.min.js"></script>
 <script src="../js/libs/bootstrap-switch.min.js"></script>
+
+<script src="../js/plugins/msgGrowl/js/msgGrowl.js"></script>
+<script src="../js/plugins/msgbox/jquery.msgbox.min.js"></script>
 
 <script src="../js/functions.js"></script>
 
