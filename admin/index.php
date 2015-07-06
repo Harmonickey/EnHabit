@@ -62,7 +62,7 @@
       <span class="sr-only">Toggle navigation</span>
       <i class="icon-cog"></i>
     </button>
-    <a class="navbar-brand" href="./index.html">Enhabit Admin</a>
+    <a class="navbar-brand" href="./">Enhabit Admin</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -72,7 +72,7 @@
 						
 			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="icon-user"></i> 
-				Rod Howard
+				<?php echo $_SESSION["admin"]; ?>
 				<b class="caret"></b>
 			</a>
 			
@@ -100,28 +100,28 @@
 				<ul class="mainnav">
 				
 					<li class="active">
-						<a href="./index.html">
+						<a href="./">
 							<i class="icon-home"></i>
 							<span>Home</span>
 						</a>	    				
 					</li>
                     
                     <li>
-						<a href="./users.html">
+						<a href="./users">
 							<i class="icon-user"></i>
 							<span>Users</span>
 						</a>	    				
 					</li>
                     
                     <li>
-						<a href="./listings.html">
+						<a href="./listings">
 							<i class="icon-copy"></i>
 							<span>Listings</span>
 						</a>	    				
 					</li>
                     
                     <li>
-						<a href="./payments.html">
+						<a href="./payments">
 							<i class="icon-usd"></i>
 							<span>Payments</span>
 						</a>	    				
@@ -538,11 +538,19 @@
 <script src="./js/plugins/flot/jquery.flot.pie.js"></script>
 <script src="./js/plugins/flot/jquery.flot.resize.js"></script>
 
-<script src="./js/Application.js"></script>
 <script src="./js/functions.js"></script>
 
 <script src="./js/charts/area.js"></script>
 <script src="./js/charts/donut.js"></script>
+
+<script>
+
+$(function() 
+{
+    
+});
+
+</script>
 
   </body>
 </html>

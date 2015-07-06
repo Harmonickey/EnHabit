@@ -33,7 +33,7 @@ def update_listing(user, id, pr, ad, be, ba, an, la, st, lat, lng)
     listing_obj["extensions"] = {"university" => "Northwestern"}
     
     query_obj = Hash.new
-    query_obj["id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
     
     ret_msg = ""
  

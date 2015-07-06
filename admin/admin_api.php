@@ -18,10 +18,12 @@ if (isset($_SESSION['admin']) && isset($_POST["command"]))
     {
         case "get_all_listings":
         case "get_all_transactions":
+        case "get_all_users":
             echo shell_exec("ruby ../admin_commands/" . $_POST["command"] . ".rb");
             break;
         case "update_user":
         case "delete_user":
+        case "create_user":
             echo shell_exec("ruby ../admin_commands/" . $_POST["command"] . ".rb '$data'");
             break;
     }
