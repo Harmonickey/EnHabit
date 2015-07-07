@@ -61,7 +61,7 @@ if (!isset($_SESSION['CREATED'])) {
                         <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                         <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
                         <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
-                        <li id="view_listings_list-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-12', 'view_listings_list');"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
+                        <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                     </ul>
                     <div id="Filters">
                         <h1>Filter listings:</h1>
@@ -125,6 +125,11 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <!-- #main-menu -->
                 </section>
+                <div id="listings_list">
+                    <div id="listings">
+                        
+                    </div>
+                </div>
                 <!-- #left-sidebar -->
                 <!-- Login -->
                 <div class="content-to-populate-in-modal" id="modal-content-1">
@@ -136,7 +141,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
                     <p class="login-error alert alert-danger" style="display: none;"></p>
                     <div></div>
-                    <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a href="" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
+                    <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
                 </div>
                 <!-- #modal-content-1 -->
                 <!-- Register -->
@@ -166,6 +171,8 @@ if (!isset($_SESSION['CREATED'])) {
                     <label>Email: </label><input type="text" class="form-control email" />
                     <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
                     <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="update_account()" value="Update Account" style="margin-top: 15px;" />
+                    <hr>
+                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
                     <p class="update_account-error alert alert-danger" style="display: none;"></p>
                 </div>
                 <!-- #modal-content-4 -->
@@ -215,8 +222,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Manage Account -->
                 <div class="content-to-populate-in-modal" id="modal-content-8">
                     <h1>Manage Account</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event);" value="Update Account" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
+                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event, 'Update Account Info', true);" value="Update Account" style="margin-top: 15px;" />
                 </div>
                 <!-- #modal-content 8 -->
                 <!-- Delete Account -->
@@ -239,7 +245,22 @@ if (!isset($_SESSION['CREATED'])) {
                     <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();" value="Create New Listing" style="margin-top: 15px;" />
                 </div>
                 <!-- #modal-content-11 -->
-                
+                <!-- Log out confirmation -->
+                <div class="content-to-populate-in-modal" id="modal-content-12">
+                    <h1>Logged out successfully!</h1>
+                </div>
+                <!-- #modal-content-12 -->
+                <!-- Account delete confirmation -->
+                <div class="content-to-populate-in-modal" id="modal-content-13">
+                    <h1>Account Deleted Successfully</h1>
+                    <p>Thank you for using Enhabit!</p>
+                </div>
+                <!-- #modal-content-13 -->
+                <!-- Log out confirmation -->
+                <div class="content-to-populate-in-modal" id="modal-content-14">
+                    <h1>Listings List</h1>
+                </div>
+                <!-- #modal-content-14 -->
                 <!-- end: Left Sidebar -->
                 <!-- Footer -->
                 <section id="footer">
@@ -313,5 +334,16 @@ if (!isset($_SESSION['CREATED'])) {
                 echo "<script type='text/javascript'>$('#login_create-function').show();</script>\n";
             }
         ?>
+        
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-64824617-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
     </body>
 </html>

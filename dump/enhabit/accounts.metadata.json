@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":NumberInt(1),"key":{"_id":NumberInt(1)},"name":"_id_","ns":"enhabit.accounts"},{"v":NumberInt(1),"unique":true,"key":{"Username":1},"name":"Username_1","ns":"enhabit.accounts"},{"v":NumberInt(1),"unique":true,"key":{"Email":1},"name":"Email_1","ns":"enhabit.accounts"}]}
