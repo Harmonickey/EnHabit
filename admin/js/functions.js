@@ -169,17 +169,15 @@ function update_user(id)
                 }
                 else
                 {
-                    for (var i = 0; i < data.length; i++)
-                    {
-                       $($(userfield)[0]).text(data[i].Username);
-                       $($(userfield)[1]).text(data[i].FirstName);
-                       $($(userfield)[2]).text(data[i].LastName);
-                       $($(userfield)[3]).text(data[i].PhoneNumber);
-                       $($(userfield)[4]).text(data[i].Email);
-                       $($(userfield)[5]).prop("checked", data[i].Landlord);
-                       $($(userfield)[6]).prop("checked", data[i].Active);
-                       $($(userfield)[7]).prop("checked", data[i].IsAdmin);
-                    }
+                    // update the fields from the query 
+                    $($(userfield)[0]).text(data.Username);
+                    $($(userfield)[1]).text(data.FirstName);
+                    $($(userfield)[2]).text(data.LastName);
+                    $($(userfield)[3]).text(data.PhoneNumber);
+                    $($(userfield)[4]).text(data.Email);
+                    $($(userfield)[5]).prop("checked", data.Landlord);
+                    $($(userfield)[6]).prop("checked", data.Active);
+                    $($(userfield)[7]).prop("checked", data.IsAdmin);
                     
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
                 }
@@ -231,6 +229,7 @@ function delete_user(id)
                 {
                     if (contains(res, "Okay"))
                     {
+                        // remove the row that we just selected
                         $("#" + id).remove();
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'bottom-right'});
                     }
@@ -309,9 +308,22 @@ function create_user()
                             "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button>" +
                         "</tr>");
                         
+                    // activate toggle switches for these new guys
                     $("#user-list tr:nth-child(2) input").bootstrapSwitch({onText: "Yes", offText: "No"});
                    
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'bottom-right'});
+                    
+                    // reset the create-row
+                    var username = $(userfield[0]).val("");
+                    var password = $(userfield[1]).val("");
+                    var firstname = $(userfield[2]).val("");
+                    var lastname = $(userfield[3]).val("");
+                    var phonenumber = $(userfield[4]).val("");
+                    var email = $(userfield[5]).val("");
+                    var landlord = $(userfield[6]).prop("checked", false);
+                    var active = $(userfield[7]).prop("checked", true);
+                    var isadmin = $(userfield[8]).prop("checked", false);
+                
                 }
             },
             error: function(res, err)
@@ -321,16 +333,6 @@ function create_user()
             },
             complete: function()
             {
-                var username = $(userfield[0]).val("");
-                var password = $(userfield[1]).val("");
-                var firstname = $(userfield[2]).val("");
-                var lastname = $(userfield[3]).val("");
-                var phonenumber = $(userfield[4]).val("");
-                var email = $(userfield[5]).val("");
-                var landlord = $(userfield[6]).prop("checked", false);
-                var active = $(userfield[7]).prop("checked", true);
-                var isadmin = $(userfield[8]).prop("checked", false);
-                
                 $("#create-user button").prop("disabled", false);
                 $("#create-user button").text("Create New User");
             }
