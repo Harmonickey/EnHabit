@@ -121,8 +121,9 @@ function delete_old_listings()
 function update_user(id)
 {
     var userfield = $("#" + id + " textarea");
+    var switches = $("#" + id + " input");
     
-    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"]);
+    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
     
     data["id"] = id;
     
@@ -439,15 +440,16 @@ function sanitizeUserListingData(data)
     return data;
 }
 
-function buildData(formfield, elements)
+function buildData(formfield, elements, switches)
 {   
     var data = {};
     
-    for (var i = 0; i < elements.length; i++)
+    for (var i = 0, j = 0; i < elements.length; i++)
     {
-        if (elements[i] == "landlord" || elements[i] == "active" || elements[i] == "isadmin")
+        if ((elements[i] == "landlord" || elements[i] == "active" || elements[i] == "isadmin") && switches.length > 0)
         {
-            data[elements[i]] = checkbox_to_boolean($(formfield[i]).val());
+            data[elements[i]] = $(switches[j]).prop("checked");
+            j++;
         }
         else
         {
