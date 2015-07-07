@@ -13,3 +13,14 @@ textarea
     resize:none;
     word-wrap: normal;
 }
+
+.stats .stat
+{
+    width: 33%;
+    text-align: center;
+}
+
+.stat-value
+{
+    text-align: center;
+}

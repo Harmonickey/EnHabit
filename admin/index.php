@@ -1,5 +1,7 @@
 <?php
 
+    include_once("analytics.php");
+
     session_start();
     
     if (!isset($_SESSION["admin"]))
@@ -130,24 +132,25 @@
                     <div class="widget-content">
                         <div class="stats">
                             <div class="stat">
-                                <span class="stat-value">12,386</span>									
+                                <span id="site-visits" class="stat-value"></span>									
                                 Site Visits
                             </div> <!-- /stat -->
                             <div class="stat">
-                                <span class="stat-value">9,249</span>									
+                                <span id="unique-visits" class="stat-value"></span>									
                                 Unique Visits
                             </div> <!-- /stat -->
                             <div class="stat">
-                                <span class="stat-value">70%</span>									
+                                <span id="new-visits" class="stat-value"></span>									
                                 New Visits
                             </div> <!-- /stat -->
                         </div> <!-- /stats -->
-                        <div id="chart-stats" class="stats">
-                            <div class="stat stat-chart">							
-                                <div id="donut-chart" class="chart-holder"></div> <!-- #donut -->							
+                        <div class="stats">
+                            <div class="stat stat-time">									
+                                <span id="page-download-time" class="stat-value"></span>
+                                Average Page Download Time
                             </div> <!-- /substat -->					
                             <div class="stat stat-time">									
-                                <span class="stat-value">00:28:13</span>
+                                <span id="average-time-on-site" class="stat-value"></span>
                                 Average Time on Site
                             </div> <!-- /substat -->
                         </div> <!-- /substats -->
@@ -416,14 +419,45 @@
 
 <script src="./js/functions.js"></script>
 
-<script src="./js/charts/area.js"></script>
-<script src="./js/charts/donut.js"></script>
+<!--<script src="./js/charts/area.js"></script>
+<script src="./js/charts/donut.js"></script>-->
 
 <script>
 
 $(function() 
 {
+    function getFormatted(time)
+    {
+        var hours = parseInt( time / 3600 ) % 24;
+        var minutes = parseInt( time / 60 ) % 60;
+        var seconds = time % 60;
+        
+        return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+    }
     
+    <?php
+        $analytics = getService();
+        $profile = getFirstProfileId($analytics);;
+        $results = getSiteStats($analytics, $profile);
+        echo "var analytics = JSON.parse('";
+        echo printResults($results);
+        echo "');";
+    ?>
+    
+    var visits = analytics[0];
+    var percentNewVisits = parseInt(analytics[1]);
+    var uniqueVisits = analytics[2];
+    var averageTimeOnSite = parseInt(analytics[3]);
+    var averagePageLoad = parseInt(analytics[4]);
+    
+    var averageTimeFormatted = getFormatted(averageTimeOnSite);
+    var averageLoadFormatted = getFormatted(averagePageLoad);
+    
+    $("#site-visits").text(visits);
+    $("#unique-visits").text(uniqueVisits);
+    $("#new-visits").text(percentNewVisits + "%");
+    $("#average-time-on-site").text(averageTimeFormatted);
+    $("#page-download-time").text(averageLoadFormatted);
 });
 
 </script>
