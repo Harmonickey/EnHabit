@@ -1146,8 +1146,7 @@ function load_modal(event, which, enter_default, btnText)
     set_default_button_on_enter(enter_default);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
-    position_modal_at_centre();
-
+    
     modal_backdrop_height($('#common-modal.modal'));
 }
 
