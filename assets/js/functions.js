@@ -47,6 +47,17 @@ $('#map').on('click', '.popup .cycle a', function()
     return false;
 });
 
+$("#listings_list").bind('mouseover', function () {
+    map.dragging.disable();
+    map.scrollWheelZoom.disable();
+});
+
+// Re-enable dragging when user's cursor leaves the element
+$("#listings_list").bind('mouseout', function () {
+    map.dragging.enable();
+    map.scrollWheelZoom.enable();
+});
+
 /* 
  * ================================================================
  * VIEWPORT
@@ -394,6 +405,7 @@ function set_height_of_parent_content_wrappers()
  * @param modal_content_id - the id of the container with the content which will be populated in the modal body
  * @param section_in_modal - selector - optional - if set, when modal is shown, the popup will scroll to this section
  * @param add_class_to_modal - optional - add a class to the modal container (#common-modal)
+ * @param keepSidebar - optional - keeps the sidebar in view
  */
 function populate_and_open_modal(event, modal_content_id, section_in_modal, add_class_to_modal)
 {
@@ -546,6 +558,11 @@ function get_all_section_wrappers_in_page()
     return section_wrappers;
 }
 
+function fill_modal_to_screen()
+{
+    
+}
+
 /*
  * CUSTOM FUNCTIONS
  * =============================================
@@ -609,6 +626,10 @@ $(function()
             console.log(err);
         }			
     });
+    
+    var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
+    
+    $("#listings_list").css("left", listingsListWidth);
 });
 
 function checkLoginState() 
@@ -811,8 +832,6 @@ function login_user(hide_main_modal)
             complete: function()
             {
                 resetModal("login", "Log In", false);
-				
-				$("<label>Password: </label><input type='password' class='form-control password' />").insertAfter("#delete_account_header");
             }
         });
     }
@@ -879,17 +898,27 @@ function login_facebook_user(userID, accessToken)
     });
 }
 
-function logout_user()
+function logout_user(isDeleting)
 {
 	removeLoginFeatures();
-	
     $.ajax(
     {
         type: "POST",
         url: "logout.php",
         success: function(res)
         {
-            if (!contains(res, "Successfully"))
+            if (contains(res, "Successfully"))
+            {
+                if (isDeleting)
+                {
+                    populate_and_open_modal(null, "modal-content-13");
+                }
+                else
+                {
+                    populate_and_open_modal(null, "modal-content-12");
+                }
+            }
+            else
             {
                 console.log(res); //print the error
             }
@@ -961,7 +990,7 @@ function setGeocompleteTextBox()
 function showLoginFeatures(hide_main_modal)
 {
     $("#login_create").text("Log Out");
-    $("#login_create-function").attr("onclick", "logout_user()");
+    $("#login_create-function").attr("onclick", "logout_user(false)");
     $("#login_create-function").show();
     
     if (hide_main_modal === true)
@@ -977,7 +1006,9 @@ function showUpdateScreen()
 {
     showLoginFeatures(false);
    
-    load_update_account_modal(null);
+    load_update_account_modal(null, "Create Account Info", false);
+    
+    
 }
 
 function hideMainModal()
@@ -1088,9 +1119,7 @@ function delete_account()
             {
                 if (contains(res, "Okay"))
                 {
-                    logout_user();
-					
-					hideMainModal();
+                    logout_user(true);
 					
 					set_default_button_on_enter("");
                 }
@@ -1119,11 +1148,42 @@ function load_modal(event, which, enter_default, btnText)
     set_default_button_on_enter(enter_default);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
-    position_modal_at_centre();
+    
     modal_backdrop_height($('#common-modal.modal'));
 }
 
-function load_update_account_modal(event)
+function open_listings_list()
+{
+    //do not want to open 100% of page width because our 'left' offset needs to be accounted for
+    var openWidth = parseFloat($("html").css("width")) - parseFloat($("#listings_list").css("left"));
+    
+    $("#listings_list").animate(
+    {
+        width: openWidth
+    }, 1000, 'easeInOutCubic', load_listings_list);
+}
+
+function close_listings_list()
+{
+    $("#listings_list").animate(
+    {
+        width: "1px"
+    }, 1000, 'easeInOutCubic', function() {
+        $("#view_listings_list-function a").text("view listings list");
+        $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+    });
+}
+
+function load_listings_list()
+{
+    //aggregate all the information into a listings list
+    
+    //then change the view listings list to "close listings list"
+    $("#view_listings_list-function a").text("close listings list");
+    $("#view_listings_list-function").attr("onclick", "close_listings_list()");
+}
+
+function load_update_account_modal(event, title, keepDelete)
 {
     $.ajax(
     {
@@ -1151,6 +1211,8 @@ function load_update_account_modal(event)
             {
                 populate_and_open_modal(event, 'modal-content-4');
                 
+                $(".modal-content h1").text(title);
+                
                 fill_update_modal(JSON.parse(res).data);
              
                 resetModal("update_account", "Update Account", true);
@@ -1160,6 +1222,12 @@ function load_update_account_modal(event)
                 position_modal_at_centre();
                 
                 modal_backdrop_height($('#common-modal.modal'));
+                
+                if (keepDelete === false)
+                {
+                    $(".modal-content input[value='Delete Account']").remove();
+                    $(".modal-content hr").remove();
+                }
             }
         },
         error: function(err, res)
