@@ -47,6 +47,17 @@ $('#map').on('click', '.popup .cycle a', function()
     return false;
 });
 
+$("#listings_list").bind('mouseover', function () {
+    map.dragging.disable();
+    map.scrollWheelZoom.disable();
+});
+
+// Re-enable dragging when user's cursor leaves the element
+$("#listings_list").bind('mouseout', function () {
+    map.dragging.enable();
+    map.scrollWheelZoom.enable();
+});
+
 /* 
  * ================================================================
  * VIEWPORT

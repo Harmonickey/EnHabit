@@ -66,6 +66,9 @@ if (!isset($_SESSION['CREATED'])) {
                     <!-- #main-menu -->
                 </section>
                 <div id="listings_list">
+                    <div id="listings">
+                        
+                    </div>
                 </div>
                 <!-- #left-sidebar -->
                 <!-- Login -->

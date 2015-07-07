@@ -146,3 +146,19 @@
         padding: 28px 0 0 0;
     }
 }
+
+#listings
+{
+    width: 85%;
+    background-color: blue;
+    height: 100%;
+    margin: 0 auto;
+    overflow-y: scroll;
+}
+
+.listing
+{
+    display: block;
+    width: 100%;
+    height: 150px;
+}
