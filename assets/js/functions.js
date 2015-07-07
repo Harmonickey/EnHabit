@@ -1006,7 +1006,9 @@ function showUpdateScreen()
 {
     showLoginFeatures(false);
    
-    load_update_account_modal(null, "Create Account Info");
+    load_update_account_modal(null, "Create Account Info", false);
+    
+    
 }
 
 function hideMainModal()
@@ -1181,7 +1183,7 @@ function load_listings_list()
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 
-function load_update_account_modal(event, title)
+function load_update_account_modal(event, title, keepDelete)
 {
     $.ajax(
     {
@@ -1220,6 +1222,12 @@ function load_update_account_modal(event, title)
                 position_modal_at_centre();
                 
                 modal_backdrop_height($('#common-modal.modal'));
+                
+                if (keepDelete === false)
+                {
+                    $(".modal-content input[value='Delete Account']").remove();
+                    $(".modal-content hr").remove();
+                }
             }
         },
         error: function(err, res)
