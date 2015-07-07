@@ -129,9 +129,11 @@ function update_user(id)
     
     var error = buildError(data);
     
-    if (error != "Please Include<br>")
+    if (error != "Please Include ")
     {
         $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
+        
+        resetUsers();
     }
     else
     {
@@ -156,10 +158,14 @@ function update_user(id)
                 if (data["error"])
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
+                    
+                    resetUsers();
                 }
                 else if (!res)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User!", position: 'bottom-right'});
+                    
+                    resetUsers();
                 }
                 else
                 {
@@ -207,7 +213,7 @@ function delete_user(id)
 	}, 
     function(result) 
     {
-        if (result === true)
+        if (result === "Yes")
         {
             $.ajax(
             {
@@ -232,7 +238,6 @@ function delete_user(id)
                     {
                         $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
                     }
-                    
                 },
                 error: function(res, err)
                 {
@@ -248,13 +253,14 @@ function delete_user(id)
 
 function create_user()
 {
-    var userfield = $("#create-user input");
+    var userfield = $("#create-user input[type='text'], #create-user input[type='password']");
+    var switches = $("#create-user input[type='checkbox']");
     
-    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"]);
+    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
     
     var error = buildError(data);
     
-    if (error != "Please Include<br>")
+    if (error != "Please Include ")
     {
         $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
     }
@@ -296,16 +302,16 @@ function create_user()
                             "<td><textarea class='form-control'>" + data.LastName + "</textarea></td>" +
                             "<td><textarea class='form-control'>" + data.PhoneNumber + "</textarea></td>" +
                             "<td><textarea class='form-control'>" + data.Email + "</textarea></td>" +
-                            "<td><input type='checkbox' " + (data.Landlord ? "checked" : "") + "data-size='mini'></td>" +
-                            "<td><input type='checkbox' " + (data.Active ? "checked" : "") + "data-size='mini'></td>" +
-                            "<td><input type='checkbox' " + (data.IsAdmin ? "checked" : "") + "data-size='mini'></td>" +
+                            "<td><input type='checkbox' " + (data.Landlord ? "checked " : "") + "data-size='mini'></td>" +
+                            "<td><input type='checkbox' " + (data.Active ? "checked " : "") + "data-size='mini'></td>" +
+                            "<td><input type='checkbox' " + (data.IsAdmin ? "checked " : "") + "data-size='mini'></td>" +
                             "<td><button class='btn btn-primary' onclick='update_user(\"" + data._id.$oid + "\");'>Update</button>" + 
                             "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button>" +
                         "</tr>");
                         
-                    $("#user-list tr:second input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+                    $("#user-list tr:nth-child(2) input").bootstrapSwitch({onText: "Yes", offText: "No"});
                    
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "User Created Successfully!", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'bottom-right'});
                 }
             },
             error: function(res, err)
@@ -420,6 +426,13 @@ UTILITY FUNCTIONS
 
 **********************/
 
+function resetUsers()
+{
+    $("#user-list tr").not(":first").remove();
+    
+    get_all_users();
+}
+
 function init_checkboxes()
 {
     $("input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
@@ -462,66 +475,76 @@ function buildData(formfield, elements, switches)
 
 function buildError(fields)
 {
-    var error = "Please Include<br>";
+    var error_arr = [];
+    
+    var beginning = "Please Include ";
     
     if (fields.username == "")
     {
-        error += "Username<br>";
+        error_arr.push("Username");
     }
     if (fields.password == "")
     {
-        error += "Password<br>";
+        error_arr.push("Password");
     }
     if (fields.firstname == "")
     {
-        error += "First Name<br>";
+        error_arr.push("First Name");
     }
     if (fields.lastname == "")
     {
-        error += "Last Name<br>";
+        error_arr.push("Last Name");
     }
     if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
     {
-        error += "Valid Email<br>";
+        error_arr.push("Valid Email");
     }
     if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
     {
-        error += "Valid Phone Number<br>";
+        error_arr.push("Valid Phone Number");
     }
     if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
     {
-        error += "Valid Address - Must Select Google's Result<br>";
+        error_arr.push("Valid Address - Must Select Google's Result");
     }
     if (fields.address != "" && fields.address != fields.selected_address)
 	{
-		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
+		error_arr.push("Valid Address - Do Not Modify Google's Result After Selecting");
 	}
     if (fields.bedrooms == "")
     {
-        error += "Valid Number of Bedrooms<br>";
+        error_arr.push("Valid Number of Bedrooms");
     }
     if (fields.bathrooms == "")
     {
-        error += "Valid Number of Bathrooms<br>";
+        error_arr.push("Valid Number of Bathrooms");
     }
     if (fields.rent == "")
     {
-        error += "Valid Monthy Rent Amount<br>";
+        error_arr.push("Valid Monthly Rent Amount");
     }
     if (fields.start_date == "")
     {
-        error += "Valid Lease Start Date<br>";
+        error_arr.push("Valid Lease Start Date");
     }
     if (fields.animals == "")
     {
-        error += "If Animals Are Allowed<br>";
+        error_arr.push("If Animals Are Allowed");
     }
     if (fields.laundry == "")
     {
-        error += "If In-Unit Laundry is Available<br>";
+        error_arr.push("If In-Unit Laundry is Available");
     }
     
-    return error;
+    if (error_arr.length > 0)
+    {
+        var last = " and " + error_arr[error_arr.length - 1];
+        error_arr.splice(error_arr.length - 1, 1);
+        
+        return beginning + error_arr.join(", ") + last;
+    }
+    
+    return beginning;
 }
 
 function isValidEmail(em)

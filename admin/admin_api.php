@@ -24,7 +24,6 @@ if (isset($_SESSION['admin']) && isset($_POST["command"]))
         case "update_user":
         case "delete_user":
         case "create_user":
-            echo "ruby ../admin_commands/" . $_POST["command"] . ".rb '$data'";
             echo shell_exec("ruby ../admin_commands/" . $_POST["command"] . ".rb '$data'");
             break;
     }

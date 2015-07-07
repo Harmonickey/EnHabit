@@ -1527,7 +1527,7 @@ function buildError(fields)
     }
     if (fields.rent == "")
     {
-        error += "Valid Monthy Rent Amount<br>";
+        error += "Valid Monthly Rent Amount<br>";
     }
     if (fields.start_date == "")
     {
