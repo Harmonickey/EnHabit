@@ -17,6 +17,7 @@ if (isset($_SESSION['admin']) && isset($_POST["command"]))
     switch($_POST["command"])
     {
         case "get_all_listings":
+        case "delete_old_listings":
         case "get_all_transactions":
         case "get_all_users":
             echo shell_exec("ruby ../admin_commands/" . $_POST["command"] . ".rb");
@@ -24,6 +25,9 @@ if (isset($_SESSION['admin']) && isset($_POST["command"]))
         case "update_user":
         case "delete_user":
         case "create_user":
+        case "update_listing":
+        case "delete_listing":
+        case "create_listing":
             echo shell_exec("ruby ../admin_commands/" . $_POST["command"] . ".rb '$data'");
             break;
     }

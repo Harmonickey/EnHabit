@@ -37,21 +37,21 @@ function get_all_users()
             
             for (var i = 0; i < data.length; i++)
             {
-                data[i] = sanitizeUserListingData(data[i]);
+                data[i] = sanitizeUserData(data[i]);
                
                 //fill in all user data
                 $("#user-list tr:last").after(
                     "<tr id='" + data[i]._id.$oid + "'>"   +
-                        "<td><textarea class='form-control'>" + data[i].Username + "</textarea></td>" +
-                        "<td><textarea class='form-control'>" + data[i].FirstName + "</textarea></td>" +
-                        "<td><textarea class='form-control'>" + data[i].LastName + "</textarea></td>" +
-                        "<td><textarea class='form-control'>" + data[i].PhoneNumber + "</textarea></td>" +
-                        "<td><textarea class='form-control'>" + data[i].Email + "</textarea></td>" +
-                        "<td><input type='checkbox' " + (data[i].Landlord ? "checked" : "") + " data-size='mini'></td>" +
-                        "<td><input type='checkbox' " + (data[i].Active ? "checked" : "") + " data-size='mini'></td>" +
-                        "<td><input type='checkbox' " + (data[i].IsAdmin ? "checked" : "") + " data-size='mini'></td>" +
-                        "<td><button class='btn btn-primary' onclick='update_user(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
-                        "<td><button class='btn btn-danger' onclick='delete_user(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].Username + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].FirstName + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].LastName + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].PhoneNumber + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].Email + "' /></td>" +
+                        "<td><input type='checkbox' " + (data[i].Landlord ? "checked" : "") + " data-size='mini' /></td>" +
+                        "<td><input type='checkbox' " + (data[i].Active ? "checked" : "") + " data-size='mini' /></td>" +
+                        "<td><input type='checkbox' " + (data[i].IsAdmin ? "checked" : "") + " data-size='mini' /></td>" +
+                        "<td><button class='btn btn-primary' onclick='update_user(\"" + data[i]._id.$oid + "\");'>Update</button></td>" + 
+                        "<td><button class='btn btn-danger' onclick='delete_user(\"" + data[i]._id.$oid + "\");'>Delete</button></td>" +
                     "</tr>");
                     
                 $("#user-list tr:last input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
@@ -63,6 +63,98 @@ function get_all_users()
             console.log(err);
         }
     });
+}
+
+function get_all_listings()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/admin/admin_api.php",
+        data: 
+        {
+            command: "get_all_listings"
+        },
+        success: function(res) 
+        {
+            var data = JSON.parse(res);
+            
+            for (var i = 0; i < data.length; i++)
+            {
+                //fill in all listing data
+                $("#listing-list tr:last").after(
+                    "<tr id='" + data[i]._id.$oid + "'>"   +
+                        "<td><input type='text' class='form-control' value='" + data[i].Username + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].price + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].address + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].bedrooms + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + data[i].bathrooms + "' /></td>" +
+                        "<td><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' /></td>" +
+                        "<td><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' /></td>" +
+                        "<td><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' /></td>" +
+                        "<td><button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button></td>" + 
+                        "<td><button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button></td>" +
+                        "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                    "</tr>");
+                    
+                setGeocompleteTextBox(data[i]._id.$oid);
+                setTextBoxWithAutoNumeric(data[i]._id.$oid);
+                setDatePickerTextBox(data[i]._id.$oid);
+                 
+                $("#listing-list tr:last input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+            }
+        },
+        error: function(res, err)
+        {
+            console.log(res);
+            console.log(err);
+        }
+    });
+}
+
+function setGeocompleteTextBox(rowId)
+{
+    var row = $("#" + rowId + " td input[type='text']");
+    var hidden = $("#" + rowId + " input[type='hidden']");
+    
+    $(row[2]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            $(hidden[0]).val(result.geometry.location.A);
+            $(hidden[1]).val(result.geometry.location.F);
+            $(hidden[2]).val($(row[2]).val());
+        });
+}
+
+function setTextBoxWithAutoNumeric(rowId)
+{
+    var row = $("#" + rowId + " td input[type='text']");
+    
+    $(row[1]).autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $(row[3]).autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    
+    $(row[4]).autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+}
+
+function setDatePickerTextBox(rowId)
+{
+    $($("#" + rowId + " td input[type='text']")[5]).datepicker();
 }
 
 function get_all_transactions()
@@ -97,33 +189,48 @@ function get_all_transactions()
 function delete_old_listings()
 {
     // check if the user really wants to do so
-    
-    $.ajax(
+    $.msgbox("Are you sure that you want to delete all records older than ONE year?", 
     {
-        type: "POST",
-        url: "/admin/admin_api.php",
-        data:
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
         {
-            command: "delete_old_listings"
-        },
-        success: function(res)
-        {
-            console.log(res);
-        },
-        error: function(res, err)
-        {
-            console.log(res);
-            console.log(err);
+            $.ajax(
+            {
+                type: "POST",
+                url: "/admin/admin_api.php",
+                data:
+                {
+                    command: "delete_old_listings"
+                },
+                success: function(res)
+                {
+                    resetListings();
+                },
+                error: function(res, err)
+                {
+                    console.log(res);
+                    console.log(err);
+                }
+            });
         }
     });
 }
 
 function update_user(id)
 {
-    var userfield = $("#" + id + " textarea");
-    var switches = $("#" + id + " input");
+    var userfield = $("#" + id + " input[type='text']");
+    var switches = $("#" + id + " input[type='checkbox']");
     
-    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
+    var data = buildUserData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
     
     data["id"] = id;
     
@@ -143,8 +250,7 @@ function update_user(id)
             url: "/admin/admin_api.php",
             beforeSend: function()
             {
-                $("#" + id + " button").prop("disabled", true);
-                $($("#" + id + " button")[0]).text("Updating...");
+                disableUpdateButton(id);
             },
             data:
             {
@@ -178,6 +284,85 @@ function update_user(id)
                     $($(userfield)[5]).prop("checked", data.Landlord);
                     $($(userfield)[6]).prop("checked", data.Active);
                     $($(userfield)[7]).prop("checked", data.IsAdmin);
+                    
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
+                }
+            },
+            error: function(res, err)
+            {
+                console.log(res);
+                console.log(err);
+            },
+            complete: function()
+            {
+                $("#" + id + " button").prop("disabled", false);
+                $($("#" + id + " button")[0]).text("Update");
+            }
+        });
+    }
+}
+
+function update_listing(id)
+{
+    var userfield = $("#" + id + " input[type='text']");
+    var inputs = $("#" + id + " input[type='checkbox'], #" + id + " input[type='hidden']");
+    
+    var data = buildData(userfield, ["username", "rent", "address", "bedrooms", "bathrooms", "start_date", "animals", "laundry", "latitude", "longitude", "selected_address"], inputs);
+    
+    data["id"] = id;
+    
+    var error = buildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({type: 'error', title: 'Error', text: error, position: 'bottom-right'});
+        
+        resetListings();
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/admin/admin_api.php",
+            beforeSend: function()
+            {
+                disableUpdateButton(id);
+            },
+            data:
+            {
+                command: "update_listing",
+                data: data
+            },
+            success: function(res)
+            {    
+                var data = JSON.parse(res);
+                
+                if (data["error"])
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
+                    
+                    resetListings();
+                }
+                else if (!res)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update Listing!", position: 'bottom-right'});
+                    
+                    resetListings();
+                }
+                else
+                {
+                    // update the fields from the query 
+                    $($(userfield)[0]).text(data.Username);
+                    $($(userfield)[1]).text(data.price);
+                    $($(userfield)[2]).text(data.address);
+                    $($(userfield)[3]).text(data.bedrooms);
+                    $($(userfield)[4]).text(data.bathrooms);
+                    $($(userfield)[5]).text(formattedDate(data.start));
+                    $($(userfield)[6]).prop("checked", data.animals);
+                    $($(userfield)[7]).prop("checked", data.laundry);
+                    $($(userfield)[8]).val(data.worldCoordinates.x);
+                    $($(userfield)[9]).val(data.worldCoordinates.y);
                     
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
                 }
@@ -245,9 +430,59 @@ function delete_user(id)
                 }
             });
         }
+    });  
+}
+
+function delete_listing(id)
+{
+    //check if the user really wants to do so
+    $.msgbox("Are you sure that you want to delete this listing?", 
+    {
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/admin/admin_api.php",
+                data:
+                {
+                    command: "delete_listing",
+                    data:
+                    {
+                        id: id
+                    }
+                },
+                success: function(res)
+                {
+                    if (contains(res, "Okay"))
+                    {
+                        // remove the row that we just selected
+                        $("#" + id).remove();
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'bottom-right'});
+                    }
+                    else
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    console.log(res);
+                    console.log(err);
+                }
+            });
+        }
     });
-    
-    
 }
 
 function create_user()
@@ -296,16 +531,16 @@ function create_user()
                     //append after the header (first tr)
                     $("#user-list tr:first").after(
                         "<tr id='" + data._id.$oid + "'>"   +
-                            "<td><textarea class='form-control'>" + data.Username + "</textarea></td>" +
-                            "<td><textarea class='form-control'>" + data.FirstName + "</textarea></td>" +
-                            "<td><textarea class='form-control'>" + data.LastName + "</textarea></td>" +
-                            "<td><textarea class='form-control'>" + data.PhoneNumber + "</textarea></td>" +
-                            "<td><textarea class='form-control'>" + data.Email + "</textarea></td>" +
-                            "<td><input type='checkbox' " + (data.Landlord ? "checked " : "") + "data-size='mini'></td>" +
-                            "<td><input type='checkbox' " + (data.Active ? "checked " : "") + "data-size='mini'></td>" +
-                            "<td><input type='checkbox' " + (data.IsAdmin ? "checked " : "") + "data-size='mini'></td>" +
-                            "<td><button class='btn btn-primary' onclick='update_user(\"" + data._id.$oid + "\");'>Update</button>" + 
-                            "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button>" +
+                            "<td><input type='text' class='form-control' value='" + data.Username + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.FirstName + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.LastName + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.PhoneNumber + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.Email + "' /></td>" +
+                            "<td><input type='checkbox' " + (data.Landlord ? "checked " : "") + "data-size='mini' /></td>" +
+                            "<td><input type='checkbox' " + (data.Active ? "checked " : "") + "data-size='mini' /></td>" +
+                            "<td><input type='checkbox' " + (data.IsAdmin ? "checked " : "") + "data-size='mini' /></td>" +
+                            "<td><button class='btn btn-primary' onclick='update_user(\"" + data._id.$oid + "\");'>Update</button></td>" + 
+                            "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button></td>" +
                         "</tr>");
                         
                     // activate toggle switches for these new guys
@@ -314,15 +549,15 @@ function create_user()
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'bottom-right'});
                     
                     // reset the create-row
-                    var username = $(userfield[0]).val("");
-                    var password = $(userfield[1]).val("");
-                    var firstname = $(userfield[2]).val("");
-                    var lastname = $(userfield[3]).val("");
-                    var phonenumber = $(userfield[4]).val("");
-                    var email = $(userfield[5]).val("");
-                    var landlord = $(userfield[6]).prop("checked", false);
-                    var active = $(userfield[7]).prop("checked", true);
-                    var isadmin = $(userfield[8]).prop("checked", false);
+                    $(userfield[0]).val("");
+                    $(userfield[1]).val("");
+                    $(userfield[2]).val("");
+                    $(userfield[3]).val("");
+                    $(userfield[4]).val("");
+                    $(userfield[5]).val("");
+                    $(userfield[6]).prop("checked", false);
+                    $(userfield[7]).prop("checked", true);
+                    $(userfield[8]).prop("checked", false);
                 
                 }
             },
@@ -335,6 +570,99 @@ function create_user()
             {
                 $("#create-user button").prop("disabled", false);
                 $("#create-user button").text("Create New User");
+            }
+        });
+    }
+}
+
+function create_listing()
+{
+    var userfield = $("#create-listing input[type='text']");
+    var inputs = $("#create-listing input[type='checkbox'], #create-listing input[type='hidden']");
+    
+    var data = buildData(userfield, ["username", "rent", "address", "bedrooms", "bathrooms", "start_date", "animals", "laundry", "latitude", "longitude", "selected_address"], inputs);
+    
+    var error = buildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/admin/admin_api.php",
+            beforeSend: function()
+            {
+                $("#create-listing button").prop("disabled", true);
+                $("#create-listing button").text("Creating...");
+            },
+            data:
+            {
+                command: "create_listing",
+                data: data
+            },
+            success: function(res)
+            {    
+                var data = JSON.parse(res);
+                
+                if (data["error"])
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
+                }
+                else if (!res)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Create Listing!", position: 'bottom-right'});
+                }
+                else
+                {
+                    //append after the header (first tr)
+                    $("#user-list tr:first").after(
+                        "<tr id='" + data._id.$oid + "'>"   +
+                            "<td><input type='text' class='form-control' value='" + data.Username + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.price + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.address + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.bedrooms + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + data.bathrooms + "' /></td>" +
+                            "<td><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' /></td>" +
+                            "<td><input type='checkbox' " + (data.animals ? "checked " : "") + "data-size='mini' /></td>" +
+                            "<td><input type='checkbox' " + (data.laundry ? "checked " : "") + "data-size='mini' /></td>" +
+                            "<td><button class='btn btn-primary' onclick='update_user(\"" + data._id.$oid + "\");'>Update</button></td>" + 
+                            "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button></td>" +
+                            "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                        "</tr>");
+                        
+                    // activate toggle switches for these new guys
+                    $("#listing-list tr:nth-child(2) input").bootstrapSwitch({onText: "Yes", offText: "No"});
+                   
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'bottom-right'});
+                    
+                    // reset the create-row
+                    $(userfield[0]).val("");
+                    $(userfield[1]).val("");
+                    $(userfield[2]).val("");
+                    $(userfield[3]).val("");
+                    $(userfield[4]).val("");
+                    $(userfield[5]).val("");
+                    $(userfield[6]).val("");
+                    $(userfield[6]).prop("checked", false);
+                    $(userfield[7]).prop("checked", false);
+                    $(userfield[8]).val("");
+                    $(userfield[9]).val("");
+                
+                }
+            },
+            error: function(res, err)
+            {
+                console.log(res);
+                console.log(err);
+            },
+            complete: function()
+            {
+                $("#create-listing button").prop("disabled", false);
+                $("#create-listing button").text("Create New Listing");
             }
         });
     }
@@ -435,6 +763,13 @@ function resetUsers()
     get_all_users();
 }
 
+function resetListings()
+{
+    $("#listing-list tr").not(":first").remove();
+    
+    get_all_listings();
+}
+
 function init_checkboxes()
 {
     $("input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
@@ -445,7 +780,7 @@ function contains(haystack, needle)
     return (haystack.indexOf(needle) != -1)
 }
 
-function sanitizeUserListingData(data)
+function sanitizeUserData(data)
 {
     data.FirstName = (data.FirstName ? data.FirstName : "-");
     data.LastName = (data.LastName ? data.LastName : "-");
@@ -455,15 +790,20 @@ function sanitizeUserListingData(data)
     return data;
 }
 
-function buildData(formfield, elements, switches)
+function buildData(formfield, elements, inputs)
 {   
     var data = {};
     
     for (var i = 0, j = 0; i < elements.length; i++)
     {
-        if ((elements[i] == "landlord" || elements[i] == "active" || elements[i] == "isadmin") && switches.length > 0)
+        if ((elements[i] == "landlord" || elements[i] == "active" || elements[i] == "isadmin" || elements[i] == "animals" || elements[i] == "laundry") && inputs.length > 0)
         {
-            data[elements[i]] = $(switches[j]).prop("checked");
+            data[elements[i]] = $(inputs[j]).prop("checked");
+            j++;
+        }
+        else if ((elements[i] == "latitude" || elements[i] == "longitude" || elements[i] == "selected_address") && inputs.length > 0)
+        {
+            data[elements[i]] = $(inputs[j]).val();
             j++;
         }
         else
@@ -481,69 +821,76 @@ function buildError(fields)
     
     var beginning = "Please Include ";
     
-    if (fields.username == "")
+    if (fields.username === "")
     {
         error_arr.push("Username");
     }
-    if (fields.password == "")
+    if (fields.password === "")
     {
         error_arr.push("Password");
     }
-    if (fields.firstname == "")
+    if (fields.firstname === "")
     {
         error_arr.push("First Name");
     }
-    if (fields.lastname == "")
+    if (fields.lastname === "")
     {
         error_arr.push("Last Name");
     }
-    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
+    if (fields.email === "" || ((fields.email !== null && fields.email !== undefined) && !isValidEmail(fields.email)))
     {
         error_arr.push("Valid Email");
     }
-    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    if (fields.phonenumber === "" || ((fields.phonenumber !== null && fields.phonenumber !== undefined) && !isValidPhoneNumber(fields.phonenumber)))
     {
         error_arr.push("Valid Phone Number");
     }
-    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
+    if (fields.address === "" || fields.latitude === "" || fields.longitude === "")
     {
         error_arr.push("Valid Address - Must Select Google's Result");
     }
-    if (fields.address != "" && fields.address != fields.selected_address)
+    if (fields.address !== "" && fields.address !== fields.selected_address)
 	{
 		error_arr.push("Valid Address - Do Not Modify Google's Result After Selecting");
 	}
-    if (fields.bedrooms == "")
+    if (fields.bedrooms === "")
     {
         error_arr.push("Valid Number of Bedrooms");
     }
-    if (fields.bathrooms == "")
+    if (fields.bathrooms === "")
     {
         error_arr.push("Valid Number of Bathrooms");
     }
-    if (fields.rent == "")
+    if (fields.rent === "")
     {
         error_arr.push("Valid Monthly Rent Amount");
     }
-    if (fields.start_date == "")
+    if (fields.start_date === "")
     {
         error_arr.push("Valid Lease Start Date");
     }
-    if (fields.animals == "")
+    if (fields.animals === "")
     {
         error_arr.push("If Animals Are Allowed");
     }
-    if (fields.laundry == "")
+    if (fields.laundry === "")
     {
         error_arr.push("If In-Unit Laundry is Available");
     }
     
     if (error_arr.length > 0)
     {
-        var last = " and " + error_arr[error_arr.length - 1];
-        error_arr.splice(error_arr.length - 1, 1);
-        
-        return beginning + error_arr.join(", ") + last;
+        if (error_arr.length == 1)
+        {
+            return beginning + error_arr[0];
+        }
+        else
+        {
+            var last = " and " + error_arr[error_arr.length - 1];
+            error_arr.splice(error_arr.length - 1, 1);
+            
+            return beginning + error_arr.join(", ") + last;
+        }
     }
     
     return beginning;
@@ -570,7 +917,20 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
-function checkbox_to_boolean(value)
+function disableUpdateButton(id)
 {
-    return (value === "on");
+    $("#" + id + " button").prop("disabled", true);
+    $($("#" + id + " button")[0]).text("Updating...");
+}
+
+function formattedDate(dateString)
+{
+    var date = new Date(dateString);
+    var year = date.getFullYear()
+    var month = (date.getMonth() + 1)
+    var day = date.getDate();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    return "" + month + "/" + day + "/" + year;
 }

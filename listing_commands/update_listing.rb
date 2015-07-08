@@ -8,6 +8,7 @@ $: << "/home2/lbkstud1/ruby/gems"
 require 'json'
 require 'bson'
 require 'moped'
+require 'mongoid'
 
 Moped::BSON = BSON
 

@@ -146,8 +146,7 @@
                             <th>Landlord</th>
                             <th>Active</th>
                             <th>IsAdmin</th>
-                            <th><!-- Update --></th>
-                            <th><!-- Delete --></th>
+                            <th><!-- Create --></th>
                         </tr>
                         <tr id="create-user"> 
                             <td><input type="text" class='form-control'></td>
@@ -214,9 +213,9 @@
 
 $(function() 
 {
-    get_all_users();
-    
     init_checkboxes();
+    
+    get_all_users();
 });
 
 </script>

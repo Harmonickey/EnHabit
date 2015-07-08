@@ -558,11 +558,6 @@ function get_all_section_wrappers_in_page()
     return section_wrappers;
 }
 
-function fill_modal_to_screen()
-{
-    
-}
-
 /*
  * CUSTOM FUNCTIONS
  * =============================================
@@ -1485,59 +1480,59 @@ function buildError(fields)
 {
     var error = "Please Include<br>";
     
-    if (fields.username == "")
+    if (fields.username === "")
     {
         error += "Username<br>";
     }
-    if (fields.password == "")
+    if (fields.password === "")
     {
         error += "Password<br>";
     }
-    if (fields.firstname == "")
+    if (fields.firstname === "")
     {
         error += "First Name<br>";
     }
-    if (fields.lastname == "")
+    if (fields.lastname === "")
     {
         error += "Last Name<br>";
     }
-    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
+    if (fields.email === "" || ((fields.email !== null && fields.email !== undefined) && !isValidEmail(fields.email)))
     {
         error += "Valid Email<br>";
     }
-    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    if (fields.phonenumber === "" || ((fields.phonenumber !== null && fields.phonenumber !== undefined) && !isValidPhoneNumber(fields.phonenumber)))
     {
         error += "Valid Phone Number<br>";
     }
-    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
+    if (fields.address === "" || fields.latitude === "" || fields.longitude === "")
     {
         error += "Valid Address - Must Select Google's Result<br>";
     }
-    if (fields.address != "" && fields.address != fields.selected_address)
+    if (fields.address !== "" && fields.address !== fields.selected_address)
 	{
 		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
 	}
-    if (fields.bedrooms == "")
+    if (fields.bedrooms === "")
     {
         error += "Valid Number of Bedrooms<br>";
     }
-    if (fields.bathrooms == "")
+    if (fields.bathrooms === "")
     {
         error += "Valid Number of Bathrooms<br>";
     }
-    if (fields.rent == "")
+    if (fields.rent === "")
     {
         error += "Valid Monthly Rent Amount<br>";
     }
-    if (fields.start_date == "")
+    if (fields.start_date === "")
     {
         error += "Valid Lease Start Date<br>";
     }
-    if (fields.animals == "")
+    if (fields.animals === "")
     {
         error += "If Animals Are Allowed<br>";
     }
-    if (fields.laundry == "")
+    if (fields.laundry === "")
     {
         error += "If In-Unit Laundry is Available<br>";
     }

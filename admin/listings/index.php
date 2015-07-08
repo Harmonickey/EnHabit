@@ -32,11 +32,15 @@
     
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-switch.min.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     
     <link href="../css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    
+    <link href="../js/plugins/msgGrowl/css/msgGrowl.css" rel="stylesheet">
+    <link href="../js/plugins/msgbox/jquery.msgbox.css" rel="stylesheet">
     
     <link href="../css/base-admin-3.css" rel="stylesheet">
     <link href="../css/base-admin-3-responsive.css" rel="stylesheet">
@@ -132,16 +136,45 @@
       		<div class="widget stacked">
       			<div class="widget-header">
 					<i class="icon-ok"></i>
-					<h3>Registered Users</h3>
+					<h3>Registered Listings</h3>
+                    <button style="margin-bottom: 5px;" class='btn btn-info' onclick='delete_old_listings()'><i style="margin-left: 0; margin-right: 4px;" class="icon-bolt"></i>Purge Old Listings</button>
 				</div> <!-- /widget-header -->
 				<div class="widget-content">
-					<table id="user-list">
+                    <table class="table">
                         <tr>
                             <th>Username</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
+                            <th>Rent/Month</th>
+                            <th>Address</th>
+                            <th>Bedrooms</th>
+                            <th>Bathrooms</th>
+                            <th>Start Date</th>
+                            <th>Animals</th>
+                            <th>In-Unit Laundry</th>
+                            <th><!-- Create --></th>
+                        </tr>
+                        <tr id="create-listing"> 
+                            <td><input type="text" class='form-control'></td>
+                            <td><input type="text" class='form-control'></td>
+                            <td><input type="text" class='form-control' autocomplete="false"></td>
+                            <td><input type="text" class='form-control'></td>
+                            <td><input type="text" class='form-control'></td>
+                            <td><input type="text" class='form-control '></td>
+                            <td><input type="checkbox" data-size="mini"></td>
+                            <td><input type="checkbox" data-size="mini"></td>
+                            <td><button class='btn btn-success' onclick='create_listing()'><i style="margin-right: 4px;" class="icon-plus"></i>Create New Listing</button></td>
+                            <input type='hidden' /> <input type='hidden' /> <input type='hidden' />
+                        </tr> 
+                    </table>
+					<table class="table" id="listing-list">
+                        <tr>
+                            <th>Username</th>
+                            <th>Rent</th>
+                            <th>Address</th>
+                            <th>Bedrooms</th>
+                            <th>Bathrooms</th>
+                            <th>Start Date</th>
+                            <th>Animals</th>
+                            <th>In-Unit Laundry</th>
                             <th><!-- Update --></th>
                             <th><!-- Delete --></th>
                         </tr>
@@ -172,7 +205,17 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../js/libs/jquery-1.9.1.min.js"></script>
 <script src="../js/libs/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../js/libs/bootstrap.min.js"></script>
+<script src="../js/libs/bootstrap-switch.min.js"></script>
+
+<!-- jquery geocomplete api -->
+<script src="../../assets/js/jquery.geocomplete.min.js"></script>
+<!-- helper for numeric text boxes -->
+<script src="../../assets/js/jquery.autoNumeric.js"></script>
+
+<script src="../js/plugins/msgGrowl/js/msgGrowl.js"></script>
+<script src="../js/plugins/msgbox/jquery.msgbox.min.js"></script>
 
 <script src="../js/functions.js"></script>
 
@@ -180,6 +223,41 @@
 
 $(function() 
 {
+    init_checkboxes();
+    
+    var create_listing = $("#create-listing td input");
+    
+    $(create_listing[2]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            $($("#create-listing input[type='hidden']")[0]).val(result.geometry.location.A);
+            $($("#create-listing input[type='hidden']")[1]).val(result.geometry.location.F);
+            $($("#create-listing input[type='hidden']")[2]).val($(create_listing[2]).val());
+        });
+        
+    $(create_listing[1]).autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $(create_listing[3]).autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    
+    $(create_listing[4]).autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    
+    $(create_listing[5]).datepicker();
+    
     get_all_listings();
 });
 

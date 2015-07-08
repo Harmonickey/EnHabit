@@ -5,30 +5,28 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
-require 'moped'
-require 'bson'
 require 'json'
+require 'bson'
+require 'moped'
 
-user = ARGV[0]
+Moped::BSON = BSON
 
 begin
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
 
-    document = Hash.new
+    documents = Array.new
     
     mongo_session.with(safe: true) do |session|
-        document = session[:accounts].find({"Username" => user}).select(_id: 0, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
+        documents = session[:listings].find().select(_id: 1, Username: 1, price: 1, address: 1, bedrooms: 1, bathrooms: 1, animals: 1, laundry: 1, start: 1, worldCoordinates: 1).to_a
     end
     mongo_session.disconnect
 
-    if document.nil? or document == {}
-        puts "Could Not Find User."
+    if documents.count == 0
+        puts "No Users"
     else
-        result_data = Hash.new
-        result_data["data"] = document
-        puts result_data.to_json
+        puts documents.to_json
     end
 
 rescue Exception => e

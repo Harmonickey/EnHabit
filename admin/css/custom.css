@@ -24,3 +24,8 @@ textarea
 {
     text-align: center;
 }
+
+.pac-container
+{
+    width: auto !important;
+}
