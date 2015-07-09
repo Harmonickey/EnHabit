@@ -87,10 +87,16 @@ if (!isset($_SESSION['CREATED'])) {
                         <div class="item-content date-content">
                                 <label>Available Starting</label>
                                 <input id="datepicker-inline" type="text" />
+                        </div>
+                        <div class="double-item-content">
+                            <div class="item-content switch-content">
+                                <label>Parking</label>
+                                <input id="parking-filter" type="checkbox" />
                             </div>
-                        <div class="item-content type-content">
-                            <label>Type</label>
-                            <input id="type-filter" type="checkbox" />
+                            <div class="item-content animals-content">
+                                <label>Animals</label>
+                                <input id="animals-filter" type="checkbox" />
+                            </div>
                         </div>
                         <div class="item-content search-content">
                             <input type="button" class="btn btn-primary" value="Search" />
@@ -113,20 +119,18 @@ if (!isset($_SESSION['CREATED'])) {
                                 <label>In-Unit Laundry</label>
                                 <input id="laundry-filter" type="checkbox" />
                             </div>
-                            <div class="item-content switch-content">
-                                <label>Parking</label>
-                                <input id="parking-filter" type="checkbox" />
-                            </div>
-                        </div>
-                        <div class="double-item-content">
                             <div class="item-content ac-content">
                                 <label>AC Unit</label>
                                 <input id="ac-filter" type="checkbox" />
                             </div>
-                            <div class="item-content animals-content">
-                                <label>Animals</label>
-                                <input id="animals-filter" type="checkbox" />
-                            </div>
+                        </div>
+                        <div class="item-content type-content">
+                            <label>Type</label>
+                            <select id="type-filter">
+                                <option value="both">Apt & Sublet</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="sublet">Sublet</option>
+                            </select>
                         </div>
                         <div class="item-content tags-content">
                             <label>Tags (i.e. north campus)</label>
