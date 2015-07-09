@@ -23,9 +23,17 @@
     padding: 0 5px 0 5px;
 }
 
-#extras_view
+#Filters .search-content input,
+#Filters .more-filters-content input
+{
+    border-radius: 10px;
+}
+
+#extras_view,
+#listings_list
 {
     color: white;
+    cursor: default;
 }
 
 #Filters .double-item-content,
@@ -114,6 +122,27 @@
 .animals-content
 {
     height: 100%;
+}
+
+.tags-content label
+{
+    width: 100%;
+}
+
+.tags-content .bootstrap-tagsinput
+{
+    width: 80%;
+}
+
+#left-sidebar,
+#listings_list,
+#extras_view
+{
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    
+    user-select: none;
 }
 
 @media (min-width: 768px)

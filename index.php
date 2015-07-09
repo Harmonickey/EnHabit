@@ -28,6 +28,8 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
         <!-- Switches -->
         <link href="assets/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
+        <!-- Tags -->
+        <link href="assets/bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- leaflet styles -->
@@ -125,6 +127,10 @@ if (!isset($_SESSION['CREATED'])) {
                                 <label>Animals</label>
                                 <input id="animals-filter" type="checkbox" />
                             </div>
+                        </div>
+                        <div class="item-content tags-content">
+                            <label>Tags (i.e. north campus)</label>
+                            <input id="tags-filter" type="text" value="" data-role="tagsinput" />
                         </div>
                     </div>
                 </div>
@@ -300,6 +306,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script>window.jQuery || document.write("<script src='assets/js/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap-switch.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-tagsinput.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>

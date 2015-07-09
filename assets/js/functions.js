@@ -20,109 +20,27 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjM
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
 //map.on('draw:created', getPointsWithinPolygon);
 
-// Disable dragging when user's cursor enters the element
-$("#left-sidebar").bind('mouseover',
+/******** EVENT HANDLERS ***********/
+
+// Disable map mouse features while we're in the sidebar
+$("#left-sidebar, #extras_view, #listings_list").bind('mouseover',
     function ()
     {
         map.dragging.disable();
         map.scrollWheelZoom.disable();
+        map.doubleClickZoom.disable();
     }
 );
 
-// Re-enable dragging when user's cursor leaves the element
-$("#left-sidebar").bind('mouseout',
+// Reenable map mouse features when the mouse is outside of the sidebar
+$("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
     function () 
     {
         map.dragging.enable();
         map.scrollWheelZoom.enable();
+        map.doubleClickZoom.enable();
     }
 );
-
-$("#extras_view").bind('mouseover',
-    function ()
-    {
-        map.dragging.disable();
-        map.scrollWheelZoom.disable();
-    }
-);
-
-// Re-enable dragging when user's cursor leaves the element
-$("#extras_view").bind('mouseout',
-    function () 
-    {
-        map.dragging.enable();
-        map.scrollWheelZoom.enable();
-    }
-);
-
-$(function ()
-{
-    initSidebar();
-});
-
-function resetSidebar()
-{
-    initSidebar();
-}
-
-function initSidebar()
-{
-    initSlider();
-    initDatePicker();
-    initNumerics();
-    initSwitches();
-}
-
-function initSlider()
-{
-    $( "#PriceRangeSlider" ).slider(
-    {
-        range: true,
-        min: 400,
-        max: 3000,
-        values: [ 800, 1500 ],
-        slide: function( event, ui )
-        {
-            $( "#amount" ).text ( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-        }
-    });
-}
-
-function initDatePicker()
-{
-    var d = new Date();
-    d.setMonth(d.getMonth() + 3);
-    d.setDate(d.getDate() - d.getDate() + 1);
-    var threeMonthsAway = (d.getMonth() + 1)  + "/" + d.getDate() + "/" + d.getFullYear();
-    
-    $("#datepicker-inline").datepicker();
-    $("#datepicker-inline").val(threeMonthsAway);
-}
-
-function initNumerics()
-{
-    $('#bedrooms-filter').autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    $('#bathrooms-filter').autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-}
-
-function initSwitches()
-{
-    $("#laundry-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#parking-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#animals-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#ac-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#type-filter").bootstrapSwitch({onText: "Sublet", offText: "Apartment", onColor: 'success', offColor: 'info', size: "mini"});
-}
 
 $('#map').on('click', '.popup .cycle a', function() 
 {
@@ -151,17 +69,7 @@ $('#map').on('click', '.popup .cycle a', function()
     return false;
 });
 
-$("#listings_list").bind('mouseover', function () {
-    map.dragging.disable();
-    map.scrollWheelZoom.disable();
-});
-
-// Re-enable dragging when user's cursor leaves the element
-$("#listings_list").bind('mouseout', function () {
-    map.dragging.enable();
-    map.scrollWheelZoom.enable();
-});
-
+/************* THEME HELPER FUNCTIONS **************/
 /* 
  * ================================================================
  * VIEWPORT
@@ -662,17 +570,9 @@ function get_all_section_wrappers_in_page()
     return section_wrappers;
 }
 
-function fill_modal_to_screen()
-{
-    
-}
-
-/*
- * CUSTOM FUNCTIONS
- * =============================================
- */
+/*********** CUSTOM FUNCTIONS **************/
  
-/* INIT FACEBOOK STUFF */
+// Init the facebook stuff
 window.fbAsyncInit = function() 
 {
     FB.init(
@@ -691,8 +591,71 @@ window.fbAsyncInit = function()
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-/* INIT OUR STUFF */
-$(function() 
+function resetSidebar()
+{
+    initMainSidebar();
+}
+
+function initMainSidebar()
+{
+    initSlider();
+    initDatePicker();
+    initNumerics();
+    initSwitches();
+}
+
+function initSlider()
+{
+    $( "#PriceRangeSlider" ).slider(
+    {
+        range: true,
+        min: 400,
+        max: 3000,
+        values: [ 800, 1500 ],
+        slide: function( event, ui )
+        {
+            $( "#amount" ).text ( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        }
+    });
+}
+
+function initDatePicker()
+{
+    var d = new Date();
+    d.setMonth(d.getMonth() + 3);
+    d.setDate(d.getDate() - d.getDate() + 1);
+    var threeMonthsAway = (d.getMonth() + 1)  + "/" + d.getDate() + "/" + d.getFullYear();
+    
+    $("#datepicker-inline").datepicker();
+    $("#datepicker-inline").val(threeMonthsAway);
+}
+
+function initNumerics()
+{
+    $('#bedrooms-filter').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    $('#bathrooms-filter').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+}
+
+function initSwitches()
+{
+    $("#laundry-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#parking-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#animals-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#ac-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#type-filter").bootstrapSwitch({onText: "Sublet", offText: "Apartment", onColor: 'success', offColor: 'info', size: "mini"});
+}
+
+function loadAllDefaultListings()
 {
     var data = {"extensions": {"university": "Northwestern"}};
     
@@ -730,12 +693,15 @@ $(function()
             console.log(err);
         }			
     });
-    
+}
+
+function setHiddenSidebars()
+{
     var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
     
     $("#listings_list").css("left", listingsListWidth);
     $("#extras_view").css("left", listingsListWidth);
-});
+}
 
 function checkLoginState() 
 {
@@ -781,15 +747,31 @@ function loadDataWithFilter()
 {
     var query = createQuery();
 
-    /*
     $.ajax(
     {
         type: "POST",
         url: "api.php",
-        data: {data: query},
+        data: 
+        {
+            data: query
+        },
         success: function(res) 
         {
-            insertMarkers(res);
+            if (contains(res, "No Matching Entries"))
+            {
+                if (res == "")
+                {
+                    console.log("No Matching Entries");
+                }
+                else
+                {
+                    console.log(res);
+                }
+            }
+            else
+            {
+                insertMarkers(res);
+            }
         },
         error: function(res, err) 
         {
@@ -797,33 +779,24 @@ function loadDataWithFilter()
             console.log(err);
         }
     });
-    */
 }
 
 function createQuery()
 {
-    var query = "{}";
+    var query = {};
+    query.price = {low: 0, high: 0};
     
-    if ($("#lower").val())
-    {
-        query += "\"lower\": " + $("#lower").val();
-    }
-    if ($("#upper").val())
-    {
-        query += "\"upper\": " + $("#upper").val();
-    }
-    if ($("#bedrooms").val())
-    {
-        query += "\"bedrooms\": " + $("#bedrooms").val();
-    }
-    if ($("#bathrooms").val())
-    {
-        query += "\"bathrooms\": " + $("#bathrooms").val();
-    }
-    if ($("#start_date").val())
-    {
-        query += "\"start_date\": " + $("#start_date").val();
-    }
+    query.price.low = $("#PriceRangeSlider").slider("values", 0);
+    query.price.high = $("#PriceRangeSlider").slider("values", 1);
+    query.bedrooms = $("#bedrooms-filter").val();
+    query.bathrooms = $("#bathrooms-filter").val();
+    query.start_date = $("#datepicker-inline").val();
+    query.type = $("#type-filter").val();
+    query.laundry = $("#laundry-filter").val();
+    query.parking = $("#parking-filter").val();
+    query.ac = $("#ac-filter").val();
+    query.animals = $("#animals-filter").val();
+    query.tags = $("#tags-filter").tagsinput('items');
     
     return query;
 }
@@ -1308,7 +1281,7 @@ function close_extras_view()
 
 function load_listings_list()
 {
-    //aggregate all the information into a listings list
+    //TODO: aggregate all the information into a listings list
     
     //then change the view listings list to "close listings list"
     $("#view_listings_list-function a").text("close listings list");
@@ -1697,12 +1670,17 @@ function contains(haystack, needle)
     return (haystack.indexOf(needle) != -1)
 }
 
-function SetBedrooms(bedrooms)
+/********** START UP SCRIPTS *************/
+$(function ()
 {
-    $('Bedrooms').innerHTML = "Bedrooms: " + bedrooms + "<span class='caret'></span>";
-}
+    initMainSidebar();
+    
+    loadAllDefaultListings();
+    
+    setHiddenSidebars();
+});
 
-function SetBathrooms(bathrooms)
-{
-    $('Bathrooms').innerHTML = "Bathrooms: " + bathrooms + "<span class='caret'></span>";
-}
+$(window).on('resize', function() {
+   //otherwise they get out of place because their 'left' is set as a percentage
+   setHiddenSidebars(); 
+});
