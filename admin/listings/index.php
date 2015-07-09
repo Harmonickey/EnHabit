@@ -137,7 +137,7 @@
       			<div class="widget-header">
 					<i class="icon-ok"></i>
 					<h3>Registered Listings</h3>
-                    <button style="margin-bottom: 5px;" class='btn btn-info' onclick='delete_old_listings()'><i style="margin-left: 0; margin-right: 4px;" class="icon-bolt"></i>Purge Old Listings</button>
+                    <button id="purge-btn" style="margin-bottom: 5px;" class='btn btn-info' onclick='delete_old_listings()'><i style="margin-left: 0; margin-right: 4px;" class="icon-bolt"></i>Purge Old Listings</button>
 				</div> <!-- /widget-header -->
 				<div class="widget-content">
                     <table class="table">

@@ -207,6 +207,11 @@ function delete_old_listings()
             {
                 type: "POST",
                 url: "/admin/admin_api.php",
+                beforeSend: function()
+                {
+                    $("#purge-btn").text("Purging...");
+                    disableButtons(); 
+                },
                 data:
                 {
                     command: "delete_old_listings"
@@ -219,6 +224,11 @@ function delete_old_listings()
                 {
                     console.log(res);
                     console.log(err);
+                },
+                complete: function()
+                {
+                    $("#purge-btn").text("Purge Old Listings");
+                    enableButtons();
                 }
             });
         }
@@ -230,7 +240,7 @@ function update_user(id)
     var userfield = $("#" + id + " input[type='text']");
     var switches = $("#" + id + " input[type='checkbox']");
     
-    var data = buildUserData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
+    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
     
     data["id"] = id;
     
@@ -250,7 +260,8 @@ function update_user(id)
             url: "/admin/admin_api.php",
             beforeSend: function()
             {
-                disableUpdateButton(id);
+                $($("#" + id + " button")[0]).text("Updating...");
+                disableButtons();
             },
             data:
             {
@@ -281,9 +292,9 @@ function update_user(id)
                     $($(userfield)[2]).text(data.LastName);
                     $($(userfield)[3]).text(data.PhoneNumber);
                     $($(userfield)[4]).text(data.Email);
-                    $($(userfield)[5]).prop("checked", data.Landlord);
-                    $($(userfield)[6]).prop("checked", data.Active);
-                    $($(userfield)[7]).prop("checked", data.IsAdmin);
+                    $($(switches)[0]).prop("checked", data.Landlord);
+                    $($(switches)[1]).prop("checked", data.Active);
+                    $($(switches)[2]).prop("checked", data.IsAdmin);
                     
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
                 }
@@ -295,8 +306,8 @@ function update_user(id)
             },
             complete: function()
             {
-                $("#" + id + " button").prop("disabled", false);
                 $($("#" + id + " button")[0]).text("Update");
+                enableButtons();
             }
         });
     }
@@ -327,7 +338,8 @@ function update_listing(id)
             url: "/admin/admin_api.php",
             beforeSend: function()
             {
-                disableUpdateButton(id);
+                $($("#" + id + " button")[0]).text("Updating...");
+                disableButtons();
             },
             data:
             {
@@ -359,10 +371,10 @@ function update_listing(id)
                     $($(userfield)[3]).text(data.bedrooms);
                     $($(userfield)[4]).text(data.bathrooms);
                     $($(userfield)[5]).text(formattedDate(data.start));
-                    $($(userfield)[6]).prop("checked", data.animals);
-                    $($(userfield)[7]).prop("checked", data.laundry);
-                    $($(userfield)[8]).val(data.worldCoordinates.x);
-                    $($(userfield)[9]).val(data.worldCoordinates.y);
+                    $($(inputs)[0]).prop("checked", data.animals);
+                    $($(inputs)[1]).prop("checked", data.laundry);
+                    $($(inputs)[2]).val(data.worldCoordinates.x);
+                    $($(inputs)[3]).val(data.worldCoordinates.y);
                     
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
                 }
@@ -374,8 +386,8 @@ function update_listing(id)
             },
             complete: function()
             {
-                $("#" + id + " button").prop("disabled", false);
                 $($("#" + id + " button")[0]).text("Update");
+                enableButtons();
             }
         });
     }
@@ -402,6 +414,11 @@ function delete_user(id)
             {
                 type: "POST",
                 url: "/admin/admin_api.php",
+                beforeSend: function()
+                {
+                   $($("#" + id + " button")[1]).text("Deleting...");
+                   disableButtons();
+                },
                 data:
                 {
                     command: "delete_user",
@@ -427,6 +444,9 @@ function delete_user(id)
                 {
                     console.log(res);
                     console.log(err);
+                },
+                complete: function() {
+                    enableButtons();
                 }
             });
         }
@@ -454,6 +474,10 @@ function delete_listing(id)
             {
                 type: "POST",
                 url: "/admin/admin_api.php",
+                beforeSend: function()
+                {
+                   $($("#" + id + " button")[1]).text("Deleting..."); 
+                },
                 data:
                 {
                     command: "delete_listing",
@@ -479,6 +503,9 @@ function delete_listing(id)
                 {
                     console.log(res);
                     console.log(err);
+                },
+                complete: function() {
+                    enableButtons();
                 }
             });
         }
@@ -506,8 +533,8 @@ function create_user()
             url: "/admin/admin_api.php",
             beforeSend: function()
             {
-                $("#create-user button").prop("disabled", true);
                 $("#create-user button").text("Creating...");
+                disableButtons();
             },
             data:
             {
@@ -544,7 +571,7 @@ function create_user()
                         "</tr>");
                         
                     // activate toggle switches for these new guys
-                    $("#user-list tr:nth-child(2) input").bootstrapSwitch({onText: "Yes", offText: "No"});
+                    $("#user-list tr:nth-child(2) input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
                    
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'bottom-right'});
                     
@@ -555,9 +582,9 @@ function create_user()
                     $(userfield[3]).val("");
                     $(userfield[4]).val("");
                     $(userfield[5]).val("");
-                    $(userfield[6]).prop("checked", false);
-                    $(userfield[7]).prop("checked", true);
-                    $(userfield[8]).prop("checked", false);
+                    $(switches[0]).prop("checked", false);
+                    $(switches[1]).prop("checked", true);
+                    $(switches[2]).prop("checked", false);
                 
                 }
             },
@@ -568,8 +595,8 @@ function create_user()
             },
             complete: function()
             {
-                $("#create-user button").prop("disabled", false);
                 $("#create-user button").text("Create New User");
+                enableButtons();
             }
         });
     }
@@ -596,8 +623,8 @@ function create_listing()
             url: "/admin/admin_api.php",
             beforeSend: function()
             {
-                $("#create-listing button").prop("disabled", true);
                 $("#create-listing button").text("Creating...");
+                disableButtons();
             },
             data:
             {
@@ -635,7 +662,7 @@ function create_listing()
                         "</tr>");
                         
                     // activate toggle switches for these new guys
-                    $("#listing-list tr:nth-child(2) input").bootstrapSwitch({onText: "Yes", offText: "No"});
+                    $("#listing-list tr:nth-child(2) input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
                    
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'bottom-right'});
                     
@@ -647,10 +674,10 @@ function create_listing()
                     $(userfield[4]).val("");
                     $(userfield[5]).val("");
                     $(userfield[6]).val("");
-                    $(userfield[6]).prop("checked", false);
-                    $(userfield[7]).prop("checked", false);
-                    $(userfield[8]).val("");
-                    $(userfield[9]).val("");
+                    $(inputs[0]).prop("checked", false);
+                    $(inputs[1]).prop("checked", false);
+                    $(inputs[2]).val("");
+                    $(inputs[3]).val("");
                 
                 }
             },
@@ -661,8 +688,8 @@ function create_listing()
             },
             complete: function()
             {
-                $("#create-listing button").prop("disabled", false);
-                $("#create-listing button").text("Create New Listing");
+                $$("#create-listing button").text("Create New Listing");
+                enableButtons();
             }
         });
     }
@@ -917,10 +944,14 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
-function disableUpdateButton(id)
+function disableButtons()
 {
-    $("#" + id + " button").prop("disabled", true);
-    $($("#" + id + " button")[0]).text("Updating...");
+    $("button").prop("disabled", true);
+}
+
+function enableButtons()
+{
+    $("button").prop("disabled", false);
 }
 
 function formattedDate(dateString)
