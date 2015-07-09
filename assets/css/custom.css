@@ -19,19 +19,101 @@
 
 #Filters
 {
-    color: #ffffff;
+    color: white;
     padding: 0 5px 0 5px;
 }
 
-#Filters .dropdown
+#extras_view
 {
-    margin-top: 10px;
-    text-align: center;
+    color: white;
 }
 
-#Filters .dropdown button
+#Filters .double-item-content,
+#extras_view .double-item-content
+{
+    margin-top: 10px;
+    display: inline-block;
+    width: 100%;
+}
+
+#Filters .double-item-content .item-content,
+#extras_view .double-item-content .item-content
+{
+    width: 50%;
+    float: left;
+}
+
+#bedrooms-filter,
+#bathrooms-filter
+{
+    width: 64px;
+}
+
+.item-content label
+{
+    width: 45%;
+}
+
+.double-item-content .item-content label
+{
+    width: 100%;
+}
+
+.date-content label
+{
+    width: 100%;
+}
+
+.switch-content
+{
+    display: inline-block;
+    width: 100%;
+}
+
+.item-content .bootstrap-switch
+{
+    float: left;
+}
+
+.search-content,
+.more-filters-content
+{
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.more-filters-content button
 {
     width: 70%;
+}
+
+.search-content input
+{
+    width: 50%;
+}
+
+.type-content,
+.search-content
+{
+    display: inline-block;
+}
+
+.type-content .bootstrap-switch
+{
+    float: left;
+}
+
+#datepicker-inline
+{
+    color: black;
+    font-weight: bold;
+    width: 100%;
+}
+
+.animals-content
+{
+    height: 100%;
 }
 
 @media (min-width: 768px)
@@ -147,11 +229,12 @@
     display: none;  /* for now I dunno what is wrong with it... */
 }
 
-#listings_list 
+#listings_list,
+#extras_view 
 {
     position: fixed;
     z-index: 1;
-    width: 1px;
+    width: 0px;
     height: 100%;
     overflow: hidden;
     background: rgba(0,0,0,0.79);
@@ -179,4 +262,9 @@
     display: block;
     width: 100%;
     height: 150px;
+}
+
+#footer
+{
+    margin: 0;
 }

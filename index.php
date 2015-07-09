@@ -26,6 +26,8 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <link href="assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+        <!-- Switches -->
+        <link href="assets/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- leaflet styles -->
@@ -70,45 +72,60 @@ if (!isset($_SESSION['CREATED'])) {
                             <span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
                             <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                         </div>
-                        <div class="item-content">
-                            <label>Bedrooms</label>
-                            <input type="text" class="btn btn-primary" value="2" />
+                        <div class="double-item-content">
+                            <div class="item-content">
+                                <label>Bedrooms</label>
+                                <input id="bedrooms-filter" type="text" class="form-control input-sm text-center" value="2" />
+                            </div>
+                            <div class="item-content">
+                                <label>Bathrooms</label>
+                                <input id="bathrooms-filter" type="text" class="form-control input-sm text-center" value="1" />
+                            </div>
                         </div>
-                        <div class="item-content">
-                            <label>Bathrooms</label>
-                            <input type="text" class="btn btn-primary" value="1" />
+                        <div class="item-content date-content">
+                                <label>Available Starting</label>
+                                <input id="datepicker-inline" type="text" />
+                            </div>
+                        <div class="item-content type-content">
+                            <label>Type</label>
+                            <input id="type-filter" type="checkbox" />
                         </div>
-                        <div class="item-content">
-                            <label>Bathrooms</label>
-                            <input type="checkbox" />
+                        <div class="item-content search-content">
+                            <input type="button" class="btn btn-primary" value="Search" />
                         </div>
-                        <h3>Laundry in Unit:</h3>
-                        <form action="">
-                            <input type="radio" name="LaundryInUnit" value="1">Yes
-                            <input type="radio" name="LaundryInUnit" value="0">No
-                        </form>
-                        <h3>Parking:</h3>
-                        <form action="">
-                            <input type="radio" name="Parking" value="1">Yes
-                            <input type="radio" name="Parking" value="0">No
-                        </form>
-                        <h3>Available starting on:</h3>
-                        <div id="datepicker-inline"></div>
-                        <h3>SubLease:</h3>
-                        <form action="">
-                            <input type="radio" name="SubLease" value="1">Yes
-                            <input type="radio" name="SubLease" value="0">No
-                        </form>
-                        <h3>Tags: Text Box</h3>
-                        <button class="btn btn-default" type="button" id="RefreshListings">
-                            Refresh Listings
-                        </button>
+                        <div class="item-content more-filters-content">
+                            <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
+                        </div>
                     </div>
                     <!-- #main-menu -->
                 </section>
                 <div id="listings_list">
                     <div id="listings">
                         
+                    </div>
+                </div>
+                <div id="extras_view">
+                    <div id="extras">
+                        <div class="double-item-content">
+                            <div class="item-content switch-content">
+                                <label>In-Unit Laundry</label>
+                                <input id="laundry-filter" type="checkbox" />
+                            </div>
+                            <div class="item-content switch-content">
+                                <label>Parking</label>
+                                <input id="parking-filter" type="checkbox" />
+                            </div>
+                        </div>
+                        <div class="double-item-content">
+                            <div class="item-content ac-content">
+                                <label>AC Unit</label>
+                                <input id="ac-filter" type="checkbox" />
+                            </div>
+                            <div class="item-content animals-content">
+                                <label>Animals</label>
+                                <input id="animals-filter" type="checkbox" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- #left-sidebar -->
@@ -245,10 +262,8 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- end: Left Sidebar -->
                 <!-- Footer -->
                 <section id="footer">
-                    <!-- Go to Top -->
-                    <div id="go-to-top" onclick="scroll_to_top();"><span class="icon glyphicon glyphicon-chevron-up"></span></div>
                     <!-- copyright text -->
-                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudio.net" target="_blank">LbKStudios LLC</a></div>
+                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
                 </section>
                 <!-- end: Footer -->      
             </div>
@@ -284,6 +299,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='assets/js/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-switch.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
@@ -301,8 +317,6 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="assets/js/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="assets/js/jquery.autoNumeric.js"></script>
-        <!-- helper for checkboxes -->
-        <script src="assets/js/
         <!-- Custom functions for this theme -->
         <script src="assets/js/functions.js"></script>
         <script src="assets/js/initialise-functions.js"></script>

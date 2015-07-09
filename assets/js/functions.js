@@ -25,6 +25,7 @@ $("#left-sidebar").bind('mouseover',
     function ()
     {
         map.dragging.disable();
+        map.scrollWheelZoom.disable();
     }
 );
 
@@ -33,12 +34,47 @@ $("#left-sidebar").bind('mouseout',
     function () 
     {
         map.dragging.enable();
+        map.scrollWheelZoom.enable();
+    }
+);
+
+$("#extras_view").bind('mouseover',
+    function ()
+    {
+        map.dragging.disable();
+        map.scrollWheelZoom.disable();
+    }
+);
+
+// Re-enable dragging when user's cursor leaves the element
+$("#extras_view").bind('mouseout',
+    function () 
+    {
+        map.dragging.enable();
+        map.scrollWheelZoom.enable();
     }
 );
 
 $(function ()
 {
-    /* Horizontal Slider */
+    initSidebar();
+});
+
+function resetSidebar()
+{
+    initSidebar();
+}
+
+function initSidebar()
+{
+    initSlider();
+    initDatePicker();
+    initNumerics();
+    initSwitches();
+}
+
+function initSlider()
+{
     $( "#PriceRangeSlider" ).slider(
     {
         range: true,
@@ -50,10 +86,43 @@ $(function ()
             $( "#amount" ).text ( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
         }
     });
+}
+
+function initDatePicker()
+{
+    var d = new Date();
+    d.setMonth(d.getMonth() + 3);
+    d.setDate(d.getDate() - d.getDate() + 1);
+    var threeMonthsAway = (d.getMonth() + 1)  + "/" + d.getDate() + "/" + d.getFullYear();
     
-    /* DatePicker */
-    $( "#datepicker-inline" ).datepicker();
-});
+    $("#datepicker-inline").datepicker();
+    $("#datepicker-inline").val(threeMonthsAway);
+}
+
+function initNumerics()
+{
+    $('#bedrooms-filter').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    $('#bathrooms-filter').autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+}
+
+function initSwitches()
+{
+    $("#laundry-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#parking-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#animals-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#ac-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $("#type-filter").bootstrapSwitch({onText: "Sublet", offText: "Apartment", onColor: 'success', offColor: 'info', size: "mini"});
+}
 
 $('#map').on('click', '.popup .cycle a', function() 
 {
@@ -665,6 +734,7 @@ $(function()
     var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
     
     $("#listings_list").css("left", listingsListWidth);
+    $("#extras_view").css("left", listingsListWidth);
 });
 
 function checkLoginState() 
@@ -1188,6 +1258,8 @@ function load_modal(event, which, enter_default, btnText)
 
 function open_listings_list()
 {
+    close_extras_view();
+    
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
     var openWidth = parseFloat($("html").css("width")) - parseFloat($("#listings_list").css("left"));
     
@@ -1197,14 +1269,40 @@ function open_listings_list()
     }, 1000, 'easeInOutCubic', load_listings_list);
 }
 
+function open_extras_view()
+{
+    close_listings_list();
+    
+    $("#extras_view").animate(
+    {
+        width: parseFloat($("#left-sidebar").css("width")),
+        paddingLeft: "10px"
+    }, 1000, 'easeInOutCubic', function() {
+        $(".more-filters-content input").val("Hide Extra Filters");
+        $(".more-filters-content input").attr("onclick", "close_extras_view()");
+    });
+}
+
 function close_listings_list()
 {
     $("#listings_list").animate(
     {
-        width: "1px"
+        width: "0px"
     }, 1000, 'easeInOutCubic', function() {
         $("#view_listings_list-function a").text("view listings list");
         $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+    });
+}
+
+function close_extras_view()
+{
+    $("#extras_view").animate(
+    {
+        width: "0px",
+        paddingLeft: "0px"
+    }, 1000, 'easeInOutCubic', function() {
+        $(".more-filters-content input").val("Show Extra Filters");
+        $(".more-filters-content input").attr("onclick", "open_extras_view()");
     });
 }
 
