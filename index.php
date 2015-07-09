@@ -64,43 +64,24 @@ if (!isset($_SESSION['CREATED'])) {
                         <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                     </ul>
                     <div id="Filters">
-                        <h1>Filter listings:</h1>
+                        <h1 class="text-center">Filter listings</h1>
                         <div class="item-content">
                             <span>Price Range</span>
-                            <span id="amount" style="border:0; color:#f6931f; font-weight:bold;"></span>
+                            <span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
                             <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                         </div>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="Bedrooms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Select Number of Bedrooms
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="Bedrooms">
-                                <li><a href="#" onclick="SetBedrooms(1)">1</a></li>
-                                <li><a href="#" onclick="SetBedrooms(2)">2</a></li>
-                                <li><a href="#" onclick="SetBedrooms(3)">3</a></li>
-                                <li><a href="#" onclick="SetBedrooms(4)">4</a></li>
-                            </ul>
+                        <div class="item-content">
+                            <label>Bedrooms</label>
+                            <input type="text" class="btn btn-primary" value="2" />
                         </div>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="Bathrooms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Select Number of Bathrooms
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="Bathrooms">
-                                <li><a href="#" onclick="SetBathrooms(1)">1</a></li>
-                                <li><a href="#" onclick="SetBathrooms(1.5)">1.5</a></li>
-                                <li><a href="#" onclick="SetBathrooms(2)">2</a></li>
-                                <li><a href="#" onclick="SetBathrooms(2.5)">2.5</a></li>
-                                <li><a href="#" onclick="SetBathrooms(3)">3</a></li>
-                                <li><a href="#" onclick="SetBathrooms(4)">4</a></li>
-                            </ul>
+                        <div class="item-content">
+                            <label>Bathrooms</label>
+                            <input type="text" class="btn btn-primary" value="1" />
                         </div>
-                        <h3>Animals Allowed:</h3>
-                        <form action="">
-                            <input type="radio" name="AnimalsAllowed" value="1">Yes
-                            <input type="radio" name="AnimalsAllowed" value="0">No
-                        </form>
+                        <div class="item-content">
+                            <label>Bathrooms</label>
+                            <input type="checkbox" />
+                        </div>
                         <h3>Laundry in Unit:</h3>
                         <form action="">
                             <input type="radio" name="LaundryInUnit" value="1">Yes
@@ -320,9 +301,10 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="assets/js/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="assets/js/jquery.autoNumeric.js"></script>
+        <!-- helper for checkboxes -->
+        <script src="assets/js/
         <!-- Custom functions for this theme -->
         <script src="assets/js/functions.js"></script>
-        <script src="assets/js/sliders.js"></script>
         <script src="assets/js/initialise-functions.js"></script>
         <?php 
             if (isset($_SESSION['user']))

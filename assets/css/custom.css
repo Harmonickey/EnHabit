@@ -20,6 +20,18 @@
 #Filters
 {
     color: #ffffff;
+    padding: 0 5px 0 5px;
+}
+
+#Filters .dropdown
+{
+    margin-top: 10px;
+    text-align: center;
+}
+
+#Filters .dropdown button
+{
+    width: 70%;
 }
 
 @media (min-width: 768px)
