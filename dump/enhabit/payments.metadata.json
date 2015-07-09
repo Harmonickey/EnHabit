@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":NumberInt(1),"key":{"_id":NumberInt(1)},"name":"_id_","ns":"enhabit.payments"},{"v":NumberInt(1),"key":{"UserId":1,"StripeId":1},"name":"UserId_1_StripeId_1","ns":"enhabit.payments"}]}
