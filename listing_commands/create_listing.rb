@@ -14,7 +14,7 @@ def to_boolean(str)
     str == 'true'
 end
 
-def create_listing(user, pr, ad, be, ba, an, la, st, lat, lng)
+def create_listing(user, pr, ad, be, ba, an, la, pa, ac, ty, st, lat, lng, ta)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -26,11 +26,15 @@ def create_listing(user, pr, ad, be, ba, an, la, st, lat, lng)
     listing_obj["bathrooms"] = ba.to_i
     listing_obj["animals"] = to_boolean(an)
     listing_obj["laundry"] = to_boolean(la)
+    listing_obj["parking"] = to_boolean(pa)
+    listing_obj["ac"] = to_boolean(ac)
+    listing_obj["type"] = ty
     listing_obj["start"] = Date.strptime(st, "%m/%d/%Y").mongoize
     listing_obj["worldCoordinates"] = {"x" => nil, "y" => nil}
     listing_obj["worldCoordinates"]["x"] = lat.to_f
     listing_obj["worldCoordinates"]["y"] = lng.to_f
-    listing_obj["extensions"] = {"university" => "Northwestern"}
+    listing_obj["university"] = "Northwestern"
+    listing_obj["tags"] = ta
     
     ret_msg = ""
  
@@ -52,7 +56,7 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
-    result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["start_date"], data["latitude"], data["longitude"])
+    result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["ac"], data["type"], data["start_date"], data["latitude"], data["longitude"], data["tags"])
 
     puts result
 rescue Exception => e

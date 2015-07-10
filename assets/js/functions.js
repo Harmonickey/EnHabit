@@ -652,12 +652,16 @@ function initSwitches()
     $("#parking-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
     $("#animals-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
     $("#ac-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#type-filter").bootstrapSwitch({onText: "Sublet", offText: "Apartment", onColor: 'success', offColor: 'info', size: "mini"});
+    
+    $(".laundry").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $(".parking").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $(".animals").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
+    $(".ac").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
 }
 
 function loadAllDefaultListings()
 {
-    var data = {"extensions": {"university": "Northwestern"}};
+    var data = {"university": "Northwestern"};
     
     //upon load, get all the entries that are at Northwestern
     $.ajax(
@@ -743,7 +747,7 @@ function login_facebook()
     }
 }
  
-function loadDataWithFilter()
+function searchForListings()
 {
     var query = createQuery();
 
@@ -753,6 +757,7 @@ function loadDataWithFilter()
         url: "api.php",
         data: 
         {
+            command: "get_listings",
             data: query
         },
         success: function(res) 
@@ -791,11 +796,11 @@ function createQuery()
     query.bedrooms = $("#bedrooms-filter").val();
     query.bathrooms = $("#bathrooms-filter").val();
     query.start_date = $("#datepicker-inline").val();
-    query.type = $("#type-filter").val();
-    query.laundry = $("#laundry-filter").val();
-    query.parking = $("#parking-filter").val();
-    query.ac = $("#ac-filter").val();
-    query.animals = $("#animals-filter").val();
+    query.type = $("#type-filter").prop("checked");
+    query.laundry = $("#laundry-filter").prop("checked");
+    query.parking = $("#parking-filter").prop("checked");
+    query.ac = $("#ac-filter").prop("checked");
+    query.animals = $("#animals-filter").prop("checked");
     query.tags = $("#tags-filter").tagsinput('items');
     
     return query;
@@ -1468,61 +1473,6 @@ function update_listing()
     }
 }
 
-function create_listing()
-{
-    var data = buildData(["address", "selected_address", "latitude", "longitude",
-                                    "bedrooms", "bathrooms", "animals", "laundry", "rent",
-                                    "start_date"]);
-   
-    var error = buildError(data);
-
-    if (error != "Please Include<br>")
-    {
-        setError("create_listing", error);
-    }
-    else
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "api.php",
-            beforeSend: function() 
-            {
-                disableModalSubmit("create_listing", "Processing...");
-            },
-            data :
-            {
-                command: "create_listing",
-                data: data
-            },
-            success: function(res)
-            {
-                if (contains(res, "Okay"))
-                {
-                    populate_and_open_modal(null, 'modal-content-7');
-                    
-                    L.marker([data["latitude"], data["longitude"]]).addTo(map);
-                }
-                else
-                {
-                    setError("create_listing", res);
-                }
-            },
-            error: function(res, err)
-            {
-                console.log(res);
-                console.log(err);
-            },
-            complete: function()
-            {
-                resetModal("create_listing", "Create Listing", false);
-                
-                set_default_button_on_enter("");
-            }
-        });
-    }
-}
-
 function set_default_button_on_enter(modal)
 {
     if (modal != "")
@@ -1646,6 +1596,18 @@ function buildError(fields)
     {
         error += "If In-Unit Laundry is Available<br>";
     }
+    if (fields.parking == "")
+    {
+        error += "If Parking is Available<br>";
+    }
+    if (fields.ac == "")
+    {
+        error += "If Air Conditioning Is Available<br>";
+    }
+    if (fields.type == "")
+    {
+        error += "What Type of Lease<br>";
+    }
     
     return error;
 }
@@ -1667,6 +1629,11 @@ function setError(el, msg)
 
 function contains(haystack, needle)
 {
+    if (typeof haystack != "string") 
+    {
+        return false;
+    }
+    
     return (haystack.indexOf(needle) != -1)
 }
 

@@ -86,7 +86,7 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                         <div class="item-content date-content">
                                 <label>Available Starting</label>
-                                <input id="datepicker-inline" type="text" />
+                                <input id="datepicker-inline" type="text" class="form-control" />
                         </div>
                         <div class="double-item-content">
                             <div class="item-content switch-content">
@@ -99,7 +99,7 @@ if (!isset($_SESSION['CREATED'])) {
                             </div>
                         </div>
                         <div class="item-content search-content">
-                            <input type="button" class="btn btn-primary" value="Search" />
+                            <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
                         </div>
                         <div class="item-content more-filters-content">
                             <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
@@ -126,8 +126,8 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                         <div class="item-content type-content">
                             <label>Type</label>
-                            <select id="type-filter">
-                                <option value="both">Apt & Sublet</option>
+                            <select id="type-filter" class="form-control">
+                                <option value="both">Apt &amp; Sublet</option>
                                 <option value="apartment">Apartment</option>
                                 <option value="sublet">Sublet</option>
                             </select>
@@ -188,45 +188,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-5">
                     <h1>Account Update Success!</h1>
                 </div>
-<!--TODO: REMOVE CREATE NEW LISTING -->
                 <!-- #modal-content-5 -->
-                <!-- Create New Listing -->
-                <div class="content-to-populate-in-modal" id="modal-content-6">
-                    <h1>Create New Listing</h1>
-                    <label>Address: </label><input type="text" class="form-control address" autocomplete="false"/>
-                    <input type="hidden" class="latitude" />
-                    <input type="hidden" class="longitude" />
-                    <input type="hidden" class="selected_address" />
-                    <label>Bedrooms: </label><input type="text" class="form-control bedrooms" />
-                    <label>Bathrooms: </label><input type="text" class="form-control bathrooms"  />
-                    <div style="width: 220px; margin: 0 auto;">
-                        <div style="float: left;">
-                            <label>Animals: </label>
-                            <div style="width: 75px; margin: 0 auto;">
-                                <label style="float: left; width: 30px;">Yes</label><input type="radio" class="form-control animals" name="animals" value="Yes">
-                                <label style="float: left; width: 30px; margin-top: 5px;">No</label><input type="radio" class="form-control animals" name="animals" value="No" checked="checked">
-                            </div>
-                        </div>
-                        <div style="float: left; margin-left: 15px;">
-                            <label>In-Unit Laundry: </label>
-                            <div style="width: 75px; margin: 0 auto;">
-                                <label style="float: left; width: 30px;">Yes</label><input type="radio" class="form-control laundry" name="laundry" value="Yes">
-                                <label style="float: left; width: 30px; margin-top: 5px;">No</label><input type="radio" class="form-control laundry" name="laundry" value="No" checked="checked">
-                            </div>
-                        </div>
-                    </div>
-                    <div style="clear: both;"></div>
-                    <label>Monthly Rent: </label><input type="text" class="form-control rent" />
-                    <label>Earliest Available: </label><input type="text" class="form-control start_date" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg create_listing-btn" onclick="create_listing()" value="Create Listing" style="margin-top: 15px;" />
-                    <p class="create_listing-error alert alert-danger" style="display: none;"></p>
-                </div>
-                <!-- #modal-content-6 -->
-                <!-- Create New Listing -->
-                <div class="content-to-populate-in-modal" id="modal-content-7">
-                    <h1>Listing Creation Success!</h1>
-                </div>
-                <!-- #modal-content-7 -->
                 <!-- Manage Account -->
                 <div class="content-to-populate-in-modal" id="modal-content-8">
                     <h1>Manage Account</h1>
@@ -244,15 +206,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="content-to-populate-in-modal" id="modal-content-10">
                     <h1>My Listings</h1>
                 </div>
-<!--TODO: REMOVE MANAGE LISTINGS-->
                 <!-- #modal-content-10 -->
-                <!-- Manage Listings -->
-                <div class="content-to-populate-in-modal" id="modal-content-11">
-                    <h1>Manage Your Listings</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-10', 'view_listings');" value="View My Listings" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();" value="Create New Listing" style="margin-top: 15px;" />
-                </div>
-                <!-- #modal-content-11 -->
                 <!-- Log out confirmation -->
                 <div class="content-to-populate-in-modal" id="modal-content-12">
                     <h1>Logged out successfully!</h1>

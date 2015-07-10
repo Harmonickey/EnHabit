@@ -27,12 +27,47 @@ def set_filters
     end
 
     if @bathrooms.nil? 
-        @bathrooms_filter = nil
+        @bathroom_filter = nil
     else
-        @bathrooms_filter[:bedrooms] = {}
-        @bathrooms_filter[:bedrooms][:$eq] = @bathrooms
+        @bathroom_filter[:bathrooms] = {}
+        @bathroom_filter[:bathrooms][:$eq] = @bathrooms
     end
 
+    if @laundry.nil? 
+        @laundry_filter = nil
+    else
+        @laundry_filter[:laundry] = {}
+        @laundry_filter[:laundry][:$eq] = @laundry
+    end
+    
+    if @animals.nil? 
+        @animal_filter = nil
+    else
+        @animal_filter[:animals] = {}
+        @animal_filter[:animals][:$eq] = @animals
+    end
+    
+    if @parking.nil? 
+        @parking_filter = nil
+    else
+        @parking_filter[:parking] = {}
+        @parking_filter[:parking][:$eq] = @parking
+    end
+    
+    if @ac.nil? 
+        @ac_filter = nil
+    else
+        @ac_filter[:ac] = {}
+        @ac_filter[:ac][:$eq] = @ac
+    end
+    
+    if @type.nil? 
+        @type_filter = nil
+    else
+        @type_filter[:type] = {}
+        @type_filter[:type][:$eq] = @type
+    end
+    
     if @start_date.nil? 
         @start_filter = nil
     else 
@@ -40,14 +75,11 @@ def set_filters
         @start_filter[:start][:$gte] = Date.strptime(@start_date, "%m/%d/%Y").mongoize
     end
 
-    if @extensions.nil? 
-        @extensions_filter = nil
-    else
-        @extensions.each do |key, value| 
-        @extensions_filter["extensions." + key] = value
+    if @tags.nil? 
+        @tag_filter = nil
+    else 
+        @tag_filter["tags"] = @tags
     end
-end
-
 end
 
 def combine_filters_into_query 
@@ -58,14 +90,32 @@ def combine_filters_into_query
     if not @bedroom_filter.nil? 
         @main_filter["$and"].push @bedroom_filter
     end
-    if not @bathrooms_filter.nil? 
-        @main_filter["$and"].push @bathrooms_filter
+    if not @bathroom_filter.nil? 
+        @main_filter["$and"].push @bathroom_filter
+    end
+    if not @laundry_filter.nil? 
+        @main_filter["$and"].push @laundry_filter
+    end
+    if not @parking_filter.nil? 
+        @main_filter["$and"].push @parking_filter
+    end
+    if not @ac_filter.nil? 
+        @main_filter["$and"].push @ac_filter
+    end
+    if not @animal_filter.nil? 
+        @main_filter["$and"].push @animal_filter
+    end
+    if not @type_filter.nil? 
+        @main_filter["$and"].push @type_filter
     end
     if not @start_filter.nil? 
         @main_filter["$and"].push @start_filter
     end
-    if not @extensions_filter.nil? 
-        @main_filter["$and"].push @extensions_filter
+    if not @tag_filter.nil? 
+        @main_filter["$and"].push @tag_filter
+    end
+    if not @university_filter.nil?
+        @main_filter["$and"].push @university_filter
     end
 end
 
@@ -75,17 +125,29 @@ begin
 
     @lower = data["lower"]
     @upper = data["upper"]
-    @bedrooms = data["bedrooms"]
-    @bathrooms = data["bathrooms"]
+    @bedrooms = data["bedrooms"].to_i
+    @bathrooms = data["bathroom"].to_i
+    @laundry = data["laundry"]
+    @parking = data["parking"]
+    @animals = data["animals"]
+    @ac = data["ac"]
+    @type = data["type"]
+    @university = data["university"]
     @start_date = data["start_date"]
-    @extensions = data["extensions"]
+    @tags = data["tags"]
 
     @price_filter = {}
     @bedroom_filter = {}
-    @bathrooms_filter = {}
+    @bathroom_filter = {}
+    @laundry_filter = {}
+    @parking_filter = {}
+    @animal_filter = {}
+    @ac_filter = {}
+    @type_filter = {}
     @start_filter = {}
+    @university_filter = {}
+    @tag_filter = {}
     @main_filter = {}
-    @extensions_filter = {}
 
     set_filters()
     combine_filters_into_query()
@@ -95,7 +157,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathroom: 1, start_date: 1, address: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0
