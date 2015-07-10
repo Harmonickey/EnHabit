@@ -24,7 +24,8 @@
 }
 
 #Filters .search-content input,
-#Filters .more-filters-content input
+#Filters .more-filters-content input,
+#listings input
 {
     border-radius: 10px;
 }
@@ -55,11 +56,6 @@
 #bathrooms-filter
 {
     width: 64px;
-}
-
-.item-content label
-{
-    width: 45%;
 }
 
 .double-item-content .item-content label
@@ -143,6 +139,42 @@
     -ms-user-select: none; /* IE10+ */
     
     user-select: none;
+}
+
+#listings
+{
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+    overflow-y: scroll;
+    font-size: 20px;
+}
+
+.listing
+{
+    display: block;
+    width: 100%;
+    height: 100px;
+    margin-top: 50px;
+}
+
+.listing .information
+{
+    height: 100px;
+}
+
+.listing img
+{
+    float: left;
+    margin-right: 10px;
+}
+
+.listing p
+{
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 20px;
 }
 
 @media (min-width: 768px)
@@ -275,22 +307,6 @@
     {
         padding: 28px 0 0 0;
     }
-}
-
-#listings
-{
-    width: 85%;
-    background-color: blue;
-    height: 100%;
-    margin: 0 auto;
-    overflow-y: scroll;
-}
-
-.listing
-{
-    display: block;
-    width: 100%;
-    height: 150px;
 }
 
 #footer

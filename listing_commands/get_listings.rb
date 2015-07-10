@@ -80,6 +80,12 @@ def set_filters
     else 
         @tag_filter["tags"] = @tags
     end
+    
+    if @university.nil?
+        @university = nil
+    else
+        @university_filter["university"] = @university
+    end
 end
 
 def combine_filters_into_query 
@@ -125,8 +131,8 @@ begin
 
     @lower = data["lower"]
     @upper = data["upper"]
-    @bedrooms = data["bedrooms"].to_i
-    @bathrooms = data["bathroom"].to_i
+    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"].nil?
+    @bathrooms = data["bathrooms"].to_i unless data["bathrooms"].nil?
     @laundry = data["laundry"]
     @parking = data["parking"]
     @animals = data["animals"]
@@ -157,16 +163,13 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathroom: 1, start_date: 1, address: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1, animals: 1, ac: 1, laundry: 1, parking: 1, type: 1, tags: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0
         puts "No Matching Entries"
     else
-        result_data = Hash.new
-        result_data["data"] = documents
-        result_data["data"].map { |listing| listing["_id"] = listing["_id"].to_s }
-        puts result_data.to_json
+        puts documents.to_json
     end
 rescue Exception => e
     File.open("error.log", "a") do |output|

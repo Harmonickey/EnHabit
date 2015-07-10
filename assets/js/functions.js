@@ -810,7 +810,7 @@ function insertMarkers(res)
 {
     if (res != "")
     {
-        var data = JSON.parse(res).data;
+        var data = JSON.parse(res);
         data.forEach(function(d)
         {
             var marker = L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
@@ -829,7 +829,7 @@ function insertMarkers(res)
             }
             
             var popupContent =  
-                        '<div id="' + d.id + '" class="popup">' +
+                        '<div id="' + d._id.$oid + '" class="popup">' +
                             '<h2>' + d.address + '</h2>' +
                             '<div class="slideshow">' +
                                 slideshowContent +
@@ -844,9 +844,38 @@ function insertMarkers(res)
                 closeButton: false,
                 minWidth: 320
             });
+            
+            insertIntoListView(d);
         });
     }
 }
+
+function insertIntoListView(data)
+{
+    $("#listings").append(
+        "<div class='item-content listing'>" +
+            "<img src='assets/images/listing_images/pic1.jpg' height='100' width='100' />" +
+            "<div class='information'>" +
+                "<p class='listing-address'>" + data.address + "</p>" +
+                "<p class='listing-bedrooms'>" + data.bedrooms + " Bedroom" + (data.bedrooms == 1 ? "" : "s") + "</p>" + 
+                "<p class='listing-bathrooms'>" + data.bathrooms + " Bathroom" + (data.bathrooms == 1 ? "" : "s") + "</p><br>" +
+                "<p class='listing-price'>$" + data.price + "/month</p>" +
+                "<p class='listing-type'>" + data.type.capitalizeFirstLetter() + "</p><br>" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\""" + data._id.$oid + "\"")' />" +
+            "</div>" +
+        "</div>"
+    );
+}
+
+/*
+
+    "<p class='listing-animals'>Animals? " + booleanToHumanReadable(data.animals) + "</p>" +
+    "<p class='listing-laundry'>In-Unit Laundry? " + data.laundry + "</p>" +
+    "<p class='listing-parking'>Parking? " + data.parking + "</p>" +
+    "<p class='listing-ac'>AC? " + data.ac + "</p>" +
+    "<p class='listing-tags'>Tags: " + data.tags.join(", ") + "</p>" +
+    
+*/
 
 /*
 function getPointsWithinPolygon(e) 
@@ -1236,8 +1265,6 @@ function load_modal(event, which, enter_default, btnText)
 
 function open_listings_list()
 {
-    close_extras_view();
-    
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
     var openWidth = parseFloat($("html").css("width")) - parseFloat($("#listings_list").css("left"));
     
@@ -1249,8 +1276,6 @@ function open_listings_list()
 
 function open_extras_view()
 {
-    close_listings_list();
-    
     $("#extras_view").animate(
     {
         width: parseFloat($("#left-sidebar").css("width")),
@@ -1635,6 +1660,15 @@ function contains(haystack, needle)
     }
     
     return (haystack.indexOf(needle) != -1)
+}
+
+function booleanToHumanReadable(data)
+{
+    return (data == true ? "Yes" : "No");
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 /********** START UP SCRIPTS *************/
