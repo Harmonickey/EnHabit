@@ -1,6 +1,6 @@
 <?php  
 
-include_once "includes/tools.php";
+include_once "Libraries/tools.php";
 
 // session starts with the help of this function 
 session_start(); 
@@ -11,7 +11,7 @@ if (!isset($_SESSION['user']) && isset($_POST["command"]) && isset($_POST["data"
     $data = $_POST["data"];
     $data = remove_malicious_characters($data);
     
-    $result = shell_exec("ruby account_commands/" . $_POST["command"] . ".rb '$data'");
+    $result = shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb '$data'");
     
     if (strpos($result, "Okay") === 0 ||
         strpos($result, "Needs Update") === 0)
