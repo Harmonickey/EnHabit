@@ -25,7 +25,8 @@
 
 #Filters .search-content input,
 #Filters .more-filters-content input,
-#listings input
+#listings input,
+.popup .information input
 {
     border-radius: 10px;
 }

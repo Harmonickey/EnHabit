@@ -27,7 +27,7 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
         <!-- Switches -->
-        <link href="Libraries/Styles/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
         <!-- Tags -->
         <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->

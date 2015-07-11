@@ -42,7 +42,7 @@ $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
     }
 );
 
-$('#map').on('click', '.popup .cycle a', function() 
+$('#map, #common-modal').on('click', '.popup .cycle a', function() 
 {
     var $slideshow = $('.slideshow');
     var $newSlide;
@@ -894,7 +894,7 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
     }
     
     $("#modal-content-15 h3").text(address);
-    $("#modal-content-15 .slideshow").append(slideshowContent);
+    $("#modal-content-15 .slideshow").html(slideshowContent);
 
     $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
     $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);
@@ -1324,7 +1324,7 @@ function close_listings_list()
     {
         width: "0px"
     }, 1000, 'easeInOutCubic', function() {
-        $("#view_listings_list-function a").text("view listings list");
+        $("#view_listings_list-function a").text("View Listings List");
         $("#view_listings_list-function").attr("onclick", "open_listings_list()");
     });
 }
@@ -1346,7 +1346,7 @@ function load_listings_list()
     //TODO: aggregate all the information into a listings list
     
     //then change the view listings list to "close listings list"
-    $("#view_listings_list-function a").text("close listings list");
+    $("#view_listings_list-function a").text("Close Listings List");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 
