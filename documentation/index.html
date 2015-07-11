@@ -81,7 +81,7 @@
         <li><strong>assets/</strong>
           <ul>
             <li><strong>bootstrap/</strong> - includes the Bootstrap dist files. It is NOT recommended to edit these files.</li>
-            <li><strong>css/</strong> - includes the <em>TWILLI Air</em> theme style (styles.css) and the font files. It also includes custom.css, which is intended to include your custom styles for your website.</li>
+            <li><strong>css/</strong> - includes the <em>TWILLI Air</em> theme style (main.css) and the font files. It also includes themecustom.css, which is intended to include your custom styles for your website.</li>
             <li><strong>images/</strong> - all the images used in the theme are found in this folder
               <ul>
                 <li><strong>theme_images/</strong> - DO NOT DELETE these images as they are needed for the theme styling.</li>
@@ -171,7 +171,7 @@
             <li><strong>Carousel</strong> - includes a Bootstrap slider, with each slide containing an icon, text, and an optional button.</li>
             <li><strong>Features Grid</strong> - includes a grid with separate feature items each having an icon and a short sentence.</li>
             <li><strong>Featured Items</strong> - includes a maximum of 3 features consisting of a thumbnail and a short sentence. Each item may be linked.</li>
-            <li><strong>Contact</strong> - includes a short paragraph and a contact form. <em>(IMPORTANT: change the email address at the top of the assets/php/mail.php file to the email address that you want this form to send to)</em></li>
+            <li><strong>Contact</strong> - includes a short paragraph and a contact form. <em>(IMPORTANT: change the email address at the top of the Libraries/php/mail.php file to the email address that you want this form to send to)</em></li>
           </ul>
           You can edit/add to/remove/duplicate these sections how you prefer and according to your needs, as long as you give them each a unique id and don't change the following HTML structure for each section:
           <xmp>
@@ -218,7 +218,7 @@
 
       <h5><strong>Enable/Disable Background Change</strong></h5>
       <p>The template is intended to show only one background image on mobile in order for the site to load faster and minimize the data being transferred. Although not recommended, you can still enable the background changes on scroll, on mobile.
-        <br/>In <strong>/assets/js/initialise-functions.js</strong>:</p> 
+        <br/>In <strong>/Libraries/Javascript/initialise-functions.js</strong>:</p> 
       <ul>
         <li><strong>To enable background change on mobile</strong>: uncomment the following line at the top of initialise-functions.js:<br/><span class="mono">background_settings.change_on_mobile = true;</span></li>
         <li><strong>To disable background change on non-mobile (tablet, desktop)</strong>: add the following line at the top of initialise-functions.js:<br/><span class="mono">background_settings.change_on_nonmobile = false;</span></li>
@@ -252,13 +252,13 @@
       </p>
 
       <h4><strong>Initialising custom Javascript functions after popup is open/closed</strong></h4>
-      <p>If you want to initialise a custom JS function <strong>after the popup is opened</strong>: In the JS file /assets/js/initialise-functions.js, add the following in the <strong>initialise_document_ready_functions()</strong>:
+      <p>If you want to initialise a custom JS function <strong>after the popup is opened</strong>: In the JS file /Libraries/Javascript/initialise-functions.js, add the following in the <strong>initialise_document_ready_functions()</strong>:
         <xmp>$('#common-modal').on('shown.bs.modal', function()
 {
    // function to initialise when popup is open
 });</xmp>
 
-    <p>If you want to initialise a custom JS function <strong>after the popup is closed</strong>: In the JS file /assets/js/initialise-functions.js, add the following in the <strong>initialise_document_ready_functions()</strong>:
+    <p>If you want to initialise a custom JS function <strong>after the popup is closed</strong>: In the JS file /Libraries/Javascript/initialise-functions.js, add the following in the <strong>initialise_document_ready_functions()</strong>:
       <xmp>$("#common-modal").on('hide.bs.modal', function()
 {
    // function to initialise when popup is closed
@@ -306,7 +306,7 @@
     data-height-percent="70" data-ride="carousel">
     [...]
           </xmp>
-          The unique id is important, and needs to be initialised in the JS file /assets/js/initialise-functions.js, as below:
+          The unique id is important, and needs to be initialised in the JS file /Libraries/Javascript/initialise-functions.js, as below:
           <xmp>    
     $('#[unique id for each carousel]').carousel({ [...] });    
           </xmp>      
@@ -371,7 +371,7 @@
 </div><!-- .content-to-populate-in-modal -->
           </xmp>
 
-      <p>Every <em>Owl Carousel</em> which are found inside a popup and have a class of ".popup-image-gallery" are initialised in the /js/initialise-functions.js when the popup is visible, using the Bootstrap "shown.bs.modal" carousel event handler:</p>
+      <p>Every <em>Owl Carousel</em> which are found inside a popup and have a class of ".popup-image-gallery" are initialised in the /Libraries/Javascript/initialise-functions.js when the popup is visible, using the Bootstrap "shown.bs.modal" carousel event handler:</p>
 
       <xmp>
   $('#common-modal').on('shown.bs.modal', function()
@@ -382,7 +382,7 @@
 
       <p>The <em>Owl Carousel</em> parameters here can be modified how you want. More information on these can be found on the <em>Owl Carousel</em> website: <a href="http://www.owlgraphic.com/owlcarousel/" target="_blank">www.owlgraphic.com/owlcarousel</a></p>
 
-      <p>Since the carousel is in a popup, an extra function in /js/initialise-functions.js destroys the carousel when the popup is closed (it would be re-initialised when popup is re-opened). This is done using the Bootstrap "hide.bs.modal" carousel event handler and the <em>Owl Carousel</em> destroy() function:</p>
+      <p>Since the carousel is in a popup, an extra function in /Libraries/Javascript/initialise-functions.js destroys the carousel when the popup is closed (it would be re-initialised when popup is re-opened). This is done using the Bootstrap "hide.bs.modal" carousel event handler and the <em>Owl Carousel</em> destroy() function:</p>
 
       <xmp>
   $('#common-modal').on('hide.bs.modal', function()
@@ -412,7 +412,7 @@
 </div><!-- .content-to-populate-in-modal -->
           </xmp>   
 
-      <p>Every alternative image gallery which are found inside a popup and have a class of ".popup-alt-image-gallery" are initialised in the /js/initialise-functions.js when the popup is visible, using the Bootstrap "shown.bs.modal" carousel event handler, as described above.</p>   
+      <p>Every alternative image gallery which are found inside a popup and have a class of ".popup-alt-image-gallery" are initialised in the /Libraries/Javascript/initialise-functions.js when the popup is visible, using the Bootstrap "shown.bs.modal" carousel event handler, as described above.</p>   
 
       <p>Please note that although <em>TWILLI Air</em> comes with this type of image carousel INSIDE a popup, you can still use <em>Owl Carousel</em> anywhere in the theme where you want. If you want to do so, or to create a different carousel with different parameters, use the same HTML described above but remove the class ".popup-image-gallery". Then, intialise it in /js/initialise-function.js or at the footer of the page using the unique ID of that particular carousel instead of the class.</p>
 
@@ -448,7 +448,7 @@
 
       <h4><strong>Initialising custom Javascript functions after tab is shown/hidden</strong></h4>
       <p>If you want to initialise a custom JS function when a tab is shown/hidden, you can use event handlers as described in <a href="http://getbootstrap.com/javascript/#tabs-events" target="_blank">Bootstrap's documentation</a>.</p>
-      <p>For example, to initialse a function after a tab pane is shown, in the JS file /assets/js/initialise-functions.js, add the following in the <strong>initialise_document_ready_functions()</strong>:
+      <p>For example, to initialse a function after a tab pane is shown, in the JS file /Libraries/Javascript/initialise-functions.js, add the following in the <strong>initialise_document_ready_functions()</strong>:
         <xmp>$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
    // function to initialise when tab is shown
 });</xmp></p>
@@ -462,7 +462,7 @@
 
       <p><img src="assets/images/twilli_form.JPG"></p>
 
-      <p><strong>When installing this theme, it is important to change the 2 email addresses at the top of the assets/php/mail.php file:</strong></p>
+      <p><strong>When installing this theme, it is important to change the 2 email addresses at the top of the Libraries/php/mail.php file:</strong></p>
 
       <ul>
         <li><strong>$email_to</strong> - the email address that you want this form to send to.</li>
