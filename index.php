@@ -23,9 +23,9 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- favicon -->
         <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
         <!-- Bootstrap core CSS -->
-        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
-        <link href="assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
         <!-- Switches -->
         <link href="assets/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
         <!-- Tags -->
@@ -35,14 +35,14 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- leaflet styles -->
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <!-- font awesome -->
-        <link href="assets/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/font-awesome.min.css" rel="stylesheet">
         <!-- map box styles -->
         <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
         <!-- styles for this template -->
-        <link href="assets/css/styles.css" rel="stylesheet">
+        <link href="Styles/main.css" rel="stylesheet">
         <!-- place your extra custom styles in this file -->
-        <link href="assets/css/custom.css" rel="stylesheet">
+        <link href="Styles/themecustom.css" rel="stylesheet">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -289,15 +289,15 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
-        <script>window.jQuery || document.write("<script src='assets/js/jquery-1.11.2.min.js'><\/script>")</script>
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
+        <script src="Libraries/Javascript/bootstrap.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap-switch.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap-tagsinput.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <!-- Easing - for transitions and effects (with modals) -->
-        <script src="assets/js/jquery.easing.1.3.js"></script>
+        <script src="Libraries/Javascript/jquery.easing.1.3.js"></script>
         <!-- MapBox API from CDN -->
         <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
         <!-- MapBox Plugin - Leaflet PIP: Polygon Points Interpretation - Example: https://www.mapbox.com/mapbox.js/example/v1.0.0/point-in-polygon/ -->
@@ -305,14 +305,14 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- MapBox Plugin - Leaflet Draw: Polygon Selection - Example: https://www.mapbox.com/mapbox.js/example/v1.0.0/leaflet-draw -->
         <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
         <!-- jquery geocomplete api -->
-        <script src="assets/js/jquery.geocomplete.min.js"></script>
+        <script src="Libraries/Javascript/jquery.geocomplete.min.js"></script>
         <!-- detect mobile browsers (helps with menu side-bar) -->
-        <script src="assets/js/detectmobilebrowser.js"></script>
+        <script src="Libraries/Javascript/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
-        <script src="assets/js/jquery.autoNumeric.js"></script>
+        <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
         <!-- Custom functions for this theme -->
-        <script src="assets/js/functions.js"></script>
-        <script src="assets/js/initialise-functions.js"></script>
+        <script src="Javascript/functions.js"></script>
+        <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
             if (isset($_SESSION['user']))
             {
