@@ -861,7 +861,7 @@ function insertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.bathrooms + " Bathroom" + (data.bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.price + "/month</p>" +
                 "<p class='listing-type'>" + data.type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\""" + data._id.$oid + "\"")' />" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.address + "\", \"" + data.bedrooms + "\", \"" + data.bathrooms + "\", \"" + data.price + "\", \"" + data.type + "\", \"" + data.animals + "\", \"" + data.laundry + "\", \"" + data.parking + "\", \"" + data.ac + "\", \"" + data.tags+ "\")' />" +
             "</div>" +
         "</div>"
     );
@@ -876,6 +876,38 @@ function insertIntoListView(data)
     "<p class='listing-tags'>Tags: " + data.tags.join(", ") + "</p>" +
     
 */
+
+function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, ac, tags)
+{
+    //load up the images into the modal...
+    var slideshowContent = "";
+    var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+    for(var i = 0; i < images.length; i++) 
+    {
+        var img = images[i];
+
+        slideshowContent += 
+                            '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                              '<img src="' + img["src"] + '" />' +
+                              '<div class="caption">' + img["caption"] + '</div>' +
+                            '</div>';
+    }
+    
+    $("#modal-content-15 h3").text(address);
+    $("#modal-content-15 .slideshow").append(slideshowContent);
+
+    $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
+    $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);
+    $("#modal-content-15 .popup-price").text("Rent: $" + price + "/month");
+    $("#modal-content-15 .popup-type").text("Type: " + type.capitalizeFirstLetter());
+    $("#modal-content-15 .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
+    $("#modal-content-15 .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
+    $("#modal-content-15 .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
+    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(ac));
+    $("#modal-content-15 .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
+    
+    populate_and_open_modal(null, 'modal-content-15');
+}
 
 /*
 function getPointsWithinPolygon(e) 

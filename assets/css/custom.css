@@ -158,6 +158,11 @@
     margin-top: 50px;
 }
 
+.modal-body .listing
+{
+    margin-top: 0px;
+}
+
 .listing .information
 {
     height: 100px;
@@ -244,50 +249,69 @@
     z-index: 1041 !important;
 }
 
-.popup 
+.leaflet-popup .popup,
+.listing .popup
 {
     text-align:center;
 }
 
-.popup .slideshow .image        
+.listing .slideshow,
+.listing .cycle
+{
+    width: 50%;
+}
+
+.listing .slideshow
+{
+    float: left;
+}
+
+.leaflet-popup .popup .slideshow .image,
+.listing .popup .slideshow .image
 { 
     display:none; 
 }
 
-.popup .slideshow .image.active 
+.leaflet-popup .popup .slideshow .image.active,
+.listing .popup .slideshow .image.active
 { 
     display:block; 
 }
 
-.popup .slideshow img 
+.leaflet-popup .popup .slideshow img,
+.listing .popup .slideshow img
 {
     width:100%;
 }
 
-.popup .slideshow .caption 
+.leaflet-popup .popup .slideshow .caption,
+.listing .popup .slideshow .caption
 {
     background:#eee;
     padding:10px;
 }
 
-.popup .cycle 
+.leaflet-popup .popup .cycle,
+.listing .popup .cycle
 {
     padding:10px 0 20px;
 }
 
-.popup .cycle a.prev 
+.leaflet-popup .popup .cycle a.prev, 
+.listing .popup .cycle a.prev
 { 
     float:left; 
 }
 
-.popup .cycle a.next 
+.leaflet-popup .popup .cycle a.next,
+.listing .popup .cycle a.next
 { 
     float:right; 
 }
 
 .leaflet-popup-tip
 {
-    display: none;  /* for now I dunno what is wrong with it... */
+    display: none;  /* for now I dunno what is wrong with it, so just make it disappear with this... */
 }
 
 #listings_list,

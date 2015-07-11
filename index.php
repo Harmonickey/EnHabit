@@ -223,6 +223,34 @@ if (!isset($_SESSION['CREATED'])) {
                     <h1>Listings List</h1>
                 </div>
                 <!-- #modal-content-14 -->
+                <!-- Pop Up Listing Modal -->
+                <div class="content-to-populate-in-modal" id="modal-content-15">
+                    <div class="item-content listing"> 
+                        <div class="popup">
+                            <h3></h3> <!-- Address -->
+                            <div class="slideshow">
+                                <!-- Slideshow content -->
+                            </div>
+                            <div class="cycle">
+                                <a href="#" class=prev>&laquo Previous</a>
+                                <a href="#" class=next>Next &raquo</a>
+                            </div>
+                        </div>
+                        <div class='information'> 
+                            <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
+                            <p class='popup-bedrooms'></p>  
+                            <p class='popup-bathrooms'></p> 
+                            <p class='popup-price'></p> 
+                            <p class='popup-type'></p>
+                            <p class='popup-animals'></p>
+                            <p class='popup-laundry'></p>
+                            <p class='popup-parking'></p>
+                            <p class='popup-ac'></p>
+                            <p class='popup-tags'></p>
+                        </div> 
+                    </div>
+                </div>
+                <!-- #modal-content-15
                 <!-- end: Left Sidebar -->
                 <!-- Footer -->
                 <section id="footer">
