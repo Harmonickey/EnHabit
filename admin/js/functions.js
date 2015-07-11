@@ -21,7 +21,7 @@ ADMIN FUNCTIONS
 
 **********************/
 
-function get_all_users()
+function getAllUsers()
 {
     $.ajax(
     {
@@ -65,7 +65,7 @@ function get_all_users()
     });
 }
 
-function get_all_listings()
+function getAllListings()
 {
     $.ajax(
     {
@@ -77,31 +77,43 @@ function get_all_listings()
         },
         success: function(res) 
         {
-            var data = JSON.parse(res);
-            
-            for (var i = 0; i < data.length; i++)
+            if (!contains(res, "No"))
             {
-                //fill in all listing data
-                $("#listing-list tr:last").after(
-                    "<tr id='" + data[i]._id.$oid + "'>"   +
-                        "<td><input type='text' class='form-control' value='" + data[i].Username + "' /></td>" +
-                        "<td><input type='text' class='form-control' value='" + data[i].price + "' /></td>" +
-                        "<td><input type='text' class='form-control' value='" + data[i].address + "' /></td>" +
-                        "<td><input type='text' class='form-control' value='" + data[i].bedrooms + "' /></td>" +
-                        "<td><input type='text' class='form-control' value='" + data[i].bathrooms + "' /></td>" +
-                        "<td><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' /></td>" +
-                        "<td><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' /></td>" +
-                        "<td><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' /></td>" +
-                        "<td><button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button></td>" + 
-                        "<td><button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button></td>" +
-                        "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
-                    "</tr>");
-                    
-                setGeocompleteTextBox(data[i]._id.$oid);
-                setTextBoxWithAutoNumeric(data[i]._id.$oid);
-                setDatePickerTextBox(data[i]._id.$oid);
-                 
-                $("#listing-list tr:last input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+                var data = JSON.parse(res);
+                
+                for (var i = 0; i < data.length; i++)
+                {
+                    $("#accordion > div:last").after(
+                        "<div class='panel panel-default'>" +
+                            "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
+                                "<h4 class='panel-title'>" +
+                                    "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
+                                        "<label>Username</label><input type='text' class='form-control' value='" + data[i].Username + "' /> " + "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + "</label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
+                                    "</a>" +
+                                "</h4>" +
+                            "</div>" +
+                            "<div id='" + data[i]._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + data[i]._id.$oid + "'>" +
+                                "<div class='panel-body'>" +
+                                    "<label>Bedrooms</label><input type='text' class='form-control' value='" + data[i].bedrooms + "' />" +
+                                    "<label>Bathrooms</label><input type='text' class='form-control' value='" + data[i].bathrooms + "' />" +
+                                    "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>AC</label><input type='checkbox' " + (data[i].ac ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Type</label><input type='text' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
+                                    "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
+                                    "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
+                                    "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>");
+                        
+                    setGeocompleteTextBox(data[i]._id.$oid);
+                    setTextBoxWithAutoNumeric(data[i]._id.$oid);
+                    setDatePickerTextBox(data[i]._id.$oid);
+                     
+                    $("#listing-list tr:last input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+                }
             }
         },
         error: function(res, err)
@@ -157,7 +169,7 @@ function setDatePickerTextBox(rowId)
     $($("#" + rowId + " td input[type='text']")[5]).datepicker();
 }
 
-function get_all_transactions()
+function getAllTransactions()
 {  
     $.ajax(
     {
@@ -797,13 +809,49 @@ function resetListings()
     get_all_listings();
 }
 
-function init_checkboxes()
+function initCheckboxes()
 {
     $("input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
 }
 
-function contains(haystack, needle)
+function initCreateListing()
 {
+    var create_listing = $("#createListingModal input");
+    
+    $(create_listing[1]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            $($("#create-listing input[type='hidden']")[0]).val(result.geometry.location.A);
+            $($("#create-listing input[type='hidden']")[1]).val(result.geometry.location.F);
+            $($("#create-listing input[type='hidden']")[2]).val($(create_listing[2]).val());
+        });
+        
+    $(create_listing[2]).autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $(create_listing[3]).datepicker();
+    
+    $(create_listing[4]).autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+    
+    $(create_listing[5]).autoNumeric('init', 
+    {
+        vMax: '10', 
+        wEmpty: 'empty',
+        aPad: false
+    });
+}
+
+function contains(haystack, needle)
+{  
     return (haystack.indexOf(needle) != -1)
 }
 

@@ -13,7 +13,7 @@ require 'mongoid'
 
 Moped::BSON = BSON
 
-def update_listing(id, user, pr, ad, be, ba, an, la, st, lat, lng)
+def update_listing(id, user, pr, ad, be, ba, an, la, pa, ac, ty, st, lat, lng, ta)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -25,10 +25,15 @@ def update_listing(id, user, pr, ad, be, ba, an, la, st, lat, lng)
     listing_obj["bathrooms"] = ba.to_i
     listing_obj["animals"] = (an == "true")
     listing_obj["laundry"] = (la == "true")
+    listing_obj["parking"] = (pa == "true")
+    listing_obj["ac"] = (ac == "true")
+    listing_obj["type"] = ty
     listing_obj["start"] = Date.strptime(st, "%m/%d/%Y").mongoize
     listing_obj["worldCoordinates"] = {"x" => nil, "y" => nil}
     listing_obj["worldCoordinates"]["x"] = lat.to_f
     listing_obj["worldCoordinates"]["y"] = lng.to_f
+    listing_obj["university"] = "Northwestern"
+    listing_obj["tags"] = ta
  
     query_obj = Hash.new
     query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
@@ -54,7 +59,7 @@ begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
     
-    result = update_listing(data["id"], data["username"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["start_date"], data["latitude"], data["longitude"])
+    result = update_listing(data["id"], data["username"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["ac"], data["type"], data["start_date"], data["latitude"], data["longitude"], data["tags"])
 
     puts result.to_json
 

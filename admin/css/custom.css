@@ -29,3 +29,20 @@ textarea
 {
     width: auto !important;
 }
+
+.modal-switch
+{
+    display: inline-block;
+    width: 24%;
+}
+
+.modal-switch label,
+.modal-switch .bootstrap-switch
+{
+    float: left;
+}
+
+.modal-switch .bootstrap-switch
+{
+    clear: left;
+}

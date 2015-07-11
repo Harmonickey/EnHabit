@@ -33,6 +33,7 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="../../assets/bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
@@ -134,51 +135,17 @@
       <div class="row">
       	<div class="col-md-12">
       		<div class="widget stacked">
-      			<div class="widget-header">
+      			<div class="widget-header actions">
 					<i class="icon-ok"></i>
 					<h3>Registered Listings</h3>
                     <button id="purge-btn" style="margin-bottom: 5px;" class='btn btn-info' onclick='delete_old_listings()'><i style="margin-left: 0; margin-right: 4px;" class="icon-bolt"></i>Purge Old Listings</button>
+                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="icon-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->
-				<div class="widget-content">
-                    <table class="table">
-                        <tr>
-                            <th>Username</th>
-                            <th>Rent/Month</th>
-                            <th>Address</th>
-                            <th>Bedrooms</th>
-                            <th>Bathrooms</th>
-                            <th>Start Date</th>
-                            <th>Animals</th>
-                            <th>In-Unit Laundry</th>
-                            <th><!-- Create --></th>
-                        </tr>
-                        <tr id="create-listing"> 
-                            <td><input type="text" class='form-control'></td>
-                            <td><input type="text" class='form-control'></td>
-                            <td><input type="text" class='form-control' autocomplete="false"></td>
-                            <td><input type="text" class='form-control'></td>
-                            <td><input type="text" class='form-control'></td>
-                            <td><input type="text" class='form-control '></td>
-                            <td><input type="checkbox" data-size="mini"></td>
-                            <td><input type="checkbox" data-size="mini"></td>
-                            <td><button class='btn btn-success' onclick='create_listing()'><i style="margin-right: 4px;" class="icon-plus"></i>Create New Listing</button></td>
-                            <input type='hidden' /> <input type='hidden' /> <input type='hidden' />
-                        </tr> 
-                    </table>
-					<table class="table" id="listing-list">
-                        <tr>
-                            <th>Username</th>
-                            <th>Rent</th>
-                            <th>Address</th>
-                            <th>Bedrooms</th>
-                            <th>Bathrooms</th>
-                            <th>Start Date</th>
-                            <th>Animals</th>
-                            <th>In-Unit Laundry</th>
-                            <th><!-- Update --></th>
-                            <th><!-- Delete --></th>
-                        </tr>
-                    </table>
+				<div class="widget-content listings">
+					<!-- all the listings go here -->
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        
+                    </div>
 				</div> <!-- /widget-content -->
 			</div> <!-- /widget -->					
 	    </div> <!-- /col-md-12 -->     	
@@ -198,6 +165,42 @@
 		</div> <!-- /row -->
 	</div> <!-- /container -->
 </div> <!-- /footer -->
+
+<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Create New Listing</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Put all the fields to create a listing here -->
+                <label>Username</label><input type='text' class='form-control' />
+                <label>Address</label><input type='text' class='form-control' />
+                <label>Price</label><input type='text' class='form-control' />
+                <label>Start Date</label><input type='text' class='form-control' />
+                <label>Bedrooms</label><input type='text' class='form-control' />
+                <label>Bathrooms</label><input type='text' class='form-control' />
+                <div class="modal-switch">
+                    <label>Animals</label><input type='checkbox' data-size='mini' />
+                </div>
+                <div class="modal-switch">
+                    <label>Laundry</label><input type='checkbox' data-size='mini' />
+                </div>
+                <div class="modal-switch">
+                    <label>Parking</label><input type='checkbox' data-size='mini' />
+                </div>
+                <div class="modal-switch">
+                    <label>AC</label><input type='checkbox' data-size='mini' />
+                </div>
+                <label>Type</label><select class='form-control'><option value="both">Apt &amp; Sublet</option value="apartment"><option>Apartment</option><option value="sublet">Sublet</option></select>
+                <label>Tags</label><label><input type='text' data-role='tagsinput' />
+                <input type='hidden' /><input type='hidden' /><input type='hidden' />
+                <button type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+            </div>
+        </div>
+    </div>
+</div>
     
 
 <!-- Le javascript
@@ -208,6 +211,7 @@
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../js/libs/bootstrap.min.js"></script>
 <script src="../js/libs/bootstrap-switch.min.js"></script>
+<script src="../../assets/bootstrap/js/bootstrap-tagsinput.min.js"></script>
 
 <!-- jquery geocomplete api -->
 <script src="../../assets/js/jquery.geocomplete.min.js"></script>
@@ -223,45 +227,13 @@
 
 $(function() 
 {
-    init_checkboxes();
+    initCheckboxes();
     
-    var create_listing = $("#create-listing td input");
+    initCreateListing();
     
-    $(create_listing[2]).geocomplete()
-        .bind("geocode:result", function(event, result){
-            $($("#create-listing input[type='hidden']")[0]).val(result.geometry.location.A);
-            $($("#create-listing input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#create-listing input[type='hidden']")[2]).val($(create_listing[2]).val());
-        });
-        
-    $(create_listing[1]).autoNumeric('init', 
-    {
-        aSign: '$ ', 
-        vMax: '999999.99', 
-        wEmpty: 'sign',
-        lZero: 'deny'
-    });
-    
-    $(create_listing[3]).autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    
-    $(create_listing[4]).autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    
-    $(create_listing[5]).datepicker();
-    
-    get_all_listings();
+    getAllListings();
 });
 
 </script>
-
   </body>
 </html>
