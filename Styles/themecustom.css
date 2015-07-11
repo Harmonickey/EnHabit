@@ -1,0 +1,164 @@
+/* It is recommended to place all your extra/additional CSS rules here */
+
+#map 
+{ 
+	position:absolute; 
+	top:0; 
+	bottom:0; 
+	width:100%; 
+}
+
+#left-sidebar,
+#footer,
+#mobile-menu-icon
+{
+	z-index: 1;
+    position: relative;
+}
+
+@media (min-width: 768px) 
+{
+    #left-sidebar,
+    #footer,
+    #mobile-menu-icon
+    {
+        z-index: 1;
+        position: fixed;
+    }
+}
+
+.username, 
+.password,
+.firstname, 
+.lastname,
+.email, 
+.phonenumber,
+.address, 
+.bedrooms,
+.bathrooms, 
+.rent,
+.start_date
+{
+	text-align: center;
+	width: 50%;
+	margin: 0 auto;
+}
+
+.animals,
+.laundry
+{
+    width: 45px;
+}
+
+.login-btn-facebook .facebook-icon-for-button 
+{
+    background: url('../../assets/images/other_images/facebook-button-transparent-background.png'); 
+    height: 25px; 
+    width: 25px; 
+    margin-right: 10px;
+    top: 2px;
+}
+
+.login-btn-facebook .facebook-icon-for-button,
+.login-btn-facebook .facebook-login-text
+{
+    display: inline-block;
+    position: relative;
+}
+
+.login-btn-facebook .facebook-login-text
+{
+    position: relative;
+    top: -3px;
+}
+
+.footer-text-line
+{
+    color: white;
+    font-size: 1.3em;
+}
+
+.pac-container 
+{
+    z-index: 1041 !important;
+}
+
+.popup 
+{
+    text-align:center;
+}
+
+.popup .slideshow .image        
+{ 
+    display:none; 
+}
+
+.popup .slideshow .image.active 
+{ 
+    display:block; 
+}
+
+.popup .slideshow img 
+{
+    width:100%;
+}
+
+.popup .slideshow .caption 
+{
+    background:#eee;
+    padding:10px;
+}
+
+.popup .cycle 
+{
+    padding:10px 0 20px;
+}
+
+.popup .cycle a.prev 
+{ 
+    float:left; 
+}
+
+.popup .cycle a.next 
+{ 
+    float:right; 
+}
+
+.leaflet-popup-tip
+{
+    display: none;  /* for now I dunno what is wrong with it... */
+}
+
+#listings_list 
+{
+    position: fixed;
+    z-index: 1;
+    width: 1px;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0,0,0,0.79);
+}
+
+@media (min-width: 992px)
+{
+    #left-sidebar .logo
+    {
+        padding: 28px 0 0 0;
+    }
+}
+
+#listings
+{
+    width: 85%;
+    background-color: blue;
+    height: 100%;
+    margin: 0 auto;
+    overflow-y: scroll;
+}
+
+.listing
+{
+    display: block;
+    width: 100%;
+    height: 150px;
+}
