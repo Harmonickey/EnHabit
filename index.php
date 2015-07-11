@@ -27,9 +27,9 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
         <!-- Switches -->
-        <link href="assets/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
         <!-- Tags -->
-        <link href="assets/bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- leaflet styles -->
@@ -291,8 +291,8 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
-        <script src="assets/bootstrap/js/bootstrap-switch.min.js"></script>
-        <script src="assets/bootstrap/js/bootstrap-tagsinput.min.js"></script>
+        <script src="Libraries/Javascript/bootstrap-switch.min.js"></script>
+        <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
