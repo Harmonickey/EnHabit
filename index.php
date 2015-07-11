@@ -23,9 +23,9 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- favicon -->
         <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
         <!-- Bootstrap core CSS -->
-        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
-        <link href="assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- leaflet styles -->
@@ -240,7 +240,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='assets/js/jquery-1.11.2.min.js'><\/script>")</script>
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="Libraries/Javascript/bootstrap.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
