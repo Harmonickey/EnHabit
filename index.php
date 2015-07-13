@@ -26,16 +26,12 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
-        <!-- Switches -->
-        <link href="Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
         <!-- Tags -->
         <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- leaflet styles -->
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-        <!-- font awesome -->
-        <link href="Libraries/Styles/font-awesome.min.css" rel="stylesheet">
         <!-- map box styles -->
         <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
@@ -318,7 +314,6 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
-        <script src="Libraries/Javascript/bootstrap-switch.min.js"></script>
         <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
         <!-- Javascript Leaflet Library -->

@@ -53,9 +53,11 @@
     float: left;
 }
 
-.double-item-content .item-content label
+#Filters .double-item-content .item-content label,
+#extras_view .double-item-content .item-content label
 {
     width: 100%;
+    text-align: center;
 }
 
 .date-content label

@@ -1272,7 +1272,8 @@ function open_extras_view()
     $("#extras_view").animate(
     {
         width: parseFloat($("#left-sidebar").css("width")),
-        paddingLeft: "10px"
+        paddingLeft: "5px",
+        paddingRight: "5px"
     }, 1000, 'easeInOutCubic', function() {
         $(".more-filters-content input").val("Hide Extra Filters");
         $(".more-filters-content input").attr("onclick", "close_extras_view()");
@@ -1295,7 +1296,8 @@ function close_extras_view()
     $("#extras_view").animate(
     {
         width: "0px",
-        paddingLeft: "0px"
+        paddingLeft: "0px",
+        paddingRight: "0px"
     }, 1000, 'easeInOutCubic', function() {
         $(".more-filters-content input").val("Show Extra Filters");
         $(".more-filters-content input").attr("onclick", "open_extras_view()");
