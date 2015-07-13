@@ -86,13 +86,13 @@ def set_filters
     if @tags.nil? 
         @tag_filter = nil
     else 
-        @tag_filter["tags"] = @tags
+        @tag_filter[:tags] = @tags
     end
     
     if @university.nil?
         @university = nil
     else
-        @university_filter["university"] = @university
+        @university_filter[:university] = @university
     end
 end
 
@@ -137,8 +137,8 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     user = ARGV[1] if not ARGV[1].nil?
 
-    @lower = data["lower"]
-    @upper = data["upper"]
+    @lower = data["price"]["low"].to_i unless data["price"].nil?
+    @upper = data["price"]["high"].to_i unless data["price"].nil?
     @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "any" or data["bedrooms"].nil?
     @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "any" or data["bathrooms"].nil?
     @laundry = data["laundry"] unless data["laundry"] == "any" or data["laundry"].nil?
@@ -147,8 +147,8 @@ begin
     @ac = data["ac"] unless data["ac"] == "any" or data["ac"].nil?
     @type = data["type"] unless data["type"] == "both" or data["type"].nil?
     @university = data["university"]
-    @start_date = data["start_date"]
-    @tags = data["tags"]
+    @start_date = data["start_date"] unless data["start_date"].nil?
+    @tags = data["tags"] unless data["tags"].nil? or data["tags"] == []
 
     @price_filter = {}
     @bedroom_filter = {}

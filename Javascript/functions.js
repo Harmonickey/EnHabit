@@ -18,6 +18,7 @@ var background_settings = {
 
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
+var markers = new L.FeatureGroup();
 //map.on('draw:created', getPointsWithinPolygon);
 
 /******** EVENT HANDLERS ***********/
@@ -773,12 +774,24 @@ function createQuery()
     query.ac = selectToQueryField($("#ac-filter").val());
     query.animals = selectToQueryField($("#animals-filter").val());
     query.tags = $("#tags-filter").tagsinput('items');
+    query.university = "Northwestern";
     
     return query;
 }
 
+function resetMarkers()
+{
+    for (var i = 0; i < markers.length; i++)
+    {
+        map.removeLayer(markers[i]);
+    }
+    markers = [];
+}
+
 function insertMarkers(res)
 {
+    resetMarkers();
+    
     if (res != "")
     {
         var data = JSON.parse(res);
@@ -815,6 +828,8 @@ function insertMarkers(res)
                 closeButton: false,
                 minWidth: 320
             });
+            
+            markers.push(marker);
             
             insertIntoListView(d);
         });
