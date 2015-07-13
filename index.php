@@ -76,12 +76,23 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                         <div class="double-item-content">
                             <div class="item-content">
-                                <label>Bedrooms</label>
-                                <input id="bedrooms-filter" type="text" class="form-control input-sm text-center" value="2" />
+                                <label>Bedrooms?</label>
+                                <select id="bedrooms-filter" class="form-control">
+                                    <option value="0">Studio</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                </select>
                             </div>
                             <div class="item-content">
-                                <label>Bathrooms</label>
-                                <input id="bathrooms-filter" type="text" class="form-control input-sm text-center" value="1" />
+                                <label>Bathrooms?</label>
+                                <select id="bathrooms-filter" class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                </select>
                             </div>
                         </div>
                         <div class="item-content date-content">
@@ -90,12 +101,20 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                         <div class="double-item-content">
                             <div class="item-content switch-content">
-                                <label>Parking</label>
-                                <input id="parking-filter" type="checkbox" />
+                                <label>Parking?</label>
+                                <select id="parking-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                </select>
                             </div>
                             <div class="item-content animals-content">
-                                <label>Animals</label>
-                                <input id="animals-filter" type="checkbox" />
+                                <label>Animals?</label>
+                                <select id="animals-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                </select>
                             </div>
                         </div>
                         <div class="item-content search-content">
@@ -116,18 +135,26 @@ if (!isset($_SESSION['CREATED'])) {
                     <div id="extras">
                         <div class="double-item-content">
                             <div class="item-content switch-content">
-                                <label>In-Unit Laundry</label>
-                                <input id="laundry-filter" type="checkbox" />
+                                <label>In-Unit Laundry?</label>
+                                <select id="laundry-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                </select>
                             </div>
                             <div class="item-content ac-content">
-                                <label>AC Unit</label>
-                                <input id="ac-filter" type="checkbox" />
+                                <label>AC Unit?</label>
+                                <select id="ac-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                </select>
                             </div>
                         </div>
                         <div class="item-content type-content">
-                            <label>Type</label>
+                            <label>Apartment or Sublet?</label>
                             <select id="type-filter" class="form-control">
-                                <option value="both">Apt &amp; Sublet</option>
+                                <option value="both">Both</option>
                                 <option value="apartment">Apartment</option>
                                 <option value="sublet">Sublet</option>
                             </select>

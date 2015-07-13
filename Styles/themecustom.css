@@ -53,12 +53,6 @@
     float: left;
 }
 
-#bedrooms-filter,
-#bathrooms-filter
-{
-    width: 64px;
-}
-
 .double-item-content .item-content label
 {
     width: 100%;

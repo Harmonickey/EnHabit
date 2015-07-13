@@ -600,8 +600,6 @@ function initMainSidebar()
 {
     initSlider();
     initDatePicker();
-    initNumerics();
-    initSwitches();
 }
 
 function initSlider()
@@ -630,35 +628,6 @@ function initDatePicker()
     $("#datepicker-inline").val(threeMonthsAway);
 }
 
-function initNumerics()
-{
-    $('#bedrooms-filter').autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    $('#bathrooms-filter').autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-}
-
-function initSwitches()
-{
-    $("#laundry-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#parking-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#animals-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $("#ac-filter").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    
-    $(".laundry").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $(".parking").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $(".animals").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-    $(".ac").bootstrapSwitch({onText: "Yes", offText: "No", size: "mini"});
-}
-
 function loadAllDefaultListings()
 {
     var data = {"university": "Northwestern"};
@@ -675,6 +644,7 @@ function loadAllDefaultListings()
         },
         success: function(res) 
         {
+            
             if (contains(res, "No Matching Entries"))
             {
                 if (res == "")
@@ -690,6 +660,7 @@ function loadAllDefaultListings()
             {
                 insertMarkers(res);
             }
+            
         },
         error: function(res, err) 
         {
@@ -793,14 +764,14 @@ function createQuery()
     
     query.price.low = $("#PriceRangeSlider").slider("values", 0);
     query.price.high = $("#PriceRangeSlider").slider("values", 1);
-    query.bedrooms = $("#bedrooms-filter").val();
-    query.bathrooms = $("#bathrooms-filter").val();
+    query.bedrooms = selectToQueryField($("#bedrooms-filter").val());
+    query.bathrooms = selectToQueryField($("#bathrooms-filter").val());
     query.start_date = $("#datepicker-inline").val();
-    query.type = $("#type-filter").prop("checked");
-    query.laundry = $("#laundry-filter").prop("checked");
-    query.parking = $("#parking-filter").prop("checked");
-    query.ac = $("#ac-filter").prop("checked");
-    query.animals = $("#animals-filter").prop("checked");
+    query.type = $("#type-filter").val();
+    query.laundry = selectToQueryField($("#laundry-filter").val());
+    query.parking = selectToQueryField($("#parking-filter").val());
+    query.ac = selectToQueryField($("#ac-filter").val());
+    query.animals = selectToQueryField($("#animals-filter").val());
     query.tags = $("#tags-filter").tagsinput('items');
     
     return query;
@@ -861,21 +832,11 @@ function insertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.bathrooms + " Bathroom" + (data.bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.price + "/month</p>" +
                 "<p class='listing-type'>" + data.type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.address + "\", \"" + data.bedrooms + "\", \"" + data.bathrooms + "\", \"" + data.price + "\", \"" + data.type + "\", \"" + data.animals + "\", \"" + data.laundry + "\", \"" + data.parking + "\", \"" + data.ac + "\", \"" + data.tags+ "\")' />" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.address + "\", \"" + data.bedrooms + "\", \"" + data.bathrooms + "\", \"" + data.price + "\", \"" + data.type + "\", \"" + data.animals + "\", \"" + data.laundry + "\", \"" + data.parking + "\", \"" + data.ac + "\", \"" + data.tags + "\")' />" +
             "</div>" +
         "</div>"
     );
 }
-
-/*
-
-    "<p class='listing-animals'>Animals? " + booleanToHumanReadable(data.animals) + "</p>" +
-    "<p class='listing-laundry'>In-Unit Laundry? " + data.laundry + "</p>" +
-    "<p class='listing-parking'>Parking? " + data.parking + "</p>" +
-    "<p class='listing-ac'>AC? " + data.ac + "</p>" +
-    "<p class='listing-tags'>Tags: " + data.tags.join(", ") + "</p>" +
-    
-*/
 
 function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, ac, tags)
 {
@@ -1697,6 +1658,16 @@ function contains(haystack, needle)
 function booleanToHumanReadable(data)
 {
     return (data == true ? "Yes" : "No");
+}
+
+function selectToQueryField(field)
+{
+    if (field == "true" || field == "false")
+    {
+        return (field == "true")
+    }
+    
+    return field; // could be the string "any"
 }
 
 String.prototype.capitalizeFirstLetter = function() {

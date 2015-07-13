@@ -23,14 +23,22 @@ def set_filters
         @bedroom_filter = nil
     else
         @bedroom_filter[:bedrooms] = {}
-        @bedroom_filter[:bedrooms][:$eq] = @bedrooms
+        if (@bedrooms == 3)
+            @bedroom_filter[:bedrooms][:$gte] = @bedrooms
+        else
+            @bedroom_filter[:bedrooms][:$eq] = @bedrooms
+        end
     end
 
     if @bathrooms.nil? 
         @bathroom_filter = nil
     else
         @bathroom_filter[:bathrooms] = {}
-        @bathroom_filter[:bathrooms][:$eq] = @bathrooms
+        if (@bathrooms == 3)
+            @bathroom_filter[:bathrooms][:$gte] = @bathrooms
+        else
+            @bathroom_filter[:bathrooms][:$eq] = @bathrooms
+        end
     end
 
     if @laundry.nil? 
@@ -131,13 +139,13 @@ begin
 
     @lower = data["lower"]
     @upper = data["upper"]
-    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"].nil?
-    @bathrooms = data["bathrooms"].to_i unless data["bathrooms"].nil?
-    @laundry = data["laundry"]
-    @parking = data["parking"]
-    @animals = data["animals"]
-    @ac = data["ac"]
-    @type = data["type"]
+    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "any" or data["bedrooms"].nil?
+    @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "any" or data["bathrooms"].nil?
+    @laundry = data["laundry"] unless data["laundry"] == "any" or data["laundry"].nil?
+    @parking = data["parking"] unless data["parking"] == "any" or data["parking"].nil?
+    @animals = data["animals"] unless data["animals"] == "any" or data["animals"].nil?
+    @ac = data["ac"] unless data["ac"] == "any" or data["ac"].nil?
+    @type = data["type"] unless data["type"] == "both" or data["type"].nil?
     @university = data["university"]
     @start_date = data["start_date"]
     @tags = data["tags"]
