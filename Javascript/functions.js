@@ -806,7 +806,7 @@ function insertMarkers(res)
 
                 slideshowContent += 
                                     '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                      '<img src="' + img["src"] + '" />' +
+                                      '<img src="' + img["src"] + '" height="200" width="300"/>' +
                                       '<div class="caption">' + img["caption"] + '</div>' +
                                     '</div>';
             }
@@ -814,7 +814,7 @@ function insertMarkers(res)
             var popupContent =  
                         '<div id="' + d._id.$oid + '" class="popup">' +
                             '<h2>' + d.address + '</h2>' +
-                            '<h3>' + d.price + '</h2>' +
+                            '<h3>$' + d.price + '/month</h2>' +
                             '<div class="slideshow">' +
                                 '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
                                 '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
