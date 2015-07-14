@@ -72,6 +72,10 @@ if (!isset($_SESSION['CREATED'])) {
                             <span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
                             <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                         </div>
+                        <div class="item-content date-content">
+                                <label>Available Starting</label>
+                                <input id="datepicker-inline" type="text" class="form-control" />
+                        </div>
                         <div class="double-item-content">
                             <div class="item-content">
                                 <label>Bedrooms?</label>
@@ -92,10 +96,6 @@ if (!isset($_SESSION['CREATED'])) {
                                     <option value="any">Any</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
-                        </div>
-                        <div class="item-content date-content">
-                                <label>Available Starting</label>
-                                <input id="datepicker-inline" type="text" class="form-control" />
                         </div>
                         <div class="double-item-content">
                             <div class="item-content parking-content">

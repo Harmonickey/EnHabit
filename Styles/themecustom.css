@@ -56,7 +56,7 @@
 #Filters .double-item-content,
 #extras_view .double-item-content
 {
-    margin-top: 10px;
+    margin-top: 5px;
     display: inline-block;
     width: 100%;
 }
@@ -77,6 +77,11 @@
 .date-content label
 {
     width: 100%;
+}
+
+.date-content
+{
+    margin-top: 5px;
 }
 
 .switch-content
