@@ -21,7 +21,7 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="author" content="">
         <title>Enhabit | Find Your Perfect Home</title>
         <!-- favicon -->
-        <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
+        <link rel="icon" type="image/jpg" href="favicon.jpg">
         <!-- Bootstrap core CSS -->
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
@@ -52,7 +52,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Left Sidebar -->
                 <section id="left-sidebar">
                     <div class="logo">
-                        <a href="#intro" class="link-scroll"><img src="assets/images/other_images/logo.png" alt="Enhabit"></a>
+                        <a href="#intro" class="link-scroll"><img src="assets/images/theme_images/logo2.jpg" alt="Enhabit" style="width: 100%;"></a>
                     </div>
                     <!-- .logo -->
                     <!-- Menu Icon for smaller viewports -->
@@ -60,7 +60,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <ul id="main-menu">
                         <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                         <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
-                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
+                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="listings">Manage Listings</a></li>
                         <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                     </ul>
                     <div id="Filters">

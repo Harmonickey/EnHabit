@@ -43,12 +43,12 @@ $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
     }
 );
 
-$('#map, #common-modal').on('click', '.popup .cycle a', function() 
+$('#map, #common-modal').on('click', '.popup .slider-arrow img', function() 
 {
     var $slideshow = $('.slideshow');
     var $newSlide;
     
-    if ($(this).hasClass('prev')) 
+    if ($(this).hasClass('slider-arrow-left')) 
     {
         $newSlide = $slideshow.find('.active').prev();
         if ($newSlide.index() < 0) 
@@ -814,13 +814,12 @@ function insertMarkers(res)
             var popupContent =  
                         '<div id="' + d._id.$oid + '" class="popup">' +
                             '<h2>' + d.address + '</h2>' +
+                            '<h3>' + d.price + '</h2>' +
                             '<div class="slideshow">' +
+                                '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
+                                '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
                                 slideshowContent +
                             '</div>' +
-                            '<div class="cycle">' +
-                                '<a href="#" class="prev">&laquo; Previous</a>' +
-                                '<a href="#" class="next">Next &raquo;</a>' +
-                            '</div>'
                         '</div>';
             
             marker.bindPopup(popupContent, {
