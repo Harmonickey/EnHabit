@@ -766,7 +766,7 @@ function createQuery()
     query.price.high = $("#PriceRangeSlider").slider("values", 1);
     query.bedrooms = selectToQueryField($("#bedrooms-filter").val());
     query.bathrooms = selectToQueryField($("#bathrooms-filter").val());
-    query.start_date = $("#datepicker-inline").val();
+    query.start = $("#datepicker-inline").val();
     query.type = $("#type-filter").val();
     query.laundry = selectToQueryField($("#laundry-filter").val());
     query.parking = selectToQueryField($("#parking-filter").val());
@@ -1067,7 +1067,7 @@ function initBoxes()
 
 function setStartDateTextBox()
 {
-    $(".modal-body .start_date").datepicker();
+    $(".modal-body .start").datepicker();
 }
 
 function setTextBoxesWithNumbers()
@@ -1618,7 +1618,7 @@ function buildError(fields)
     {
         error += "Valid Monthy Rent Amount<br>";
     }
-    if (fields.start_date == "")
+    if (fields.start == "")
     {
         error += "Valid Lease Start Date<br>";
     }

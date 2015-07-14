@@ -34,7 +34,6 @@ def create_listing(user, price, address, bedrooms, bathrooms, animals, laundry, 
     
     ret_msg = ""
  
-    #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongo_session.with(safe: true) do |session|
             session[:listings].insert(listing_obj)
@@ -52,7 +51,7 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
-    result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start_date"], data["latitude"], data["longitude"], data["university"], data["tags"])
+    result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 
     puts result
 rescue Exception => e

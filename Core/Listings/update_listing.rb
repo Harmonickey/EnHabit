@@ -14,8 +14,8 @@ require 'tools'
 Moped::BSON = BSON
 
 def update_listing(user, id, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+    mongo_session = Moped::Session.new(['127.0.0.1:27017'])
+    mongo_session.use("enhabit")
 
     listing_obj = Hash.new
     listing_obj["price"] = price.to_i
@@ -54,7 +54,7 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
     
-    result = update_listing(username, data["id"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start_date"], data["latitude"], data["longitude"], data["university"], data["tags"])
+    result = update_listing(username, data["id"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 
     puts result
 rescue Exception => e

@@ -81,11 +81,11 @@ def set_filters
         @type_filter[:type][:$eq] = @type
     end
     
-    if @start_date.nil? 
+    if @start.nil? 
         @start_filter = nil
     else 
         @start_filter[:start] = {}
-        @start_filter[:start][:$gte] = Date.strptime(@start_date, "%m/%d/%Y").mongoize
+        @start_filter[:start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
     end
 
     if @tags.nil? 
@@ -151,7 +151,7 @@ begin
     @animals = data["animals"].to_b unless data["animals"] == "both" or data["animals"].nil?
     @airConditioning = data["airConditioning"].to_b unless data["airConditioning"] == "both" or data["airConditioning"].nil?
     @type = data["type"] unless data["type"] == "both" or data["type"].nil?
-    @start_date = data["start_date"] unless data["start_date"].nil?
+    @start = data["start"] unless data["start"].nil?
     @university = data["university"]
     @tags = data["tags"] unless data["tags"].nil? or data["tags"] == []
 
@@ -176,7 +176,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1, animals: 1, airConditioning: 1, laundry: 1, parking: 1, type: 1, tags: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start: 1, address: 1, animals: 1, airConditioning: 1, laundry: 1, parking: 1, type: 1, tags: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0

@@ -12,15 +12,14 @@ require 'moped'
 Moped::BSON = BSON
 
 def get_listing_info(id)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) 
+    mongo_session.use("enhabit")
 
     listing_obj = Hash.new
     listing_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
     
     ret_msg = Hash.new
  
-    #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongo_session.with(safe: true) do |session|
             documents = session[:listings].find(listing_obj).to_a

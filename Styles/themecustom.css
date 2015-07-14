@@ -199,8 +199,7 @@
 .address, 
 .bedrooms,
 .bathrooms, 
-.rent,
-.start_date
+.rent
 {
 	text-align: center;
 	width: 50%;
