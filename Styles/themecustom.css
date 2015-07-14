@@ -153,11 +153,18 @@
 .tags-content .bootstrap-tagsinput
 {
     width: 100%;
+    min-height: 55px;
+    height: auto;
 }
 
 .bootstrap-tagsinput
 {
 	height: 55px;
+}
+
+.bootstrap-tagsinput input
+{
+    width: auto !important;
 }
 
 #left-sidebar,

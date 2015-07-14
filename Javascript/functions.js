@@ -1273,6 +1273,8 @@ function load_modal(event, which, enter_default, btnText)
     modal_backdrop_height($('#common-modal.modal'));
 }
 
+/***** MARCEL LOOK HERE!!!!! *****/
+/***** the "extras" functions are what you care about *****/
 function open_listings_list()
 {
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
@@ -1334,6 +1336,8 @@ function load_listings_list()
     $("#view_listings_list-function a").text("Close Listings List");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
+
+/***** MARCEL DON'T LOOK PAST HERE!!!!! *****/
 
 function load_update_account_modal(event, title, keepDelete)
 {
