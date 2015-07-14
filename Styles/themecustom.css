@@ -31,6 +31,14 @@
     border-radius: 10px;
 }
 
+#parking-filter,
+#animals-filter,
+#laundry-filter,
+#airConditioning-filter
+{
+    padding-right: 0;
+}
+
 #extras_view,
 #listings_list
 {

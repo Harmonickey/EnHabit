@@ -621,11 +621,11 @@ function initSlider()
 
 function initDatePicker()
 {
-    var d = new Date();
-    var threeMonthsAway = (d.getMonth() + 1)  + "/" + d.getDate() + "/" + d.getFullYear();
-    
-    $("#datepicker-inline").datepicker();
-    $("#datepicker-inline").val(threeMonthsAway);
+    $("#datepicker-inline").pikaday(
+    {
+        minDate: new Date(), 
+        setDefaultDate: new Date()
+    });
 }
 
 function loadAllDefaultListings()
@@ -726,6 +726,11 @@ function searchForListings()
     {
         type: "POST",
         url: "api.php",
+        beforeSend: function()
+        {
+            $(".search-content input").prop("disabled", true);
+            $(".search-content input").val("Searching...");
+        },
         data: 
         {
             command: "get_listings",
@@ -753,6 +758,11 @@ function searchForListings()
         {
             console.log(res);
             console.log(err);
+        },
+        complete: function()
+        {
+            $(".search-content input").prop("disabled", false);
+            $(".search-content input").val("Search");
         }
     });
 }
@@ -766,7 +776,7 @@ function createQuery()
     query.price.high = $("#PriceRangeSlider").slider("values", 1);
     query.bedrooms = selectToQueryField($("#bedrooms-filter").val());
     query.bathrooms = selectToQueryField($("#bathrooms-filter").val());
-    query.start = $("#datepicker-inline").val();
+    query.start = $.datepicker.formatDate('mm/dd/yy', $("#datepicker-inline").val());
     query.type = $("#type-filter").val();
     query.laundry = selectToQueryField($("#laundry-filter").val());
     query.parking = selectToQueryField($("#parking-filter").val());
@@ -1061,12 +1071,6 @@ function initBoxes()
 {
     setGeocompleteTextBox();
     setTextBoxesWithNumbers();
-    setStartDateTextBox();
-}
-
-function setStartDateTextBox()
-{
-    $(".modal-body .start").datepicker();
 }
 
 function setTextBoxesWithNumbers()

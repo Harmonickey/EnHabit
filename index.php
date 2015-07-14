@@ -21,7 +21,7 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="author" content="">
         <title>Enhabit | Find Your Perfect Home</title>
         <!-- favicon -->
-        <link rel="icon" type="image/jpg" href="favicon.jpg">
+        <link rel="icon" type="image/jpg" href="favicon.png">
         <!-- Bootstrap core CSS -->
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
@@ -30,6 +30,8 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!-- Pickaday -->
+        <link href="Libraries/Styles/pikaday.css" rel="stylesheet">
         <!-- leaflet styles -->
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <!-- map box styles -->
@@ -52,7 +54,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Left Sidebar -->
                 <section id="left-sidebar">
                     <div class="logo">
-                        <a href="#intro" class="link-scroll"><img src="assets/images/theme_images/logo2.jpg" alt="Enhabit" style="width: 100%;"></a>
+                        <a href="#intro" class="link-scroll"><img src="assets/images/theme_images/logo_white.png" alt="Enhabit" style="width: 100%;"></a>
                     </div>
                     <!-- .logo -->
                     <!-- Menu Icon for smaller viewports -->
@@ -75,7 +77,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <label>Bedrooms?</label>
                                 <select id="bedrooms-filter" class="form-control">
                                     <option value="studio">Studio</option>
-                                    <option value="0">0+</option> <!-- just don't include in ruby filter -->
+                                    <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3+</option>
@@ -84,10 +86,10 @@ if (!isset($_SESSION['CREATED'])) {
                             <div class="item-content">
                                 <label>Bathrooms?</label>
                                 <select id="bathrooms-filter" class="form-control">
-                                    <option value="1">1</option>
+                                    <option value="1" selected>1</option>
                                     <option value="2">2</option>
                                     <option value="3">3+</option>
-                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                    <option value="any">Any</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
                         </div>
@@ -96,7 +98,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <input id="datepicker-inline" type="text" class="form-control" />
                         </div>
                         <div class="double-item-content">
-                            <div class="item-content switch-content">
+                            <div class="item-content parking-content">
                                 <label>Parking?</label>
                                 <select id="parking-filter" class="form-control">
                                     <option value="true">Yes</option>
@@ -130,7 +132,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div id="extras_view">
                     <div id="extras">
                         <div class="double-item-content">
-                            <div class="item-content switch-content">
+                            <div class="item-content laundry-content">
                                 <label>In-Unit Laundry?</label>
                                 <select id="laundry-filter" class="form-control">
                                     <option value="true">Yes</option>
@@ -332,6 +334,9 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Libraries/Javascript/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
+        <!-- helper for datepicker -->
+        <script src="Libraries/Javascript/pikaday.js"></script>
+        <script src="Libraries/Javascript/pikaday.jquery.js"></script>
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
