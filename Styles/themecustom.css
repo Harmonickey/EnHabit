@@ -155,6 +155,11 @@
     width: 100%;
 }
 
+.bootstrap-tagsinput
+{
+	height: 55px;
+}
+
 #left-sidebar,
 #listings_list,
 #extras_view

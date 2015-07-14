@@ -1277,7 +1277,6 @@ function open_listings_list()
 {
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
     var openWidth = parseFloat($("html").css("width")) - parseFloat($("#listings_list").css("left"));
-    
     $("#listings_list").animate(
     {
         width: openWidth
@@ -1292,7 +1291,7 @@ function open_extras_view()
         paddingLeft: "5px",
         paddingRight: "5px"
     }, 1000, 'easeInOutCubic', function() {
-        $("#extras").fadeIn();
+        $("#extras").fadeIn(600);
         $(".more-filters-content input").val("Hide Extra Filters");
         $(".more-filters-content input").attr("onclick", "close_extras_view()");
     });
@@ -1300,33 +1299,35 @@ function open_extras_view()
 
 function close_listings_list()
 {
-    $("#listings").fadeOut();
-    $("#listings_list").animate(
-    {
-        width: "0px"
-    }, 1000, 'easeInOutCubic', function() {
-        $("#view_listings_list-function a").text("View Listings List");
-        $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+    $("#listings").fadeOut(400, function() {
+        $("#listings_list").animate(
+        {
+            width: "0px"
+        }, 1000, 'easeInOutCubic', function() {
+            $("#view_listings_list-function a").text("View Listings List");
+            $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+        });
     });
 }
 
 function close_extras_view()
 {
-    $("#extras").fadeOut();
-    $("#extras_view").animate(
-    {
-        width: "0px",
-        paddingLeft: "0px",
-        paddingRight: "0px"
-    }, 1000, 'easeInOutCubic', function() {
-        $(".more-filters-content input").val("Show Extra Filters");
-        $(".more-filters-content input").attr("onclick", "open_extras_view()");
+    $("#extras").fadeOut(400, function() {
+        $("#extras_view").animate(
+        {
+            width: "0px",
+            paddingLeft: "0px",
+            paddingRight: "0px"
+        }, 1000, 'easeInOutCubic', function() {
+            $(".more-filters-content input").val("Show Extra Filters");
+            $(".more-filters-content input").attr("onclick", "open_extras_view()");
+        });
     });
 }
 
 function load_listings_list()
 {
-    $("#listings").fadeIn();
+    $("#listings").fadeIn(); 
     //TODO: aggregate all the information into a listings list
     
     //then change the view listings list to "close listings list"
