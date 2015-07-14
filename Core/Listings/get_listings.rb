@@ -4,11 +4,16 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
+$: << "./Libraries"
 
 require 'json'
 require 'bson'
 require 'moped'
 require 'mongoid'
+require 'tools'
+
+MAX_BEDROOMS_FOR_FILTER = 3
+MAX_BATHROOMS_FOR_FILTER = 3
 
 def set_filters
     if @lower.nil? and @upper.nil? 
@@ -23,7 +28,7 @@ def set_filters
         @bedroom_filter = nil
     else
         @bedroom_filter[:bedrooms] = {}
-        if (@bedrooms == 3)
+        if (@bedrooms == MAX_BEDROOMS_FOR_FILTER)
             @bedroom_filter[:bedrooms][:$gte] = @bedrooms
         else
             @bedroom_filter[:bedrooms][:$eq] = @bedrooms
@@ -34,7 +39,7 @@ def set_filters
         @bathroom_filter = nil
     else
         @bathroom_filter[:bathrooms] = {}
-        if (@bathrooms == 3)
+        if (@bathrooms == MAX_BATHROOMS_FOR_FILTER)
             @bathroom_filter[:bathrooms][:$gte] = @bathrooms
         else
             @bathroom_filter[:bathrooms][:$eq] = @bathrooms
@@ -62,11 +67,11 @@ def set_filters
         @parking_filter[:parking][:$eq] = @parking
     end
     
-    if @ac.nil? 
-        @ac_filter = nil
+    if @airConditioning.nil? 
+        @airConditioning_filter = nil
     else
-        @ac_filter[:ac] = {}
-        @ac_filter[:ac][:$eq] = @ac
+        @airConditioning_filter[:airConditioning] = {}
+        @airConditioning_filter[:airConditioning][:$eq] = @airConditioning
     end
     
     if @type.nil? 
@@ -113,8 +118,8 @@ def combine_filters_into_query
     if not @parking_filter.nil? 
         @main_filter["$and"].push @parking_filter
     end
-    if not @ac_filter.nil? 
-        @main_filter["$and"].push @ac_filter
+    if not @airConditioning_filter.nil? 
+        @main_filter["$and"].push @airConditioning_filter
     end
     if not @animal_filter.nil? 
         @main_filter["$and"].push @animal_filter
@@ -138,16 +143,16 @@ begin
     user = ARGV[1] if not ARGV[1].nil?
 
     @lower = data["price"]["low"].to_i unless data["price"].nil?
-    @upper = data["price"]["high"].to_i unless data["price"].nil?
-    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "any" or data["bedrooms"].nil?
+    @upper = data["price"]["high"].to_i unless data["price"].nil?   
+    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil?
     @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "any" or data["bathrooms"].nil?
-    @laundry = data["laundry"] unless data["laundry"] == "any" or data["laundry"].nil?
-    @parking = data["parking"] unless data["parking"] == "any" or data["parking"].nil?
-    @animals = data["animals"] unless data["animals"] == "any" or data["animals"].nil?
-    @ac = data["ac"] unless data["ac"] == "any" or data["ac"].nil?
+    @laundry = data["laundry"].to_b unless data["laundry"] == "both" or data["laundry"].nil?
+    @parking = data["parking"].to_b unless data["parking"] == "both" or data["parking"].nil?
+    @animals = data["animals"].to_b unless data["animals"] == "both" or data["animals"].nil?
+    @airConditioning = data["airConditioning"].to_b unless data["airConditioning"] == "both" or data["airConditioning"].nil?
     @type = data["type"] unless data["type"] == "both" or data["type"].nil?
-    @university = data["university"]
     @start_date = data["start_date"] unless data["start_date"].nil?
+    @university = data["university"]
     @tags = data["tags"] unless data["tags"].nil? or data["tags"] == []
 
     @price_filter = {}
@@ -156,7 +161,7 @@ begin
     @laundry_filter = {}
     @parking_filter = {}
     @animal_filter = {}
-    @ac_filter = {}
+    @airConditioning_filter = {}
     @type_filter = {}
     @start_filter = {}
     @university_filter = {}
@@ -171,7 +176,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1, animals: 1, ac: 1, laundry: 1, parking: 1, type: 1, tags: 1).to_a
+    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start_date: 1, address: 1, animals: 1, airConditioning: 1, laundry: 1, parking: 1, type: 1, tags: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0

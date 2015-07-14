@@ -74,11 +74,11 @@ if (!isset($_SESSION['CREATED'])) {
                             <div class="item-content">
                                 <label>Bedrooms?</label>
                                 <select id="bedrooms-filter" class="form-control">
-                                    <option value="0">Studio</option>
+                                    <option value="studio">Studio</option>
+                                    <option value="0">0+</option> <!-- just don't include in ruby filter -->
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3+</option>
-                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
                             <div class="item-content">
@@ -101,7 +101,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <select id="parking-filter" class="form-control">
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
                             <div class="item-content animals-content">
@@ -109,7 +109,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <select id="animals-filter" class="form-control">
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
                         </div>
@@ -135,15 +135,15 @@ if (!isset($_SESSION['CREATED'])) {
                                 <select id="laundry-filter" class="form-control">
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
-                            <div class="item-content ac-content">
+                            <div class="item-content airConditioning-content">
                                 <label>AC Unit?</label>
-                                <select id="ac-filter" class="form-control">
+                                <select id="airConditioning-filter" class="form-control">
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                    <option value="any" selected>Any</option> <!-- just don't include in ruby filter -->
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
                                 </select>
                             </div>
                         </div>

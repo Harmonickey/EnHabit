@@ -24,7 +24,6 @@ def get_listing_info(id)
     begin
         mongo_session.with(safe: true) do |session|
             documents = session[:listings].find(listing_obj).to_a
-            
             ret_msg = documents[0]
         end
     rescue Moped::Errors::OperationFailure => e

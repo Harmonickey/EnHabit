@@ -610,6 +610,7 @@ function initSlider()
         range: true,
         min: 400,
         max: 3000,
+        step: 100,
         values: [ 800, 1500 ],
         slide: function( event, ui )
         {
@@ -621,8 +622,6 @@ function initSlider()
 function initDatePicker()
 {
     var d = new Date();
-    d.setMonth(d.getMonth() + 3);
-    d.setDate(d.getDate() - d.getDate() + 1);
     var threeMonthsAway = (d.getMonth() + 1)  + "/" + d.getDate() + "/" + d.getFullYear();
     
     $("#datepicker-inline").datepicker();
@@ -771,10 +770,10 @@ function createQuery()
     query.type = $("#type-filter").val();
     query.laundry = selectToQueryField($("#laundry-filter").val());
     query.parking = selectToQueryField($("#parking-filter").val());
-    query.ac = selectToQueryField($("#ac-filter").val());
+    query.airConditioning = selectToQueryField($("#airConditioning-filter").val());
     query.animals = selectToQueryField($("#animals-filter").val());
     query.tags = $("#tags-filter").tagsinput('items');
-    query.university = "Northwestern";
+    query.university = "Northwestern"; // will be set by text box later
     
     return query;
 }
