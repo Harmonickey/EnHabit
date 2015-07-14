@@ -69,17 +69,31 @@
 }
 
 #Filters .double-item-content .item-content label,
-#extras_view .double-item-content .item-content label
+#extras_view .double-item-content .item-content label,
 {
     width: 100%;
 }
 
-.date-content label
+#Filters .item-content label,
+#extras_view .item-content label
 {
-    width: 100%;
+	text-align: center;
+	width: 100%;
 }
 
-.date-content
+#Filters .item-content select,
+#extras_view .item-content select
+{
+	margin: 0 auto;
+}
+
+.price-content
+{
+	text-align: center;
+}
+
+.date-content,
+.tags-content
 {
     margin-top: 5px;
 }
@@ -136,19 +150,9 @@
     width: 100%;
 }
 
-.animals-content
-{
-    height: 100%;
-}
-
-.tags-content label
-{
-    width: 100%;
-}
-
 .tags-content .bootstrap-tagsinput
 {
-    width: 80%;
+    width: 100%;
 }
 
 #left-sidebar,

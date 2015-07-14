@@ -1292,7 +1292,7 @@ function open_extras_view()
         paddingLeft: "5px",
         paddingRight: "5px"
     }, 1000, 'easeInOutCubic', function() {
-        $("#extras").show();
+        $("#extras").fadeIn();
         $(".more-filters-content input").val("Hide Extra Filters");
         $(".more-filters-content input").attr("onclick", "close_extras_view()");
     });
@@ -1300,7 +1300,7 @@ function open_extras_view()
 
 function close_listings_list()
 {
-    $("#listings").hide();
+    $("#listings").fadeOut();
     $("#listings_list").animate(
     {
         width: "0px"
@@ -1312,7 +1312,7 @@ function close_listings_list()
 
 function close_extras_view()
 {
-    $("#extras").hide();
+    $("#extras").fadeOut();
     $("#extras_view").animate(
     {
         width: "0px",
@@ -1326,7 +1326,7 @@ function close_extras_view()
 
 function load_listings_list()
 {
-    $("#listings").show();
+    $("#listings").fadeIn();
     //TODO: aggregate all the information into a listings list
     
     //then change the view listings list to "close listings list"

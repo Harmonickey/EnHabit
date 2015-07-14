@@ -68,9 +68,11 @@ if (!isset($_SESSION['CREATED'])) {
                     <div id="Filters">
                         <h1 class="text-center">Filter listings</h1>
                         <div class="item-content">
-                            <span>Price Range</span>
-                            <span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
-                            <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
+							<div class="price-content"">
+								<span>Price Range</span>
+								<span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
+                            </div>
+							<div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                         </div>
                         <div class="item-content date-content">
                                 <label>Available Starting</label>
