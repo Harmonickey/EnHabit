@@ -276,14 +276,14 @@ table {
             position: fixed;
             top:0;
             left:3%;  
-            width:205px; 
+            width:250px; 
         }
     }
     @media (min-width: 992px) {
         #left-sidebar {
             /* any change has to be replicated in #footer below */
             left:6.5%;  
-            width:205px; 
+            width:250px; 
         }
     }
     @media (min-width: 1200px) {

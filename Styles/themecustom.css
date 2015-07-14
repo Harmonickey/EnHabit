@@ -37,6 +37,7 @@
 #airConditioning-filter
 {
     padding-right: 0;
+    padding-left: 5px;
 }
 
 #extras_view,
@@ -44,6 +45,12 @@
 {
     color: white;
     cursor: default;
+}
+
+#extras,
+#listings
+{
+    display: none;
 }
 
 #Filters .double-item-content,
@@ -65,7 +72,6 @@
 #extras_view .double-item-content .item-content label
 {
     width: 100%;
-    text-align: center;
 }
 
 .date-content label
@@ -82,6 +88,11 @@
 .item-content .bootstrap-switch
 {
     float: left;
+}
+
+.item-content select
+{
+    width: 80%;
 }
 
 .search-content,
