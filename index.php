@@ -19,19 +19,21 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Enhabit</title>
+        <title>Enhabit | Find Your Perfect Home Away From Home</title>
         <!-- favicon -->
-        <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
+        <link rel="icon" type="image/jpg" href="favicon.png">
         <!-- Bootstrap core CSS -->
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
+        <!-- Tags -->
+        <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!-- Pickaday -->
+        <link href="Libraries/Styles/pikaday.css" rel="stylesheet">
         <!-- leaflet styles -->
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-        <!-- font awesome -->
-        <link href="Libraries/Styles/font-awesome.min.css" rel="stylesheet">
         <!-- map box styles -->
         <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
@@ -52,7 +54,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Left Sidebar -->
                 <section id="left-sidebar">
                     <div class="logo">
-                        <a href="#intro" class="link-scroll"><img src="assets/images/other_images/logo.png" alt="Enhabit"></a>
+                        <a href="#intro" class="link-scroll"><img src="assets/images/theme_images/logo_white.png" alt="Enhabit" style="width: 100%;"></a>
                     </div>
                     <!-- .logo -->
                     <!-- Menu Icon for smaller viewports -->
@@ -60,14 +62,107 @@ if (!isset($_SESSION['CREATED'])) {
                     <ul id="main-menu">
                         <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                         <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
-                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
+                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="listings">Manage Listings</a></li>
                         <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                     </ul>
+                    <div id="Filters">
+                        <h1 class="text-center">Filter listings</h1>
+                        <div class="item-content">
+							<div class="price-content"">
+								<span>Price Range</span>
+								<span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
+                            </div>
+							<div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
+                        </div>
+                        <div class="item-content date-content">
+                                <label>Available Starting</label>
+                                <input id="datepicker-inline" type="text" class="form-control" />
+                        </div>
+                        <div class="double-item-content">
+                            <div class="item-content">
+                                <label>Bedrooms?</label>
+                                <select id="bedrooms-filter" class="form-control">
+                                    <option value="studio">Studio</option>
+                                    <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                </select>
+                            </div>
+                            <div class="item-content">
+                                <label>Bathrooms?</label>
+                                <select id="bathrooms-filter" class="form-control">
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                    <option value="any">Any</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="double-item-content">
+                            <div class="item-content parking-content">
+                                <label>Parking?</label>
+                                <select id="parking-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
+                            <div class="item-content animals-content">
+                                <label>Animals?</label>
+                                <select id="animals-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="item-content search-content">
+                            <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
+                        </div>
+                        <div class="item-content more-filters-content">
+                            <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
+                        </div>
+                    </div>
                     <!-- #main-menu -->
                 </section>
                 <div id="listings_list">
                     <div id="listings">
                         
+                    </div>
+                </div>
+                <div id="extras_view">
+                    <div id="extras">
+                        <div class="double-item-content">
+                            <div class="item-content laundry-content">
+                                <label>In-Unit Laundry?</label>
+                                <select id="laundry-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
+                            <div class="item-content airConditioning-content">
+                                <label>AC Unit?</label>
+                                <select id="airConditioning-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="item-content type-content">
+                            <label>Apartment or Sublet?</label>
+                            <select id="type-filter" class="form-control">
+                                <option value="both">Both</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="sublet">Sublet</option>
+                            </select>
+                        </div>
+                        <div class="item-content tags-content">
+                            <label>Tags (i.e. north campus)</label>
+                            <input id="tags-filter" type="text" value="" data-role="tagsinput" />
+                        </div>
                     </div>
                 </div>
                 <!-- #left-sidebar -->
@@ -100,7 +195,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Register -->
                 <div class="content-to-populate-in-modal" id="modal-content-3">
                     <h1>Account Creation Success!</h1>
-                    <p> You now have an account with Enhabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
+                    <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
                 </div>
                 <!-- #modal-content-3 -->
                 <!-- Update -->
@@ -121,43 +216,6 @@ if (!isset($_SESSION['CREATED'])) {
                     <h1>Account Update Success!</h1>
                 </div>
                 <!-- #modal-content-5 -->
-                <!-- Create New Listing -->
-                <div class="content-to-populate-in-modal" id="modal-content-6">
-                    <h1>Create New Listing</h1>
-                    <label>Address: </label><input type="text" class="form-control address" autocomplete="false"/>
-                    <input type="hidden" class="latitude" />
-                    <input type="hidden" class="longitude" />
-                    <input type="hidden" class="selected_address" />
-                    <label>Bedrooms: </label><input type="text" class="form-control bedrooms" />
-                    <label>Bathrooms: </label><input type="text" class="form-control bathrooms"  />
-                    <div style="width: 220px; margin: 0 auto;">
-                        <div style="float: left;">
-                            <label>Animals: </label>
-                            <div style="width: 75px; margin: 0 auto;">
-                                <label style="float: left; width: 30px;">Yes</label><input type="radio" class="form-control animals" name="animals" value="Yes">
-                                <label style="float: left; width: 30px; margin-top: 5px;">No</label><input type="radio" class="form-control animals" name="animals" value="No" checked="checked">
-                            </div>
-                        </div>
-                        <div style="float: left; margin-left: 15px;">
-                            <label>In-Unit Laundry: </label>
-                            <div style="width: 75px; margin: 0 auto;">
-                                <label style="float: left; width: 30px;">Yes</label><input type="radio" class="form-control laundry" name="laundry" value="Yes">
-                                <label style="float: left; width: 30px; margin-top: 5px;">No</label><input type="radio" class="form-control laundry" name="laundry" value="No" checked="checked">
-                            </div>
-                        </div>
-                    </div>
-                    <div style="clear: both;"></div>
-                    <label>Monthly Rent: </label><input type="text" class="form-control rent" />
-                    <label>Earliest Available: </label><input type="text" class="form-control start_date" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg create_listing-btn" onclick="create_listing()" value="Create Listing" style="margin-top: 15px;" />
-                    <p class="create_listing-error alert alert-danger" style="display: none;"></p>
-                </div>
-                <!-- #modal-content-6 -->
-                <!-- Create New Listing -->
-                <div class="content-to-populate-in-modal" id="modal-content-7">
-                    <h1>Listing Creation Success!</h1>
-                </div>
-                <!-- #modal-content-7 -->
                 <!-- Manage Account -->
                 <div class="content-to-populate-in-modal" id="modal-content-8">
                     <h1>Manage Account</h1>
@@ -176,13 +234,6 @@ if (!isset($_SESSION['CREATED'])) {
                     <h1>My Listings</h1>
                 </div>
                 <!-- #modal-content-10 -->
-                <!-- Manage Listings -->
-                <div class="content-to-populate-in-modal" id="modal-content-11">
-                    <h1>Manage Your Listings</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-10', 'view_listings');" value="View My Listings" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();" value="Create New Listing" style="margin-top: 15px;" />
-                </div>
-                <!-- #modal-content-11 -->
                 <!-- Log out confirmation -->
                 <div class="content-to-populate-in-modal" id="modal-content-12">
                     <h1>Logged out successfully!</h1>
@@ -199,13 +250,39 @@ if (!isset($_SESSION['CREATED'])) {
                     <h1>Listings List</h1>
                 </div>
                 <!-- #modal-content-14 -->
+                <!-- Pop Up Listing Modal -->
+                <div class="content-to-populate-in-modal" id="modal-content-15">
+                    <div class="item-content listing"> 
+                        <div class="popup">
+                            <h3></h3> <!-- Address -->
+                            <div class="slideshow">
+                                <!-- Slideshow content -->
+                            </div>
+                            <div class="cycle">
+                                <a href="#" class=prev>&laquo Previous</a>
+                                <a href="#" class=next>Next &raquo</a>
+                            </div>
+                        </div>
+                        <div class='information'> 
+                            <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
+                            <p class='popup-bedrooms'></p>  
+                            <p class='popup-bathrooms'></p> 
+                            <p class='popup-price'></p> 
+                            <p class='popup-type'></p>
+                            <p class='popup-animals'></p>
+                            <p class='popup-laundry'></p>
+                            <p class='popup-parking'></p>
+                            <p class='popup-ac'></p>
+                            <p class='popup-tags'></p>
+                        </div> 
+                    </div>
+                </div>
+                <!-- #modal-content-15
                 <!-- end: Left Sidebar -->
                 <!-- Footer -->
                 <section id="footer">
-                    <!-- Go to Top -->
-                    <div id="go-to-top" onclick="scroll_to_top();"><span class="icon glyphicon glyphicon-chevron-up"></span></div>
                     <!-- copyright text -->
-                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by LbKStudios LLC</div>
+                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
                 </section>
                 <!-- end: Footer -->      
             </div>
@@ -241,6 +318,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
+        <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
@@ -258,6 +336,9 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Libraries/Javascript/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
+        <!-- helper for datepicker -->
+        <script src="Libraries/Javascript/pikaday.js"></script>
+        <script src="Libraries/Javascript/pikaday.jquery.js"></script>
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>

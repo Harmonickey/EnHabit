@@ -18,14 +18,37 @@ var background_settings = {
 
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
+var markers = new L.FeatureGroup();
 //map.on('draw:created', getPointsWithinPolygon);
-            
-$('#map').on('click', '.popup .cycle a', function() 
+
+/******** EVENT HANDLERS ***********/
+
+// Disable map mouse features while we're in the sidebar
+$("#left-sidebar, #extras_view, #listings_list").bind('mouseover',
+    function ()
+    {
+        map.dragging.disable();
+        map.scrollWheelZoom.disable();
+        map.doubleClickZoom.disable();
+    }
+);
+
+// Reenable map mouse features when the mouse is outside of the sidebar
+$("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
+    function () 
+    {
+        map.dragging.enable();
+        map.scrollWheelZoom.enable();
+        map.doubleClickZoom.enable();
+    }
+);
+
+$('#map, #common-modal').on('click', '.popup .slider-arrow img', function() 
 {
     var $slideshow = $('.slideshow');
     var $newSlide;
     
-    if ($(this).hasClass('prev')) 
+    if ($(this).hasClass('slider-arrow-left')) 
     {
         $newSlide = $slideshow.find('.active').prev();
         if ($newSlide.index() < 0) 
@@ -47,17 +70,7 @@ $('#map').on('click', '.popup .cycle a', function()
     return false;
 });
 
-$("#listings_list").bind('mouseover', function () {
-    map.dragging.disable();
-    map.scrollWheelZoom.disable();
-});
-
-// Re-enable dragging when user's cursor leaves the element
-$("#listings_list").bind('mouseout', function () {
-    map.dragging.enable();
-    map.scrollWheelZoom.enable();
-});
-
+/************* THEME HELPER FUNCTIONS **************/
 /* 
  * ================================================================
  * VIEWPORT
@@ -558,17 +571,9 @@ function get_all_section_wrappers_in_page()
     return section_wrappers;
 }
 
-function fill_modal_to_screen()
-{
-    
-}
-
-/*
- * CUSTOM FUNCTIONS
- * =============================================
- */
+/*********** CUSTOM FUNCTIONS **************/
  
-/* INIT FACEBOOK STUFF */
+// Init the facebook stuff
 window.fbAsyncInit = function() 
 {
     FB.init(
@@ -587,10 +592,45 @@ window.fbAsyncInit = function()
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-/* INIT OUR STUFF */
-$(function() 
+function resetSidebar()
 {
-    var data = {"extensions": {"university": "Northwestern"}};
+    initMainSidebar();
+}
+
+function initMainSidebar()
+{
+    initSlider();
+    initDatePicker();
+}
+
+function initSlider()
+{
+    $( "#PriceRangeSlider" ).slider(
+    {
+        range: true,
+        min: 400,
+        max: 3000,
+        step: 100,
+        values: [ 800, 1500 ],
+        slide: function( event, ui )
+        {
+            $( "#amount" ).text ( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        }
+    });
+}
+
+function initDatePicker()
+{
+    $("#datepicker-inline").pikaday(
+    {
+        minDate: new Date(), 
+        setDefaultDate: new Date()
+    });
+}
+
+function loadAllDefaultListings()
+{
+    var data = {"university": "Northwestern"};
     
     //upon load, get all the entries that are at Northwestern
     $.ajax(
@@ -604,6 +644,7 @@ $(function()
         },
         success: function(res) 
         {
+            
             if (contains(res, "No Matching Entries"))
             {
                 if (res == "")
@@ -619,6 +660,7 @@ $(function()
             {
                 insertMarkers(res);
             }
+            
         },
         error: function(res, err) 
         {
@@ -626,11 +668,15 @@ $(function()
             console.log(err);
         }			
     });
-    
+}
+
+function setHiddenSidebars()
+{
     var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
     
     $("#listings_list").css("left", listingsListWidth);
-});
+    $("#extras_view").css("left", listingsListWidth);
+}
 
 function checkLoginState() 
 {
@@ -672,63 +718,92 @@ function login_facebook()
     }
 }
  
-function loadDataWithFilter()
+function searchForListings()
 {
     var query = createQuery();
 
-    /*
     $.ajax(
     {
         type: "POST",
         url: "api.php",
-        data: {data: query},
+        beforeSend: function()
+        {
+            $(".search-content input").prop("disabled", true);
+            $(".search-content input").val("Searching...");
+        },
+        data: 
+        {
+            command: "get_listings",
+            data: query
+        },
         success: function(res) 
         {
-            insertMarkers(res);
+            if (contains(res, "No Matching Entries"))
+            {
+                if (res == "")
+                {
+                    console.log("No Matching Entries");
+                }
+                else
+                {
+                    console.log(res);
+                }
+            }
+            else
+            {
+                insertMarkers(res);
+            }
         },
         error: function(res, err) 
         {
             console.log(res);
             console.log(err);
+        },
+        complete: function()
+        {
+            $(".search-content input").prop("disabled", false);
+            $(".search-content input").val("Search");
         }
     });
-    */
 }
 
 function createQuery()
 {
-    var query = "{}";
+    var query = {};
+    query.price = {low: 0, high: 0};
     
-    if ($("#lower").val())
-    {
-        query += "\"lower\": " + $("#lower").val();
-    }
-    if ($("#upper").val())
-    {
-        query += "\"upper\": " + $("#upper").val();
-    }
-    if ($("#bedrooms").val())
-    {
-        query += "\"bedrooms\": " + $("#bedrooms").val();
-    }
-    if ($("#bathrooms").val())
-    {
-        query += "\"bathrooms\": " + $("#bathrooms").val();
-    }
-    if ($("#start_date").val())
-    {
-        query += "\"start_date\": " + $("#start_date").val();
-    }
+    query.price.low = $("#PriceRangeSlider").slider("values", 0);
+    query.price.high = $("#PriceRangeSlider").slider("values", 1);
+    query.bedrooms = selectToQueryField($("#bedrooms-filter").val());
+    query.bathrooms = selectToQueryField($("#bathrooms-filter").val());
+    query.start = $.datepicker.formatDate('mm/dd/yy', $("#datepicker-inline").val());
+    query.type = $("#type-filter").val();
+    query.laundry = selectToQueryField($("#laundry-filter").val());
+    query.parking = selectToQueryField($("#parking-filter").val());
+    query.airConditioning = selectToQueryField($("#airConditioning-filter").val());
+    query.animals = selectToQueryField($("#animals-filter").val());
+    query.tags = $("#tags-filter").tagsinput('items');
+    query.university = "Northwestern"; // will be set by text box later
     
     return query;
 }
 
+function resetMarkers()
+{
+    for (var i = 0; i < markers.length; i++)
+    {
+        map.removeLayer(markers[i]);
+    }
+    markers = [];
+}
 
 function insertMarkers(res)
 {
+    resetMarkers();
+    
     if (res != "")
     {
-        var data = JSON.parse(res).data;
+        var data = JSON.parse(res);
         data.forEach(function(d)
         {
             var marker = L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
@@ -741,29 +816,81 @@ function insertMarkers(res)
 
                 slideshowContent += 
                                     '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                      '<img src="' + img["src"] + '" />' +
+                                      '<img src="' + img["src"] + '" height="200" width="300"/>' +
                                       '<div class="caption">' + img["caption"] + '</div>' +
                                     '</div>';
             }
             
             var popupContent =  
-                        '<div id="' + d.id + '" class="popup">' +
+                        '<div id="' + d._id.$oid + '" class="popup">' +
                             '<h2>' + d.address + '</h2>' +
+                            '<h3>$' + d.price + '/month</h2>' +
                             '<div class="slideshow">' +
+                                '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
+                                '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
                                 slideshowContent +
                             '</div>' +
-                            '<div class="cycle">' +
-                                '<a href="#" class="prev">&laquo; Previous</a>' +
-                                '<a href="#" class="next">Next &raquo;</a>' +
-                            '</div>'
                         '</div>';
             
             marker.bindPopup(popupContent, {
                 closeButton: false,
                 minWidth: 320
             });
+            
+            markers.push(marker);
+            
+            insertIntoListView(d);
         });
     }
+}
+
+function insertIntoListView(data)
+{
+    $("#listings").append(
+        "<div class='item-content listing'>" +
+            "<img src='assets/images/listing_images/pic1.jpg' height='100' width='100' />" +
+            "<div class='information'>" +
+                "<p class='listing-address'>" + data.address + "</p>" +
+                "<p class='listing-bedrooms'>" + data.bedrooms + " Bedroom" + (data.bedrooms == 1 ? "" : "s") + "</p>" + 
+                "<p class='listing-bathrooms'>" + data.bathrooms + " Bathroom" + (data.bathrooms == 1 ? "" : "s") + "</p><br>" +
+                "<p class='listing-price'>$" + data.price + "/month</p>" +
+                "<p class='listing-type'>" + data.type.capitalizeFirstLetter() + "</p><br>" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.address + "\", \"" + data.bedrooms + "\", \"" + data.bathrooms + "\", \"" + data.price + "\", \"" + data.type + "\", \"" + data.animals + "\", \"" + data.laundry + "\", \"" + data.parking + "\", \"" + data.ac + "\", \"" + data.tags + "\")' />" +
+            "</div>" +
+        "</div>"
+    );
+}
+
+function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, ac, tags)
+{
+    //load up the images into the modal...
+    var slideshowContent = "";
+    var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+    for(var i = 0; i < images.length; i++) 
+    {
+        var img = images[i];
+
+        slideshowContent += 
+                            '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                              '<img src="' + img["src"] + '" />' +
+                              '<div class="caption">' + img["caption"] + '</div>' +
+                            '</div>';
+    }
+    
+    $("#modal-content-15 h3").text(address);
+    $("#modal-content-15 .slideshow").html(slideshowContent);
+
+    $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
+    $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);
+    $("#modal-content-15 .popup-price").text("Rent: $" + price + "/month");
+    $("#modal-content-15 .popup-type").text("Type: " + type.capitalizeFirstLetter());
+    $("#modal-content-15 .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
+    $("#modal-content-15 .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
+    $("#modal-content-15 .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
+    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(ac));
+    $("#modal-content-15 .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
+    
+    populate_and_open_modal(null, 'modal-content-15');
 }
 
 /*
@@ -944,12 +1071,6 @@ function initBoxes()
 {
     setGeocompleteTextBox();
     setTextBoxesWithNumbers();
-    setStartDateTextBox();
-}
-
-function setStartDateTextBox()
-{
-    $(".modal-body .start_date").datepicker();
 }
 
 function setTextBoxesWithNumbers()
@@ -1152,36 +1273,82 @@ function load_modal(event, which, enter_default, btnText)
     modal_backdrop_height($('#common-modal.modal'));
 }
 
+/***** MARCEL LOOK HERE!!!!! *****/
+/***** the "extras" functions are what you care about *****/
 function open_listings_list()
 {
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
     var openWidth = parseFloat($("html").css("width")) - parseFloat($("#listings_list").css("left"));
-    
     $("#listings_list").animate(
     {
         width: openWidth
     }, 1000, 'easeInOutCubic', load_listings_list);
 }
 
+function open_extras_view()
+{
+    $("#extras_view").animate(
+    {
+        width: parseFloat($("#left-sidebar").css("width")),
+        paddingLeft: "5px",
+        paddingRight: "5px"
+    },
+    {
+        duration: 500,
+        easing: 'easeInOutCubic',
+        start: function ()
+        {
+            setTimeout(function()
+            {
+                $("#extras").fadeIn(200);
+            }, 300)
+        },
+        done: function ()
+        {
+            $(".more-filters-content input").val("Hide Extra Filters");
+            $(".more-filters-content input").attr("onclick", "close_extras_view()");
+        }
+    });
+}
+
 function close_listings_list()
 {
-    $("#listings_list").animate(
+    $("#listings").fadeOut(400, function() {
+        $("#listings_list").animate(
+        {
+            width: "0px"
+        }, 1000, 'easeInOutCubic', function() {
+            $("#view_listings_list-function a").text("View Listings List");
+            $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+        });
+    });
+}
+
+function close_extras_view()
+{
+    $("#extras").fadeOut(200);
+    $("#extras_view").animate(
     {
-        width: "1px"
-    }, 1000, 'easeInOutCubic', function() {
-        $("#view_listings_list-function a").text("view listings list");
-        $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+        width: "0px",
+        paddingLeft: "0px",
+        paddingRight: "0px"
+    }, 500, 'easeInOutCubic', function() {
+        $(".more-filters-content input").val("Show Extra Filters");
+        $(".more-filters-content input").attr("onclick", "open_extras_view()");
     });
 }
 
 function load_listings_list()
 {
-    //aggregate all the information into a listings list
+    $("#listings").fadeIn();
+    //TODO: aggregate all the information into a listings list
     
     //then change the view listings list to "close listings list"
-    $("#view_listings_list-function a").text("close listings list");
+    $("#view_listings_list-function a").text("Close Listings List");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
+
+/***** MARCEL DON'T LOOK PAST HERE!!!!! *****/
 
 function load_update_account_modal(event, title, keepDelete)
 {
@@ -1363,61 +1530,6 @@ function update_listing()
     }
 }
 
-function create_listing()
-{
-    var data = buildData(["address", "selected_address", "latitude", "longitude",
-                                    "bedrooms", "bathrooms", "animals", "laundry", "rent",
-                                    "start_date"]);
-   
-    var error = buildError(data);
-
-    if (error != "Please Include<br>")
-    {
-        setError("create_listing", error);
-    }
-    else
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "api.php",
-            beforeSend: function() 
-            {
-                disableModalSubmit("create_listing", "Processing...");
-            },
-            data:
-            {
-                command: "create_listing",
-                data: data
-            },
-            success: function(res)
-            {
-                if (contains(res, "Okay"))
-                {
-                    populate_and_open_modal(null, 'modal-content-7');
-                    
-                    L.marker([data["latitude"], data["longitude"]]).addTo(map);
-                }
-                else
-                {
-                    setError("create_listing", res);
-                }
-            },
-            error: function(res, err)
-            {
-                console.log(res);
-                console.log(err);
-            },
-            complete: function()
-            {
-                resetModal("create_listing", "Create Listing", false);
-                
-                set_default_button_on_enter("");
-            }
-        });
-    }
-}
-
 function set_default_button_on_enter(modal)
 {
     if (modal != "")
@@ -1527,9 +1639,9 @@ function buildError(fields)
     }
     if (fields.rent == "")
     {
-        error += "Valid Monthly Rent Amount<br>";
+        error += "Valid Monthy Rent Amount<br>";
     }
-    if (fields.start_date == "")
+    if (fields.start == "")
     {
         error += "Valid Lease Start Date<br>";
     }
@@ -1540,6 +1652,18 @@ function buildError(fields)
     if (fields.laundry == "")
     {
         error += "If In-Unit Laundry is Available<br>";
+    }
+    if (fields.parking == "")
+    {
+        error += "If Parking is Available<br>";
+    }
+    if (fields.ac == "")
+    {
+        error += "If Air Conditioning Is Available<br>";
+    }
+    if (fields.type == "")
+    {
+        error += "What Type of Lease<br>";
     }
     
     return error;
@@ -1562,5 +1686,44 @@ function setError(el, msg)
 
 function contains(haystack, needle)
 {
+    if (typeof haystack != "string") 
+    {
+        return false;
+    }
+    
     return (haystack.indexOf(needle) != -1)
 }
+
+function booleanToHumanReadable(data)
+{
+    return (data == true ? "Yes" : "No");
+}
+
+function selectToQueryField(field)
+{
+    if (field == "true" || field == "false")
+    {
+        return (field == "true")
+    }
+    
+    return field; // could be the string "any"
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+/********** START UP SCRIPTS *************/
+$(function ()
+{
+    initMainSidebar();
+    
+    loadAllDefaultListings();
+    
+    setHiddenSidebars();
+});
+
+$(window).on('resize', function() {
+   //otherwise they get out of place because their 'left' is set as a percentage
+   setHiddenSidebars(); 
+});
