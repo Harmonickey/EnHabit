@@ -1314,22 +1314,21 @@ function close_listings_list()
 
 function close_extras_view()
 {
-    $("#extras").fadeOut(400, function() {
-        $("#extras_view").animate(
-        {
-            width: "0px",
-            paddingLeft: "0px",
-            paddingRight: "0px"
-        }, 1000, 'easeInOutCubic', function() {
-            $(".more-filters-content input").val("Show Extra Filters");
-            $(".more-filters-content input").attr("onclick", "open_extras_view()");
-        });
+    $("#extras").fadeOut(200);
+    $("#extras_view").animate(
+    {
+        width: "0px",
+        paddingLeft: "0px",
+        paddingRight: "0px"
+    }, 500, 'easeInOutCubic', function() {
+        $(".more-filters-content input").val("Show Extra Filters");
+        $(".more-filters-content input").attr("onclick", "open_extras_view()");
     });
 }
 
 function load_listings_list()
 {
-    $("#listings").fadeIn(); 
+    $("#listings").fadeIn();
     //TODO: aggregate all the information into a listings list
     
     //then change the view listings list to "close listings list"
