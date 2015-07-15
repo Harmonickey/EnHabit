@@ -91,7 +91,7 @@ def set_filters
     if @tags.nil? 
         @tag_filter = nil
     else 
-        @tag_filter[:tags] = @tags
+        @tag_filter[:tags][:$in] = @tags # $in matches on either of the elements
     end
     
     if @university.nil?
