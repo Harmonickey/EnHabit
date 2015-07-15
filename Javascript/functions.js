@@ -792,11 +792,11 @@ function createQuery()
 
 function resetMarkers()
 {
-    for (var i = 0; i < markers.length; i++)
+    $.each(markers._layers, function(id, marker) 
     {
         map.removeLayer(markers[i]);
-    }
-    markers = [];
+    });
+    markers = new L.FeatureGroup();
 }
 
 function insertMarkers(res)
