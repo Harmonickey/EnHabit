@@ -19,7 +19,7 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Enhabit | Find Your Perfect Home</title>
+        <title>Enhabit | Find Your Perfect Home Away From Home</title>
         <!-- favicon -->
         <link rel="icon" type="image/jpg" href="favicon.png">
         <!-- Bootstrap core CSS -->
