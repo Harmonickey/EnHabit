@@ -1292,10 +1292,22 @@ function open_extras_view()
         width: parseFloat($("#left-sidebar").css("width")),
         paddingLeft: "5px",
         paddingRight: "5px"
-    }, 1000, 'easeInOutCubic', function() {
-        $("#extras").fadeIn(600);
-        $(".more-filters-content input").val("Hide Extra Filters");
-        $(".more-filters-content input").attr("onclick", "close_extras_view()");
+    },
+    {
+        duration: 500,
+        easing: 'easeInOutCubic',
+        start: function ()
+        {
+            setTimeout(function()
+            {
+                $("#extras").fadeIn(200);
+            }, 300)
+        },
+        done: function ()
+        {
+            $(".more-filters-content input").val("Hide Extra Filters");
+            $(".more-filters-content input").attr("onclick", "close_extras_view()");
+        }
     });
 }
 
