@@ -778,7 +778,7 @@ function createQuery()
     query.price.high = $("#PriceRangeSlider").slider("values", 1);
     query.bedrooms = selectToQueryField($("#bedrooms-filter").val());
     query.bathrooms = selectToQueryField($("#bathrooms-filter").val());
-    query.start = $.datepicker.formatDate('mm/dd/yy', $("#datepicker-inline").val());
+    query.start = $.datepicker.formatDate('mm/dd/yy', new Date($("#datepicker-inline").val()));
     query.type = $("#type-filter").val();
     query.laundry = selectToQueryField($("#laundry-filter").val());
     query.parking = selectToQueryField($("#parking-filter").val());
