@@ -146,7 +146,8 @@ begin
 
     @lower = data["price"]["low"].to_i unless data["price"].nil?
     @upper = data["price"]["high"].to_i unless data["price"].nil?   
-    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil?
+    @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil? or data["bedrooms"] == "studio"
+    @bedrooms = data["bedrooms"] if data["bedrooms"] == "studio"
     @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "any" or data["bathrooms"].nil?
     @laundry = data["laundry"].to_b unless data["laundry"] == "both" or data["laundry"].nil?
     @parking = data["parking"].to_b unless data["parking"] == "both" or data["parking"].nil?
