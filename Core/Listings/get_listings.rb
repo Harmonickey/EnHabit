@@ -151,7 +151,7 @@ begin
     @animals = data["animals"].to_b unless data["animals"] == "both" or data["animals"].nil?
     @airConditioning = data["airConditioning"].to_b unless data["airConditioning"] == "both" or data["airConditioning"].nil?
     @type = data["type"] unless data["type"] == "both" or data["type"].nil?
-    @start = data["start"] unless data["start"].nil?
+    @start = data["start"] unless data["start"].nil? or data["start"] == ""
     @university = data["university"]
     @tags = data["tags"] unless data["tags"].nil? or data["tags"] == []
 
