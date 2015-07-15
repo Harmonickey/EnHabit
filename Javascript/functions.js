@@ -720,6 +720,8 @@ function login_facebook()
  
 function searchForListings()
 {
+    resetMarkers();
+    
     var query = createQuery();
 
     $.ajax(
@@ -799,8 +801,6 @@ function resetMarkers()
 
 function insertMarkers(res)
 {
-    resetMarkers();
-    
     if (res != "")
     {
         var data = JSON.parse(res);
