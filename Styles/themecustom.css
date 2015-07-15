@@ -87,6 +87,11 @@
 	margin: 0 auto;
 }
 
+#type-filter
+{
+    padding: 0;
+}
+
 .price-content
 {
 	text-align: center;
