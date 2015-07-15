@@ -794,7 +794,7 @@ function resetMarkers()
 {
     $.each(markers._layers, function(id, marker) 
     {
-        map.removeLayer(markers[i]);
+        map.removeLayer(marker);
     });
     markers = new L.FeatureGroup();
 }
