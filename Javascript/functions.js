@@ -837,7 +837,7 @@ function insertMarkers(res)
                 minWidth: 320
             });
             
-            markers.push(marker);
+            markers.addLayer(marker);
             
             insertIntoListView(d);
         });
