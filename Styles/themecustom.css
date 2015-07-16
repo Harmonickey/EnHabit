@@ -8,20 +8,250 @@
 	width:100%; 
 }
 
+#outer-container *
+{
+    font-size: 15px;
+}
+
 #left-sidebar,
 #footer,
 #mobile-menu-icon
 {
+    cursor: default;
 	z-index: 1;
     position: relative;
 }
 
-@media (min-width: 768px) 
+#Filters
+{
+    color: white;
+    padding: 0 5px 0 5px;
+}
+
+#Filters .search-content input,
+#Filters .more-filters-content input,
+#listings input,
+.popup .information input
+{
+    border-radius: 10px;
+}
+
+#Filters select,
+#extras_view select
+{
+    font-weight: bold;
+}
+
+#parking-filter,
+#animals-filter,
+#laundry-filter,
+#airConditioning-filter
+{
+    padding-right: 0;
+    padding-left: 5px;
+}
+
+#extras_view,
+#listings_list
+{
+    color: white;
+    cursor: default;
+}
+
+#extras,
+#listings
+{
+    display: none;
+}
+
+#Filters .double-item-content,
+#extras_view .double-item-content
+{
+    margin-top: 5px;
+    display: inline-block;
+    width: 100%;
+}
+
+#Filters .double-item-content .item-content,
+#extras_view .double-item-content .item-content
+{
+    width: 50%;
+    float: left;
+}
+
+#Filters .double-item-content .item-content label,
+#extras_view .double-item-content .item-content label,
+{
+    width: 100%;
+}
+
+#Filters .item-content label,
+#extras_view .item-content label
+{
+	text-align: center;
+	width: 100%;
+}
+
+#Filters .item-content select,
+#extras_view .item-content select
+{
+	margin: 0 auto;
+}
+
+#type-filter
+{
+    padding: 0;
+}
+
+.price-content
+{
+	text-align: center;
+}
+
+.date-content,
+.tags-content
+{
+    margin-top: 5px;
+}
+
+.switch-content
+{
+    display: inline-block;
+    width: 100%;
+}
+
+.item-content .bootstrap-switch
+{
+    float: left;
+}
+
+.item-content select
+{
+    width: 80%;
+}
+
+.search-content,
+.more-filters-content
+{
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.more-filters-content button
+{
+    width: 70%;
+}
+
+.search-content input
+{
+    width: 50%;
+}
+
+.type-content,
+.search-content
+{
+    display: inline-block;
+}
+
+.type-content
+{
+    width: 100%;
+}
+
+#type-filter
+{
+    width: 45%;
+}
+
+.type-content .bootstrap-switch
+{
+    float: left;
+}
+
+#datepicker-inline
+{
+    color: black;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+.tags-content .bootstrap-tagsinput
+{
+    width: 100%;
+    min-height: 55px;
+    height: auto;
+}
+
+.bootstrap-tagsinput
+{
+	height: 55px;
+}
+
+.bootstrap-tagsinput input
+{
+    width: auto !important;
+}
+
+#left-sidebar,
+#listings_list,
+#extras_view
+{
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    
+    user-select: none;
+}
+
+#listings
+{
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+    overflow-y: scroll;
+    font-size: 20px;
+}
+
+.listing
+{
+    display: block;
+    width: 100%;
+    height: 100px;
+    margin-top: 50px;
+}
+
+.modal-body .listing
+{
+    margin-top: 0px;
+}
+
+.listing .information
+{
+    height: 100px;
+}
+
+.listing img
+{
+    float: left;
+    margin-right: 10px;
+}
+
+.listing p
+{
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+@media (min-width: 768px)
 {
     #left-sidebar,
     #footer,
     #mobile-menu-icon
-    {
+        {
         z-index: 1;
         position: fixed;
     }
@@ -36,8 +266,7 @@
 .address, 
 .bedrooms,
 .bathrooms, 
-.rent,
-.start_date
+.rent
 {
 	text-align: center;
 	width: 50%;
@@ -52,7 +281,7 @@
 
 .login-btn-facebook .facebook-icon-for-button 
 {
-    background: url('../../assets/images/other_images/facebook-button-transparent-background.png'); 
+    background: url('../assets/images/theme_images/facebook-button-transparent-background.png'); 
     height: 25px; 
     width: 25px; 
     margin-right: 10px;
@@ -83,57 +312,77 @@
     z-index: 1041 !important;
 }
 
-.popup 
+.leaflet-popup .popup,
+.listing .popup
 {
     text-align:center;
 }
 
-.popup .slideshow .image        
+.listing .slideshow,
+.listing .cycle
+{
+    width: 50%;
+}
+
+.listing .slideshow
+{
+    float: left;
+}
+
+.leaflet-popup .popup .slideshow .image,
+.listing .popup .slideshow .image
 { 
     display:none; 
 }
 
-.popup .slideshow .image.active 
+.leaflet-popup .popup .slideshow .image.active,
+.listing .popup .slideshow .image.active
 { 
     display:block; 
 }
 
-.popup .slideshow img 
+.leaflet-popup .popup .slideshow img,
+.listing .popup .slideshow img
 {
     width:100%;
 }
 
-.popup .slideshow .caption 
+.leaflet-popup .popup .slideshow .caption,
+.listing .popup .slideshow .caption
 {
     background:#eee;
     padding:10px;
 }
 
-.popup .cycle 
+.leaflet-popup .popup .cycle,
+.listing .popup .cycle
 {
     padding:10px 0 20px;
 }
 
-.popup .cycle a.prev 
+.leaflet-popup .popup .cycle a.prev, 
+.listing .popup .cycle a.prev
 { 
     float:left; 
 }
 
-.popup .cycle a.next 
+.leaflet-popup .popup .cycle a.next,
+.listing .popup .cycle a.next
 { 
     float:right; 
 }
 
 .leaflet-popup-tip
 {
-    display: none;  /* for now I dunno what is wrong with it... */
+    display: none;  /* for now I dunno what is wrong with it, so just make it disappear with this... */
 }
 
-#listings_list 
+#listings_list,
+#extras_view 
 {
     position: fixed;
     z-index: 1;
-    width: 1px;
+    width: 0px;
     height: 100%;
     overflow: hidden;
     background: rgba(0,0,0,0.79);
@@ -143,22 +392,57 @@
 {
     #left-sidebar .logo
     {
-        padding: 28px 0 0 0;
+        padding: 14px 0 0 0;
     }
 }
 
-#listings
+#left-sidebar .logo
+    {
+        padding: 14px 0 0 0;
+    }
+
+.slider-left,
+.slider-right
 {
-    width: 85%;
-    background-color: blue;
-    height: 100%;
-    margin: 0 auto;
-    overflow-y: scroll;
+    position: absolute;
+    height: 242px;
+    width: 50px;
+    cursor: pointer;
 }
 
-.listing
+.slider-left
 {
-    display: block;
+    left: 10px;
+}
+
+.slider-right
+{
+    right: 10px;
+}
+
+.slider-left-arrow,
+.slider-right-arrow
+{
+    position: relative;
+    top: 30%;
+}
+
+.leftlet-popup .popup .slideshow .slider-left-arrow,
+.leftlet-popup .popup .slideshow .slider-right-arrow
+{
+    width: 25px;
+}
+
+#footer
+{
+    margin: 0;
     width: 100%;
-    height: 150px;
+    position: absolute;
+    bottom: 5px;
+}
+
+.footer-text-line,
+.footer-text-line a
+{
+    font-size: 10px !important;
 }
