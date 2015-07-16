@@ -428,21 +428,21 @@ function create_listing()
     }
 }
 
-function login_listings()
+function login_tenant()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
     
     if (!username || !password)
     {
-        $("#listings-login-error").text("Please enter Username and Password");
+        $("#tenant-login-error").text("Please enter Username and Password");
     }
     else
     {
         $.ajax(
         {
             type: "POST",
-            url: "/listings/listing_api.php",
+            url: "/tenant/tenant_api.php",
             beforeSend: function ()
             {
                 $(".login-action").text("Processing...");
@@ -450,7 +450,7 @@ function login_listings()
             },
             data:
             {
-                command: "login_listings",
+                command: "login",
                 data: 
                 {
                     "username": username, 
@@ -462,21 +462,12 @@ function login_listings()
             {
                 if (contains(res, "Okay"))
                 {
-                    //session variable should be set now
-                    // goto landing
-                    if (contains(res, "Landlord"))
-                    {
-                        location.href="/listings/landlord";
-                    }
-                    else
-                    {
-                        location.href="/listings/tenant"
-                    }
+                    location.href="/tenant/listings/"
                 }
                 else
                 {
-                    $("#listings-login-error").show();
-                    $("#listings-login-error").text(res);
+                    $("#tenant-login-error").show();
+                    $("#tenant-login-error").text(res);
                 }
             },
             error: function(res, err)
@@ -493,17 +484,18 @@ function login_listings()
     }
 }
 
-function logout_listings()
+function logout_tenant()
 {
     $.ajax(
     {
         type: "POST",
-        url: "/listings/logout.php",
+        url: "/tenant/logout.php",
         success: function(res)
         {
             if (contains(res, "Successfully"))
             {
-                location.href = "/listings/login.php";
+                // ideally I'd like this to be a server redirect in PHP
+                location.href = "/tenant/login.php";
             }
             else
             {

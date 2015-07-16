@@ -1,14 +1,21 @@
 <?php
     session_start();
     
-    $one_hour = 3600;
+    if (isset($_SESSION["tenant"]))
+    {
+        header("Location: /tenant/listings/", FALSE); // just redirect if the user isn't authorized to go here....
+    }
+    else
+    {
+        $one_hour = 3600;
 
-    if (!isset($_SESSION['CREATED'])) {
-        $_SESSION['CREATED'] = time();
-    } else if (time() - $_SESSION['CREATED'] > $one_hour) {
-        // session started more than 1 hour ago
-        session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
-        $_SESSION['CREATED'] = time();  // update creation time
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > $one_hour) {
+            // session started more than 1 hour ago
+            session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+            $_SESSION['CREATED'] = time();  // update creation time
+        }
     }
 ?>
 
@@ -16,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Login :: Listings</title>
+    <title>Login :: tenant</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes"> 
@@ -45,7 +52,7 @@
 	<div class="container">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
-    <a class="navbar-brand" href="./index.html">Enhabit Listings</a>
+    <a class="navbar-brand" href="./index.html">Enhabit tenant</a>
   </div>
 </div> <!-- /.container -->
 </nav>
@@ -65,9 +72,9 @@
 				</div> <!-- /password -->
 			</div> <!-- /login-fields -->
 			<div class="login-actions">
-				<button class="login-action btn btn-primary" onclick="login_listings()">Sign In</button>
+				<button class="login-action btn btn-primary" onclick="login_tenant()">Sign In</button>
 			</div> <!-- .actions -->
-            <p class="listings-login-error alert alert-danger" style="display: none;"></p>
+            <p class="tenant-login-error alert alert-danger" style="display: none;"></p>
 	</div> <!-- /content -->
 </div> <!-- /account-container -->
 
