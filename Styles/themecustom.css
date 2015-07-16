@@ -8,6 +8,11 @@
 	width:100%; 
 }
 
+#outer-container *
+{
+    font-size: 15px;
+}
+
 #left-sidebar,
 #footer,
 #mobile-menu-icon
@@ -29,6 +34,12 @@
 .popup .information input
 {
     border-radius: 10px;
+}
+
+#Filters select,
+#extras_view select
+{
+    font-weight: bold;
 }
 
 #parking-filter,
@@ -141,6 +152,16 @@
 .search-content
 {
     display: inline-block;
+}
+
+.type-content
+{
+    width: 100%;
+}
+
+#type-filter
+{
+    width: 45%;
 }
 
 .type-content .bootstrap-switch
@@ -371,9 +392,14 @@
 {
     #left-sidebar .logo
     {
-        padding: 28px 0 0 0;
+        padding: 14px 0 0 0;
     }
 }
+
+#left-sidebar .logo
+    {
+        padding: 14px 0 0 0;
+    }
 
 .slider-left,
 .slider-right
@@ -410,4 +436,13 @@
 #footer
 {
     margin: 0;
+    width: 100%;
+    position: absolute;
+    bottom: 5px;
+}
+
+.footer-text-line,
+.footer-text-line a
+{
+    font-size: 10px !important;
 }
