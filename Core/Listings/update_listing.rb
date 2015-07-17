@@ -62,5 +62,7 @@ rescue Exception => e
         output.puts e.message
         output.puts e.backtrace.inspect
     end
-    puts e.inspect
+    message = Hash.new
+    message.error = e.inspect
+    puts message
 end
