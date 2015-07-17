@@ -23,6 +23,7 @@ function getAllListings()
         beforeSend: function()
         {
             //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
         },
         data: 
         {
@@ -36,10 +37,11 @@ function getAllListings()
             }
             else if (contains(res, "No Listings"))
             {
-                //then notification if there is nothing in the accordion area...
+                $("#accordion").html("<p>No Listings Yet</p>");
             }
             else
             {
+                $("#accordion").html("");
                 try
                 {
                     var data = JSON.parse(res);
@@ -52,43 +54,21 @@ function getAllListings()
                     {
                         for (var i = 0; i < data.length; i++)
                         {
-                            $("#accordion").append(
-                                "<div class='panel panel-default'>" +
-                                    "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
-                                        "<h4 class='panel-title'>" +
-                                            "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
-                                                "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + 
-                                                "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + 
-                                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
-                                            "</a>" +
-                                        "</h4>" +
-                                    "</div>" +
-                                    "<div id='" + data[i]._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + data[i]._id.$oid + "'>" +
-                                        "<div class='panel-body'>" +
-                                            "<label>Bedrooms</label><input type='text' class='form-control' value='" + data[i].bedrooms + "' />" +
-                                            "<label>Bathrooms</label><input type='text' class='form-control' value='" + data[i].bathrooms + "' />" +
-                                            "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>AC</label><input type='checkbox' " + (data[i].airConditioning ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>Type</label><input type='checkbox' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
-                                            "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
-                                            "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
-                                            "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>");
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(createAccordionView(oid, data[i]));
                                 
-                            setGeocompleteTextBox(data[i]._id.$oid);
-                            setTextBoxWithAutoNumeric(data[i]._id.$oid);
-                            setDatePickerTextBox(data[i]._id.$oid);
-                            setBootstrapSwitches(data[i]._id.$oid);
+                            setGeocompleteTextBox(oid);
+                            setTextBoxWithAutoNumeric(oid);
+                            setDatePickerTextBox(oid);
+                            setBootstrapSwitches(oid);
+                            setTextBoxWithTags(oid);
                         }
                     }
                 }
                 catch (e)
                 {
-                    
+                    console.log(e);
                 }
             }
         },
@@ -102,13 +82,14 @@ function getAllListings()
 
 function setBootstrapSwitches(rowId)
 {
-    $("#" + rowId + " input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});;
-    $("#" + rowId + " input[data-role='tabsinput']").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
+    var checkboxes = $("#" + rowId + " input[type='checkbox']");
+    checkboxes.not(":last").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
 }
 
 function setGeocompleteTextBox(rowId)
 {
-    var row = $("#heading" + rowId + " div input[type='text']");
+    var row = $("#" + rowId + " div input[type='text']");
     var hidden = $("#" + rowId + " input[type='hidden']");
     
     $(row[0]).geocomplete()
@@ -121,7 +102,7 @@ function setGeocompleteTextBox(rowId)
 
 function setTextBoxWithAutoNumeric(rowId)
 {
-    var row = $("#heading" + rowId + " input[type='text']");
+    var row = $("#" + rowId + " input[type='text']");
     
     $(row[1]).autoNumeric('init', 
     {
@@ -132,9 +113,14 @@ function setTextBoxWithAutoNumeric(rowId)
     });
 }
 
+function setTextBoxWithTags(rowId)
+{
+   $("#" + rowId + " input[data-role='tagsinput']").tagsinput();
+}
+
 function setDatePickerTextBox(rowId)
 {
-    $($("#heading" + rowId + " input[type='text']")[2]).pikaday(
+    $($("#" + rowId + " input[type='text']")[2]).pikaday(
     {
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
@@ -223,8 +209,8 @@ function create_listing()
             url: "/tenant/tenant_api.php",
             beforeSend: function()
             {
-                $("#createListingModal button").text("Creating...");
-                disableButtons();
+                $("#create-listing-button").text("Creating...");
+                $("#create-listing-button").prop("disabled", false);
             },
             data:
             {
@@ -249,37 +235,17 @@ function create_listing()
                         }
                         else
                         {
-                            $("#accordion").prepend(
-                                "<div class='panel panel-default'>" +
-                                    "<div class='panel-heading' role='tab' id='heading" + listing._id.$oid + "'>" +
-                                        "<h4 class='panel-title'>" +
-                                            "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + listing._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
-                                                "<label>Address</label><input type='text' class='form-control' value='" + listing.address + "' /> " + 
-                                                "<label>Price</label><input type='text' class='form-control' value='" + listing.price + "' />" + 
-                                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(listing.start) + "' />" + 
-                                            "</a>" +
-                                        "</h4>" +
-                                    "</div>" +
-                                    "<div id='" + listing._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + listing._id.$oid + "'>" +
-                                        "<div class='panel-body'>" +
-                                            "<label>Bedrooms</label><input type='text' class='form-control' value='" + listing.bedrooms + "' />" +
-                                            "<label>Bathrooms</label><input type='text' class='form-control' value='" + listing.bathrooms + "' />" +
-                                            "<label>Animals</label><input type='checkbox' " + (listing.animals ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>Laundry</label><input type='checkbox' " + (listing.laundry ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>Parking</label><input type='checkbox' " + (listing.parking ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>AC</label><input type='checkbox' " + (listing.airConditioning ? "checked" : "") + " data-size='mini' />" +
-                                            "<label>Type</label><input type='checkbox' " + (listing.type ? "checked" : "") + " data-role='tabsinput' />" +
-                                            "<button class='btn btn-primary' onclick='update_listing(\"" + listing._id.$oid + "\");'>Update</button>" + 
-                                            "<button class='btn btn-danger' onclick='delete_listing(\"" + listing._id.$oid + "\");'>Delete</button>" +
-                                            "<input type='hidden' value='" + listing.worldCoordinates.x + "' /><input type='hidden' value='" + listing.worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>");
+                            var oid = listing._id.$oid;
+                            
+                            $("#accordion").prepend(createAccordionView(oid, listing));
                                 
-                            setGeocompleteTextBox(listing._id.$oid);
-                            setTextBoxWithAutoNumeric(listing._id.$oid);
-                            setDatePickerTextBox(listing._id.$oid);
-                            setBootstrapSwitches(listing._id.$oid); 
+                            setGeocompleteTextBox(oid);
+                            setTextBoxWithAutoNumeric(oid);
+                            setDatePickerTextBox(oid);
+                            setBootstrapSwitches(oid); 
+                            setTextBoxWithTags(oid)
+                            
+                            $("#createListingModal").modal('hide');
                         }
                     }
                     catch (e)
@@ -295,8 +261,9 @@ function create_listing()
             },
             complete: function()
             {
-                $$("#create-listing button").text("Create New Listing");
-                enableButtons();
+                $("#create-listing-button").text("Create New Listing");
+                $("#create-listing-button").prop("disabled", false);
+                
             }
         });
     }
@@ -542,4 +509,69 @@ function formattedDate(dateString)
     if (day < 10) day = "0" + day;
 
     return "" + month + "/" + day + "/" + year;
+}
+
+function createAccordionView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Address: " + data.address + "</label>" + 
+                            "<label>Rent: $" + data.price + "/Month</label>" + 
+                            "<label>Start Date: " + formattedDate(data.start) + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Address</label><input type='text' class='form-control' value='" + data.address + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.price + "' />" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.start) + "' />" +
+                            "</div>" + 
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.bedrooms + "' />" +
+                            "</div>" + 
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.bathrooms + "' />" +
+                            "</div>" + 
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Tags</label><input type='text' class='form-control' value='" + data.tags.join(",") + "' data-role='tagsinput' />" + 
+                            "</div>" + 
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>Animals</label><input type='checkbox' " + (data.animals ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" + 
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>Laundry</label><input type='checkbox' " + (data.laundry ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" + 
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>Parking</label><input type='checkbox' " + (data.parking ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" + 
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>AC</label><input type='checkbox' " + (data.airConditioning ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" + 
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Type</label><input type='checkbox' " + (data.type ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                        "</div>" + 
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
+                            "</div>" +
+                        "</div>" +
+                        "<input type='hidden' value='" + data.worldCoordinates.x + "' /><input type='hidden' value='" + data.worldCoordinates.y + "' /><input type='hidden' value='" + data.address + "' />" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
 }

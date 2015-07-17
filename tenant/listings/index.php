@@ -124,6 +124,7 @@
                     <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
+                    <label>Click the listing(s) below to update and see more details</label>
 					<!-- all the listings go here -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         
@@ -193,7 +194,7 @@
                 <label>Tags</label><input type='text' data-role='tagsinput' />
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
-                <button type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+                <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
             </div>
         </div>
     </div>

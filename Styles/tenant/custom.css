@@ -64,3 +64,24 @@ textarea
 {
     visibility: visible;
 }
+
+.panel-heading,
+.panel-title a label
+{
+    cursor: pointer;
+}
+
+.panel-title label
+{
+    width: 100%;
+}
+
+#accordion button
+{
+    margin-right: 10px;
+}
+
+#accordion .row label
+{
+    margin-right: 5px;
+}
