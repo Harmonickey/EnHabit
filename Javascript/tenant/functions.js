@@ -26,13 +26,15 @@ function getAllListings()
         },
         success: function(res) 
         {
-            console.log(res);
-            return;
+            var data = JSON.parse(res);
             
-            if (!contains(res, "No"))
+            if (contains(res, "Error"))
             {
-                var data = JSON.parse(res);
-                
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                console.log(res);
+            }
+            else
+            {
                 for (var i = 0; i < data.length; i++)
                 {
                     $("#accordion").append(
@@ -138,7 +140,7 @@ function delete_listing(id)
             $.ajax(
             {
                 type: "POST",
-                url: "/admin/admin_api.php",
+                url: "/tenant/tenant_api.php",
                 beforeSend: function()
                 {
                    $($("#" + id + " button")[1]).text("Deleting..."); 
@@ -210,11 +212,11 @@ function create_listing()
             },
             success: function(res)
             {    
-                var data = JSON.parse(res);
+                var listing = JSON.parse(res);
                 
-                if (data["error"])
+                if (listing["error"])
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: listing["error"], position: 'bottom-right'});
                 }
                 else if (!res)
                 {
@@ -224,33 +226,35 @@ function create_listing()
                 {
                     $("#accordion").prepend(
                         "<div class='panel panel-default'>" +
-                            "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
+                            "<div class='panel-heading' role='tab' id='heading" + listing._id.$oid + "'>" +
                                 "<h4 class='panel-title'>" +
-                                    "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
-                                        "<label>Username</label><input type='text' class='form-control' value='" + data[i].Username + "' /> " + "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + "</label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
+                                    "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + listing._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
+                                        "<label>Address</label><input type='text' class='form-control' value='" + listing.address + "' /> " + 
+                                        "<label>Price</label><input type='text' class='form-control' value='" + listing.price + "' />" + 
+                                        "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(listing.start) + "' />" + 
                                     "</a>" +
                                 "</h4>" +
                             "</div>" +
-                            "<div id='" + data[i]._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + data[i]._id.$oid + "'>" +
+                            "<div id='" + listing._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + listing._id.$oid + "'>" +
                                 "<div class='panel-body'>" +
-                                    "<label>Bedrooms</label><input type='text' class='form-control' value='" + data[i].bedrooms + "' />" +
-                                    "<label>Bathrooms</label><input type='text' class='form-control' value='" + data[i].bathrooms + "' />" +
-                                    "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>AC</label><input type='checkbox' " + (data[i].airConditioning ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Type</label><input type='checkbox' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
-                                    "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
-                                    "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
-                                    "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                                    "<label>Bedrooms</label><input type='text' class='form-control' value='" + listing.bedrooms + "' />" +
+                                    "<label>Bathrooms</label><input type='text' class='form-control' value='" + listing.bathrooms + "' />" +
+                                    "<label>Animals</label><input type='checkbox' " + (listing.animals ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Laundry</label><input type='checkbox' " + (listing.laundry ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Parking</label><input type='checkbox' " + (listing.parking ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>AC</label><input type='checkbox' " + (listing.airConditioning ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Type</label><input type='checkbox' " + (listing.type ? "checked" : "") + " data-role='tabsinput' />" +
+                                    "<button class='btn btn-primary' onclick='update_listing(\"" + listing._id.$oid + "\");'>Update</button>" + 
+                                    "<button class='btn btn-danger' onclick='delete_listing(\"" + listing._id.$oid + "\");'>Delete</button>" +
+                                    "<input type='hidden' value='" + listing.worldCoordinates.x + "' /><input type='hidden' value='" + listing.worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
                                 "</div>" +
                             "</div>" +
                         "</div>");
                         
-                    setGeocompleteTextBox(data[i]._id.$oid);
-                    setTextBoxWithAutoNumeric(data[i]._id.$oid);
-                    setDatePickerTextBox(data[i]._id.$oid);
-                    setBootstrapSwitches(data[i]._id.$oid); 
+                    setGeocompleteTextBox(listing._id.$oid);
+                    setTextBoxWithAutoNumeric(listing._id.$oid);
+                    setDatePickerTextBox(listing._id.$oid);
+                    setBootstrapSwitches(listing._id.$oid); 
                 }
             },
             error: function(res, err)

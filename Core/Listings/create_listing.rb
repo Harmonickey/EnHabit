@@ -37,19 +37,21 @@ def create_listing(user, price, address, bedrooms, bathrooms, animals, laundry, 
     listing_obj["university"] = university
     listing_obj["tags"] = tags
     
-    ret_msg = ""
- 
+    document = Hash.new
+    
     begin
         mongo_session.with(safe: true) do |session|
             session[:listings].insert(listing_obj)
         end
-        ret_msg = "Okay"
+        mongo_session.with(safe: true) do |session|
+            document = session[:listings].find().select(_id: 1, Username: 1, price: 1, address: 1, bedrooms: 1, bathrooms: 1, animals: 1, laundry: 1, parking: 1, airConditioning: 1, type: 1, start: 1, worldCoordinates: 1, tags: 1).one
+        end
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
+        document["error"] = e
     end
     
 	mongo_session.disconnect
-    return ret_msg
+    return document
 end
 
 begin
@@ -58,13 +60,13 @@ begin
     
     result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 
-    puts result
+    puts result.to_json
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
         output.puts e.backtrace.inspect
     end
-    message = Hash.new
-    message.error = e.inspect
-    puts message
+    result = Hash.new
+    result["error"] = e.inspect
+    puts result.to_json
 end
