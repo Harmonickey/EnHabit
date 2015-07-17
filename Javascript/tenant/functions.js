@@ -20,54 +20,75 @@ function getAllListings()
     {
         type: "POST",
         url: "/tenant/tenant_api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+        },
         data: 
         {
             command: "get_listings_by_user"
         },
         success: function(res) 
         {
-            var data = JSON.parse(res);
-            
-            if (contains(res, "Error"))
+            if (!res)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
-                console.log(res);
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to retrieve listings", position: 'bottom-right'});
+            }
+            else if (contains(res, "No Listings"))
+            {
+                //then notification if there is nothing in the accordion area...
             }
             else
             {
-                for (var i = 0; i < data.length; i++)
+                try
                 {
-                    $("#accordion").append(
-                        "<div class='panel panel-default'>" +
-                            "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
-                                "<h4 class='panel-title'>" +
-                                    "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
-                                        "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + 
-                                        "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + 
-                                        "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
-                                    "</a>" +
-                                "</h4>" +
-                            "</div>" +
-                            "<div id='" + data[i]._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + data[i]._id.$oid + "'>" +
-                                "<div class='panel-body'>" +
-                                    "<label>Bedrooms</label><input type='text' class='form-control' value='" + data[i].bedrooms + "' />" +
-                                    "<label>Bathrooms</label><input type='text' class='form-control' value='" + data[i].bathrooms + "' />" +
-                                    "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>AC</label><input type='checkbox' " + (data[i].airConditioning ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Type</label><input type='checkbox' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
-                                    "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
-                                    "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
-                                    "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
-                                "</div>" +
-                            "</div>" +
-                        "</div>");
-                        
-                    setGeocompleteTextBox(data[i]._id.$oid);
-                    setTextBoxWithAutoNumeric(data[i]._id.$oid);
-                    setDatePickerTextBox(data[i]._id.$oid);
-                    setBootstrapSwitches(data[i]._id.$oid);
+                    var data = JSON.parse(res);
+                    
+                    if (contains(res, "Error"))
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            $("#accordion").append(
+                                "<div class='panel panel-default'>" +
+                                    "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
+                                        "<h4 class='panel-title'>" +
+                                            "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
+                                                "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + 
+                                                "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + 
+                                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
+                                            "</a>" +
+                                        "</h4>" +
+                                    "</div>" +
+                                    "<div id='" + data[i]._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + data[i]._id.$oid + "'>" +
+                                        "<div class='panel-body'>" +
+                                            "<label>Bedrooms</label><input type='text' class='form-control' value='" + data[i].bedrooms + "' />" +
+                                            "<label>Bathrooms</label><input type='text' class='form-control' value='" + data[i].bathrooms + "' />" +
+                                            "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>AC</label><input type='checkbox' " + (data[i].airConditioning ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>Type</label><input type='checkbox' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
+                                            "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
+                                            "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
+                                            "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>");
+                                
+                            setGeocompleteTextBox(data[i]._id.$oid);
+                            setTextBoxWithAutoNumeric(data[i]._id.$oid);
+                            setDatePickerTextBox(data[i]._id.$oid);
+                            setBootstrapSwitches(data[i]._id.$oid);
+                        }
+                    }
+                }
+                catch (e)
+                {
+                    
                 }
             }
         },
@@ -116,7 +137,7 @@ function setDatePickerTextBox(rowId)
     $($("#heading" + rowId + " input[type='text']")[2]).pikaday(
     {
         minDate: new Date(),  //today
-        setDefaultDate: new Date($("#heading" + rowId + " input[type='text']")[2]).val()) //current
+        setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
     });
 }
 
@@ -212,49 +233,59 @@ function create_listing()
             },
             success: function(res)
             {    
-                var listing = JSON.parse(res);
-                
-                if (listing["error"])
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: listing["error"], position: 'bottom-right'});
-                }
-                else if (!res)
+                if (!res)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Create Listing!", position: 'bottom-right'});
                 }
                 else
                 {
-                    $("#accordion").prepend(
-                        "<div class='panel panel-default'>" +
-                            "<div class='panel-heading' role='tab' id='heading" + listing._id.$oid + "'>" +
-                                "<h4 class='panel-title'>" +
-                                    "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + listing._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
-                                        "<label>Address</label><input type='text' class='form-control' value='" + listing.address + "' /> " + 
-                                        "<label>Price</label><input type='text' class='form-control' value='" + listing.price + "' />" + 
-                                        "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(listing.start) + "' />" + 
-                                    "</a>" +
-                                "</h4>" +
-                            "</div>" +
-                            "<div id='" + listing._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + listing._id.$oid + "'>" +
-                                "<div class='panel-body'>" +
-                                    "<label>Bedrooms</label><input type='text' class='form-control' value='" + listing.bedrooms + "' />" +
-                                    "<label>Bathrooms</label><input type='text' class='form-control' value='" + listing.bathrooms + "' />" +
-                                    "<label>Animals</label><input type='checkbox' " + (listing.animals ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Laundry</label><input type='checkbox' " + (listing.laundry ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Parking</label><input type='checkbox' " + (listing.parking ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>AC</label><input type='checkbox' " + (listing.airConditioning ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Type</label><input type='checkbox' " + (listing.type ? "checked" : "") + " data-role='tabsinput' />" +
-                                    "<button class='btn btn-primary' onclick='update_listing(\"" + listing._id.$oid + "\");'>Update</button>" + 
-                                    "<button class='btn btn-danger' onclick='delete_listing(\"" + listing._id.$oid + "\");'>Delete</button>" +
-                                    "<input type='hidden' value='" + listing.worldCoordinates.x + "' /><input type='hidden' value='" + listing.worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
-                                "</div>" +
-                            "</div>" +
-                        "</div>");
+                    try
+                    {
+                        var listing = JSON.parse(res);
                         
-                    setGeocompleteTextBox(listing._id.$oid);
-                    setTextBoxWithAutoNumeric(listing._id.$oid);
-                    setDatePickerTextBox(listing._id.$oid);
-                    setBootstrapSwitches(listing._id.$oid); 
+                        if (listing["error"])
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: listing["error"], position: 'bottom-right'});
+                        }
+                        else
+                        {
+                            $("#accordion").prepend(
+                                "<div class='panel panel-default'>" +
+                                    "<div class='panel-heading' role='tab' id='heading" + listing._id.$oid + "'>" +
+                                        "<h4 class='panel-title'>" +
+                                            "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + listing._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
+                                                "<label>Address</label><input type='text' class='form-control' value='" + listing.address + "' /> " + 
+                                                "<label>Price</label><input type='text' class='form-control' value='" + listing.price + "' />" + 
+                                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(listing.start) + "' />" + 
+                                            "</a>" +
+                                        "</h4>" +
+                                    "</div>" +
+                                    "<div id='" + listing._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + listing._id.$oid + "'>" +
+                                        "<div class='panel-body'>" +
+                                            "<label>Bedrooms</label><input type='text' class='form-control' value='" + listing.bedrooms + "' />" +
+                                            "<label>Bathrooms</label><input type='text' class='form-control' value='" + listing.bathrooms + "' />" +
+                                            "<label>Animals</label><input type='checkbox' " + (listing.animals ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>Laundry</label><input type='checkbox' " + (listing.laundry ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>Parking</label><input type='checkbox' " + (listing.parking ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>AC</label><input type='checkbox' " + (listing.airConditioning ? "checked" : "") + " data-size='mini' />" +
+                                            "<label>Type</label><input type='checkbox' " + (listing.type ? "checked" : "") + " data-role='tabsinput' />" +
+                                            "<button class='btn btn-primary' onclick='update_listing(\"" + listing._id.$oid + "\");'>Update</button>" + 
+                                            "<button class='btn btn-danger' onclick='delete_listing(\"" + listing._id.$oid + "\");'>Delete</button>" +
+                                            "<input type='hidden' value='" + listing.worldCoordinates.x + "' /><input type='hidden' value='" + listing.worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>");
+                                
+                            setGeocompleteTextBox(listing._id.$oid);
+                            setTextBoxWithAutoNumeric(listing._id.$oid);
+                            setDatePickerTextBox(listing._id.$oid);
+                            setBootstrapSwitches(listing._id.$oid); 
+                        }
+                    }
+                    catch (e)
+                    {
+                        
+                    }
                 }
             },
             error: function(res, err)
