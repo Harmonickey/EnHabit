@@ -28,6 +28,7 @@ textarea
 .pac-container
 {
     width: auto !important;
+    z-index: 1041 !important;
 }
 
 .modal-switch
@@ -45,6 +46,18 @@ textarea
 .modal-switch .bootstrap-switch
 {
     clear: left;
+}
+
+.bootstrap-tagsinput
+{
+    width: 100%;
+    min-height: 55px;
+    height: auto;
+}
+
+.bootstrap-tagsinput input
+{
+    width: auto !important;
 }
 
 .collapse

@@ -4,9 +4,10 @@ include_once "../Libraries/tools.php";
 
 session_start();
 
-if (isset($_SESSION['listings']) && isset($_POST["command"]))
+if (isset($_SESSION["tenant"]) && isset($_POST["command"]))
 {
     $data = "";
+    $user = $_SESSION["tenant"];
     
     if (isset($_POST["data"]))
     {
@@ -19,13 +20,15 @@ if (isset($_SESSION['listings']) && isset($_POST["command"]))
         case "delete_old_listings":
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb");
             break;
-        case "get_all_listings":
-            echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb");
+        case "get_listings_by_user": //should provide by user
+            echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb $user");
             break;
-        case "update_listing":
-        case "delete_listing":
-        case "create_listing":
+        case "delete_listing": // should provide by id
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb '$data'");
+            break;
+        case "create_listing": //should provide data and user
+        case "update_listing":
+            echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb '$data' $user");
             break;
     }
 }

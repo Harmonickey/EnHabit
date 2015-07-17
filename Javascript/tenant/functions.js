@@ -19,25 +19,30 @@ function getAllListings()
     $.ajax(
     {
         type: "POST",
-        url: "/admin/admin_api.php",
+        url: "/tenant/tenant_api.php",
         data: 
         {
-            command: "get_all_listings"
+            command: "get_listings_by_user"
         },
         success: function(res) 
         {
+            console.log(res);
+            return;
+            
             if (!contains(res, "No"))
             {
                 var data = JSON.parse(res);
                 
                 for (var i = 0; i < data.length; i++)
                 {
-                    $("#accordion > div:last").after(
+                    $("#accordion").append(
                         "<div class='panel panel-default'>" +
                             "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
                                 "<h4 class='panel-title'>" +
                                     "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
-                                        "<label>Username</label><input type='text' class='form-control' value='" + data[i].Username + "' /> " + "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + "</label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
+                                        "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + 
+                                        "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + 
+                                        "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
                                     "</a>" +
                                 "</h4>" +
                             "</div>" +
@@ -48,8 +53,8 @@ function getAllListings()
                                     "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
                                     "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
                                     "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>AC</label><input type='checkbox' " + (data[i].ac ? "checked" : "") + " data-size='mini' />" +
-                                    "<label>Type</label><input type='text' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
+                                    "<label>AC</label><input type='checkbox' " + (data[i].airConditioning ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Type</label><input type='checkbox' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
                                     "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
                                     "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
                                     "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
@@ -60,8 +65,7 @@ function getAllListings()
                     setGeocompleteTextBox(data[i]._id.$oid);
                     setTextBoxWithAutoNumeric(data[i]._id.$oid);
                     setDatePickerTextBox(data[i]._id.$oid);
-                     
-                    $("#listing-list tr:last input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+                    setBootstrapSwitches(data[i]._id.$oid);
                 }
             }
         },
@@ -73,22 +77,28 @@ function getAllListings()
     });
 }
 
+function setBootstrapSwitches(rowId)
+{
+    $("#" + rowId + " input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});;
+    $("#" + rowId + " input[data-role='tabsinput']").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
+}
+
 function setGeocompleteTextBox(rowId)
 {
-    var row = $("#" + rowId + " td input[type='text']");
+    var row = $("#heading" + rowId + " div input[type='text']");
     var hidden = $("#" + rowId + " input[type='hidden']");
     
-    $(row[2]).geocomplete()
+    $(row[0]).geocomplete()
         .bind("geocode:result", function(event, result){
             $(hidden[0]).val(result.geometry.location.A);
             $(hidden[1]).val(result.geometry.location.F);
-            $(hidden[2]).val($(row[2]).val());
+            $(hidden[2]).val($(row[0]).val());
         });
 }
 
 function setTextBoxWithAutoNumeric(rowId)
 {
-    var row = $("#" + rowId + " td input[type='text']");
+    var row = $("#heading" + rowId + " input[type='text']");
     
     $(row[1]).autoNumeric('init', 
     {
@@ -97,25 +107,15 @@ function setTextBoxWithAutoNumeric(rowId)
         wEmpty: 'sign',
         lZero: 'deny'
     });
-    
-    $(row[3]).autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    
-    $(row[4]).autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
 }
 
 function setDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " td input[type='text']")[5]).datepicker();
+    $($("#heading" + rowId + " input[type='text']")[2]).pikaday(
+    {
+        minDate: new Date(),  //today
+        setDefaultDate: new Date($("#heading" + rowId + " input[type='text']")[2]).val()) //current
+    });
 }
 
 function delete_listing(id)
@@ -179,12 +179,14 @@ function delete_listing(id)
 
 function create_listing()
 {
-    var userfield = $("#create-listing input[type='text']");
-    var inputs = $("#create-listing input[type='checkbox'], #create-listing input[type='hidden']");
+    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(0)").not(":eq(11)");
     
-    var data = buildData(userfield, ["username", "rent", "address", "bedrooms", "bathrooms", "start_date", "animals", "laundry", "latitude", "longitude", "selected_address"], inputs);
+    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
     
     var error = buildError(data);
+    
+    data.university = "Northwestern";
+    data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     
     if (error != "Please Include ")
     {
@@ -195,10 +197,10 @@ function create_listing()
         $.ajax(
         {
             type: "POST",
-            url: "/admin/admin_api.php",
+            url: "/tenant/tenant_api.php",
             beforeSend: function()
             {
-                $("#create-listing button").text("Creating...");
+                $("#createListingModal button").text("Creating...");
                 disableButtons();
             },
             data:
@@ -220,40 +222,35 @@ function create_listing()
                 }
                 else
                 {
-                    //append after the header (first tr)
-                    $("#user-list tr:first").after(
-                        "<tr id='" + data._id.$oid + "'>"   +
-                            "<td><input type='text' class='form-control' value='" + data.Username + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.price + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.address + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.bedrooms + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.bathrooms + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' /></td>" +
-                            "<td><input type='checkbox' " + (data.animals ? "checked " : "") + "data-size='mini' /></td>" +
-                            "<td><input type='checkbox' " + (data.laundry ? "checked " : "") + "data-size='mini' /></td>" +
-                            "<td><button class='btn btn-primary' onclick='update_user(\"" + data._id.$oid + "\");'>Update</button></td>" + 
-                            "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button></td>" +
-                            "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
-                        "</tr>");
+                    $("#accordion").prepend(
+                        "<div class='panel panel-default'>" +
+                            "<div class='panel-heading' role='tab' id='heading" + data[i]._id.$oid + "'>" +
+                                "<h4 class='panel-title'>" +
+                                    "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + data[i]._id.$oid + "' aria-expanded='false' aria-controls='" + data[i]._id.$oid + "'>" +
+                                        "<label>Username</label><input type='text' class='form-control' value='" + data[i].Username + "' /> " + "<label>Address</label><input type='text' class='form-control' value='" + data[i].address + "' /> " + "<label>Price</label><input type='text' class='form-control' value='" + data[i].price + "' />" + "</label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data[i].start) + "' />" + 
+                                    "</a>" +
+                                "</h4>" +
+                            "</div>" +
+                            "<div id='" + data[i]._id.$oid + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + data[i]._id.$oid + "'>" +
+                                "<div class='panel-body'>" +
+                                    "<label>Bedrooms</label><input type='text' class='form-control' value='" + data[i].bedrooms + "' />" +
+                                    "<label>Bathrooms</label><input type='text' class='form-control' value='" + data[i].bathrooms + "' />" +
+                                    "<label>Animals</label><input type='checkbox' " + (data[i].animals ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Laundry</label><input type='checkbox' " + (data[i].laundry ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Parking</label><input type='checkbox' " + (data[i].parking ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>AC</label><input type='checkbox' " + (data[i].airConditioning ? "checked" : "") + " data-size='mini' />" +
+                                    "<label>Type</label><input type='checkbox' " + (data[i].type ? "checked" : "") + " data-role='tabsinput' />" +
+                                    "<button class='btn btn-primary' onclick='update_listing(\"" + data[i]._id.$oid + "\");'>Update</button>" + 
+                                    "<button class='btn btn-danger' onclick='delete_listing(\"" + data[i]._id.$oid + "\");'>Delete</button>" +
+                                    "<input type='hidden' value='" + data[i].worldCoordinates.x + "' /><input type='hidden' value='" + data[i].worldCoordinates.y + "' /><input type='hidden' value='" + data[i].address + "' />" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>");
                         
-                    // activate toggle switches for these new guys
-                    $("#listing-list tr:nth-child(2) input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
-                   
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'bottom-right'});
-                    
-                    // reset the create-row
-                    $(userfield[0]).val("");
-                    $(userfield[1]).val("");
-                    $(userfield[2]).val("");
-                    $(userfield[3]).val("");
-                    $(userfield[4]).val("");
-                    $(userfield[5]).val("");
-                    $(userfield[6]).val("");
-                    $(inputs[0]).prop("checked", false);
-                    $(inputs[1]).prop("checked", false);
-                    $(inputs[2]).val("");
-                    $(inputs[3]).val("");
-                
+                    setGeocompleteTextBox(data[i]._id.$oid);
+                    setTextBoxWithAutoNumeric(data[i]._id.$oid);
+                    setDatePickerTextBox(data[i]._id.$oid);
+                    setBootstrapSwitches(data[i]._id.$oid); 
                 }
             },
             error: function(res, err)
@@ -362,26 +359,24 @@ function resetListings()
 {
     $("#listing-list tr").not(":first").remove();
     
-    get_all_listings();
+    getAllListings();
 }
 
-function initCheckboxes()
+function initSpecialFields()
 {
-    $("input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
-}
-
-function initCreateListing()
-{
-    var create_listing = $("#createListingModal input");
+    var listing_modal = $("#createListingModal input");
     
-    $(create_listing[1]).geocomplete()
+    $(listing_modal[1]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $($("#create-listing input[type='hidden']")[0]).val(result.geometry.location.A);
-            $($("#create-listing input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#create-listing input[type='hidden']")[2]).val($(create_listing[2]).val());
+            $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
+            $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
+            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[1]).val());
         });
         
-    $(create_listing[2]).autoNumeric('init', 
+    $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
+        
+    $(listing_modal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -389,20 +384,10 @@ function initCreateListing()
         lZero: 'deny'
     });
     
-    $(create_listing[3]).datepicker();
-    
-    $(create_listing[4]).autoNumeric('init', 
+    $(listing_modal[3]).pikaday(
     {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    
-    $(create_listing[5]).autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
+        minDate: new Date(), 
+        setDefaultDate: new Date()
     });
 }
 
@@ -411,25 +396,30 @@ function contains(haystack, needle)
     return (haystack.indexOf(needle) != -1)
 }
 
-function buildData(formfield, elements, inputs)
+function buildData(inputs, elements)
 {   
     var data = {};
     
-    for (var i = 0, j = 0; i < elements.length; i++)
+    for (var i = 0; i < elements.length; i++)
     {
-        if ((elements[i] == "landlord" || elements[i] == "active" || elements[i] == "isadmin" || elements[i] == "animals" || elements[i] == "laundry") && inputs.length > 0)
+        if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" || elements[i] == "airConditioning" || elements[i] == "type")
         {
-            data[elements[i]] = $(inputs[j]).prop("checked");
-            j++;
+            data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if ((elements[i] == "latitude" || elements[i] == "longitude" || elements[i] == "selected_address") && inputs.length > 0)
+        else if (elements[i] == "latitude" || elements[i] == "longitude" || elements[i] == "selected_address")
         {
-            data[elements[i]] = $(inputs[j]).val();
-            j++;
+            data[elements[i]] = $(inputs[i]).val();
         }
         else
         {
-            data[elements[i]] = $(formfield[i]).val().trim();
+            if ($(inputs[i]).data("role") == "tagsinput")
+            {
+                data[elements[i]] = $(inputs[i]).tagsinput("items");
+            }
+            else if ($(inputs[i]).attr("placeholder") !== "")
+            {
+                data[elements[i]] = $(inputs[i]).val().trim();
+            }
         }
     }
     
@@ -442,30 +432,6 @@ function buildError(fields)
     
     var beginning = "Please Include ";
     
-    if (fields.username === "")
-    {
-        error_arr.push("Username");
-    }
-    if (fields.password === "")
-    {
-        error_arr.push("Password");
-    }
-    if (fields.firstname === "")
-    {
-        error_arr.push("First Name");
-    }
-    if (fields.lastname === "")
-    {
-        error_arr.push("Last Name");
-    }
-    if (fields.email === "" || ((fields.email !== null && fields.email !== undefined) && !isValidEmail(fields.email)))
-    {
-        error_arr.push("Valid Email");
-    }
-    if (fields.phonenumber === "" || ((fields.phonenumber !== null && fields.phonenumber !== undefined) && !isValidPhoneNumber(fields.phonenumber)))
-    {
-        error_arr.push("Valid Phone Number");
-    }
     if (fields.address === "" || fields.latitude === "" || fields.longitude === "")
     {
         error_arr.push("Valid Address - Must Select Google's Result");
@@ -474,19 +440,11 @@ function buildError(fields)
 	{
 		error_arr.push("Valid Address - Do Not Modify Google's Result After Selecting");
 	}
-    if (fields.bedrooms === "")
-    {
-        error_arr.push("Valid Number of Bedrooms");
-    }
-    if (fields.bathrooms === "")
-    {
-        error_arr.push("Valid Number of Bathrooms");
-    }
     if (fields.rent === "")
     {
         error_arr.push("Valid Monthly Rent Amount");
     }
-    if (fields.start_date === "")
+    if (fields.start === "")
     {
         error_arr.push("Valid Lease Start Date");
     }

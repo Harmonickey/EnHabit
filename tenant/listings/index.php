@@ -35,6 +35,8 @@
     <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
     
+    <link href="../../Libraries/Styles/pikaday.css" rel="stylesheet">
+    
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
     
@@ -155,27 +157,42 @@
             </div>
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
-                <label>Username</label><input type='text' class='form-control' />
-                <label>Address</label><input type='text' class='form-control' />
-                <label>Price</label><input type='text' class='form-control' />
+                <input type="text" name="fake_address" style="display:none" aria-hidden="true">
+                <label>Address</label><input type='text' class='form-control' autocomplete="off" />
+                <label>Rent/Month</label><input type='text' class='form-control' />
                 <label>Start Date</label><input type='text' class='form-control' />
-                <label>Bedrooms</label><input type='text' class='form-control' />
-                <label>Bathrooms</label><input type='text' class='form-control' />
-                <div class="modal-switch">
+                <label>Bedrooms</label>
+                    <select id="bedrooms-filter" class="form-control">
+                        <option value="studio">Studio</option>
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
+                    </select>
+                <label>Bathrooms</label>
+                    <select id="bathrooms-filter" class="form-control">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
+                    </select>
+                <div class="modal-switch animals-content">
                     <label>Animals</label><input type='checkbox' data-size='mini' />
                 </div>
-                <div class="modal-switch">
-                    <label>Laundry</label><input type='checkbox' data-size='mini' />
+                <div class="modal-switch laundry-content">
+                    <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
                 </div>
-                <div class="modal-switch">
+                <div class="modal-switch parking-content">
                     <label>Parking</label><input type='checkbox' data-size='mini' />
                 </div>
-                <div class="modal-switch">
-                    <label>AC</label><input type='checkbox' data-size='mini' />
+                <div class="modal-switch airConditioning-content">
+                    <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
                 </div>
-                <label>Type</label><select class='form-control'><option value="both">Apt &amp; Sublet</option value="apartment"><option>Apartment</option><option value="sublet">Sublet</option></select>
-                <label>Tags</label><label><input type='text' data-role='tagsinput' />
-                <input type='hidden' /><input type='hidden' /><input type='hidden' />
+                <div class="modal-switch type-content">
+                    <label>Type</label><input type='checkbox' data-size='mini' />
+                </div>
+                <br>
+                <label>Tags</label><input type='text' data-role='tagsinput' />
+                <!-- Lat, Long, Address Hidden fields -->
+                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
             </div>
         </div>
@@ -197,21 +214,22 @@
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 <!-- helper for numeric text boxes -->
 <script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
-
+<!-- helper for notifications -->
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
+<!-- helper for datepicker -->
+<script src="../../Libraries/Javascript/pikaday.js"></script>
+<script src="../../Libraries/Javascript/pikaday.jquery.js"></script>
 
 <script src="../../Javascript/tenant/functions.js"></script>
 
 <script>
 
 $(function() 
-{
-    //initCheckboxes();
-    
-    //initCreateListing();
-    
-    //getAllListings();
+{   
+    getAllListings();
+
+    initSpecialFields();
 });
 
 </script>

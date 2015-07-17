@@ -4,7 +4,12 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./Libraries"
+
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deployment_base}/Libraries"
 
 require 'json'
 require 'moped'
