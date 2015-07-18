@@ -17,13 +17,12 @@ require 'moped'
 require 'mongoid'
 require 'tools'
 
-Moped::BSON = BSON
-
-def update_listing(id, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, landlord, tags)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])
-    mongo_session.use("enhabit")
+def create_listing(user, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, landlord, tags)
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongo_session.use("enhabit") # this is our current database
 
     listing_obj = Hash.new
+    listing_obj["Username"] = user
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
     listing_obj["Bedrooms"] = bedrooms.to_i
@@ -39,40 +38,36 @@ def update_listing(id, price, address, bedrooms, bathrooms, animals, laundry, pa
     listing_obj["Landlord"] = landlord
     listing_obj["Tags"] = tags
     
-    query_obj = Hash.new
-    query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    document = Hash.new
     
-    ret_msg = ""
- 
     begin
-        File.open("error.log", "a") do |output|
-            output.puts query_obj
-            output.puts listing_obj
+        mongo_session.with(safe: true) do |session|
+            session[:listings].insert(listing_obj)
         end
         mongo_session.with(safe: true) do |session|
-            session[:listings].find(query_obj).update('$set' => listing_obj)
+            document = session[:listings].find().select(_id: 1, Username: 1, Price: 1, Address: 1, Bedrooms: 1, Bathrooms: 1, Animals: 1, Laundry: 1, Parking: 1, AirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1).one
         end
-        ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
+        document["error"] = e
     end
     
 	mongo_session.disconnect
-    return ret_msg
+    return document
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
+    username = ARGV[1]
     
-    result = update_listing(data["id"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["landlord"], data["tags"])
+    result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["landlord"], data["tags"])
 
-    puts result
+    puts result.to_json
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
         output.puts e.backtrace.inspect
     end
-    message = Hash.new
-    message.error = e.inspect
-    puts message
+    result = Hash.new
+    result["error"] = e.inspect
+    puts result.to_json
 end

@@ -1,14 +1,21 @@
 <?php
     session_start();
     
-    $one_hour = 3600;
+    if (isset($_SESSION["landlord"]))
+    {
+        header("Location: /landlord/listings/", FALSE); // just redirect if the user isn't authorized to go here....
+    }
+    else
+    {
+        $one_hour = 3600;
 
-    if (!isset($_SESSION['CREATED'])) {
-        $_SESSION['CREATED'] = time();
-    } else if (time() - $_SESSION['CREATED'] > $one_hour) {
-        // session started more than 1 hour ago
-        session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
-        $_SESSION['CREATED'] = time();  // update creation time
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > $one_hour) {
+            // session started more than 1 hour ago
+            session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+            $_SESSION['CREATED'] = time();  // update creation time
+        }
     }
 ?>
 
@@ -21,20 +28,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes"> 
     
-	<link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="./css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../favicon.png">
+    
+	<link href="../Libraries/Styles/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
 	
-	<link href="./css/font-awesome.min.css" rel="stylesheet">
+	<link href="../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     
-    <link href="./css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">    
+    <link href="../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">    
     
-    <link href="./css/base-admin-3.css" rel="stylesheet">
-    <link href="./css/base-admin-3-responsive.css" rel="stylesheet">
+    <link href="../Libraries/Styles/base-admin-3.css" rel="stylesheet">
+    <link href="../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
 	
-    <link href="./css/pages/signin.css" rel="stylesheet" type="text/css">
+    <link href="../Libraries/Styles/signin.css" rel="stylesheet" type="text/css">
 
-    <link href="./css/custom.css" rel="stylesheet">
+    <link href="../Styles/landlord/custom.css" rel="stylesheet">
 
 </head>
 
@@ -45,7 +55,7 @@
 	<div class="container">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
-    <a class="navbar-brand" href="./index.html">Enhabit | Landlord</a>
+    <a class="navbar-brand" href="./index.html">Enhabit Landlord Portal</a>
   </div>
 </div> <!-- /.container -->
 </nav>
@@ -65,20 +75,20 @@
 				</div> <!-- /password -->
 			</div> <!-- /login-fields -->
 			<div class="login-actions">
-				<button class="login-action btn btn-primary" onclick="login_listings()">Sign In</button>
+				<button class="login-action btn btn-primary" onclick="login_landlord()">Sign In</button>
 			</div> <!-- .actions -->
-            <p class="listings-login-error alert alert-danger" style="display: none;"></p>
+            <p class="landlord-login-error alert alert-danger" style="display: none;"></p>
 	</div> <!-- /content -->
 </div> <!-- /account-container -->
 
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="./js/libs/jquery-1.9.1.min.js"></script>
-<script src="./js/libs/jquery-ui-1.10.0.custom.min.js"></script>
-<script src="./js/libs/bootstrap.min.js"></script>
+<script src="../Libraries/Javascript/jquery-1.9.1.min.js"></script>
+<script src="../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="../Libraries/Javascript/bootstrap.min.js"></script>
 
-<script src="./js/functions.js"></script>
+<script src="../Javascript/landlord/functions.js"></script>
 
 </body>
 </html>

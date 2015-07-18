@@ -30,6 +30,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
     
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../../favicon.png">
+    
     <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
@@ -84,7 +87,7 @@
                     </a>
                 
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" onclick="logout_admin()">Logout</a></li>
+                        <li><a style="cursor: pointer;" onclick="logout_tenant()">Logout</a></li>
                     </ul>
                 </li>
             </ul>

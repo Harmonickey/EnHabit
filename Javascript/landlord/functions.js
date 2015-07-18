@@ -19,7 +19,7 @@ function getAllListings()
     $.ajax(
     {
         type: "POST",
-        url: "/tenant/tenant_api.php",
+        url: "/landlord/landlord_api.php",
         beforeSend: function()
         {
             //spinner on accordion area
@@ -27,7 +27,7 @@ function getAllListings()
         },
         data: 
         {
-            command: "get_listings_by_user"
+            command: "get_listings_by_landlord"
         },
         success: function(res) 
         {
@@ -147,7 +147,7 @@ function delete_listing(id)
             $.ajax(
             {
                 type: "POST",
-                url: "/tenant/tenant_api.php",
+                url: "/landlord/landlord_api.php",
                 beforeSend: function()
                 {
                     $("#" + id + " button").prop("disabled", true);
@@ -207,7 +207,7 @@ function update_listing(id)
         $.ajax(
         {
             type: "POST",
-            url: "/tenant/tenant_api.php",
+            url: "/landlord/landlord_api.php",
             data:
             {
                 command: "update_listing",
@@ -264,7 +264,7 @@ function create_listing()
         $.ajax(
         {
             type: "POST",
-            url: "/tenant/tenant_api.php",
+            url: "/landlord/landlord_api.php",
             beforeSend: function()
             {
                 $("#create-listing-button").text("Creating...");
@@ -272,7 +272,7 @@ function create_listing()
             },
             data:
             {
-                command: "create_listing_by",
+                command: "create_listing_by_landlord",
                 data: data
             },
             success: function(res)
@@ -328,21 +328,21 @@ function create_listing()
     }
 }
 
-function login_tenant()
+function login_landlord()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
     
     if (!username || !password)
     {
-        $("#tenant-login-error").text("Please enter Username and Password");
+        $("#landlord-login-error").text("Please enter Username and Password");
     }
     else
     {
         $.ajax(
         {
             type: "POST",
-            url: "/tenant/tenant_api.php",
+            url: "/landlord/landlord_api.php",
             beforeSend: function ()
             {
                 $(".login-action").text("Processing...");
@@ -362,12 +362,12 @@ function login_tenant()
             {
                 if (contains(res, "Okay"))
                 {
-                    location.href="/tenant/listings/"
+                    location.href="/landlord/listings/"
                 }
                 else
                 {
-                    $("#tenant-login-error").show();
-                    $("#tenant-login-error").text(res);
+                    $("#landlord-login-error").show();
+                    $("#landlord-login-error").text(res);
                 }
             },
             error: function(res, err)
@@ -384,18 +384,18 @@ function login_tenant()
     }
 }
 
-function logout_tenant()
+function logout_landlord()
 {
     $.ajax(
     {
         type: "POST",
-        url: "/tenant/logout.php",
+        url: "/landlord/logout.php",
         success: function(res)
         {
             if (contains(res, "Successfully"))
             {
                 // ideally I'd like this to be a server redirect in PHP
-                location.href = "/tenant/login.php";
+                location.href = "/landlord/login.php";
             }
             else
             {

@@ -17,16 +17,13 @@ if (isset($_SESSION["tenant"]) && isset($_POST["command"]))
     
     switch($_POST["command"])
     {
-        case "delete_old_listings":
-            echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb");
-            break;
         case "get_listings_by_user":
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb $user");
             break;
         case "update_listing":
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb '$data'");
             break;
-        case "create_listing":
+        case "create_listing_by_user":
         case "delete_listing":
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb '$data' $user");
             break;

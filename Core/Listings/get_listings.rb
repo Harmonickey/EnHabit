@@ -20,86 +20,86 @@ def set_filters
     if @lower.nil? and @upper.nil? 
         @price_filter = nil
     else
-        @price_filter[:price] = {}
-        @price_filter[:price][:$gte] = @lower
-        @price_filter[:price][:$lte] = @upper
+        @price_filter[:Price] = {}
+        @price_filter[:Price][:$gte] = @lower
+        @price_filter[:Price][:$lte] = @upper
     end
 
     if @bedrooms.nil? 
         @bedroom_filter = nil
     else
-        @bedroom_filter[:bedrooms] = {}
+        @bedroom_filter[:Bedrooms] = {}
         if @bedrooms == MAX_BEDROOMS_FOR_FILTER || MIN_BEDROOMS_FOR_FILTER
-            @bedroom_filter[:bedrooms][:$gte] = @bedrooms
+            @bedroom_filter[:Bedrooms][:$gte] = @bedrooms
         else
-            @bedroom_filter[:bedrooms][:$eq] = @bedrooms
+            @bedroom_filter[:Bedrooms][:$eq] = @bedrooms
         end
     end
 
     if @bathrooms.nil? 
         @bathroom_filter = nil
     else
-        @bathroom_filter[:bathrooms] = {}
+        @bathroom_filter[:Bathrooms] = {}
         if @bathrooms == MAX_BATHROOMS_FOR_FILTER
-            @bathroom_filter[:bathrooms][:$gte] = @bathrooms
+            @bathroom_filter[:Bathrooms][:$gte] = @bathrooms
         else
-            @bathroom_filter[:bathrooms][:$eq] = @bathrooms
+            @bathroom_filter[:Bathrooms][:$eq] = @bathrooms
         end
     end
 
     if @laundry.nil? 
         @laundry_filter = nil
     else
-        @laundry_filter[:laundry] = {}
-        @laundry_filter[:laundry][:$eq] = @laundry
+        @laundry_filter[:Laundry] = {}
+        @laundry_filter[:Laundry][:$eq] = @laundry
     end
     
     if @animals.nil? 
         @animal_filter = nil
     else
-        @animal_filter[:animals] = {}
-        @animal_filter[:animals][:$eq] = @animals
+        @animal_filter[:Animals] = {}
+        @animal_filter[:Animals][:$eq] = @animals
     end
     
     if @parking.nil? 
         @parking_filter = nil
     else
-        @parking_filter[:parking] = {}
-        @parking_filter[:parking][:$eq] = @parking
+        @parking_filter[:Parking] = {}
+        @parking_filter[:Parking][:$eq] = @parking
     end
     
     if @airConditioning.nil? 
         @airConditioning_filter = nil
     else
-        @airConditioning_filter[:airConditioning] = {}
-        @airConditioning_filter[:airConditioning][:$eq] = @airConditioning
+        @airConditioning_filter[:AirConditioning] = {}
+        @airConditioning_filter[:AirConditioning][:$eq] = @airConditioning
     end
     
     if @type.nil? 
         @type_filter = nil
     else
-        @type_filter[:type] = {}
-        @type_filter[:type][:$eq] = @type
+        @type_filter[:Type] = {}
+        @type_filter[:Type][:$eq] = @type
     end
     
     if @start.nil? 
         @start_filter = nil
     else 
-        @start_filter[:start] = {}
-        @start_filter[:start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
+        @start_filter[:Start] = {}
+        @start_filter[:Start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
     end
 
     if @tags.nil? 
         @tag_filter = nil
     else 
-        @tag_filter[:tags] = {}
-        @tag_filter[:tags][:$in] = @tags # $in matches on either of the elements
+        @tag_filter[:Tags] = {}
+        @tag_filter[:Tags][:$in] = @tags # $in matches on either of the elements
     end
     
     if @university.nil?
         @university = nil
     else
-        @university_filter[:university] = @university
+        @university_filter[:University] = @university
     end
 end
 
@@ -179,7 +179,7 @@ begin
 
     listings = mongo_session[:listings]
 
-    documents = listings.find(@main_filter).select(worldCoordinates: 1, price: 1, bedrooms: 1, bathrooms: 1, start: 1, address: 1, animals: 1, airConditioning: 1, laundry: 1, parking: 1, type: 1, tags: 1).to_a
+    documents = listings.find(@main_filter).select(WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Animals: 1, AirConditioning: 1, Laundry: 1, Parking: 1, Type: 1, Tags: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0

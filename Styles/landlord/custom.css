@@ -1,0 +1,87 @@
+/*------------------------------------------------------------------
+
+[Custom Stylesheet]
+
+
+Last change:	03/25/2013
+Assigned to:	You
+
+-------------------------------------------------------------------*/
+
+textarea
+{
+    resize:none;
+    word-wrap: normal;
+}
+
+.stats .stat
+{
+    width: 33%;
+    text-align: center;
+}
+
+.stat-value
+{
+    text-align: center;
+}
+
+.pac-container
+{
+    width: auto !important;
+    z-index: 1041 !important;
+}
+
+.modal-switch
+{
+    display: inline-block;
+    width: 24%;
+}
+
+.modal-switch label,
+.modal-switch .bootstrap-switch
+{
+    float: left;
+}
+
+.modal-switch .bootstrap-switch
+{
+    clear: left;
+}
+
+.bootstrap-tagsinput
+{
+    width: 100%;
+    min-height: 55px;
+    height: auto;
+}
+
+.bootstrap-tagsinput input
+{
+    width: auto !important;
+}
+
+.collapse
+{
+    visibility: visible;
+}
+
+.panel-heading,
+.panel-title a label
+{
+    cursor: pointer;
+}
+
+.panel-title label
+{
+    width: 100%;
+}
+
+#accordion button
+{
+    margin-right: 10px;
+}
+
+#accordion .row label
+{
+    margin-right: 5px;
+}

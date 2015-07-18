@@ -12,13 +12,13 @@ require 'moped'
 Moped::BSON = BSON
 
 begin
-    username = ARGV[0]
+    landlord = ARGV[0]
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
 
     query_obj = Hash.new
-    query_obj["Username"] = username
+    query_obj["Landlord"] = landlord
     
     documents = Array.new
     
