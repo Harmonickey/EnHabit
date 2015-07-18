@@ -150,7 +150,8 @@ function delete_listing(id)
                 url: "/tenant/tenant_api.php",
                 beforeSend: function()
                 {
-                   $($("#" + id + " button")[1]).text("Deleting..."); 
+                    $("#" + id + " button").prop("disabled", true);
+                    $($("#" + id + " button")[1]).text("Deleting...");
                 },
                 data:
                 {
@@ -165,25 +166,81 @@ function delete_listing(id)
                     if (contains(res, "Okay"))
                     {
                         // remove the row that we just selected
-                        $("#" + id).remove();
+                        $("#" + id).parent().remove();
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'bottom-right'});
                     }
                     else
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Listing", position: 'bottom-right'});
                     }
                 },
                 error: function(res, err)
                 {
                     console.log(res);
                     console.log(err);
-                },
-                complete: function() {
-                    enableButtons();
                 }
             });
         }
     });
+}
+
+function update_listing(id)
+{
+    var inputs = $("#" + id + " input").not(":eq(6)");
+    
+    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
+    
+    //first validate that the fields are filled out
+    var error = buildError(data);
+    
+    data.id = id;
+    data.university = "Northwestern";
+    data.type = (data.type == "Yes" ? "apartment" : "sublet");
+    data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/tenant/tenant_api.php",
+            data:
+            {
+                command: "update_listing",
+                data: data
+            },
+            beforeSend: function()
+            {
+                $("#" + id + " button").prop("disabled", true);
+                $($("#" + id + " button")[0]).text("Updating...");
+            },
+            success: function(res)
+            { 
+                if (contains(res, "Okay"))
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'bottom-right'});
+                }
+                else
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Updating Listing", position: 'bottom-right'});
+                }
+            },
+            error: function(err, res)
+            {
+                console.log(err);
+                console.log(res);
+            },
+            complete: function()
+            {
+                $("#" + id + " button").prop("disabled", false);
+                $($("#" + id + " button")[0]).text("Update");
+            }
+        });
+    }
 }
 
 function create_listing()
@@ -195,6 +252,7 @@ function create_listing()
     var error = buildError(data);
     
     data.university = "Northwestern";
+    data.type = (data.type == "Yes" ? "apartment" : "sublet");
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     
     if (error != "Please Include ")
@@ -246,6 +304,8 @@ function create_listing()
                             setTextBoxWithTags(oid)
                             
                             $("#createListingModal").modal('hide');
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'bottom-right'});
                         }
                     }
                     catch (e)
@@ -263,7 +323,6 @@ function create_listing()
             {
                 $("#create-listing-button").text("Create New Listing");
                 $("#create-listing-button").prop("disabled", false);
-                
             }
         });
     }
@@ -404,7 +463,8 @@ function buildData(inputs, elements)
     
     for (var i = 0; i < elements.length; i++)
     {
-        if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" || elements[i] == "airConditioning" || elements[i] == "type")
+        if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" 
+         || elements[i] == "airConditioning" || elements[i] == "type")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -561,7 +621,7 @@ function createAccordionView(oid, data)
                                 "<label>AC</label><input type='checkbox' " + (data.airConditioning ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Type</label><input type='checkbox' " + (data.type ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Type</label><input type='checkbox' " + (data.type == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;' >" +

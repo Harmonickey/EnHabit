@@ -12,9 +12,9 @@ deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will refere
 $: << "#{deployment_base}/Libraries"
 
 require 'json'
+require 'bson'
 require 'moped'
 require 'mongoid'
-require 'bson'
 require 'tools'
 
 def create_listing(user, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
