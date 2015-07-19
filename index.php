@@ -62,7 +62,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <ul id="main-menu">
                     <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                     <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
-                    <li id="manage_listings-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="listings">Manage Listings</a></li>
+                    <li id="manage_listings-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="tenant/listings">Manage Listings</a></li>
                     <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                 </ul>
                 <div id="Filters">
@@ -92,10 +92,10 @@ if (!isset($_SESSION['CREATED'])) {
                         <div class="item-content">
                             <label>Bathrooms?</label>
                             <select id="bathrooms-filter" class="form-control">
-                                <option value="1" selected>1</option>
+                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3+</option>
-                                <option value="any">Any</option> <!-- just don't include in ruby filter -->
                             </select>
                         </div>
                     </div>
@@ -128,7 +128,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Footer -->
                 <section id="footer">
                     <!-- copyright text -->
-                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
+                    <div class="footer-text-line">&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
                 </section>
                 <!-- end: Footer -->
             </section>

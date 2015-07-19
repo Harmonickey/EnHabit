@@ -14,7 +14,9 @@ require 'tools'
 
 MAX_BEDROOMS_FOR_FILTER = 3
 MAX_BATHROOMS_FOR_FILTER = 3
+
 MIN_BEDROOMS_FOR_FILTER = 0
+MIN_BATHROOMS_FOR_FILTER = 0
 
 def set_filters
     if @lower.nil? and @upper.nil? 
@@ -40,7 +42,7 @@ def set_filters
         @bathroom_filter = nil
     else
         @bathroom_filter[:Bathrooms] = {}
-        if @bathrooms == MAX_BATHROOMS_FOR_FILTER
+        if @bathrooms == MAX_BATHROOMS_FOR_FILTER || MIN_BATHROOMS_FOR_FILTER
             @bathroom_filter[:Bathrooms][:$gte] = @bathrooms
         else
             @bathroom_filter[:Bathrooms][:$eq] = @bathrooms
@@ -148,7 +150,7 @@ begin
     @upper = data["price"]["high"].to_i unless data["price"].nil?   
     @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil? or data["bedrooms"] == "studio"
     @bedrooms = data["bedrooms"] if data["bedrooms"] == "studio"
-    @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "any" or data["bathrooms"].nil?
+    @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "0+" or data["bathrooms"].nil?
     @laundry = data["laundry"].to_b unless data["laundry"] == "both" or data["laundry"].nil?
     @parking = data["parking"].to_b unless data["parking"] == "both" or data["parking"].nil?
     @animals = data["animals"].to_b unless data["animals"] == "both" or data["animals"].nil?

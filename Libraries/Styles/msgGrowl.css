@@ -58,7 +58,7 @@
 .msgGrowl-content { padding: 10px 20px 10px 10px; }
 
 .msgGrowl-close {
-	background: url(../images/msgGrowl_close.png) no-repeat 50% 50%;
+	background: url(images/msgGrowl_close.png) no-repeat 50% 50%;
 	width: 11px;
 	height: 10px;
 	
@@ -71,18 +71,18 @@
 
 	.msgGrowl-close:hover { opacity: 1; cursor: pointer; }
 
-.msgGrowl.success .msgGrowl-content { background: url(../images/msgGrowl_success.png) no-repeat 10px 13px; }
+.msgGrowl.success .msgGrowl-content { background: url(images/msgGrowl_success.png) no-repeat 10px 13px; }
 .msgGrowl.success .msgGrowl-content { padding-left: 50px; }
 .msgGrowl.success h4 { color: #5B7027; }
 
-.msgGrowl.error .msgGrowl-content { background: url(../images/msgGrowl_error.png) no-repeat 10px 13px; }
+.msgGrowl.error .msgGrowl-content { background: url(images/msgGrowl_error.png) no-repeat 10px 13px; }
 .msgGrowl.error .msgGrowl-content { padding-left: 50px; }
 .msgGrowl.error h4 { color: #AF4434; }
 
-.msgGrowl.info .msgGrowl-content { background: url(../images/msgGrowl_info.png) no-repeat 10px 13px; }
+.msgGrowl.info .msgGrowl-content { background: url(images/msgGrowl_info.png) no-repeat 10px 13px; }
 .msgGrowl.info .msgGrowl-content { padding-left: 50px; }
 .msgGrowl.info h4 { color: #316AB7; }
 
-.msgGrowl.warning .msgGrowl-content { background: url(../images/msgGrowl_warning.png) no-repeat 10px 13px; }
+.msgGrowl.warning .msgGrowl-content { background: url(images/msgGrowl_warning.png) no-repeat 10px 13px; }
 .msgGrowl.warning .msgGrowl-content { padding-left: 50px; }
 .msgGrowl.warning h4 { color: #B69201; }

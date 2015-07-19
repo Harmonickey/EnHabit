@@ -30,25 +30,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
     
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../css/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="../../assets/bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
     
-    <link href="../css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
-    <link href="../js/plugins/msgGrowl/css/msgGrowl.css" rel="stylesheet">
-    <link href="../js/plugins/msgbox/jquery.msgbox.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
     
-    <link href="../css/base-admin-3.css" rel="stylesheet">
-    <link href="../css/base-admin-3-responsive.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
-    <link href="../css/pages/dashboard.css" rel="stylesheet"> 
+    <link href="../../Libraries/Styles/dashboard.css" rel="stylesheet"> 
 
-    <link href="../css/custom.css" rel="stylesheet">
+    <link href="../../Styles/landlord/custom.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -66,9 +66,10 @@
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
       <span class="sr-only">Toggle navigation</span>
-      <i class="icon-cog"></i>
+      <i class="fa fa-bars"></i>
     </button>
-    <a class="navbar-brand" href="./">Enhabit | Landlord</a>
+    <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
+    <a class="navbar-brand" href="./"> Landlord Portal</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -77,7 +78,7 @@
 		<li class="dropdown">
 						
 			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="icon-user"></i> 
+				<i class="fa fa-user"></i> 
 				<?php echo $_SESSION["landlord"]; ?>
 				<b class="caret"></b>
 			</a>
@@ -96,25 +97,25 @@
 		<div class="container">
 			<a href="javascript:;" class="subnav-toggle" data-toggle="collapse" data-target=".subnav-collapse">
 		      <span class="sr-only">Toggle navigation</span>
-		      <i class="icon-reorder"></i>
+		      <i class="fa fa-bars"></i>
 		    </a>
 			<div class="collapse subnav-collapse">
 				<ul class="mainnav">
-					<li>
+                    <li>
 						<a href="../listings">
-							<i class="icon-copy"></i>
+							<i class="fa fa-th-list"></i>
 							<span>Listings</span>
 						</a>	    				
 					</li>
                     <li class="active">
                         <a href="./">
-							<i class="icon-usd"></i>
+							<i class="fa fa-users"></i>
 							<span>Manage Renters</span>
 						</a>
                     </li>
                     <li>
 						<a href="../applicants">
-							<i class="icon-usd"></i>
+							<i class="fa fa-files-o"></i>
 							<span>Manage Applicants</span>
 						</a>	    				
 					</li>
@@ -130,8 +131,8 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<i class="icon-ok"></i>
-					<h3>Registered Renters</h3>
+					<i class="fa fa-check"></i>
+					<h3>Renters</h3>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
 					<!-- all the listings go here -->
@@ -149,7 +150,7 @@
 	<div class="container">
 		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
-				&copy; 2012-13 Jumpstart UI.
+				&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
 			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
@@ -161,30 +162,37 @@
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="../js/libs/jquery-1.9.1.min.js"></script>
-<script src="../js/libs/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
+<script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
-<script src="../js/libs/bootstrap.min.js"></script>
-<script src="../js/libs/bootstrap-switch.min.js"></script>
-<script src="../../assets/bootstrap/js/bootstrap-tagsinput.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
 
 <!-- jquery geocomplete api -->
-<script src="../../assets/js/jquery.geocomplete.min.js"></script>
+<script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 <!-- helper for numeric text boxes -->
-<script src="../../assets/js/jquery.autoNumeric.js"></script>
+<script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
 
-<script src="../js/plugins/msgGrowl/js/msgGrowl.js"></script>
-<script src="../js/plugins/msgbox/jquery.msgbox.min.js"></script>
+<script src="../../Libraries/Javascript/msgGrowl.js"></script>
+<script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
-<script src="../js/functions.js"></script>
+<script src="../../Javascript/landlord/functions.js"></script>
 
 <script>
 
 $(function() 
 {
-    initCheckboxes();
     
 });
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-64824617-1', 'auto');
+ga('send', 'pageview');
 
 </script>
   </body>

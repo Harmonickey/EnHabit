@@ -72,7 +72,8 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="./">Enhabit Landlord Portal</a>
+            <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
+            <a class="navbar-brand" href="./"> Landlord Portal</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -112,7 +113,7 @@
 					</li>
                     <li>
                         <a href="../renters">
-							<i class="fa fa-usd"></i>
+							<i class="fa fa-users"></i>
 							<span>Manage Renters</span>
 						</a>
                     </li>
@@ -155,7 +156,7 @@
 	<div class="container">
 		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
-				&copy; 2012-13 Jumpstart UI.
+				&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
 			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
@@ -206,7 +207,7 @@
                     <label>Type</label><input type='checkbox' data-size='mini' />
                 </div>
                 <br>
-                <label>Tags</label><input type='text' data-role='tagsinput' />
+                <label>Tags</label><input type='text' data-role='tagsinput' />               
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
@@ -247,6 +248,14 @@ $(function()
 
     initSpecialFields();
 });
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-64824617-1', 'auto');
+ga('send', 'pageview');
 
 </script>
   </body>

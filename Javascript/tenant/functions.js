@@ -68,7 +68,7 @@ function getAllListings()
                 }
                 catch (e)
                 {
-                    console.log(e);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Gathering Error", position: 'bottom-right'});
                 }
             }
         },
@@ -188,14 +188,15 @@ function update_listing(id)
 {
     var inputs = $("#" + id + " input").not(":eq(6)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "latitude", "longitude", "selected_address"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
     
     data.id = id;
     data.university = "Northwestern";
-    data.type = (data.type == "Yes" ? "apartment" : "sublet");
+    data.type = (data.type == true ? "apartment" : "sublet");
+    data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     
     if (error != "Please Include ")
@@ -210,7 +211,7 @@ function update_listing(id)
             url: "/tenant/tenant_api.php",
             data:
             {
-                command: "update_listing",
+                command: "update_listing_by_user",
                 data: data
             },
             beforeSend: function()
@@ -245,14 +246,15 @@ function update_listing(id)
 
 function create_listing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(0)").not(":eq(11)");
+    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(0)").not(":eq(12)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "tags", "latitude", "longitude", "selected_address"]);
     
     var error = buildError(data);
     
     data.university = "Northwestern";
-    data.type = (data.type == "Yes" ? "apartment" : "sublet");
+    data.type = (data.type == true ? "apartment" : "sublet");
+    data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     
     if (error != "Please Include ")
@@ -272,7 +274,7 @@ function create_listing()
             },
             data:
             {
-                command: "create_listing_by",
+                command: "create_listing_by_user",
                 data: data
             },
             success: function(res)
@@ -283,6 +285,7 @@ function create_listing()
                 }
                 else
                 {
+                    $("#accordion").html("");
                     try
                     {
                         var listing = JSON.parse(res);
@@ -295,7 +298,7 @@ function create_listing()
                         {
                             var oid = listing._id.$oid;
                             
-                            $("#accordion").prepend(createAccordionView(oid, listing));
+                            $("#accordion").append(createAccordionView(oid, listing));
                                 
                             setGeocompleteTextBox(oid);
                             setTextBoxWithAutoNumeric(oid);
@@ -310,7 +313,7 @@ function create_listing()
                     }
                     catch (e)
                     {
-                        
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Creation Error", position: 'bottom-right'});
                     }
                 }
             },
@@ -577,9 +580,9 @@ function createAccordionView(oid, data)
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
-                            "<label>Address: " + data.address + "</label>" + 
-                            "<label>Rent: $" + data.price + "/Month</label>" + 
-                            "<label>Start Date: " + formattedDate(data.start) + "</label>" +
+                            "<label>Address: " + data.Address + "</label>" + 
+                            "<label>Rent: $" + data.Price + "/Month</label>" + 
+                            "<label>Start Date: " + formattedDate(data.Start) + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
@@ -587,50 +590,55 @@ function createAccordionView(oid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Address</label><input type='text' class='form-control' value='" + data.address + "' /> " + 
+                                "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.price + "' />" + 
+                                "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.start) + "' />" +
+                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.bedrooms + "' />" +
+                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.bathrooms + "' />" +
+                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Tags</label><input type='text' class='form-control' value='" + data.tags.join(",") + "' data-role='tagsinput' />" + 
+                                "<label>Tags</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Animals</label><input type='checkbox' " + (data.animals ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Animals</label><input type='checkbox' " + (data.Animals ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Laundry</label><input type='checkbox' " + (data.laundry ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Laundry</label><input type='checkbox' " + (data.Laundry ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Parking</label><input type='checkbox' " + (data.parking ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Parking</label><input type='checkbox' " + (data.Parking ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>AC</label><input type='checkbox' " + (data.airConditioning ? "checked" : "") + " data-size='mini' />" +
+                                "<label>AC</label><input type='checkbox' " + (data.AirConditioning ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Type</label><input type='checkbox' " + (data.type == "apartment" ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Type</label><input type='checkbox' " + (data.Type == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" + 
+                        "<div class='row'>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label>Landlord (Optional)</label><input type='text' class='form-control' value='" + (data.Landlord ? data.Landlord : "") + "' />" +
+                            "</div>" + 
+                        "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
                                 "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
-                        "<input type='hidden' value='" + data.worldCoordinates.x + "' /><input type='hidden' value='" + data.worldCoordinates.y + "' /><input type='hidden' value='" + data.address + "' />" +
+                        "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
                     "</div>" +
                 "</div>" +
             "</div>";

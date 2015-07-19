@@ -85,3 +85,8 @@ textarea
 {
     margin-right: 5px;
 }
+
+.navbar-header .logo
+{   
+    float: left;
+}

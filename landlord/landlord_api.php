@@ -23,10 +23,8 @@ if (isset($_SESSION["landlord"]) && isset($_POST["command"]))
         case "get_listings_by_landlord":
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb $user");
             break;
-        case "update_listing":
-            echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb '$data'");
-            break;
         case "create_listing_by_landlord":
+        case "update_listing_by_landlord":
         case "delete_listing":
             echo shell_exec("ruby ../Core/Listings/" . $_POST["command"] . ".rb '$data' $user");
             break;

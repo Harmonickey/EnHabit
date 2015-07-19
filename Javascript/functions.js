@@ -644,28 +644,33 @@ function loadAllDefaultListings()
         },
         success: function(res) 
         {
-            
-            if (contains(res, "No Matching Entries"))
+            try
             {
-                if (res == "")
+                if (contains(res, "No Matching Entries"))
                 {
-                    console.log("No Matching Entries");
+                    if (res == "")
+                    {
+                        // notification?
+                    }
+                    else
+                    {
+                        // notification?
+                    }
                 }
                 else
                 {
-                    console.log(res);
+                    insertMarkers(res);
                 }
             }
-            else
+            catch(e)
             {
-                insertMarkers(res);
+                // notification ? 
             }
             
         },
         error: function(res, err) 
         {
-            console.log(res);
-            console.log(err);
+            // notification?
         }			
     });
 }
@@ -699,22 +704,12 @@ function login_facebook()
                 var accessToken = response.authResponse.accessToken;
                 
                 login_facebook_user(userID, accessToken);
-            } 
-            else if (response.status === 'not_authorized') 
-            {
-                // The person is logged into Facebook, but they are
-                //  not authorized to use our website login feature
-            } 
-            else 
-            {
-                // The person is not logged into Facebook, so we cannot
-                // log them into our website
             }
         });
     }
     catch (e)
     {
-        console.log(e);
+        // notification?
     }
 }
  
@@ -740,26 +735,32 @@ function searchForListings()
         },
         success: function(res) 
         {
-            if (contains(res, "No Matching Entries"))
+            try
             {
-                if (res == "")
+                if (contains(res, "No Matching Entries"))
                 {
-                    console.log("No Matching Entries");
+                    if (res == "")
+                    {
+                        // notification?
+                    }
+                    else
+                    {
+                        // notification?
+                    }
                 }
                 else
                 {
-                    console.log(res);
+                    insertMarkers(res);
                 }
             }
-            else
+            catch (e)
             {
-                insertMarkers(res);
+                // notification? 
             }
         },
         error: function(res, err) 
         {
-            console.log(res);
-            console.log(err);
+            // notification?
         },
         complete: function()
         {
@@ -806,7 +807,7 @@ function insertMarkers(res)
         var data = JSON.parse(res);
         data.forEach(function(d)
         {
-            var marker = L.marker([d.worldCoordinates.x, d.worldCoordinates.y]).addTo(map);
+            var marker = L.marker([d.WorldCoordinates.x, d.WorldCoordinates.y]).addTo(map);
             
             var slideshowContent = "";
             var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
@@ -823,8 +824,8 @@ function insertMarkers(res)
             
             var popupContent =  
                         '<div id="' + d._id.$oid + '" class="popup">' +
-                            '<h2>' + d.address + '</h2>' +
-                            '<h3>$' + d.price + '/month</h2>' +
+                            '<h2>' + d.Address + '</h2>' +
+                            '<h3>$' + d.Price + '/month</h2>' +
                             '<div class="slideshow">' +
                                 '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
                                 '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
@@ -850,12 +851,12 @@ function insertIntoListView(data)
         "<div class='item-content listing'>" +
             "<img src='assets/images/listing_images/pic1.jpg' height='100' width='100' />" +
             "<div class='information'>" +
-                "<p class='listing-address'>" + data.address + "</p>" +
-                "<p class='listing-bedrooms'>" + data.bedrooms + " Bedroom" + (data.bedrooms == 1 ? "" : "s") + "</p>" + 
-                "<p class='listing-bathrooms'>" + data.bathrooms + " Bathroom" + (data.bathrooms == 1 ? "" : "s") + "</p><br>" +
-                "<p class='listing-price'>$" + data.price + "/month</p>" +
-                "<p class='listing-type'>" + data.type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.address + "\", \"" + data.bedrooms + "\", \"" + data.bathrooms + "\", \"" + data.price + "\", \"" + data.type + "\", \"" + data.animals + "\", \"" + data.laundry + "\", \"" + data.parking + "\", \"" + data.ac + "\", \"" + data.tags + "\")' />" +
+                "<p class='listing-address'>" + data.Address + "</p>" +
+                "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                "<p class='listing-price'>$" + data.Price + "/month</p>" +
+                "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.Animals + "\", \"" + data.Laundry + "\", \"" + data.Parking + "\", \"" + data.AirConditioning + "\", \"" + data.Tags + "\")' />" +
             "</div>" +
         "</div>"
     );
@@ -937,23 +938,33 @@ function login_user(hide_main_modal)
             },
             success: function(res)
             {
-                if (contains(res, "Okay"))
+                try
                 {
-                    showLoginFeatures(hide_main_modal);
-                    if (hide_main_modal === false)
+                    if (contains(res, "Okay"))
                     {
-                        populate_and_open_modal(null, 'modal-content-3');
+                        showLoginFeatures(hide_main_modal);
+                        if (hide_main_modal === false)
+                        {
+                            populate_and_open_modal(null, 'modal-content-3');
+                        }
+                        
+                        if (contains(res, "Landlord"))
+                        {
+                            $("#manage_listings-function a").attr("href", "landlord/listings");
+                        }
+                    }
+                    else
+                    {
+                        setError('login', res);
                     }
                 }
-				else
+                catch (e)
                 {
-                    setError('login', res);
+                    // notification? 
                 }
             },
             error: function(err, res)
             {
-                console.log(err);
-                console.log(res);
                 setError('login', res);
             },
             complete: function()
@@ -985,35 +996,41 @@ function login_facebook_user(userID, accessToken)
         },
         success: function(res)
         {
-            if (contains(res, "Okay"))
+            try
             {
-                if ($("#modal-content-9 label").length != 0)
+                if (contains(res, "Okay"))
                 {
-                    $("#modal-content-9 label").remove();
-                    $("#modal-content-9 .password").remove();
+                    if ($("#modal-content-9 label").length != 0)
+                    {
+                        $("#modal-content-9 label").remove();
+                        $("#modal-content-9 .password").remove();
+                    }
+                    
+                    showLoginFeatures(true);
                 }
-                
-                showLoginFeatures(true);
-            }
-            else if (contains(res, "Needs Update"))
-            {
-                if ($("#modal-content-9 label").length != 0)
+                else if (contains(res, "Needs Update"))
                 {
-                    $("#modal-content-9 label").remove();
-                    $("#modal-content-9 .password").remove();
+                    if ($("#modal-content-9 label").length != 0)
+                    {
+                        $("#modal-content-9 label").remove();
+                        $("#modal-content-9 .password").remove();
+                    }
+                    
+                    showUpdateScreen();
                 }
-                
-                showUpdateScreen();
+                else
+                {
+                    setError('login', 'Error: please notify alex@lbkstudios.net of the issue.');
+                }
             }
-            else
+            catch (e)
             {
-                setError('login', 'Error: please notify alex@lbkstudios.net of the issue.');
+                // notification? 
             }
         },
         error: function(err, res)
         {
-            console.log(err);
-            console.log(res);
+            // notification?
         },
         complete: function()
         {
@@ -1034,26 +1051,32 @@ function logout_user(isDeleting)
         url: "logout.php",
         success: function(res)
         {
-            if (contains(res, "Successfully"))
+            try
             {
-                if (isDeleting)
+                if (contains(res, "Successfully"))
                 {
-                    populate_and_open_modal(null, "modal-content-13");
+                    if (isDeleting)
+                    {
+                        populate_and_open_modal(null, "modal-content-13");
+                    }
+                    else
+                    {
+                        populate_and_open_modal(null, "modal-content-12");
+                    }
                 }
                 else
                 {
-                    populate_and_open_modal(null, "modal-content-12");
+                    // notification?
                 }
             }
-            else
+            catch (e)
             {
-                console.log(res); //print the error
+                // notification?
             }
         },
         error: function(err, res)
         {
-            console.log(err);
-            console.log(res);
+            // notification?
         }
     });
 
@@ -1182,19 +1205,25 @@ function create_account()
             },
             success: function(res)
             {
-                if (contains(res, "Okay"))
+                try
                 {
-                    login_user(false);
+                    if (contains(res, "Okay"))
+                    {
+                        login_user(false);
+                    }
+                    else
+                    {
+                        setError("create_account", res);
+                    }
                 }
-				else
+                catch (e)
                 {
-                    setError("create_account", res);
+                    // notification?
                 }
             },
             error: function(err, res)
             {
-                console.log(err);
-                console.log(res);
+                // notification?
             },
             complete: function()
             {
@@ -1238,21 +1267,27 @@ function delete_account()
             },
             success: function(res)
             {
-                if (contains(res, "Okay"))
+                try
                 {
-                    logout_user(true);
-					
-					set_default_button_on_enter("");
+                    if (contains(res, "Okay"))
+                    {
+                        logout_user(true);
+                        
+                        set_default_button_on_enter("");
+                    }
+                    else
+                    {
+                        setError("delete_account", res);
+                    }
                 }
-                else
+                catch (e)
                 {
-                    setError("delete_account", res);
+                    // notification?
                 }
             },
             error: function(err, res)
             {
-                console.log(err);
-                console.log(res);
+                // notification?
             },
             complete: function()
             {
@@ -1273,8 +1308,6 @@ function load_modal(event, which, enter_default, btnText)
     modal_backdrop_height($('#common-modal.modal'));
 }
 
-/***** MARCEL LOOK HERE!!!!! *****/
-/***** the "extras" functions are what you care about *****/
 function open_listings_list()
 {
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
@@ -1341,14 +1374,10 @@ function close_extras_view()
 function load_listings_list()
 {
     $("#listings").fadeIn();
-    //TODO: aggregate all the information into a listings list
     
-    //then change the view listings list to "close listings list"
     $("#view_listings_list-function a").text("Close Listings List");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
-
-/***** MARCEL DON'T LOOK PAST HERE!!!!! *****/
 
 function load_update_account_modal(event, title, keepDelete)
 {
@@ -1363,44 +1392,50 @@ function load_update_account_modal(event, title, keepDelete)
         },
         success: function(res)
         {
-            if (contains(res, "Error") || !res)
+            try
             {
-                if (res == "")
+                if (contains(res, "Error") || !res)
                 {
-                    console.log("No info for user");
+                    if (res == "")
+                    {
+                        // notification? 
+                    }
+                    else
+                    {
+                        // notification? 
+                    }
                 }
                 else
                 {
-                    console.log(res);
+                    populate_and_open_modal(event, 'modal-content-4');
+                    
+                    $(".modal-content h1").text(title);
+                    
+                    fill_update_modal(JSON.parse(res).data);
+                 
+                    resetModal("update_account", "Update Account", true);
+                    
+                    set_default_button_on_enter('update');
+                    
+                    position_modal_at_centre();
+                    
+                    modal_backdrop_height($('#common-modal.modal'));
+                    
+                    if (keepDelete === false)
+                    {
+                        $(".modal-content input[value='Delete Account']").remove();
+                        $(".modal-content hr").remove();
+                    }
                 }
             }
-            else
+            catch (e)
             {
-                populate_and_open_modal(event, 'modal-content-4');
-                
-                $(".modal-content h1").text(title);
-                
-                fill_update_modal(JSON.parse(res).data);
-             
-                resetModal("update_account", "Update Account", true);
-                
-                set_default_button_on_enter('update');
-                
-                position_modal_at_centre();
-                
-                modal_backdrop_height($('#common-modal.modal'));
-                
-                if (keepDelete === false)
-                {
-                    $(".modal-content input[value='Delete Account']").remove();
-                    $(".modal-content hr").remove();
-                }
+                // notification? 
             }
         },
         error: function(err, res)
         {
-            console.log(err);
-            console.log(res);
+            // notification?
         }
     });
 }
@@ -1454,75 +1489,29 @@ function update_account()
             },
             success: function(res)
             {
-                if (contains(res, "Okay"))
+                try
                 {
-                    populate_and_open_modal(null, 'modal-content-5');
+                    if (contains(res, "Okay"))
+                    {
+                        populate_and_open_modal(null, 'modal-content-5');
+                    }
+                    else
+                    {
+                        setError("update_account", res);
+                    }
                 }
-                else
+                catch (e)
                 {
-                    setError("update_account", res);
+                    // notification? 
                 }
             },
             error: function(err, res)
             {
-                console.log(err);
-                console.log(res);
+                // notification? 
             },
             complete: function()
             {
                 resetModal("update_account", "Update Account", false);
-                
-                set_default_button_on_enter("");
-            }
-        });
-    }
-}
-
-function update_listing()
-{
-    var data = buildData(["firstname", "lastname", "email", "phonenumber"]);
-    
-    //first validate that the fields are filled out
-    var error = buildError(data);
-    
-    if (error != "Please Include<br>")
-    {
-        setError("update", error);
-    }
-    else
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "api.php",
-            data:
-            {
-                command: "update_listing",
-                data: data
-            },
-            beforeSend: function()
-            {
-                disableModalSubmit("update_listing");
-            },
-            success: function(res)
-            {
-                if (contains(res, "Okay"))
-                {
-                    populate_and_open_modal(null, 'modal-content-5');
-                }
-                else
-                {
-                    setError("update_listing", res);
-                }
-            },
-            error: function(err, res)
-            {
-                console.log(err);
-                console.log(res);
-            },
-            complete: function()
-            {
-                resetModal("update_listing", "Update Listing", false);
                 
                 set_default_button_on_enter("");
             }
@@ -1713,7 +1702,7 @@ String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-/********** START UP SCRIPTS *************/
+/********** STARTUP SCRIPTS *************/
 $(function ()
 {
     initMainSidebar();

@@ -23,7 +23,7 @@ begin
     documents = Array.new
     
     mongo_session.with(safe: true) do |session|
-        documents = session[:listings].find(query_obj).select(_id: 1, Username: 1, Price: 1, Address: 1, Bedrooms: 1, Bathrooms: 1, Animals: 1, Laundry: 1, Parking: 1, AirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1).to_a
+        documents = session[:listings].find(query_obj).to_a
     end
     mongo_session.disconnect
 

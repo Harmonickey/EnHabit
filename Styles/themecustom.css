@@ -446,3 +446,32 @@
 {
     font-size: 10px !important;
 }
+
+.footer-text-line
+{
+    line-height: 12px;
+}
+
+#manage_account-function,
+#manage_listings-function
+{
+    width: 50%;
+    float: left;
+}
+
+#manage_account-function a
+{
+    padding-left: 6px !important;
+}
+
+
+#manage_listings-function a
+{
+    padding-left: 8px !important;
+}
+
+#view_listings_list-function
+{
+    display: inline-block;
+    width: 100%;
+}
