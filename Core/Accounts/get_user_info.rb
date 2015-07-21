@@ -9,7 +9,7 @@ require 'moped'
 require 'bson'
 require 'json'
 
-user = ARGV[0]
+user = ARGV[1]
 
 begin
 

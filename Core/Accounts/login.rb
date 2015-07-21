@@ -42,7 +42,7 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
 	
     if user_exists(data["username"], data["password"])
-        puts (@is_landlord ? "Okay:Landlord" : "Okay")
+        puts (@is_landlord ? "Okay:Landlord" : "Okay:Tenant")
     else
         puts "Incorrect Username/Password"
     end

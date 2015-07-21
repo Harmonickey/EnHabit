@@ -19,7 +19,7 @@ function getAllListings()
     $.ajax(
     {
         type: "POST",
-        url: "/landlord/landlord_api.php",
+        url: "/api.php",
         beforeSend: function()
         {
             //spinner on accordion area
@@ -27,13 +27,15 @@ function getAllListings()
         },
         data: 
         {
-            command: "get_listings_by_landlord"
+            command: "get_listings",
+            endpoint: "Listings"
         },
         success: function(res) 
         {
             if (!res)
             {
                 $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to retrieve listings", position: 'bottom-right'});
+                $("#accordion").html("<p>No Listings Yet</p>");
             }
             else if (contains(res, "No Listings"))
             {
@@ -68,14 +70,13 @@ function getAllListings()
                 }
                 catch (e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Gathering Error", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Getting Listings", position: 'bottom-right'});
                 }
             }
         },
         error: function(res, err)
         {
-            console.log(res);
-            console.log(err);
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Getting Listings", position: 'bottom-right'});
         }
     });
 }
@@ -147,7 +148,7 @@ function delete_listing(id)
             $.ajax(
             {
                 type: "POST",
-                url: "/landlord/landlord_api.php",
+                url: "/api.php",
                 beforeSend: function()
                 {
                     $("#" + id + " button").prop("disabled", true);
@@ -159,7 +160,8 @@ function delete_listing(id)
                     data:
                     {
                         id: id
-                    }
+                    },
+                    endpoint: "Listings"
                 },
                 success: function(res)
                 {
@@ -176,8 +178,7 @@ function delete_listing(id)
                 },
                 error: function(res, err)
                 {
-                    console.log(res);
-                    console.log(err);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Listing", position: 'bottom-right'});
                 }
             });
         }
@@ -207,11 +208,12 @@ function update_listing(id)
         $.ajax(
         {
             type: "POST",
-            url: "/landlord/landlord_api.php",
+            url: "/api.php",
             data:
             {
-                command: "update_listing_by_landlord",
-                data: data
+                command: "update_listing",
+                data: data,
+                endpoint: "Listings"
             },
             beforeSend: function()
             {
@@ -226,13 +228,12 @@ function update_listing(id)
                 }
                 else
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Updating Listing", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Listing", position: 'bottom-right'});
                 }
             },
             error: function(err, res)
             {
-                console.log(err);
-                console.log(res);
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Listings", position: 'bottom-right'});
             },
             complete: function()
             {
@@ -264,7 +265,7 @@ function create_listing()
         $.ajax(
         {
             type: "POST",
-            url: "/landlord/landlord_api.php",
+            url: "/api.php",
             beforeSend: function()
             {
                 $("#create-listing-button").text("Creating...");
@@ -272,8 +273,9 @@ function create_listing()
             },
             data:
             {
-                command: "create_listing_by_landlord",
-                data: data
+                command: "create_listing",
+                data: data,
+                endpoint: "Listings"
             },
             success: function(res)
             {    
@@ -317,8 +319,7 @@ function create_listing()
             },
             error: function(res, err)
             {
-                console.log(res);
-                console.log(err);
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Creation Error", position: 'bottom-right'});
             },
             complete: function()
             {
@@ -329,21 +330,21 @@ function create_listing()
     }
 }
 
-function login_landlord()
+function login()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
     
     if (!username || !password)
     {
-        $("#landlord-login-error").text("Please enter Username and Password");
+        $(".login-error").text("Please enter Username and Password");
     }
     else
     {
         $.ajax(
         {
             type: "POST",
-            url: "/landlord/landlord_api.php",
+            url: "/api.php",
             beforeSend: function ()
             {
                 $(".login-action").text("Processing...");
@@ -357,24 +358,34 @@ function login_landlord()
                     "username": username, 
                     "password": password
                 },
-                user: username
+                user: username,
+                endpoint: "Accounts"
             },
             success: function(res)
             {
                 if (contains(res, "Okay"))
                 {
-                    location.href="/landlord/listings/"
+                    if (!contains(res, "Landlord"))
+                    {
+                        quick_logout(); // clears the session variables
+                        $(".login-error").show();
+                        $(".login-error").text("Tenants Cannot Login To Landlord Portal");
+                    }
+                    else
+                    {
+                        location.href="/landlord/listings/";
+                    }                   
                 }
                 else
                 {
-                    $("#landlord-login-error").show();
-                    $("#landlord-login-error").text(res);
+                    $(".login-error").show();
+                    $(".login-error").text("Problem Logging In");
                 }
             },
             error: function(res, err)
             {
-                console.log(res);
-                console.log(err);
+                $(".login-error").show();
+                $(".login-error").text("Problem Logging In");
             },
             complete: function() 
             {
@@ -385,30 +396,155 @@ function login_landlord()
     }
 }
 
-function logout_landlord()
+function quick_logout()
+{
+    $.post("/logout.php");
+}
+
+function logout()
 {
     $.ajax(
     {
         type: "POST",
-        url: "/landlord/logout.php",
+        url: "/logout.php",
         success: function(res)
         {
             if (contains(res, "Successfully"))
             {
-                // ideally I'd like this to be a server redirect in PHP
+                // TODO: ideally I'd like this to be a server redirect in PHP
                 location.href = "/landlord/login.php";
             }
             else
             {
-                console.log(res); //print the error
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem With Logging Out", position: 'bottom-right'});
             }
         },
         error: function(err, res)
         {
-            console.log(err);
-            console.log(res);
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem With Logging Out", position: 'bottom-right'});
         }
     });
+}
+
+function delete_account()
+{
+    var data = buildData(($('#modal-content-9 .password').length == 0 ? [] : ["password"]));
+                                    
+    var error = buildError(data);
+    
+    if (data["password"] == null)
+    {
+        data["password"] = "";
+    }
+    
+    if (error != "Please Include<br>" && $('#modal-content-9 .password').length != 0)
+    {
+        setError("delete_account", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            data:
+            {
+                command: "delete_account",
+                data: data,
+                endpoint: "Accounts"
+            },
+            beforeSend: function()
+            {
+                disableModalSubmit("delete_account");
+            },
+            success: function(res)
+            {
+                try
+                {
+                    if (contains(res, "Okay"))
+                    {
+                        logout_user(true);
+                        
+                        set_default_button_on_enter("");
+                    }
+                    else
+                    {
+                        setError("delete_account", res);
+                    }
+                }
+                catch (e)
+                {
+                    setError("create_account", "Problem Deleting Account");
+                }
+            },
+            error: function(err, res)
+            {
+                setError("create_account", "Problem Deleting Account");
+            },
+            complete: function()
+            {
+                resetModal("delete_account", "Delete Account", false);
+            }
+        });
+    }
+}
+
+function update_account()
+{
+    var data = buildData(["firstname", "lastname", "email", "phonenumber"]);
+
+    var error = buildError(data);
+    
+    if (error != "Please Include<br>")
+    {
+        setError("update_account", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            data:
+            {
+                command: "update_account",
+                data: data,
+                endpoint: "Accounts"
+            },
+            beforeSend: function()
+            {
+                disableModalSubmit("update_account");
+            },
+            success: function(res)
+            {
+                try
+                {
+                    if (contains(res, "Okay"))
+                    {
+                        populate_and_open_modal(null, 'modal-content-5');
+                    }
+                    else
+                    {
+                        setError("update_account", res);
+                    }
+                }
+                catch (e)
+                {
+                    setError("update_account", "Problem Updating Account");
+                }
+            },
+            error: function(err, res)
+            {
+                setError("update_account", "Problem Updating Account");
+            },
+            complete: function()
+            {
+                resetModal("update_account", "Update Account", false);
+                
+                set_default_button_on_enter("");
+            }
+        });
+    }
 }
 
 /**********************

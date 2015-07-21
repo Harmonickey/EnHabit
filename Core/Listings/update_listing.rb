@@ -19,11 +19,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(id, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, landlord, tags)
+def update_listing(id, landlord, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
     listing_obj = Hash.new
+    listing_obj["Landlord"] = landlord if not landlord.nil?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
     listing_obj["Bedrooms"] = bedrooms.to_i
@@ -36,7 +37,6 @@ def update_listing(id, price, address, bedrooms, bathrooms, animals, laundry, pa
     listing_obj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listing_obj["University"] = university
-    listing_obj["Landlord"] = landlord
     listing_obj["Tags"] = tags
     
     query_obj = Hash.new
@@ -63,10 +63,9 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
+    landlord = (data["landlord"] ? data["landlord"] : (ARGV[1].nil? ? nil : ARGV[1])
     
-    result = update_listing(data["id"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["landlord"], data["tags"])
-
-    puts result
+    puts update_listing(data["id"], landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

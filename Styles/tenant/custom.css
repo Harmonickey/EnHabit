@@ -90,3 +90,9 @@ textarea
 {   
     float: left;
 }
+
+.tenant-login-error
+{
+    display: inline-block;
+    width: 100%;
+}

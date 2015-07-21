@@ -26,6 +26,7 @@
 {
     color: white;
     padding: 0 5px 0 5px;
+    display: inline-block;
 }
 
 #Filters .search-content input,
@@ -472,6 +473,6 @@
 
 #view_listings_list-function
 {
-    display: inline-block;
+    float: left;
     width: 100%;
 }

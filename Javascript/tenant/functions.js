@@ -19,7 +19,7 @@ function getAllListings()
     $.ajax(
     {
         type: "POST",
-        url: "/tenant/tenant_api.php",
+        url: "/api.php",
         beforeSend: function()
         {
             //spinner on accordion area
@@ -27,7 +27,8 @@ function getAllListings()
         },
         data: 
         {
-            command: "get_listings_by_user"
+            command: "get_listings",
+            endpoint: "Listings"
         },
         success: function(res) 
         {
@@ -68,14 +69,13 @@ function getAllListings()
                 }
                 catch (e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Gathering Error", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Listings", position: 'bottom-right'});
                 }
             }
         },
         error: function(res, err)
         {
-            console.log(res);
-            console.log(err);
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Listings", position: 'bottom-right'});
         }
     });
 }
@@ -147,7 +147,7 @@ function delete_listing(id)
             $.ajax(
             {
                 type: "POST",
-                url: "/tenant/tenant_api.php",
+                url: "/api.php",
                 beforeSend: function()
                 {
                     $("#" + id + " button").prop("disabled", true);
@@ -159,7 +159,8 @@ function delete_listing(id)
                     data:
                     {
                         id: id
-                    }
+                    },
+                    endpoint: "Listings"
                 },
                 success: function(res)
                 {
@@ -176,8 +177,7 @@ function delete_listing(id)
                 },
                 error: function(res, err)
                 {
-                    console.log(res);
-                    console.log(err);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Listing", position: 'bottom-right'});
                 }
             });
         }
@@ -208,11 +208,12 @@ function update_listing(id)
         $.ajax(
         {
             type: "POST",
-            url: "/tenant/tenant_api.php",
+            url: "/api.php",
             data:
             {
-                command: "update_listing_by_user",
-                data: data
+                command: "update_listing",
+                data: data,
+                endpoint: "Listings"
             },
             beforeSend: function()
             {
@@ -227,13 +228,12 @@ function update_listing(id)
                 }
                 else
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Updating Listing", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Listing", position: 'bottom-right'});
                 }
             },
             error: function(err, res)
             {
-                console.log(err);
-                console.log(res);
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Listing", position: 'bottom-right'});
             },
             complete: function()
             {
@@ -266,7 +266,7 @@ function create_listing()
         $.ajax(
         {
             type: "POST",
-            url: "/tenant/tenant_api.php",
+            url: "/api.php",
             beforeSend: function()
             {
                 $("#create-listing-button").text("Creating...");
@@ -274,8 +274,9 @@ function create_listing()
             },
             data:
             {
-                command: "create_listing_by_user",
-                data: data
+                command: "create_listing",
+                data: data,
+                endpoint: "Listings"
             },
             success: function(res)
             {    
@@ -319,8 +320,7 @@ function create_listing()
             },
             error: function(res, err)
             {
-                console.log(res);
-                console.log(err);
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Creation Error", position: 'bottom-right'});
             },
             complete: function()
             {
@@ -331,21 +331,21 @@ function create_listing()
     }
 }
 
-function login_tenant()
+function login()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
     
     if (!username || !password)
     {
-        $("#tenant-login-error").text("Please enter Username and Password");
+        $(".login-error").text("Please enter Username and Password");
     }
     else
     {
         $.ajax(
         {
             type: "POST",
-            url: "/tenant/tenant_api.php",
+            url: "/api.php",
             beforeSend: function ()
             {
                 $(".login-action").text("Processing...");
@@ -359,24 +359,34 @@ function login_tenant()
                     "username": username, 
                     "password": password
                 },
-                user: username
+                user: username,
+                endpoint: "Accounts"
             },
             success: function(res)
             {
                 if (contains(res, "Okay"))
                 {
-                    location.href="/tenant/listings/"
+                    if (contains(res, "Landlord"))
+                    {
+                        quick_logout(); // clears the session variables
+                        $(".login-error").show();
+                        $(".login-error").text("Landlords Cannot Login To Tenant Portal");
+                    }
+                    else
+                    {
+                        location.href="/tenant/listings/"
+                    }
                 }
                 else
                 {
-                    $("#tenant-login-error").show();
-                    $("#tenant-login-error").text(res);
+                    $(".login-error").show();
+                    $(".login-error").text("Problem Logging In");
                 }
             },
             error: function(res, err)
             {
-                console.log(res);
-                console.log(err);
+                $(".login-error").show();
+                $(".login-error").text("Problem Logging In");
             },
             complete: function() 
             {
@@ -387,28 +397,33 @@ function login_tenant()
     }
 }
 
-function logout_tenant()
+function quick_logout()
+{
+    $.post("/logout.php");
+}
+
+function logout()
 {
     $.ajax(
     {
         type: "POST",
-        url: "/tenant/logout.php",
+        url: "/logout.php",
         success: function(res)
         {
             if (contains(res, "Successfully"))
             {
-                // ideally I'd like this to be a server redirect in PHP
+                // TODO: Ideally I'd like this to be a server redirect in PHP, location would
+                // be a POST element, this is good for now
                 location.href = "/tenant/login.php";
             }
             else
             {
-                console.log(res); //print the error
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Logout Error", position: 'bottom-right'});
             }
         },
         error: function(err, res)
         {
-            console.log(err);
-            console.log(res);
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Logout Error", position: 'bottom-right'});
         }
     });
 }

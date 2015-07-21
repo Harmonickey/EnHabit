@@ -103,6 +103,12 @@ def set_filters
     else
         @university_filter[:University] = @university
     end
+    
+    if @user.nil? or @landlord.nil?
+        @user = nil
+    else
+        @user_filter[(@landlord ? "Landlord" : "Username")] = @user
+    end
 end
 
 def combine_filters_into_query 
@@ -140,12 +146,17 @@ def combine_filters_into_query
     if not @university_filter.nil?
         @main_filter["$and"].push @university_filter
     end
+    if not @user_filter.nil?
+        @main_filter["$and"].push @user_filter
+    end
 end
 
 begin
+   
     data = JSON.parse(ARGV[0].delete('\\'))
-    user = ARGV[1] if not ARGV[1].nil?
-
+    user = ARGV[1] if not ARGV[1].nil? and ARGV[1] != ""
+    landlord = ARGV[2] if not ARGV[2].nil? and ARGV[2] != ""
+    
     @lower = data["price"]["low"].to_i unless data["price"].nil?
     @upper = data["price"]["high"].to_i unless data["price"].nil?   
     @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil? or data["bedrooms"] == "studio"
@@ -159,6 +170,8 @@ begin
     @start = data["start"] unless data["start"].nil? or data["start"] == ""
     @university = data["university"]
     @tags = data["tags"] unless data["tags"].nil? or data["tags"] == []
+    @user = user if not user.nil?
+    @landlord = landlord.to_b if not landlord.nil?
 
     @price_filter = {}
     @bedroom_filter = {}
@@ -172,6 +185,7 @@ begin
     @university_filter = {}
     @tag_filter = {}
     @main_filter = {}
+    @user_filter = {}
 
     set_filters()
     combine_filters_into_query()

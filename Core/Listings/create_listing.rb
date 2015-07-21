@@ -17,11 +17,13 @@ require 'moped'
 require 'mongoid'
 require 'tools'
 
-def create_listing(price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, landlord, tags)
+def create_listing(user, landlord, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     listing_obj = Hash.new
+    listing_obj["Username"] = user if not user.nil?
+    listing_obj["Landlord"] = landlord if not landlord.nil?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
     listing_obj["Bedrooms"] = bedrooms.to_i
@@ -34,7 +36,6 @@ def create_listing(price, address, bedrooms, bathrooms, animals, laundry, parkin
     listing_obj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listing_obj["University"] = university
-    listing_obj["Landlord"] = landlord
     listing_obj["Tags"] = tags
     
     document = Hash.new
@@ -56,9 +57,10 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = ARGV[1]
+    username = ARGV[1] if not ARGV[1].nil? and ARGV[1] != ""
+    landlord = data["landlord"] if not data["landlord"].nil? and data["landlord"] != ""
     
-    result = create_listing(data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], landlord, data["tags"])
+    result = create_listing(username, landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 
     puts result.to_json
 rescue Exception => e
@@ -67,6 +69,6 @@ rescue Exception => e
         output.puts e.backtrace.inspect
     end
     result = Hash.new
-    result["error"] = e.inspect + ARGV[1]
+    result["error"] = e.inspect
     puts result.to_json
 end

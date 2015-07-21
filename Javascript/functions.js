@@ -636,11 +636,12 @@ function loadAllDefaultListings()
     $.ajax(
     {
         type: "POST",
-        url: "api.php",
+        url: "/api.php",
         data: 
         {
             command: "get_listings",
-            data: data
+            data: data,
+            endpoint: "Listings"
         },
         success: function(res) 
         {
@@ -650,11 +651,7 @@ function loadAllDefaultListings()
                 {
                     if (res == "")
                     {
-                        // notification?
-                    }
-                    else
-                    {
-                        // notification?
+                        $.msgGrowl ({ type: 'info', title: 'Info', text: "No Listings In Your Area", position: 'bottom-right'});
                     }
                 }
                 else
@@ -664,13 +661,13 @@ function loadAllDefaultListings()
             }
             catch(e)
             {
-                // notification ? 
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable To Retrieve Listings", position: 'bottom-right'}); 
             }
             
         },
         error: function(res, err) 
         {
-            // notification?
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem With Retrieving Listings", position: 'bottom-right'});
         }			
     });
 }
@@ -709,7 +706,7 @@ function login_facebook()
     }
     catch (e)
     {
-        // notification?
+        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'bottom-right'});
     }
 }
  
@@ -722,7 +719,7 @@ function searchForListings()
     $.ajax(
     {
         type: "POST",
-        url: "api.php",
+        url: "/api.php",
         beforeSend: function()
         {
             $(".search-content input").prop("disabled", true);
@@ -731,7 +728,8 @@ function searchForListings()
         data: 
         {
             command: "get_listings",
-            data: query
+            data: query,
+            endpoint: "Listings"
         },
         success: function(res) 
         {
@@ -741,11 +739,11 @@ function searchForListings()
                 {
                     if (res == "")
                     {
-                        // notification?
+                        $.msgGrowl ({ type: 'info', title: 'Info', text: "No Matching Listings", position: 'bottom-right'});
                     }
                     else
                     {
-                        // notification?
+                        $.msgGrowl ({ type: 'info', title: 'Info', text: "All Listings Located", position: 'bottom-right'});
                     }
                 }
                 else
@@ -755,12 +753,12 @@ function searchForListings()
             }
             catch (e)
             {
-                // notification? 
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable To Retrieve Listings", position: 'bottom-right'}); 
             }
         },
         error: function(res, err) 
         {
-            // notification?
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Retrieving Listings", position: 'bottom-right'});           
         },
         complete: function()
         {
@@ -913,7 +911,7 @@ function getPointsWithinPolygon(e)
 function login_user(hide_main_modal)
 {
     var data = buildData(["username", "password"]);
-    
+
     var error = buildError(data);
     
     if (error != "Please Include<br>")
@@ -930,7 +928,8 @@ function login_user(hide_main_modal)
             {
                 command: "login",
                 data: data,
-                user: data["username"] //to be used as session variable later
+                user: data["username"], //to be used as session variable later
+                endpoint: "Accounts"
             },
             beforeSend: function()
             {
@@ -950,7 +949,7 @@ function login_user(hide_main_modal)
                         
                         if (contains(res, "Landlord"))
                         {
-                            $("#manage_listings-function a").attr("href", "landlord/listings");
+                            $("#portal-function a").attr("href", "/landlord/listings");
                         }
                     }
                     else
@@ -960,7 +959,7 @@ function login_user(hide_main_modal)
                 }
                 catch (e)
                 {
-                    // notification? 
+                    setError('login', "Problem Logging In");
                 }
             },
             error: function(err, res)
@@ -992,7 +991,8 @@ function login_facebook_user(userID, accessToken)
         {
             command: "facebook_login",
             data: data,
-            user: userID
+            user: userID,
+            endpoint: "Accounts"
         },
         success: function(res)
         {
@@ -1016,21 +1016,21 @@ function login_facebook_user(userID, accessToken)
                         $("#modal-content-9 .password").remove();
                     }
                     
-                    showUpdateScreen();
+                    location.href="/tenant/account";
                 }
                 else
                 {
-                    setError('login', 'Error: please notify alex@lbkstudios.net of the issue.');
+                    setError('login', 'Error: please notify LbKstudios of the issue.');
                 }
             }
             catch (e)
             {
-                // notification? 
+                setError('login', 'Problem Logging In');
             }
         },
         error: function(err, res)
         {
-            // notification?
+            setError('login', 'Problem Logging In');
         },
         complete: function()
         {
@@ -1066,93 +1066,41 @@ function logout_user(isDeleting)
                 }
                 else
                 {
-                    // notification?
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'bottom-right'});           
                 }
             }
             catch (e)
             {
-                // notification?
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'bottom-right'});           
             }
         },
         error: function(err, res)
         {
-            // notification?
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'bottom-right'});           
         }
     });
 
-    $("#login_create").text("Log In");
-    $("#login_create-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
+    $("#login").text("Log In");
+    $("#login-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
 function removeLoginFeatures()
 {
-    $("#manage_account-function").hide();
-    $("#manage_listings-function").hide();
-}
-
-function initBoxes()
-{
-    setGeocompleteTextBox();
-    setTextBoxesWithNumbers();
-}
-
-function setTextBoxesWithNumbers()
-{
-    $('.modal-body .rent').autoNumeric('init', 
-    {
-        aSign: '$ ', 
-        vMax: '999999.99', 
-        wEmpty: 'sign',
-        lZero: 'deny'
-    });
-    
-    $('.modal-body .bedrooms').autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-    
-    $('.modal-body .bathrooms').autoNumeric('init', 
-    {
-        vMax: '10', 
-        wEmpty: 'empty',
-        aPad: false
-    });
-}
-
-function setGeocompleteTextBox()
-{
-    $(".modal-body .address").geocomplete()
-        .bind("geocode:result", function(event, result){
-            $(".modal-body .latitude").val(result.geometry.location.A); //latitude
-            $(".modal-body .longitude").val(result.geometry.location.F); //longitude
-            $(".modal-body .selected_address").val($(".modal-body .address").val());
-        });
+    $("#portal-function").hide();
 }
 
 function showLoginFeatures(hide_main_modal)
 {
-    $("#login_create").text("Log Out");
-    $("#login_create-function").attr("onclick", "logout_user(false)");
-    $("#login_create-function").show();
+    $("#login").text("Log Out");
+    $("#login-function").attr("onclick", "logout_user(false)");
+    $("#login-function").show();
     
     if (hide_main_modal === true)
     {
         hideMainModal();
     }
     
-    $("#manage_account-function").show();
-    $("#manage_listings-function").show();
-}
-
-function showUpdateScreen()
-{
-    showLoginFeatures(false);
-   
-    load_update_account_modal(null, "Create Account Info", false);
-    
-    
+    $("#portal-function").show();
 }
 
 function hideMainModal()
@@ -1193,11 +1141,12 @@ function create_account()
         $.ajax(
         {
             type: "POST",
-            url: "api.php",
+            url: "/api.php",
             data:
             {
                 command: "create_account",
-                data: data
+                data: data,
+                endpoint: "Accounts"
             },
             beforeSend: function()
             {
@@ -1218,80 +1167,18 @@ function create_account()
                 }
                 catch (e)
                 {
-                    // notification?
+                    setError("create_account", "Problem Creating Account");
                 }
             },
             error: function(err, res)
             {
-                // notification?
+                setError("create_account", "Problem Creating Account");
             },
             complete: function()
             {
                 resetModal("create_account", "Create Account", false);
                 
                 set_default_button_on_enter("");
-            }
-        });
-    }
-}
-
-function delete_account()
-{
-    var data = buildData(($('#modal-content-9 .password').length == 0 ? [] : ["password"]));
-                                    
-    var error = buildError(data);
-    
-    if (data["password"] == null)
-    {
-        data["password"] = "";
-    }
-    
-    if (error != "Please Include<br>" && $('#modal-content-9 .password').length != 0)
-    {
-        setError("delete_account", error);
-    }
-    else
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "api.php",
-            data:
-            {
-                command: "delete_account",
-                data: data
-            },
-            beforeSend: function()
-            {
-                disableModalSubmit("delete_account");
-            },
-            success: function(res)
-            {
-                try
-                {
-                    if (contains(res, "Okay"))
-                    {
-                        logout_user(true);
-                        
-                        set_default_button_on_enter("");
-                    }
-                    else
-                    {
-                        setError("delete_account", res);
-                    }
-                }
-                catch (e)
-                {
-                    // notification?
-                }
-            },
-            error: function(err, res)
-            {
-                // notification?
-            },
-            complete: function()
-            {
-                resetModal("delete_account", "Delete Account", false);
             }
         });
     }
@@ -1379,146 +1266,6 @@ function load_listings_list()
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 
-function load_update_account_modal(event, title, keepDelete)
-{
-    $.ajax(
-    {
-        type: "POST",
-        url: "api.php",
-        data:
-        {
-            command: "get_user_info",
-            data: "load"
-        },
-        success: function(res)
-        {
-            try
-            {
-                if (contains(res, "Error") || !res)
-                {
-                    if (res == "")
-                    {
-                        // notification? 
-                    }
-                    else
-                    {
-                        // notification? 
-                    }
-                }
-                else
-                {
-                    populate_and_open_modal(event, 'modal-content-4');
-                    
-                    $(".modal-content h1").text(title);
-                    
-                    fill_update_modal(JSON.parse(res).data);
-                 
-                    resetModal("update_account", "Update Account", true);
-                    
-                    set_default_button_on_enter('update');
-                    
-                    position_modal_at_centre();
-                    
-                    modal_backdrop_height($('#common-modal.modal'));
-                    
-                    if (keepDelete === false)
-                    {
-                        $(".modal-content input[value='Delete Account']").remove();
-                        $(".modal-content hr").remove();
-                    }
-                }
-            }
-            catch (e)
-            {
-                // notification? 
-            }
-        },
-        error: function(err, res)
-        {
-            // notification?
-        }
-    });
-}
-
-function fill_update_modal(data)
-{
-    var firstname = data["FirstName"];
-    var lastname = data["LastName"];
-    var email = data["Email"];
-    var phonenumber = data["PhoneNumber"];
-    
-    //handles facebook_login case
-    //  in order for a user to be created on the 
-    //  fly with facebook login in our app, I needed
-    //  to create a fake email without an @
-    if (!contains(email, "@")) 
-    {
-        email = "";
-    }
-    
-    $(".modal-body .firstname").val(firstname);
-    $(".modal-body .lastname").val(lastname);
-    $(".modal-body .email").val(email);
-    $(".modal-body .phonenumber").val(phonenumber);
-}
-
-function update_account()
-{
-    var data = buildData(["firstname", "lastname", "email", "phonenumber"]);
-
-    var error = buildError(data);
-    
-    if (error != "Please Include<br>")
-    {
-        setError("update_account", error);
-    }
-    else
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "api.php",
-            data:
-            {
-                command: "update_account",
-                data: data
-            },
-            beforeSend: function()
-            {
-                disableModalSubmit("update_account");
-            },
-            success: function(res)
-            {
-                try
-                {
-                    if (contains(res, "Okay"))
-                    {
-                        populate_and_open_modal(null, 'modal-content-5');
-                    }
-                    else
-                    {
-                        setError("update_account", res);
-                    }
-                }
-                catch (e)
-                {
-                    // notification? 
-                }
-            },
-            error: function(err, res)
-            {
-                // notification? 
-            },
-            complete: function()
-            {
-                resetModal("update_account", "Update Account", false);
-                
-                set_default_button_on_enter("");
-            }
-        });
-    }
-}
-
 function set_default_button_on_enter(modal)
 {
     if (modal != "")
@@ -1594,66 +1341,6 @@ function buildError(fields)
     {
         error += "Password<br>";
     }
-    if (fields.firstname == "")
-    {
-        error += "First Name<br>";
-    }
-    if (fields.lastname == "")
-    {
-        error += "Last Name<br>";
-    }
-    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
-    {
-        error += "Valid Email<br>";
-    }
-    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
-    {
-        error += "Valid Phone Number<br>";
-    }
-    if (fields.address == "" || fields.latitude == "" || fields.longitude == "")
-    {
-        error += "Valid Address - Must Select Google's Result<br>";
-    }
-    if (fields.address != "" && fields.address != fields.selected_address)
-	{
-		error += "Valid Address - Do Not Modify Google's Result After Selecting<br>";
-	}
-    if (fields.bedrooms == "")
-    {
-        error += "Valid Number of Bedrooms<br>";
-    }
-    if (fields.bathrooms == "")
-    {
-        error += "Valid Number of Bathrooms<br>";
-    }
-    if (fields.rent == "")
-    {
-        error += "Valid Monthy Rent Amount<br>";
-    }
-    if (fields.start == "")
-    {
-        error += "Valid Lease Start Date<br>";
-    }
-    if (fields.animals == "")
-    {
-        error += "If Animals Are Allowed<br>";
-    }
-    if (fields.laundry == "")
-    {
-        error += "If In-Unit Laundry is Available<br>";
-    }
-    if (fields.parking == "")
-    {
-        error += "If Parking is Available<br>";
-    }
-    if (fields.ac == "")
-    {
-        error += "If Air Conditioning Is Available<br>";
-    }
-    if (fields.type == "")
-    {
-        error += "What Type of Lease<br>";
-    }
     
     return error;
 }
@@ -1662,7 +1349,7 @@ function setError(el, msg)
 {
     if (msg == "")
 	{
-		msg = "Server Error: Please contact alex@lbkstudios.net";
+		msg = "Internal Error: Please contact LbKStudios";
 	}
 	
     var modal = ".modal-body ."
@@ -1695,7 +1382,7 @@ function selectToQueryField(field)
         return (field == "true")
     }
     
-    return field; // could be the string "any"
+    return field;
 }
 
 String.prototype.capitalizeFirstLetter = function() {
@@ -1713,6 +1400,6 @@ $(function ()
 });
 
 $(window).on('resize', function() {
-   //otherwise they get out of place because their 'left' is set as a percentage
+   //otherwise they get out of place
    setHiddenSidebars(); 
 });

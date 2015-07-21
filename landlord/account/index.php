@@ -25,15 +25,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Landlord | Renters</title>
+    <title>Landlord | Account</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
+    
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../../favicon.png">
     
     <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
+    
+    <link href="../../Libraries/Styles/pikaday.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
@@ -60,36 +65,35 @@
 <body>
 
 <nav class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="fa fa-bars"></i>
+            </button>
+            <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
+            <a class="navbar-brand" href="./"> Landlord Portal</a>
+        </div>
 
-<div class="container">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <i class="fa fa-bars"></i>
-    </button>
-    <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
-    <a class="navbar-brand" href="./"> Landlord Portal</a>
-  </div>
-
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav navbar-right">
-		<li class="dropdown">
-						
-			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="fa fa-user"></i> 
-				<?php echo $_SESSION["landlord"]; ?>
-				<b class="caret"></b>
-			</a>
-			
-			<ul class="dropdown-menu">
-				<li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
-			</ul>
-		</li>
-    </ul>
-  </div><!-- /.navbar-collapse -->
-</div> <!-- /.container -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                            
+                    <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user"></i> 
+                        <?php echo $_SESSION["landlord"]; ?>
+                        <b class="caret"></b>
+                    </a>
+                
+                    <ul class="dropdown-menu">
+                        <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div> <!-- /.container -->
 </nav>
     
 <div class="subnavbar">
@@ -101,8 +105,8 @@
 		    </a>
 			<div class="collapse subnav-collapse">
 				<ul class="mainnav">
-                    <li>
-                        <a href="../account">
+                    <li class="active">
+                        <a href="./">
                             <i class="fa fa-book"></i>
                             <span>Account</span>
                         </a>
@@ -113,8 +117,8 @@
 							<span>Listings</span>
 						</a>	    				
 					</li>
-                    <li class="active">
-                        <a href="./">
+                    <li>
+                        <a href="../renters">
 							<i class="fa fa-users"></i>
 							<span>Manage Renters</span>
 						</a>
@@ -137,14 +141,10 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<i class="fa fa-check"></i>
-					<h3>Renters</h3>
+					<h3>Your Account</h3>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
-					<!-- all the listings go here -->
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        
-                    </div>
+                    <!-- Account info goes here -->
 				</div> <!-- /widget-content -->
 			</div> <!-- /widget -->					
 	    </div> <!-- /col-md-12 -->     	
@@ -163,7 +163,7 @@
 			</div> <!-- /.span6 -->
 		</div> <!-- /row -->
 	</div> <!-- /container -->
-</div> <!-- /footer -->
+</div> <!-- /footer -->  
 
 <!-- Le javascript
 ================================================== -->
@@ -179,9 +179,12 @@
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 <!-- helper for numeric text boxes -->
 <script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
-
+<!-- helper for notifications -->
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
+<!-- helper for datepicker -->
+<script src="../../Libraries/Javascript/pikaday.js"></script>
+<script src="../../Libraries/Javascript/pikaday.jquery.js"></script>
 
 <script src="../../Javascript/landlord/functions.js"></script>
 
@@ -189,7 +192,9 @@
 
 $(function() 
 {
-    
+    getAllListings();
+
+    initSpecialFields();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

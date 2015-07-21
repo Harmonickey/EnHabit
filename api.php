@@ -4,49 +4,40 @@ include_once "Libraries/tools.php";
 
 session_start();
 
-
-if (isset($_SESSION["user"]) && isset($_POST["command"]) && isset($_POST["data"])) 
+if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST["command"]))
 {
-    //must have session in order to use the main commands
-    $user = $_SESSION["user"];
-    $data = $_POST["data"];
-    $data = remove_malicious_characters($data);
+    $data = (isset($_POST["data"]) ? $data = remove_malicious_characters($_POST["data"]) : NULL);
+    $landlord = (isset($_SESSION["landlord"]) ? $_SESSION["landlord"] : NULL);
+    $user = (isset($_SESSION["tenant"]) ? $_SESSION["tenant"] : $_SESSION["landlord"]);
     
-    switch ($_POST["command"])
+    // if we're running commands off of the front page, we don't want to filter
+    // on user or landlord in the back end
+    if ($_SERVER['HTTP_REFERER'] === "http://dev.lbkstudios.net/")
     {
-        case "get_listings":
-        case "update_listing":
-        case "create_listing":
-        case "delete_listing":
-            echo shell_exec("ruby Core/Listings/" . $_POST["command"] . ".rb '$data' $user");
-            break;
-        case "update_listting":
-        case "update_account":
-        case "delete_account":
-            echo shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb '$data' $user");
-            break;
-        case "get_user_info":
-            echo shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb $user");
-            break;
+        $landlord = NULL;
+        $user = NULL;
     }
+    
+    echo shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' $user $landlord");
 }
 else if (isset($_POST["command"]) && isset($_POST["data"]))
 {
-    //these commands are available without a session
-    $user = $_SESSION["user"];
     $data = $_POST["data"];
     $data = remove_malicious_characters($data);
     
-    switch ($_POST["command"])
+    $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+    
+    if (strpos($result, "Okay") === 0)
     {
-        case "create_account":
-            echo shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb '$data'");
-            break;
-        case "get_listings":
-        case "get_listing_info":
-            echo shell_exec("ruby Core/Listings/" . $_POST["command"] . ".rb '$data'");
-            break;
+        if (strpos($result, "Tenant") === 5)
+        {
+            $_SESSION["tenant"] = $user;
+        }
+        else if (strpos($result, "Landlord") === 5)
+        {
+            $_SESSION["landlord"] = $user;
+        }
     }
-
+    echo $result;
 }
 ?>

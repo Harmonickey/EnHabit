@@ -25,7 +25,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Tenant | Listings</title>
+    <title>Tenant | Account</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
@@ -105,14 +105,14 @@
 		    </a>
 			<div class="collapse subnav-collapse">
 				<ul class="mainnav">
-                    <li>
-                        <a href="../account">
+                    <li class="active">
+                        <a href="./">
                             <i class="fa fa-book"></i>
                             <span>Account</span>
                         </a>
                     </li>
-                    <li class="active">
-						<a href="./">
+                    <li>
+						<a href="../listings">
 							<i class="fa fa-th-list"></i>
 							<span>Listings</span>
 						</a>	    				
@@ -129,16 +129,11 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<i class="fa fa-check"></i>
-					<h3>Registered Listings</h3>
-                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+					<h3>Your Account</h3>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
-                    <label>Click the listing(s) below to update and see more details</label>
-					<!-- all the listings go here -->
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        
-                    </div>
+                    <!-- Account info goes here -->
+                    
 				</div> <!-- /widget-content -->
 			</div> <!-- /widget -->					
 	    </div> <!-- /col-md-12 -->     	
@@ -158,60 +153,6 @@
 		</div> <!-- /row -->
 	</div> <!-- /container -->
 </div> <!-- /footer -->
-
-<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Create New Listing</h4>
-            </div>
-            <div class="modal-body">
-                <!-- Put all the fields to create a listing here -->
-                <input type="text" name="fake_address" style="display:none" aria-hidden="true">
-                <label>Address</label><input type='text' class='form-control' autocomplete="off" />
-                <label>Rent/Month</label><input type='text' class='form-control' />
-                <label>Start Date</label><input type='text' class='form-control' />
-                <label>Bedrooms</label>
-                    <select id="bedrooms-filter" class="form-control">
-                        <option value="studio">Studio</option>
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
-                        <option value="3">3+</option>
-                    </select>
-                <label>Bathrooms</label>
-                    <select id="bathrooms-filter" class="form-control">
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
-                        <option value="3">3+</option>
-                    </select>
-                <div class="modal-switch animals-content">
-                    <label>Animals</label><input type='checkbox' data-size='mini' />
-                </div>
-                <div class="modal-switch laundry-content">
-                    <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
-                </div>
-                <div class="modal-switch parking-content">
-                    <label>Parking</label><input type='checkbox' data-size='mini' />
-                </div>
-                <div class="modal-switch airConditioning-content">
-                    <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
-                </div>
-                <div class="modal-switch type-content">
-                    <label>Type</label><input type='checkbox' data-size='mini' />
-                </div>
-                <br>
-                <label>Landlord</label><input type='text' class='form-control' />
-                <br>
-                <label>Tags</label><input type='text' data-role='tagsinput' />
-                <!-- Lat, Long, Address Hidden fields -->
-                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
-                <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
-            </div>
-        </div>
-    </div>
-</div>
-    
 
 <!-- Le javascript
 ================================================== -->

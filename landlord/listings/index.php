@@ -88,7 +88,7 @@
                     </a>
                 
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" onclick="logout_landlord()">Logout</a></li>
+                        <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -105,6 +105,12 @@
 		    </a>
 			<div class="collapse subnav-collapse">
 				<ul class="mainnav">
+                    <li>
+                        <a href="../account">
+                            <i class="fa fa-book"></i>
+                            <span>Account</span>
+                        </a>
+                    </li>
                     <li class="active">
 						<a href="./">
 							<i class="fa fa-th-list"></i>

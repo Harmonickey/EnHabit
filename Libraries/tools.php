@@ -1,5 +1,13 @@
 <?php
 
+$abs = __FILE__;
+$parts = explode("/", $abs);
+$index = array_search("public_html", $parts);
+
+$base_path = implode("/", array_slice($parts, 0, $index + 2));
+
+define("ROOTPATH", $base_path);
+
 function remove_malicious_characters($data)
 {
     $temp_data = json_encode($data);

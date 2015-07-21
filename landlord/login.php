@@ -76,9 +76,9 @@
 				</div> <!-- /password -->
 			</div> <!-- /login-fields -->
 			<div class="login-actions">
-				<button class="login-action btn btn-primary" onclick="login_landlord()">Sign In</button>
+				<button class="login-action btn btn-primary" onclick="login()">Sign In</button>
 			</div> <!-- .actions -->
-            <p class="landlord-login-error alert alert-danger" style="display: none;"></p>
+            <p class="login-error alert alert-danger" style="display: none;"></p>
 	</div> <!-- /content -->
 </div> <!-- /account-container -->
 
