@@ -88,6 +88,7 @@
                     </a>
                 
                     <ul class="dropdown-menu">
+                        <li><a style="cursor: pointer;" href="./">Account</a></li>
                         <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
                     </ul>
                 </li>
@@ -126,17 +127,67 @@
 <div class="main">
     <div class="container">
       <div class="row">
-      	<div class="col-md-12">
+      	<div class="col-md-8">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<h3>Your Account</h3>
+                    <i class="fa fa-user"></i>
+					<h3>Your Account Info</h3>
 				</div> <!-- /widget-header -->
-				<div class="widget-content listings">
+				<div class="widget-content account">
                     <!-- Account info goes here -->
-                    
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label></label>
+                            <p class="help-block">Your username is for logging in and cannot be changed.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label>Email: </label><input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label>First Name: </label><input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label>Last Name: </label><input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label>Phone Number: </label><input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label>New Password: </label><input type="password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <label>Confirm: </label><input type="password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button class='btn btn-primary' onclick='update_account();'>Update Account</button> 
+                            <button class='btn btn-danger' onclick='delete_account();'>Delete Account</button>
+                        </div> 
+                    </div>
 				</div> <!-- /widget-content -->
 			</div> <!-- /widget -->					
-	    </div> <!-- /col-md-12 -->     	
+	    </div> <!-- /col-md-8 -->     	
+        <div class="col-md-4">
+      		<div class="well">
+      			<h4>Extra Info</h4>
+				<p>You use your account to access everything with Enhabit, including your transactions!</p>										
+				<p>You are <b>not</b> required to change your password every time you make a change to other pieces of your account here.</p>
+            </div>  <!-- /well --> 								
+	    </div>  <!-- /col-md-4 -->
       </div> <!-- /row -->
     </div> <!-- /container -->
 </div> <!-- /main -->
@@ -145,7 +196,7 @@
 	<div class="container">
 		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
-				&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+				&copy; Enhabit LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
 			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
@@ -181,9 +232,7 @@
 
 $(function() 
 {   
-    getAllListings();
-
-    initSpecialFields();
+    getAccount();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

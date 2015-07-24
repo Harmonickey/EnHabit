@@ -63,7 +63,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                 <ul id="main-menu">
                     <li id="login-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
-                    <li id="portal-function" href="/tenant/listings" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm">Account/Listings</a></li>
+                    <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo ($_SESSION["landlord"] ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
                     <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                 </ul>
                 <div id="Filters">
@@ -120,8 +120,6 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div class="item-content search-content">
                         <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
-                    </div>
-                    <div class="item-content more-filters-content">
                         <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
                     </div>
                 </div>

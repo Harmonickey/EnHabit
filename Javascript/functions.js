@@ -1225,8 +1225,8 @@ function open_extras_view()
         },
         done: function ()
         {
-            $(".more-filters-content input").val("Hide Extra Filters");
-            $(".more-filters-content input").attr("onclick", "close_extras_view()");
+            $($(".search-content input")[1]).val("Hide Extra Filters");
+            $($(".search-content input")[1]).attr("onclick", "close_extras_view()");
         }
     });
 }
@@ -1253,8 +1253,8 @@ function close_extras_view()
         paddingLeft: "0px",
         paddingRight: "0px"
     }, 500, 'easeInOutCubic', function() {
-        $(".more-filters-content input").val("Show Extra Filters");
-        $(".more-filters-content input").attr("onclick", "open_extras_view()");
+        $($(".search-content input")[1]).val("Show Extra Filters");
+        $($(".search-content input")[1]).attr("onclick", "open_extras_view()");
     });
 }
 

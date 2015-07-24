@@ -30,7 +30,6 @@
 }
 
 #Filters .search-content input,
-#Filters .more-filters-content input,
 #listings input,
 .popup .information input
 {
@@ -131,17 +130,11 @@
     width: 80%;
 }
 
-.search-content,
-.more-filters-content
+.search-content
 {
     text-align: center;
     margin-top: 10px;
     width: 100%;
-}
-
-.more-filters-content button
-{
-    width: 70%;
 }
 
 .search-content input
@@ -158,6 +151,16 @@
 .type-content
 {
     width: 100%;
+}
+
+.search-content input:first-child
+{
+    width: 95px;
+}
+
+.search-content input:last-child
+{
+    width: 140px;
 }
 
 #type-filter

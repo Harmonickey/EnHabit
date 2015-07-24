@@ -96,3 +96,14 @@ textarea
     display: inline-block;
     width: 100%;
 }
+
+.account .row
+{
+    margin-top: 15px;
+}
+
+.account .row,
+.panel-body .row
+{
+    margin-left: -15px;
+}

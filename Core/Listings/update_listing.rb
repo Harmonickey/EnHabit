@@ -63,7 +63,9 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = (data["landlord"] ? data["landlord"] : (ARGV[1].nil? ? nil : ARGV[1])
+    user = ARGV[1] if not ARGV[1].nil?
+    is_landlord = ARGV[2].to_b if not ARGV[2].nil?
+    landlord = (data["landlord"] ? data["landlord"] : (is_landlord ? user : nil))
     
     puts update_listing(data["id"], landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 rescue Exception => e

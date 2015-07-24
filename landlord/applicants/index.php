@@ -84,6 +84,7 @@
 			</a>
 			
 			<ul class="dropdown-menu">
+                <li><a style="cursor: pointer;" href="../account">Account</a></li>
 				<li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
 			</ul>
 		</li>
@@ -156,7 +157,7 @@
 	<div class="container">
 		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
-				&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+				&copy; Enhabit LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
 			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>

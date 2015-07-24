@@ -7,7 +7,7 @@ session_start();
 if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST["command"]))
 {
     $data = (isset($_POST["data"]) ? $data = remove_malicious_characters($_POST["data"]) : NULL);
-    $landlord = (isset($_SESSION["landlord"]) ? $_SESSION["landlord"] : NULL);
+    $landlord = (isset($_SESSION["landlord"]) ? 'true' : 'false');
     $user = (isset($_SESSION["tenant"]) ? $_SESSION["tenant"] : $_SESSION["landlord"]);
     
     // if we're running commands off of the front page, we don't want to filter

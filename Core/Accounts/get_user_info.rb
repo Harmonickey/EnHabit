@@ -9,9 +9,9 @@ require 'moped'
 require 'bson'
 require 'json'
 
-user = ARGV[1]
-
 begin
+
+    user = ARGV[1]
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
@@ -19,16 +19,14 @@ begin
     document = Hash.new
     
     mongo_session.with(safe: true) do |session|
-        document = session[:accounts].find({"Username" => user}).select(_id: 0, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
+        document = session[:accounts].find({"Username" => user}).select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
     end
     mongo_session.disconnect
 
     if document.nil? or document == {}
         puts "Could Not Find User."
     else
-        result_data = Hash.new
-        result_data["data"] = document
-        puts result_data.to_json
+        puts document.to_json
     end
 
 rescue Exception => e

@@ -57,8 +57,8 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1] if not ARGV[1].nil? and ARGV[1] != ""
-    landlord = data["landlord"] if not data["landlord"].nil? and data["landlord"] != ""
+    username = ARGV[1] if not ARGV[1].nil? and not ARGV[1].empty?
+    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
     
     result = create_listing(username, landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 

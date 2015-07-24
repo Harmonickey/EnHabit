@@ -81,6 +81,60 @@ function getAllListings()
     });
 }
 
+function getAccount()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $(".account").prepend("<i class='fa fa-spinner fa-pulse' />");
+        },
+        data: 
+        {
+            command: "get_user_info",
+            endpoint: "Accounts"
+        },
+        success: function(res) 
+        {
+            if (!res)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to retrieve account info", position: 'bottom-right'});
+            }
+            else
+            {
+                $(".account .fa-spinner").remove();
+                try
+                {
+                    var data = JSON.parse(res);
+                    
+                    if (contains(res, "Error"))
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                    }
+                    else
+                    {
+                        fillAccountInfo(data);
+                    }
+                }
+                catch (e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Account", position: 'bottom-right'});
+                }
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Account", position: 'bottom-right'});
+        },
+        complete: function()
+        {
+            $(".account .fa-spinner").remove();
+        }
+    });
+}
+
 function setBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
@@ -126,6 +180,16 @@ function setDatePickerTextBox(rowId)
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
     });
+}
+
+function fillAccountInfo(data)
+{
+    var inputs = $(".account input");
+    $($(".account label")[0]).html("Username: <br>" + data["Username"]);
+    $(inputs[0]).val(data["Email"]);
+    $(inputs[1]).val(data["FirstName"]);
+    $(inputs[2]).val(data["LastName"]);
+    $(inputs[3]).val(data["PhoneNumber"]);
 }
 
 function delete_listing(id)
@@ -246,7 +310,7 @@ function update_listing(id)
 
 function create_listing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(0)").not(":eq(11)");
+    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(11)");
     
     var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
     
@@ -285,7 +349,6 @@ function create_listing()
                 }
                 else
                 {
-                    $("#accordion").html("");
                     try
                     {
                         var listing = JSON.parse(res);
@@ -426,78 +489,18 @@ function logout()
     });
 }
 
-function delete_account()
-{
-    var data = buildData(($('#modal-content-9 .password').length == 0 ? [] : ["password"]));
-                                    
-    var error = buildError(data);
-    
-    if (data["password"] == null)
-    {
-        data["password"] = "";
-    }
-    
-    if (error != "Please Include<br>" && $('#modal-content-9 .password').length != 0)
-    {
-        setError("delete_account", error);
-    }
-    else
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "/api.php",
-            data:
-            {
-                command: "delete_account",
-                data: data,
-                endpoint: "Accounts"
-            },
-            beforeSend: function()
-            {
-                disableModalSubmit("delete_account");
-            },
-            success: function(res)
-            {
-                try
-                {
-                    if (contains(res, "Okay"))
-                    {
-                        logout_user(true);
-                        
-                        set_default_button_on_enter("");
-                    }
-                    else
-                    {
-                        setError("delete_account", res);
-                    }
-                }
-                catch (e)
-                {
-                    setError("create_account", "Problem Deleting Account");
-                }
-            },
-            error: function(err, res)
-            {
-                setError("create_account", "Problem Deleting Account");
-            },
-            complete: function()
-            {
-                resetModal("delete_account", "Delete Account", false);
-            }
-        });
-    }
-}
-
 function update_account()
 {
-    var data = buildData(["firstname", "lastname", "email", "phonenumber"]);
-
+    var inputs = $(".account input");
+    
+    var data = buildData(inputs, ["email", "firstname", "lastname", "phonenumber", "password", "confirm"]);
+    
+    //first validate that the fields are filled out
     var error = buildError(data);
     
-    if (error != "Please Include<br>")
+    if (error != "Please Include ")
     {
-        setError("update_account", error);
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
     }
     else
     {
@@ -513,38 +516,81 @@ function update_account()
             },
             beforeSend: function()
             {
-                disableModalSubmit("update_account");
+                $(".account button").prop("disabled", true);
+                $($(".account button")[0]).text("Updating...");
             },
             success: function(res)
-            {
-                try
+            { 
+                if (contains(res, "Okay"))
                 {
-                    if (contains(res, "Okay"))
-                    {
-                        populate_and_open_modal(null, 'modal-content-5');
-                    }
-                    else
-                    {
-                        setError("update_account", res);
-                    }
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'bottom-right'});
                 }
-                catch (e)
+                else
                 {
-                    setError("update_account", "Problem Updating Account");
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Account", position: 'bottom-right'});
                 }
             },
             error: function(err, res)
             {
-                setError("update_account", "Problem Updating Account");
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Account", position: 'bottom-right'});
             },
             complete: function()
             {
-                resetModal("update_account", "Update Account", false);
-                
-                set_default_button_on_enter("");
+                $(".account button").prop("disabled", false);
+                $($(".account button")[0]).text("Update Account");
             }
         });
     }
+}
+
+function delete_account()
+{
+    //check if the user really wants to do so
+    $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", {
+        type    : "prompt",
+        inputs  : [
+          {type: "password", label: "Password:", required: true}
+        ],
+        buttons : [
+          {type: "submit", value: "OK"},
+          {type: "cancel", value: "Cancel"}
+        ]
+    }, function(password) {
+        
+        var data = {"password": password};
+        
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
+            {
+                $(".account button").prop("disabled", true);
+                $($(".account button")[1]).text("Deleting...");
+            },
+            data:
+            {
+                command: "delete_account",
+                data: data,
+                endpoint: "Accounts"
+            },
+            success: function(res)
+            {
+                if (contains(res, "Okay"))
+                {
+                    logout();
+                }
+                else
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Account", position: 'bottom-right'});
+            }
+        });
+    });
 }
 
 /**********************
@@ -564,17 +610,17 @@ function initSpecialFields()
 {
     var listing_modal = $("#createListingModal input");
     
-    $(listing_modal[1]).geocomplete()
+    $(listing_modal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
             $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
             $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[1]).val());
+            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
         
-    $(listing_modal[2]).autoNumeric('init', 
+    $(listing_modal[1]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -582,7 +628,7 @@ function initSpecialFields()
         lZero: 'deny'
     });
     
-    $(listing_modal[3]).pikaday(
+    $(listing_modal[2]).pikaday(
     {
         minDate: new Date(), 
         setDefaultDate: new Date()
@@ -608,6 +654,10 @@ function buildData(inputs, elements)
         else if (elements[i] == "latitude" || elements[i] == "longitude" || elements[i] == "selected_address")
         {
             data[elements[i]] = $(inputs[i]).val();
+        }
+        else if (elements[i] == "rent")
+        {
+            data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }
         else
         {
@@ -643,9 +693,32 @@ function buildError(fields)
     {
         error_arr.push("Valid Monthly Rent Amount");
     }
+    if (fields.firstname == "")
+    {
+        error_arr.push("Valid First Name");
+    }
+    if (fields.lastname == "")
+    {
+        error_arr.push("Valid Last Name");
+    }
+    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
+    {
+        error_arr.push("Valid Email");
+    }
+    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    {
+        error_arr.push("Valid Phone Number");
+    }
     if (fields.start === "")
     {
         error_arr.push("Valid Lease Start Date");
+    }
+    if (fields.password != "" || fields.confirm != "")
+    {
+        if (fields.password != fields.confirm)
+        {
+            error_arr.push("Passwords must match");
+        }
     }
     if (error_arr.length > 0)
     {
@@ -698,14 +771,9 @@ function enableButtons()
 
 function formattedDate(dateString)
 {
-    var date = new Date(dateString);
-    var year = date.getFullYear()
-    var month = (date.getMonth() + 1)
-    var day = date.getDate();
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-
-    return "" + month + "/" + day + "/" + year;
+    var parts = dateString.split("T")[0].split("-");
+    
+    return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
 function createAccordionView(oid, data)
@@ -741,7 +809,7 @@ function createAccordionView(oid, data)
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Tags</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
+                                "<label>Tags (Optional)</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" +

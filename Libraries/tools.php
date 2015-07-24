@@ -29,8 +29,15 @@ function remove_malicious_characters($data)
 
 function debug_data($data)
 {
-    $output = fopen("output.log", "w") or die("Unable to open file!");
-    fwrite($output, json_encode($data));
+    $output = fopen("output.log", "a") or die("Unable to open file!");
+    fwrite($output, json_encode($data) . "\n");
+    fclose($output);
+}
+
+function debug_string($data)
+{
+    $output = fopen("output.log", "a") or die("Unable to open file!");
+    fwrite($output, $data . "\n");
     fclose($output);
 }
 

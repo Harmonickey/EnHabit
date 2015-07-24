@@ -88,6 +88,7 @@
                     </a>
                 
                     <ul class="dropdown-menu">
+                        <li><a style="cursor: pointer;" href="../account">Account</a></li>
                         <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
                     </ul>
                 </li>
@@ -150,7 +151,7 @@
 	<div class="container">
 		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
-				&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+				&copy; Enhabit LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
 			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
@@ -168,8 +169,7 @@
             </div>
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
-                <input type="text" name="fake_address" style="display:none" aria-hidden="true">
-                <label>Address</label><input type='text' class='form-control' autocomplete="off" />
+                <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" value="" />
                 <label>Rent/Month</label><input type='text' class='form-control' />
                 <label>Start Date</label><input type='text' class='form-control' />
                 <label>Bedrooms</label>
@@ -203,7 +203,7 @@
                 <br>
                 <label>Landlord</label><input type='text' class='form-control' />
                 <br>
-                <label>Tags</label><input type='text' data-role='tagsinput' />
+                <label>Tags (Optional)</label><input type='text' data-role='tagsinput' />
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
