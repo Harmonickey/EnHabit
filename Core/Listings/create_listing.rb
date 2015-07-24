@@ -4,60 +4,71 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./Libraries"
+
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deployment_base}/Libraries"
 
 require 'json'
+require 'bson'
 require 'moped'
 require 'mongoid'
-require 'bson'
 require 'tools'
 
-def create_listing(user, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
+def create_listing(user, landlord, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     listing_obj = Hash.new
-    listing_obj["Username"] = user
-    listing_obj["price"] = price.to_i
-    listing_obj["address"] = address
-    listing_obj["bedrooms"] = bedrooms.to_i
-    listing_obj["bathrooms"] = bathrooms.to_i
-    listing_obj["animals"] = animals.to_b
-    listing_obj["laundry"] = laundry.to_b
-    listing_obj["parking"] = parking.to_b
-    listing_obj["airConditioning"] = airConditioning.to_b
-    listing_obj["type"] = type
-    listing_obj["start"] = Date.strptime(start, "%m/%d/%Y").mongoize
-    listing_obj["worldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
-    listing_obj["university"] = university
-    listing_obj["tags"] = tags
+    listing_obj["Username"] = user if not user.nil?
+    listing_obj["Landlord"] = landlord if not landlord.nil?
+    listing_obj["Price"] = price.to_i
+    listing_obj["Address"] = address
+    listing_obj["Bedrooms"] = bedrooms.to_i
+    listing_obj["Bathrooms"] = bathrooms.to_i
+    listing_obj["Animals"] = animals.to_b
+    listing_obj["Laundry"] = laundry.to_b
+    listing_obj["Parking"] = parking.to_b
+    listing_obj["AirConditioning"] = airConditioning.to_b
+    listing_obj["Type"] = type
+    listing_obj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
+    listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
+    listing_obj["University"] = university
+    listing_obj["Tags"] = tags
     
-    ret_msg = ""
- 
+    document = Hash.new
+    
     begin
         mongo_session.with(safe: true) do |session|
             session[:listings].insert(listing_obj)
         end
-        ret_msg = "Okay"
+        mongo_session.with(safe: true) do |session|
+            document = session[:listings].find().select(_id: 1, Username: 1, Price: 1, Address: 1, Bedrooms: 1, Bathrooms: 1, Animals: 1, Laundry: 1, Parking: 1, AirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1).one
+        end
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
+        document["error"] = e
     end
     
 	mongo_session.disconnect
-    return ret_msg
+    return document
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1]
+    username = ARGV[1] if not ARGV[1].nil? and not ARGV[1].empty?
+    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
     
-    result = create_listing(username, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
+    result = create_listing(username, landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 
-    puts result
+    puts result.to_json
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
         output.puts e.backtrace.inspect
     end
-    puts e.inspect
+    result = Hash.new
+    result["error"] = e.inspect
+    puts result.to_json
 end

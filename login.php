@@ -17,13 +17,24 @@ if (!isset($_SESSION['user']) && isset($_POST["command"]) && isset($_POST["data"
         strpos($result, "Needs Update") === 0)
     {
         $_SESSION['user'] = $user;
+        $portal = 'tenant';
         
         if ($_POST["command"] == "facebook_login")
         {
             $_SESSION['facebook'] = $user;
         }
         
-        echo $result;
+        if (strpos($result, "Landlord") === 5)
+        {
+            $_SESSION['landlord'] = $user;
+            $portal = 'landlord';
+        }
+        else
+        {
+            $_SESSION['tenant'] = $user;
+        }
+        
+        echo $result . $portal;
     }
     else
     {

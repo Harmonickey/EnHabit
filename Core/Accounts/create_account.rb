@@ -4,14 +4,19 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./Libraries"
+
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deployment_base}/Libraries"
 
 require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-def insert_user(user, pass, fn, ln, em, pn)
+def insert_user(user, pass, firstName, lastName, email, phoneNumber)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -19,10 +24,10 @@ def insert_user(user, pass, fn, ln, em, pn)
     usr_obj = Hash.new
     usr_obj["Username"] = user
     usr_obj["Password"] = PasswordHash.createHash(pass)
-    usr_obj["FirstName"] = fn
-    usr_obj["LastName"] = ln
-    usr_obj["Email"] = em
-    usr_obj["PhoneNumber"] = pn
+    usr_obj["FirstName"] = firstName
+    usr_obj["LastName"] = lastName
+    usr_obj["Email"] = email
+    usr_obj["PhoneNumber"] = phoneNumber
     usr_obj["Landlord"] = false
     usr_obj["Active"] = true
     usr_obj["IsFacebook"] = false
