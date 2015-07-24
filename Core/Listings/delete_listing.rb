@@ -25,7 +25,7 @@ def delete_listing(id, username)
             documents = session[:listings].find(listing_obj).to_a
             
             #make sure we're not delete someone else's listing
-            if documents[0]["Username"] == username
+            if documents[0]["Username"] == username || documents[0]["Landlord"] == username
                 session[:listings].find(listing_obj).remove
                 ret_msg = "Okay"
             else

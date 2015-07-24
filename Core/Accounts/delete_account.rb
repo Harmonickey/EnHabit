@@ -4,7 +4,12 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./Libraries"
+
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deployment_base}/Libraries"
 
 require 'json'
 require 'moped'
@@ -29,7 +34,9 @@ def user_exists(user, pass)
     if documents.count == 0
         return false
     else
-        return true if to_boolean(documents[0]["IsFacebook"]) #bypass if facebook account
+        #bypass password check if facebook account
+        return true if to_boolean(documents[0]["IsFacebook"]) 
+        
         return PasswordHash.validatePassword(pass, documents[0]["Password"])
     end
 end
@@ -62,6 +69,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1]
+    #is_landlord = ARGV[2].to_b if not ARGV[2].nil?
     
     if user_exists(username, data["password"])
         puts delete_user(username)
