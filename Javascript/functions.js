@@ -1020,17 +1020,17 @@ function login_facebook_user(userID, accessToken)
                 }
                 else
                 {
-                    setError('login', 'Error: please notify LbKstudios of the issue.');
+                    setError('login', 'Error logging in, please try again later');
                 }
             }
             catch (e)
             {
-                setError('login', 'Problem Logging In');
+                setError('login', 'Error logging in, please try again later');
             }
         },
         error: function(err, res)
         {
-            setError('login', 'Problem Logging In');
+            setError('login', 'Error logging in, please try again later');
         },
         complete: function()
         {
