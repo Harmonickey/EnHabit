@@ -16,122 +16,155 @@ $(document).on("keypress", function(e)
 
 function getAllListings()
 {
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "/api.php",
-        beforeSend: function()
+        $.ajax(
         {
-            //spinner on accordion area
-            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
-        },
-        data: 
-        {
-            command: "get_listings",
-            endpoint: "Listings"
-        },
-        success: function(res) 
-        {
-            if (!res)
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to retrieve listings", position: 'bottom-right'});
-            }
-            else if (contains(res, "No Listings"))
+                //spinner on accordion area
+                $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+            },
+            data: 
             {
-                $("#accordion").html("<p>No Listings Yet</p>");
-            }
-            else
+                command: "get_listings",
+                endpoint: "Listings"
+            },
+            success: function(res) 
             {
-                $("#accordion").html("");
                 try
                 {
-                    var data = JSON.parse(res);
-                    
-                    if (contains(res, "Error"))
+                    if (!res)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                        throw new Error("Unable to retrieve listings");
+                        $("#accordion").html("<p>No Listings Yet</p>");
+                    }
+                    else if (contains(res, "No Matching Entries"))
+                    {
+                        $("#accordion").html("<p>No Listings Yet</p>");
                     }
                     else
                     {
-                        for (var i = 0; i < data.length; i++)
+                        $("#accordion").html("");
+                        
+                        var data = JSON.parse(res);
+                        
+                        if (contains(res, "Error"))
                         {
-                            var oid = data[i]._id.$oid;
-                            
-                            $("#accordion").append(createAccordionView(oid, data[i]));
-                                
-                            setGeocompleteTextBox(oid);
-                            setTextBoxWithAutoNumeric(oid);
-                            setDatePickerTextBox(oid);
-                            setBootstrapSwitches(oid);
-                            setTextBoxWithTags(oid);
+                            throw new Error(res);
                         }
+                        else
+                        {
+                            for (var i = 0; i < data.length; i++)
+                            {
+                                var oid = data[i]._id.$oid;
+                                
+                                $("#accordion").append(createAccordionView(oid, data[i]));
+                                    
+                                setGeocompleteTextBox(oid);
+                                setTextBoxWithAutoNumeric(oid);
+                                setDatePickerTextBox(oid);
+                                setBootstrapSwitches(oid);
+                                setTextBoxWithTags(oid);
+                            }
+                        }
+                        
                     }
                 }
-                catch (e)
+                catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Listings", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                }
+            },
+            error: function(res, err)
+            {
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
                 }
             }
-        },
-        error: function(res, err)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Listings", position: 'bottom-right'});
-        }
-    });
+        });
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+    }
 }
 
 function getAccount()
 {
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "/api.php",
-        beforeSend: function()
+        $.ajax(
         {
-            $(".account").prepend("<i class='fa fa-spinner fa-pulse' />");
-        },
-        data: 
-        {
-            command: "get_user_info",
-            endpoint: "Accounts"
-        },
-        success: function(res) 
-        {
-            if (!res)
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to retrieve account info", position: 'bottom-right'});
-            }
-            else
+                $(".account").prepend("<i class='fa fa-spinner fa-pulse' />");
+            },
+            data: 
             {
-                $(".account .fa-spinner").remove();
+                command: "get_user_info",
+                endpoint: "Accounts"
+            },
+            success: function(res) 
+            {
                 try
                 {
-                    var data = JSON.parse(res);
-                    
-                    if (contains(res, "Error"))
+                    if (!res)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                        throw new Error("Unable to retrieve account info");
                     }
                     else
                     {
-                        fillAccountInfo(data);
+                        console.log(res);
+                        $(".account .fa-spinner").remove();
+
+                        var data = JSON.parse(res);
+                        
+                        if (contains(res, "Error"))
+                        {
+                            throw new Error(res);
+                        }
+                        else
+                        {
+                            fillAccountInfo(data);
+                        }
                     }
                 }
-                catch (e)
+                catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Account", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
                 }
+            },
+            error: function(res, err)
+            {
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                }
+            },
+            complete: function()
+            {
+                $(".account .fa-spinner").remove();
             }
-        },
-        error: function(res, err)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Finding Account", position: 'bottom-right'});
-        },
-        complete: function()
-        {
-            $(".account .fa-spinner").remove();
-        }
-    });
+        });
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+    }
 }
 
 function setBootstrapSwitches(rowId)
@@ -184,11 +217,21 @@ function setDatePickerTextBox(rowId)
 function fillAccountInfo(data)
 {
     var inputs = $(".account input");
-    $($(".account label")[0]).html("Username: <br>" + data["Username"]);
-    $(inputs[0]).val(data["Email"]);
-    $(inputs[1]).val(data["FirstName"]);
-    $(inputs[2]).val(data["LastName"]);
-    $(inputs[3]).val(data["PhoneNumber"]);
+    
+    // this only skips with facebook accounts
+    if (!contains(data["Username"], "Facebook"))
+    {
+        $(inputs[0]).val(data["Username"]);
+    }
+    
+    // and, this only skips with facebook accounts too
+    if (contains(data["Email"], "@"))
+    {
+        $(inputs[1]).val(data["Email"]);
+    }
+    $(inputs[2]).val(data["FirstName"]);
+    $(inputs[3]).val(data["LastName"]);
+    $(inputs[4]).val(data["PhoneNumber"]);
 }
 
 function delete_listing(id)
@@ -208,42 +251,63 @@ function delete_listing(id)
     {
         if (result === "Yes")
         {
-            $.ajax(
+            try
             {
-                type: "POST",
-                url: "/api.php",
-                beforeSend: function()
+                $.ajax(
                 {
-                    $("#" + id + " button").prop("disabled", true);
-                    $($("#" + id + " button")[1]).text("Deleting...");
-                },
-                data:
-                {
-                    command: "delete_listing",
+                    type: "POST",
+                    url: "/api.php",
+                    beforeSend: function()
+                    {
+                        $("#" + id + " button").prop("disabled", true);
+                        $($("#" + id + " button")[1]).text("Deleting...");
+                    },
                     data:
                     {
-                        id: id
+                        command: "delete_listing",
+                        data:
+                        {
+                            id: id
+                        },
+                        endpoint: "Listings"
                     },
-                    endpoint: "Listings"
-                },
-                success: function(res)
-                {
-                    if (contains(res, "Okay"))
+                    success: function(res)
                     {
-                        // remove the row that we just selected
-                        $("#" + id).parent().remove();
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'bottom-right'});
-                    }
-                    else
+                        try
+                        {
+                            if (contains(res, "Okay"))
+                            {
+                                // remove the row that we just selected
+                                $("#" + id).parent().remove();
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
+                            }
+                            else
+                            {
+                                throw new Error("Problem Deleting Listing");
+                            }
+                        }
+                        catch(e)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        }
+                    },
+                    error: function(res, err)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Listing", position: 'bottom-right'});
+                        try
+                        {
+                            throw new Error(res + " " + err);
+                        }
+                        catch(e)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        }
                     }
-                },
-                error: function(res, err)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Listing", position: 'bottom-right'});
-                }
-            });
+                });
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            }
         }
     });
 }
@@ -263,48 +327,69 @@ function update_listing(id)
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     
-    if (error != "Please Include ")
+    try
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
-    }
-    else
-    {
-        $.ajax(
+        if (error != "Please Include ")
         {
-            type: "POST",
-            url: "/api.php",
-            data:
+            throw new Error(error);
+        }
+        else
+        {
+            $.ajax(
             {
-                command: "update_listing",
-                data: data,
-                endpoint: "Listings"
-            },
-            beforeSend: function()
-            {
-                $("#" + id + " button").prop("disabled", true);
-                $($("#" + id + " button")[0]).text("Updating...");
-            },
-            success: function(res)
-            { 
-                if (contains(res, "Okay"))
+                type: "POST",
+                url: "/api.php",
+                data:
                 {
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'bottom-right'});
-                }
-                else
+                    command: "update_listing",
+                    data: data,
+                    endpoint: "Listings"
+                },
+                beforeSend: function()
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Listing", position: 'bottom-right'});
+                    $("#" + id + " button").prop("disabled", true);
+                    $($("#" + id + " button")[0]).text("Updating...");
+                },
+                success: function(res)
+                { 
+                    try
+                    {
+                        if (contains(res, "Okay"))
+                        {
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                        }
+                        else
+                        {
+                            throw new Error("Problem Updating Listing");
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                error: function(err, res)
+                {
+                    try
+                    {
+                        throw new Error(err + " " + res);
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                complete: function()
+                {
+                    $("#" + id + " button").prop("disabled", false);
+                    $($("#" + id + " button")[0]).text("Update");
                 }
-            },
-            error: function(err, res)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Listing", position: 'bottom-right'});
-            },
-            complete: function()
-            {
-                $("#" + id + " button").prop("disabled", false);
-                $($("#" + id + " button")[0]).text("Update");
-            }
-        });
+            });
+        }
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
     }
 }
 
@@ -321,76 +406,90 @@ function create_listing()
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     
-    if (error != "Please Include ")
+    try
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
-    }
-    else
-    {
-        $.ajax(
+        if (error != "Please Include ")
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            throw new Error(error);
+        }
+        else
+        {
+            $.ajax(
             {
-                $("#create-listing-button").text("Creating...");
-                $("#create-listing-button").prop("disabled", false);
-            },
-            data:
-            {
-                command: "create_listing",
-                data: data,
-                endpoint: "Listings"
-            },
-            success: function(res)
-            {    
-                if (!res)
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Create Listing!", position: 'bottom-right'});
-                }
-                else
+                    $("#create-listing-button").text("Creating...");
+                    $("#create-listing-button").prop("disabled", false);
+                },
+                data:
                 {
+                    command: "create_listing",
+                    data: data,
+                    endpoint: "Listings"
+                },
+                success: function(res)
+                {    
                     try
                     {
-                        var listing = JSON.parse(res);
-                        
-                        if (listing["error"])
+                        if (!res)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: listing["error"], position: 'bottom-right'});
+                            throw new Error("Unable to Create Listing");
                         }
                         else
                         {
-                            var oid = listing._id.$oid;
-                            
-                            $("#accordion").append(createAccordionView(oid, listing));
+                            var listing = JSON.parse(res);
                                 
-                            setGeocompleteTextBox(oid);
-                            setTextBoxWithAutoNumeric(oid);
-                            setDatePickerTextBox(oid);
-                            setBootstrapSwitches(oid); 
-                            setTextBoxWithTags(oid)
-                            
-                            $("#createListingModal").modal('hide');
-                            
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'bottom-right'});
+                            if (listing["error"])
+                            {
+                                throw new Error(listing["error"]);
+                            }
+                            else
+                            {
+                                var oid = listing._id.$oid;
+                                
+                                $("#accordion").append(createAccordionView(oid, listing));
+                                    
+                                setGeocompleteTextBox(oid);
+                                setTextBoxWithAutoNumeric(oid);
+                                setDatePickerTextBox(oid);
+                                setBootstrapSwitches(oid); 
+                                setTextBoxWithTags(oid)
+                                
+                                $("#createListingModal").modal('hide');
+                                
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                            }
                         }
                     }
-                    catch (e)
+                    catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Creation Error", position: 'bottom-right'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
                     }
+                },
+                error: function(res, err)
+                {
+                    try
+                    {
+                        throw new Error(res + " " + err);
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                complete: function()
+                {
+                    $("#create-listing-button").text("Create New Listing");
+                    $("#create-listing-button").prop("disabled", false);
                 }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Listing Creation Error", position: 'bottom-right'});
-            },
-            complete: function()
-            {
-                $("#create-listing-button").text("Create New Listing");
-                $("#create-listing-button").prop("disabled", false);
-            }
-        });
+            });
+        }
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
     }
 }
 
@@ -399,64 +498,85 @@ function login()
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
     
-    if (!username || !password)
+    try
     {
-        $(".login-error").text("Please enter Username and Password");
-    }
-    else
-    {
-        $.ajax(
+        if (!username || !password)
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function ()
+            throw new Error("Please Include Username and Password");
+        }
+        else
+        {
+            $.ajax(
             {
-                $(".login-action").text("Processing...");
-                $(".login-action").prop("disabled", true);
-            },
-            data:
-            {
-                command: "login",
-                data: 
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function ()
                 {
-                    "username": username, 
-                    "password": password
+                    $(".login-action").text("Processing...");
+                    $(".login-action").prop("disabled", true);
                 },
-                user: username,
-                endpoint: "Accounts"
-            },
-            success: function(res)
-            {
-                if (contains(res, "Okay"))
+                data:
                 {
-                    if (contains(res, "Landlord"))
+                    command: "login",
+                    data: 
                     {
-                        quick_logout(); // clears the session variables
+                        "username": username, 
+                        "password": password
+                    },
+                    user: username,
+                    endpoint: "Accounts"
+                },
+                success: function(res)
+                {
+                    try
+                    {
+                        if (contains(res, "Okay"))
+                        {
+                            if (contains(res, "Landlord"))
+                            {
+                                quick_logout(); // clears the session variables
+                                throw new Error("Landlords Cannot Login to Tenant Portal");
+                            }
+                            else
+                            {
+                                location.href="/tenant/listings/"
+                            }
+                        }
+                        else
+                        {
+                            throw new Error("Problem Logging In");
+                        }
+                    }
+                    catch(e)
+                    {
                         $(".login-error").show();
-                        $(".login-error").text("Landlords Cannot Login To Tenant Portal");
+                        $(".login-error").text(e.message);
                     }
-                    else
-                    {
-                        location.href="/tenant/listings/"
-                    }
-                }
-                else
+                },
+                error: function(res, err)
                 {
-                    $(".login-error").show();
-                    $(".login-error").text("Problem Logging In");
+                    try
+                    {
+                        throw new Error(res + " " + err);
+                    }
+                    catch(e)
+                    {
+                        $(".login-error").show();
+                        $(".login-error").text(e.message);
+                    }
+                },
+                complete: function() 
+                {
+                    $(".login-action").text("Sign In");
+                    $(".login-action").prop("disabled", false);
                 }
-            },
-            error: function(res, err)
-            {
-                $(".login-error").show();
-                $(".login-error").text("Problem Logging In");
-            },
-            complete: function() 
-            {
-                $(".login-action").text("Sign In");
-                $(".login-action").prop("disabled", false);
-            }
-        });
+            });
+        }
+    }
+    catch(e)
+    {
+        $(".login-error").show();
+        $(".login-error").text(e.message);
     }
 }
 
@@ -467,28 +587,49 @@ function quick_logout()
 
 function logout()
 {
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "/logout.php",
-        success: function(res)
+        $.ajax(
         {
-            if (contains(res, "Successfully"))
+            type: "POST",
+            url: "/logout.php",
+            success: function(res)
             {
-                // TODO: Ideally I'd like this to be a server redirect in PHP, location would
-                // be a POST element, this is good for now
-                location.href = "/tenant/login.php";
-            }
-            else
+                try
+                {
+                    if (contains(res, "Successfully"))
+                    {
+                        // TODO: Ideally I'd like this to be a server redirect in PHP, location would
+                        // be a POST element, this is good for now
+                        location.href = "/tenant/login.php";
+                    }
+                    else
+                    {
+                        throw new Error("Problem Logging Out");
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                }
+            },
+            error: function(err, res)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Logout Error", position: 'bottom-right'});
+                try
+                {
+                    throw new Error(err + " " + res);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                }
             }
-        },
-        error: function(err, res)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: "Logout Error", position: 'bottom-right'});
-        }
-    });
+        });
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+    }
 }
 
 function update_account()
@@ -500,48 +641,69 @@ function update_account()
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    if (error != "Please Include ")
+    try
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
-    }
-    else
-    {
-        $.ajax(
+        if (error != "Please Include ")
         {
-            type: "POST",
-            url: "/api.php",
-            data:
+            throw new Error(error);
+        }
+        else
+        {
+            $.ajax(
             {
-                command: "update_account",
-                data: data,
-                endpoint: "Accounts"
-            },
-            beforeSend: function()
-            {
-                $(".account button").prop("disabled", true);
-                $($(".account button")[0]).text("Updating...");
-            },
-            success: function(res)
-            { 
-                if (contains(res, "Okay"))
+                type: "POST",
+                url: "/api.php",
+                data:
                 {
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'bottom-right'});
-                }
-                else
+                    command: "update_account",
+                    data: data,
+                    endpoint: "Accounts"
+                },
+                beforeSend: function()
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Account", position: 'bottom-right'});
+                    $(".account button").prop("disabled", true);
+                    $($(".account button")[0]).text("Updating...");
+                },
+                success: function(res)
+                { 
+                    try
+                    {
+                        if (contains(res, "Okay"))
+                        {
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-left'});
+                        }
+                        else
+                        {
+                            throw new Error("Problem Updating Account");
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                error: function(err, res)
+                {
+                    try
+                    {
+                        throw new Error(err + " " + res);
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                complete: function()
+                {
+                    $(".account button").prop("disabled", false);
+                    $($(".account button")[0]).text("Update Account");
                 }
-            },
-            error: function(err, res)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Updating Account", position: 'bottom-right'});
-            },
-            complete: function()
-            {
-                $(".account button").prop("disabled", false);
-                $($(".account button")[0]).text("Update Account");
-            }
-        });
+            });
+        }
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
     }
 }
 
@@ -561,37 +723,58 @@ function delete_account()
         
         var data = {"password": password};
         
-        $.ajax(
+        try
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            $.ajax(
             {
-                $(".account button").prop("disabled", true);
-                $($(".account button")[1]).text("Deleting...");
-            },
-            data:
-            {
-                command: "delete_account",
-                data: data,
-                endpoint: "Accounts"
-            },
-            success: function(res)
-            {
-                if (contains(res, "Okay"))
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    logout();
-                }
-                else
+                    $(".account button").prop("disabled", true);
+                    $($(".account button")[1]).text("Deleting...");
+                },
+                data:
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                    command: "delete_account",
+                    data: data,
+                    endpoint: "Accounts"
+                },
+                success: function(res)
+                {
+                    try
+                    {
+                        if (contains(res, "Okay"))
+                        {
+                            logout();
+                        }
+                        else
+                        {
+                            throw new Error(res);
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    try
+                    {
+                        throw new Error(res + " " + err);
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
                 }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Deleting Account", position: 'bottom-right'});
-            }
-        });
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        }
     });
 }
 

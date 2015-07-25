@@ -36,7 +36,7 @@ def set_filters
         @bedroom_filter = nil
     else
         @bedroom_filter[:Bedrooms] = {}
-        if @bedrooms == MAX_BEDROOMS_FOR_FILTER || MIN_BEDROOMS_FOR_FILTER
+        if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
             @bedroom_filter[:Bedrooms][:$gte] = @bedrooms
         else
             @bedroom_filter[:Bedrooms][:$eq] = @bedrooms
@@ -47,7 +47,7 @@ def set_filters
         @bathroom_filter = nil
     else
         @bathroom_filter[:Bathrooms] = {}
-        if @bathrooms == MAX_BATHROOMS_FOR_FILTER || MIN_BATHROOMS_FOR_FILTER
+        if @bathrooms == MAX_BATHROOMS_FOR_FILTER || @bathrooms == MIN_BATHROOMS_FOR_FILTER
             @bathroom_filter[:Bathrooms][:$gte] = @bathrooms
         else
             @bathroom_filter[:Bathrooms][:$eq] = @bathrooms

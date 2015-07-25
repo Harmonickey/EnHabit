@@ -18,8 +18,15 @@ begin
 
     document = Hash.new
     
+    query_obj = Hash.new
+    query_obj[:$or] = Array.new
+    query_obj[:$or][0] = Hash.new
+    query_obj[:$or][0]["Username"] = user;
+    query_obj[:$or][1] = Hash.new
+    query_obj[:$or][1]["FacebookId"] = user;
+    
     mongo_session.with(safe: true) do |session|
-        document = session[:accounts].find({"Username" => user}).select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
+        document = session[:accounts].find(query_obj).select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
     end
     mongo_session.disconnect
 

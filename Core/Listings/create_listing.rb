@@ -17,7 +17,7 @@ require 'moped'
 require 'mongoid'
 require 'tools'
 
-def create_listing(user, landlord, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
+def create_listing(user, landlord, is_landlord, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -38,14 +38,20 @@ def create_listing(user, landlord, price, address, bedrooms, bathrooms, animals,
     listing_obj["University"] = university
     listing_obj["Tags"] = tags
     
+    query_obj = Hash.new
+    query_obj["Username"] = user
+    
     document = Hash.new
     
     begin
         mongo_session.with(safe: true) do |session|
-            session[:listings].insert(listing_obj)
-        end
-        mongo_session.with(safe: true) do |session|
-            document = session[:listings].find().select(_id: 1, Username: 1, Price: 1, Address: 1, Bedrooms: 1, Bathrooms: 1, Animals: 1, Laundry: 1, Parking: 1, AirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1).one
+            listing = session[:listings].find(query_obj).to_a
+            if listing.count == 0 and not is_landlord
+                session[:listings].insert(listing_obj)
+                document = session[:listings].find().select(_id: 1, Username: 1, Price: 1, Address: 1, Bedrooms: 1, Bathrooms: 1, Animals: 1, Laundry: 1, Parking: 1, AirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1).one
+            else
+                document["error"] = "Tenants can only have one listing at a time."
+            end
         end
     rescue Moped::Errors::OperationFailure => e
         document["error"] = e
@@ -58,9 +64,10 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     username = ARGV[1] if not ARGV[1].nil? and not ARGV[1].empty?
+    is_landlord = ARGV[2].to_b if not ARGV[2].nil? and not ARGV[2].empty?
     landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
     
-    result = create_listing(username, landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
+    result = create_listing(username, landlord, is_landlord, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 
     puts result.to_json
 rescue Exception => e

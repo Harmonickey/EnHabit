@@ -295,7 +295,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
-            if (isset($_SESSION['user']))
+            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']))
             {
                 echo "<script type='text/javascript'>showLoginFeatures(); </script>\n";
             }

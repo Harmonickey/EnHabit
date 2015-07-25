@@ -142,7 +142,6 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<i class="fa fa-check"></i>
 					<h3>Registered Listings</h3>
                     <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->

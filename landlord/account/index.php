@@ -148,28 +148,27 @@
 				<div class="widget-content account">
                     <!-- Account info goes here -->
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <label></label>
-                            <p class="help-block">Your username is for logging in and cannot be changed.</p>
+                        <div class="col-lg-6 col-md-6 col-sm-6 required">
+                            <label>Username: </label><input type="text" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-6 col-md-6 col-sm-6 required">
                             <label>Email: </label><input type="text" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-6 col-md-6 col-sm-6 required">
                             <label>First Name: </label><input type="text" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-6 col-md-6 col-sm-6 required">
                             <label>Last Name: </label><input type="text" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-6 col-md-6 col-sm-6 required">
                             <label>Phone Number: </label><input type="text" class="form-control" />
                         </div>
                     </div>

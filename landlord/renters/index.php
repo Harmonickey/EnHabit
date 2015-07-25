@@ -138,7 +138,6 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<i class="fa fa-check"></i>
 					<h3>Renters</h3>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
