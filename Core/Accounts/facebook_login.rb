@@ -40,7 +40,7 @@ def create_user_from_facebook_credentials(user, pass)
         end
         ret_msg = "Needs Update"
     else
-        if if documents[0]["Landlord"] == true
+        if documents[0]["Landlord"] == true
             ret_msg = "Okay:Landlord"
         else
             ret_msg = "Okay:Tenant"
