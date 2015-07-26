@@ -533,11 +533,10 @@ table {
             /* have to match with #left-sidebar rules above */
             position: fixed;
             bottom: 10px;
-            left: 3%;
             margin:10px 0;
             width:13%;
-            max-width:150px;
-            min-width:150px;
+            max-width:250px;
+            min-width:250px;
             text-align: center;
             background:none;
             z-index: 0;
@@ -550,10 +549,9 @@ table {
     }
     @media (min-width: 992px) {
         #footer {
-            /* have to match with #left-sidebar rules above */
-            left:6.5%;  
-            max-width:205px;
-            min-width:190px; 
+            /* have to match with #left-sidebar rules above */  
+            max-width:255px;
+            min-width:250px; 
         }   
     }
     @media (min-width: 1200px) {

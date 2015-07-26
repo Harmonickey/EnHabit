@@ -4,12 +4,19 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./Libraries"
+
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deployment_base}/Libraries"
 
 require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
+
+@is_landlord = false
 
 def user_exists(user, pass)
 
@@ -26,6 +33,7 @@ def user_exists(user, pass)
     if documents.count == 0
         return false
     else
+        @is_landlord = true if documents[0]["Landlord"] == true
         return PasswordHash.validatePassword(pass, documents[0]["Password"])
     end
 end
@@ -34,7 +42,7 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
 	
     if user_exists(data["username"], data["password"])
-        puts "Okay"
+        puts (@is_landlord ? "Okay:Landlord" : "Okay:Tenant")
     else
         puts "Incorrect Username/Password"
     end
