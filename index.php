@@ -32,6 +32,8 @@ if (!isset($_SESSION['CREATED'])) {
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- Pickaday -->
         <link href="Libraries/Styles/pikaday.css" rel="stylesheet">
+        <!-- MsgBoxes -->
+        <link href="Libraries/Styles/msgGrowl.css" rel="stylesheet">
         <!-- leaflet styles -->
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <!-- map box styles -->
@@ -60,10 +62,9 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Menu Icon for smaller viewports -->
                 <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                 <ul id="main-menu">
-                    <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
-                    <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
-                    <li id="manage_listings-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="listings">Manage Listings</a></li>
-                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings</a></li>
+                    <li id="login-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
+                    <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo (isset($_SESSION["landlord"]) ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
+                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
                 </ul>
                 <div id="Filters">
                     <h1 class="text-center">Filter listings</h1>
@@ -92,10 +93,10 @@ if (!isset($_SESSION['CREATED'])) {
                         <div class="item-content">
                             <label>Bathrooms?</label>
                             <select id="bathrooms-filter" class="form-control">
-                                <option value="1" selected>1</option>
+                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3+</option>
-                                <option value="any">Any</option> <!-- just don't include in ruby filter -->
                             </select>
                         </div>
                     </div>
@@ -119,16 +120,14 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div class="item-content search-content">
                         <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
-                    </div>
-                    <div class="item-content more-filters-content">
-                        <input type="button" class="btn btn-primary" value="Show Extra Filters" onclick="open_extras_view();" />
+                        <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
                     </div>
                 </div>
                 <!-- #main-menu -->
                 <!-- Footer -->
                 <section id="footer">
                     <!-- copyright text -->
-                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
+                    <div class="footer-text-line">&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
                 </section>
                 <!-- end: Footer -->
             </section>
@@ -204,58 +203,11 @@ if (!isset($_SESSION['CREATED'])) {
                 <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
             </div>
             <!-- #modal-content-3 -->
-            <!-- Update -->
-            <div class="content-to-populate-in-modal" id="modal-content-4">
-                <h1>Update Account Info</h1>
-                <label>First Name: </label><input type="text" class="form-control firstname" />
-                <label>Last Name: </label><input type="text" class="form-control lastname" />
-                <label>Email: </label><input type="text" class="form-control email" />
-                <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
-                <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="update_account()" value="Update Account" style="margin-top: 15px;" />
-                <hr>
-                <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
-                <p class="update_account-error alert alert-danger" style="display: none;"></p>
-            </div>
-            <!-- #modal-content-4 -->
-            <!-- Update -->
-            <div class="content-to-populate-in-modal" id="modal-content-5">
-                <h1>Account Update Success!</h1>
-            </div>
-            <!-- #modal-content-5 -->
-            <!-- Manage Account -->
-            <div class="content-to-populate-in-modal" id="modal-content-8">
-                <h1>Manage Account</h1>
-                <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event, 'Update Account Info', true);" value="Update Account" style="margin-top: 15px;" />
-            </div>
-            <!-- #modal-content 8 -->
-            <!-- Delete Account -->
-            <div class="content-to-populate-in-modal" id="modal-content-9">
-                <h1 id="delete_account_header">Are you sure?  Please Confirm.</h1>
-                <input type="button" class="btn btn-outline-inverse btn-lg delete_account-btn" onclick="delete_account()" value="Delete Account" style="margin-top: 15px;" />
-                <p class="delete_account-error alert alert-danger" style="display: none;"></p>
-            </div>
-            <!-- #modal-content-9 -->
-            <!-- View My Listings -->
-            <div class="content-to-populate-in-modal" id="modal-content-10">
-                <h1>My Listings</h1>
-            </div>
-            <!-- #modal-content-10 -->
             <!-- Log out confirmation -->
             <div class="content-to-populate-in-modal" id="modal-content-12">
                 <h1>Logged out successfully!</h1>
             </div>
             <!-- #modal-content-12 -->
-            <!-- Account delete confirmation -->
-            <div class="content-to-populate-in-modal" id="modal-content-13">
-                <h1>Account Deleted Successfully</h1>
-                <p>Thank you for using Enhabit!</p>
-            </div>
-            <!-- #modal-content-13 -->
-            <!-- Log out confirmation -->
-            <div class="content-to-populate-in-modal" id="modal-content-14">
-                <h1>Listings List</h1>
-            </div>
-            <!-- #modal-content-14 -->
             <!-- Pop Up Listing Modal -->
             <div class="content-to-populate-in-modal" id="modal-content-15">
                 <div class="item-content listing"> 
@@ -334,6 +286,8 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Libraries/Javascript/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
+        <!-- helper for notifications -->
+        <script src="Libraries/Javascript/msgGrowl.js"></script>
         <!-- helper for datepicker -->
         <script src="Libraries/Javascript/pikaday.js"></script>
         <script src="Libraries/Javascript/pikaday.jquery.js"></script>
@@ -341,7 +295,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
-            if (isset($_SESSION['user']))
+            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']))
             {
                 echo "<script type='text/javascript'>showLoginFeatures(); </script>\n";
             }

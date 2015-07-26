@@ -4,49 +4,41 @@ include_once "Libraries/tools.php";
 
 session_start();
 
-
-if (isset($_SESSION["user"]) && isset($_POST["command"]) && isset($_POST["data"])) 
+if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST["command"]))
 {
-    //must have session in order to use the main commands
-    $user = $_SESSION["user"];
-    $data = $_POST["data"];
-    $data = remove_malicious_characters($data);
+    #all other commands go through this branch
     
-    switch ($_POST["command"])
+    $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
+    
+    // if we're running commands off of the front page, we don't want to filter
+    // on user or landlord in the back end
+    if ($_SERVER['HTTP_REFERER'] === "http://dev.lbkstudios.net/")
     {
-        case "get_listings":
-        case "update_listing":
-        case "create_listing":
-        case "delete_listing":
-            echo shell_exec("ruby Core/Listings/" . $_POST["command"] . ".rb '$data' $user");
-            break;
-        case "update_listting":
-        case "update_account":
-        case "delete_account":
-            echo shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb '$data' $user");
-            break;
-        case "get_user_info":
-            echo shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb $user");
-            break;
+        $landlord = NULL;
+        $user = NULL;
     }
+    
+    debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+    
+    $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+    
+    set_session($result, $data);
+    
+    echo $result;
 }
-else if (isset($_POST["command"]) && isset($_POST["data"]))
+else if (isset($_POST["command"]))
 {
-    //these commands are available without a session
-    $user = $_SESSION["user"];
-    $data = $_POST["data"];
-    $data = remove_malicious_characters($data);
+    #login.rb, facebook_login.rb, and get_listings.rb all go through this branch
     
-    switch ($_POST["command"])
+    $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
+    
+    if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account")
     {
-        case "create_account":
-            echo shell_exec("ruby Core/Accounts/" . $_POST["command"] . ".rb '$data'");
-            break;
-        case "get_listings":
-        case "get_listing_info":
-            echo shell_exec("ruby Core/Listings/" . $_POST["command"] . ".rb '$data'");
-            break;
+        $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+    
+        set_session($result, $data);
+    
+        echo $result;
     }
-
 }
 ?>

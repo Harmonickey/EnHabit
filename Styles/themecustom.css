@@ -26,10 +26,10 @@
 {
     color: white;
     padding: 0 5px 0 5px;
+    display: inline-block;
 }
 
 #Filters .search-content input,
-#Filters .more-filters-content input,
 #listings input,
 .popup .information input
 {
@@ -130,17 +130,11 @@
     width: 80%;
 }
 
-.search-content,
-.more-filters-content
+.search-content
 {
     text-align: center;
     margin-top: 10px;
     width: 100%;
-}
-
-.more-filters-content button
-{
-    width: 70%;
 }
 
 .search-content input
@@ -157,6 +151,16 @@
 .type-content
 {
     width: 100%;
+}
+
+.search-content input:first-child
+{
+    width: 95px;
+}
+
+.search-content input:last-child
+{
+    width: 140px;
 }
 
 #type-filter
@@ -447,4 +451,38 @@
 .footer-text-line a
 {
     font-size: 10px !important;
+}
+
+.footer-text-line
+{
+    line-height: 12px;
+}
+
+#manage_account-function,
+#manage_listings-function
+{
+    width: 50%;
+    float: left;
+}
+
+#manage_account-function a
+{
+    padding-left: 6px !important;
+}
+
+
+#manage_listings-function a
+{
+    padding-left: 8px !important;
+}
+
+#view_listings_list-function
+{
+    float: left;
+    width: 100%;
+}
+
+.msgGrowl-container
+{
+    z-index: 1;
 }

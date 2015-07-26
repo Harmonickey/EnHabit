@@ -4,36 +4,47 @@ ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
 ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
 
 $: << "/home2/lbkstud1/ruby/gems"
-$: << "./Libraries"
+
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deployment_base}/Libraries"
 
 require 'json'
 require 'bson'
 require 'moped'
+require 'mongoid'
 require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(user, id, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
+def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
+    #object to insert/update with
     listing_obj = Hash.new
-    listing_obj["price"] = price.to_i
-    listing_obj["address"] = address
-    listing_obj["bedrooms"] = bedrooms.to_i
-    listing_obj["bathrooms"] = bathrooms.to_i
-    listing_obj["animals"] = animals.to_b
-    listing_obj["laundry"] = laundry.to_b
-    listing_obj["parking"] = parking.to_b
-    listing_obj["airConditioning"] = airConditioning.to_b
-    listing_obj["type"] = type
-    listing_obj["start"] = Date.strptime(st, "%m/%d/%Y").mongoize
-    listing_obj["worldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
-    listing_obj["university"] = university
-    listing_obj["tags"] = tags
+    listing_obj["UserId"] = userId if not userId.nil? and not userId.empty?
+    listing_obj["Landlord"] = landlord if not landlord.nil? and not landlord.empty?
+    listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
+    listing_obj["Price"] = price.to_i
+    listing_obj["Address"] = address
+    listing_obj["Bedrooms"] = bedrooms.to_i
+    listing_obj["Bathrooms"] = bathrooms.to_i
+    listing_obj["HasAnimals"] = animals.to_b
+    listing_obj["HasLaundry"] = laundry.to_b
+    listing_obj["HasParking"] = parking.to_b
+    listing_obj["HasAirConditioning"] = airConditioning.to_b
+    listing_obj["Type"] = type
+    listing_obj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
+    listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
+    listing_obj["University"] = university
+    listing_obj["Tags"] = tags
     
+    #object to search with
     query_obj = Hash.new
-    query_obj["id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
     
     ret_msg = ""
  
@@ -50,17 +61,48 @@ def update_listing(user, id, price, address, bedrooms, bathrooms, animals, laund
     return ret_msg
 end
 
-begin
-    data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1]
-    
-    result = update_listing(username, data["id"], data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
+def get_landlord_id(landlord)
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongo_session.use("enhabit") # this is our current database
 
-    puts result
+    begin
+        query_obj = Hash.new
+        query_obj["Landlord"] = landlord
+        
+        account = Array.new
+        mongo_session.with(safe: true) do |session|
+            account = session[:accounts].find(query_obj).to_a
+        end
+        
+        if account.count == 0
+            return "No Match"
+        else
+            return account[0]["LandlordId"]
+        end
+    rescue Moped::Errors::OperationFailure => e
+        return "No Match"
+    end
+end
+
+begin
+    # when user updates a listing they only input a landlord (optional)
+
+    data = JSON.parse(ARGV[0].delete('\\'))
+    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
+    landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
+    
+    if landlordId.empty?
+        landlordId = get_landlord_id(landlord);
+        landlordId = "" if landlordId == "No Match"
+    end
+    
+    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
         output.puts e.backtrace.inspect
     end
-    puts e.inspect
+    message = Hash.new
+    message.error = e.inspect
+    puts message
 end
