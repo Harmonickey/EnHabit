@@ -455,6 +455,14 @@ table {
     border-radius: 0px;
 }
 
+#left-sidebar  .ui-corner-all
+{
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
 /* ====================================================
    FOOTER (text)
    ==================================================== */
