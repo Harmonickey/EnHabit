@@ -21,17 +21,21 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="author" content="">
         <title>Enhabit</title>
         <!-- favicon -->
-        <link rel="icon" type="image/png" href="assets/images/other_images/favicon.png">
+        <link rel="icon" type="image/jpg" href="favicon.png">
         <!-- Bootstrap core CSS -->
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
+        <!-- Tags -->
+        <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!-- Pickaday -->
+        <link href="Libraries/Styles/pikaday.css" rel="stylesheet">
+        <!-- MsgBoxes -->
+        <link href="Libraries/Styles/msgGrowl.css" rel="stylesheet">
         <!-- leaflet styles -->
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-        <!-- font awesome -->
-        <link href="Libraries/Styles/font-awesome.min.css" rel="stylesheet">
         <!-- map box styles -->
         <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
@@ -46,173 +50,196 @@ if (!isset($_SESSION['CREATED'])) {
         <![endif]-->
     </head>
     <body>
-        <div id="map">
-            <!-- Outer Container -->
-            <div id="outer-container">
-                <!-- Left Sidebar -->
-                <section id="left-sidebar">
-                    <div class="logo">
-                        <a href="#intro" class="link-scroll"><img src="assets/images/other_images/logo.png" alt="Enhabit"></a>
-                    </div>
-                    <!-- .logo -->
-                    <!-- Menu Icon for smaller viewports -->
-                    <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
-                    <ul id="main-menu">
-                        <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
-                        <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
-                        <li id="manage_listings-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-11', 'manage_listing');"><a class="btn btn-outline-inverse btn-sm">Manage Listings</a></li>
-                        <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
-                    </ul>
-                    <!-- #main-menu -->
-                </section>
-                <div id="listings_list">
-                    <div id="listings">
-                        
-                    </div>
+        <div id="map"></div>
+        <!-- Outer Container -->
+        <div id="outer-container">
+            <!-- Left Sidebar -->
+            <section id="left-sidebar">
+                <div class="logo">
+                    <a href="#intro" class="link-scroll"><img src="assets/images/theme_images/logo_white.png" alt="Enhabit" style="width: 100%;"></a>
                 </div>
-                <!-- #left-sidebar -->
-                <!-- Login -->
-                <div class="content-to-populate-in-modal" id="modal-content-1">
-                    <h1>Log In</h1>
-                    <label>Username: </label><input type="textbox" class="form-control username" />
-                    <label>Password: </label><input type="password" class="form-control password" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user(true);" style="margin-top: 15px;"/>
-                    <p style="text-align: center;">Or</p>
-                    <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
-                    <p class="login-error alert alert-danger" style="display: none;"></p>
-                    <div></div>
-                    <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
-                </div>
-                <!-- #modal-content-1 -->
-                <!-- Register -->
-                <div class="content-to-populate-in-modal" id="modal-content-2">
-                    <h1>Create New Account</h1>
-                    <label>Username: </label><input type="text" class="form-control username" />
-                    <label>Password: </label><input type="password" class="form-control password" />
-                    <label>First Name: </label><input type="text" class="form-control firstname" />
-                    <label>Last Name: </label><input type="text" class="form-control lastname" />
-                    <label>Email: </label><input type="text" class="form-control email" />
-                    <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg create_account-btn" onclick="create_account()" value="Create Account" style="margin-top: 15px;" />
-                    <p class="create_account-error alert alert-danger" style="display: none;"></p>
-                </div>
-                <!-- #modal-content-2 -->
-                <!-- Register -->
-                <div class="content-to-populate-in-modal" id="modal-content-3">
-                    <h1>Account Creation Success!</h1>
-                    <p> You now have an account with Enhabit!  You can create listings and even set up our service with your bank to pay your monthly bills.</p>
-                </div>
-                <!-- #modal-content-3 -->
-                <!-- Update -->
-                <div class="content-to-populate-in-modal" id="modal-content-4">
-                    <h1>Update Account Info</h1>
-                    <label>First Name: </label><input type="text" class="form-control firstname" />
-                    <label>Last Name: </label><input type="text" class="form-control lastname" />
-                    <label>Email: </label><input type="text" class="form-control email" />
-                    <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="update_account()" value="Update Account" style="margin-top: 15px;" />
-                    <hr>
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-9', 'delete_account', 'Delete Account');" value="Delete Account" style="margin-top: 15px;" />
-                    <p class="update_account-error alert alert-danger" style="display: none;"></p>
-                </div>
-                <!-- #modal-content-4 -->
-                <!-- Update -->
-                <div class="content-to-populate-in-modal" id="modal-content-5">
-                    <h1>Account Update Success!</h1>
-                </div>
-                <!-- #modal-content-5 -->
-                <!-- Create New Listing -->
-                <div class="content-to-populate-in-modal" id="modal-content-6">
-                    <h1>Create New Listing</h1>
-                    <label>Address: </label><input type="text" class="form-control address" autocomplete="false"/>
-                    <input type="hidden" class="latitude" />
-                    <input type="hidden" class="longitude" />
-                    <input type="hidden" class="selected_address" />
-                    <label>Bedrooms: </label><input type="text" class="form-control bedrooms" />
-                    <label>Bathrooms: </label><input type="text" class="form-control bathrooms"  />
-                    <div style="width: 220px; margin: 0 auto;">
-                        <div style="float: left;">
-                            <label>Animals: </label>
-                            <div style="width: 75px; margin: 0 auto;">
-                                <label style="float: left; width: 30px;">Yes</label><input type="radio" class="form-control animals" name="animals" value="Yes">
-                                <label style="float: left; width: 30px; margin-top: 5px;">No</label><input type="radio" class="form-control animals" name="animals" value="No" checked="checked">
-                            </div>
+                <!-- .logo -->
+                <!-- Menu Icon for smaller viewports -->
+                <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
+                <ul id="main-menu">
+                    <li id="login-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
+                    <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo (isset($_SESSION["landlord"]) ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
+                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
+                </ul>
+                <div id="Filters">
+                    <h1 class="text-center">Filter listings</h1>
+                    <div class="item-content">
+                        <div class="price-content"">
+                            <span>Price Range</span>
+                            <span id="amount" style="border:0; color:#b55783; font-weight:bold;">$800 - $1500</span>
                         </div>
-                        <div style="float: left; margin-left: 15px;">
-                            <label>In-Unit Laundry: </label>
-                            <div style="width: 75px; margin: 0 auto;">
-                                <label style="float: left; width: 30px;">Yes</label><input type="radio" class="form-control laundry" name="laundry" value="Yes">
-                                <label style="float: left; width: 30px; margin-top: 5px;">No</label><input type="radio" class="form-control laundry" name="laundry" value="No" checked="checked">
-                            </div>
+                        <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
+                    </div>
+                    <div class="item-content date-content">
+                            <label>Available Starting</label>
+                            <input id="datepicker-inline" type="text" class="form-control" value="MM/DD/YYYYY"/>
+                    </div>
+                    <div class="double-item-content">
+                        <div class="item-content">
+                            <label>Bedrooms?</label>
+                            <select id="bedrooms-filter" class="form-control">
+                                <option value="studio">Studio</option>
+                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3+</option>
+                            </select>
+                        </div>
+                        <div class="item-content">
+                            <label>Bathrooms?</label>
+                            <select id="bathrooms-filter" class="form-control">
+                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3+</option>
+                            </select>
                         </div>
                     </div>
-                    <div style="clear: both;"></div>
-                    <label>Monthly Rent: </label><input type="text" class="form-control rent" />
-                    <label>Earliest Available: </label><input type="text" class="form-control start_date" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg create_listing-btn" onclick="create_listing()" value="Create Listing" style="margin-top: 15px;" />
-                    <p class="create_listing-error alert alert-danger" style="display: none;"></p>
+                    <div class="double-item-content">
+                        <div class="item-content parking-content">
+                            <label>Parking?</label>
+                            <select id="parking-filter" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                            </select>
+                        </div>
+                        <div class="item-content animals-content">
+                            <label>Animals?</label>
+                            <select id="animals-filter" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item-content search-content">
+                        <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
+                        <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
+                    </div>
                 </div>
-                <!-- #modal-content-6 -->
-                <!-- Create New Listing -->
-                <div class="content-to-populate-in-modal" id="modal-content-7">
-                    <h1>Listing Creation Success!</h1>
-                </div>
-                <!-- #modal-content-7 -->
-                <!-- Manage Account -->
-                <div class="content-to-populate-in-modal" id="modal-content-8">
-                    <h1>Manage Account</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg update_account-btn" onclick="load_update_account_modal(event, 'Update Account Info', true);" value="Update Account" style="margin-top: 15px;" />
-                </div>
-                <!-- #modal-content 8 -->
-                <!-- Delete Account -->
-                <div class="content-to-populate-in-modal" id="modal-content-9">
-                    <h1 id="delete_account_header">Are you sure?  Please Confirm.</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg delete_account-btn" onclick="delete_account()" value="Delete Account" style="margin-top: 15px;" />
-                    <p class="delete_account-error alert alert-danger" style="display: none;"></p>
-                </div>
-                <!-- #modal-content-9 -->
-                <!-- View My Listings -->
-                <div class="content-to-populate-in-modal" id="modal-content-10">
-                    <h1>My Listings</h1>
-                </div>
-                <!-- #modal-content-10 -->
-                <!-- Manage Listings -->
-                <div class="content-to-populate-in-modal" id="modal-content-11">
-                    <h1>Manage Your Listings</h1>
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-10', 'view_listings');" value="View My Listings" style="margin-top: 15px;" />
-                    <input type="button" class="btn btn-outline-inverse btn-lg" onclick="load_modal(event, 'modal-content-6', 'create_listing', 'Create Listing'); initBoxes();" value="Create New Listing" style="margin-top: 15px;" />
-                </div>
-                <!-- #modal-content-11 -->
-                <!-- Log out confirmation -->
-                <div class="content-to-populate-in-modal" id="modal-content-12">
-                    <h1>Logged out successfully!</h1>
-                </div>
-                <!-- #modal-content-12 -->
-                <!-- Account delete confirmation -->
-                <div class="content-to-populate-in-modal" id="modal-content-13">
-                    <h1>Account Deleted Successfully</h1>
-                    <p>Thank you for using Enhabit!</p>
-                </div>
-                <!-- #modal-content-13 -->
-                <!-- Log out confirmation -->
-                <div class="content-to-populate-in-modal" id="modal-content-14">
-                    <h1>Listings List</h1>
-                </div>
-                <!-- #modal-content-14 -->
-                <!-- end: Left Sidebar -->
+                <!-- #main-menu -->
                 <!-- Footer -->
                 <section id="footer">
-                    <!-- Go to Top -->
-                    <div id="go-to-top" onclick="scroll_to_top();"><span class="icon glyphicon glyphicon-chevron-up"></span></div>
                     <!-- copyright text -->
-                    <div class="footer-text-line">Copyright &copy; Enhabit LLC. <br>Designed &amp; Built by LbKStudios LLC</div>
+                    <div class="footer-text-line">&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
                 </section>
-                <!-- end: Footer -->      
+                <!-- end: Footer -->
+            </section>
+            <div id="listings_list">
+                <div id="listings">
+                    
+                </div>
             </div>
-            <!-- #outer-container -->
-            <!-- end: Outer Container -->
+            <div id="extras_view">
+                <div id="extras">
+                    <div class="double-item-content">
+                        <div class="item-content laundry-content">
+                            <label>In-Unit Laundry?</label>
+                            <select id="laundry-filter" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                            </select>
+                        </div>
+                        <div class="item-content airConditioning-content">
+                            <label>AC Unit?</label>
+                            <select id="airConditioning-filter" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item-content type-content">
+                        <label>Apartment or Sublet?</label>
+                        <select id="type-filter" class="form-control">
+                            <option value="both">Both</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="sublet">Sublet</option>
+                        </select>
+                    </div>
+                    <div class="item-content tags-content">
+                        <label>Tags (i.e. north campus)</label>
+                        <input id="tags-filter" type="text" value="" data-role="tagsinput" />
+                    </div>
+                </div>
+            </div>
+            <!-- #left-sidebar -->
+            <!-- Login -->
+            <div class="content-to-populate-in-modal" id="modal-content-1">
+                <h1>Log In</h1>
+                <label>Username: </label><input type="textbox" class="form-control username" />
+                <label>Password: </label><input type="password" class="form-control password" />
+                <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user(true);" style="margin-top: 15px;"/>
+                <p style="text-align: center;">Or</p>
+                <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
+                <p class="login-error alert alert-danger" style="display: none;"></p>
+                <div></div>
+                <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
+            </div>
+            <!-- #modal-content-1 -->
+            <!-- Register -->
+            <div class="content-to-populate-in-modal" id="modal-content-2">
+                <h1>Create New Account</h1>
+                <label>Username: </label><input type="text" class="form-control username" />
+                <label>Password: </label><input type="password" class="form-control password" />
+                <label>First Name: </label><input type="text" class="form-control firstname" />
+                <label>Last Name: </label><input type="text" class="form-control lastname" />
+                <label>Email: </label><input type="text" class="form-control email" />
+                <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
+                <input type="button" class="btn btn-outline-inverse btn-lg create_account-btn" onclick="create_account()" value="Create Account" style="margin-top: 15px;" />
+                <p class="create_account-error alert alert-danger" style="display: none;"></p>
+            </div>
+            <!-- #modal-content-2 -->
+            <!-- Register -->
+            <div class="content-to-populate-in-modal" id="modal-content-3">
+                <h1>Account Creation Success!</h1>
+                <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
+            </div>
+            <!-- #modal-content-3 -->
+            <!-- Log out confirmation -->
+            <div class="content-to-populate-in-modal" id="modal-content-12">
+                <h1>Logged out successfully!</h1>
+            </div>
+            <!-- #modal-content-12 -->
+            <!-- Pop Up Listing Modal -->
+            <div class="content-to-populate-in-modal" id="modal-content-15">
+                <div class="item-content listing"> 
+                    <div class="popup">
+                        <h3></h3> <!-- Address -->
+                        <div class="slideshow">
+                            <!-- Slideshow content -->
+                        </div>
+                        <div class="cycle">
+                            <a href="#" class=prev>&laquo Previous</a>
+                            <a href="#" class=next>Next &raquo</a>
+                        </div>
+                    </div>
+                    <div class='information'> 
+                        <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
+                        <p class='popup-bedrooms'></p>  
+                        <p class='popup-bathrooms'></p> 
+                        <p class='popup-price'></p> 
+                        <p class='popup-type'></p>
+                        <p class='popup-animals'></p>
+                        <p class='popup-laundry'></p>
+                        <p class='popup-parking'></p>
+                        <p class='popup-ac'></p>
+                        <p class='popup-tags'></p>
+                    </div> 
+                </div>
+            </div>
+            <!-- #modal-content-15
+            <!-- end: Left Sidebar -->    
         </div>
-        <!-- map box -->
+        <!-- #outer-container -->
+        <!-- end: Outer Container -->
         
         <!-- Modal -->
         <!-- DO NOT MOVE, EDIT OR REMOVE - this is needed in order for popup content to be populated in it -->
@@ -241,6 +268,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
+        <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
@@ -258,11 +286,16 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Libraries/Javascript/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
+        <!-- helper for notifications -->
+        <script src="Libraries/Javascript/msgGrowl.js"></script>
+        <!-- helper for datepicker -->
+        <script src="Libraries/Javascript/pikaday.js"></script>
+        <script src="Libraries/Javascript/pikaday.jquery.js"></script>
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
-            if (isset($_SESSION['user']))
+            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']))
             {
                 echo "<script type='text/javascript'>showLoginFeatures(); </script>\n";
             }

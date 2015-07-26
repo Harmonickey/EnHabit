@@ -11,22 +11,21 @@ require 'moped'
 
 Moped::BSON = BSON
 
-def delete_listing(id, username)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+def delete_listing(objectId, id, key)
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) 
+    mongo_session.use("enhabit")
 
     listing_obj = Hash.new
-    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(objectId.to_s)
     
     ret_msg = ""
  
-    #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongo_session.with(safe: true) do |session|
             documents = session[:listings].find(listing_obj).to_a
             
             #make sure we're not delete someone else's listing
-            if documents[0]["Username"] == username
+            if documents[0][key] == id
                 session[:listings].find(listing_obj).remove
                 ret_msg = "Okay"
             else
@@ -43,9 +42,11 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1]
     
-    result = delete_listing(data["id"], username)
+    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
+    key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
+    
+    result = delete_listing(data["id"], id, key)
 
     puts result
 rescue Exception => e
