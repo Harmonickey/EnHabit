@@ -363,7 +363,7 @@ table {
     font-family: 'open_sanslight', sans-serif;
     font-size:0.86em;
     line-height:1.05;
-    background: rgba(0,0,0,0.1);
+    background: #5259e3;
     width:100%;
 }
 
@@ -377,25 +377,29 @@ table {
 #left-sidebar #main-menu > li.menu-item > span {
     display:block;
     padding:13px 10px;
-    background:rgba(0,0,0,0.01);
+    background:#5259e3;
     color:#fff;
     text-decoration: none;
     text-align: center;
     font-weight: normal;
 }
 
-#left-sidebar #main-menu > li.menu-item > a:hover {
-    background:rgba(0,0,0,0.3);
+#left-sidebar #main-menu > li.menu-item > a:hover
+{
+    background:#b55783;
 }
 
-#left-sidebar #main-menu > li.menu-item.active > * {
+#left-sidebar #main-menu > li.menu-item.active > *
+{
     font-family: 'open_sansbold', sans-serif;
     font-weight: bold;
     background:rgba(0,0,0,0.15);
 }
 
-    @media (min-width: 768px) {
-        #left-sidebar #main-menu {
+    @media (min-width: 768px)
+    {
+        #left-sidebar #main-menu
+        {
             display:block;
             margin:8px 0;
             background:none;
@@ -403,20 +407,30 @@ table {
             line-height:1;            
         } 
         #left-sidebar #main-menu > li.menu-item > a,
-        #left-sidebar #main-menu > li.menu-item > span {
+        #left-sidebar #main-menu > li.menu-item > span
+        {
             padding:7px 10px;
         }             
     }
-    @media (min-width: 992px) {
-        #left-sidebar #main-menu {
+    @media (min-width: 992px)
+    {
+        #left-sidebar #main-menu
+        {
             margin:12px 0;
             font-size:1.02em;
             line-height:1;              
         }
     }
-    @media (min-width: 1200px) {
+    @media (min-width: 1200px)
+    {
 
     }
+
+#left-sidebar .btn-primary
+{
+    background-image: linear-gradient(to bottom,#b55783 0, #5259E2 100%);
+    border-color: #b55783;
+}
 
 
 /* ====================================================
