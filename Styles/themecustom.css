@@ -33,7 +33,7 @@
 #listings input,
 .popup .information input
 {
-    border-radius: 10px;
+    border-radius: 0px;
 }
 
 #Filters select,
@@ -173,8 +173,10 @@
 {
     color: black;
     font-weight: bold;
-    width: 100%;
+    width: 55%;
     text-align: center;
+    margin: 0 auto;
+    border-radius: 0px;
 }
 
 .tags-content .bootstrap-tagsinput
