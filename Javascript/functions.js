@@ -632,44 +632,49 @@ function loadAllDefaultListings()
 {
     var data = {"university": "Northwestern"};
     
-    //upon load, get all the entries that are at Northwestern
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "/api.php",
-        data: 
+        $.ajax(
         {
-            command: "get_listings",
-            data: data,
-            endpoint: "Listings"
-        },
-        success: function(res) 
-        {
-            try
+            type: "POST",
+            url: "/api.php",
+            data: 
             {
-                if (contains(res, "No Matching Entries"))
+                command: "get_listings",
+                data: data,
+                endpoint: "Listings"
+            },
+            success: function(res) 
+            {
+                try
                 {
-                    if (res == "")
+                    if (!contains(res, "No Matching Entries"))
                     {
-                        $.msgGrowl ({ type: 'info', title: 'Info', text: "No Listings In Your Area", position: 'bottom-right'});
+                        insertMarkers(res);
                     }
                 }
-                else
+                catch(e)
                 {
-                    insertMarkers(res);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
                 }
-            }
-            catch(e)
+            },
+            error: function(res, err) 
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable To Retrieve Listings", position: 'bottom-right'}); 
-            }
-            
-        },
-        error: function(res, err) 
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem With Retrieving Listings", position: 'bottom-right'});
-        }			
-    });
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch (e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                }
+            }			
+        });
+    }
+    catch (e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+    }
 }
 
 function setHiddenSidebars()
@@ -706,7 +711,7 @@ function login_facebook()
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'bottom-right'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-left'});
     }
 }
  
@@ -716,56 +721,63 @@ function searchForListings()
     
     var query = createQuery();
 
-    $.ajax(
-    {
-        type: "POST",
-        url: "/api.php",
-        beforeSend: function()
+    try
+    {    
+        $.ajax(
         {
-            $(".search-content input").prop("disabled", true);
-            $(".search-content input").val("Searching...");
-        },
-        data: 
-        {
-            command: "get_listings",
-            data: query,
-            endpoint: "Listings"
-        },
-        success: function(res) 
-        {
-            try
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
             {
-                if (contains(res, "No Matching Entries"))
+                $(".search-content input").prop("disabled", true);
+                $(".search-content input").val("Searching...");
+            },
+            data: 
+            {
+                command: "get_listings",
+                data: query,
+                endpoint: "Listings"
+            },
+            success: function(res) 
+            {
+                try
                 {
-                    if (res == "")
+                    if (contains(res, "No Matching Entries"))
                     {
-                        $.msgGrowl ({ type: 'info', title: 'Info', text: "No Matching Listings", position: 'bottom-right'});
+                        throw new Error(res);
                     }
                     else
                     {
-                        $.msgGrowl ({ type: 'info', title: 'Info', text: "All Listings Located", position: 'bottom-right'});
+                        insertMarkers(res);
                     }
                 }
-                else
+                catch (e)
                 {
-                    insertMarkers(res);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
                 }
-            }
-            catch (e)
+            },
+            error: function(res, err) 
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable To Retrieve Listings", position: 'bottom-right'}); 
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+                }
+            },
+            complete: function()
+            {
+                $(".search-content input").prop("disabled", false);
+                $(".search-content input").val("Search");
             }
-        },
-        error: function(res, err) 
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Retrieving Listings", position: 'bottom-right'});           
-        },
-        complete: function()
-        {
-            $(".search-content input").prop("disabled", false);
-            $(".search-content input").val("Search");
-        }
-    });
+        });
+    }
+    catch (e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+    }
 }
 
 function createQuery()
@@ -854,13 +866,13 @@ function insertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.Animals + "\", \"" + data.Laundry + "\", \"" + data.Parking + "\", \"" + data.AirConditioning + "\", \"" + data.Tags + "\")' />" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\")' />" +
             "</div>" +
         "</div>"
     );
 }
 
-function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, ac, tags)
+function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags)
 {
     //load up the images into the modal...
     var slideshowContent = "";
@@ -886,7 +898,7 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
     $("#modal-content-15 .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
     $("#modal-content-15 .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
     $("#modal-content-15 .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
-    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(ac));
+    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
     $("#modal-content-15 .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
     
     populate_and_open_modal(null, 'modal-content-15');
@@ -910,6 +922,8 @@ function getPointsWithinPolygon(e)
 */ 
 function login_user(hide_main_modal)
 {
+    resetModal("login", "Log In", false);
+    
     var data = buildData(["username", "password"]);
 
     var error = buildError(data);
@@ -920,57 +934,75 @@ function login_user(hide_main_modal)
     }
     else
     {
-        $.ajax(
+        try
         {
-            type: "POST",
-            url: "login.php",
-            data:
+            $.ajax(
             {
-                command: "login",
-                data: data,
-                user: data["username"], //to be used as session variable later
-                endpoint: "Accounts"
-            },
-            beforeSend: function()
-            {
-                disableModalSubmit('login');
-            },
-            success: function(res)
-            {
-                try
+                type: "POST",
+                url: "/api.php",
+                data:
                 {
-                    if (contains(res, "Okay"))
+                    command: "login",
+                    data: data,
+                    user: data["username"], //to be used as session variable later
+                    endpoint: "Accounts"
+                },
+                beforeSend: function()
+                {
+                    disableModalSubmit('login');
+                },
+                success: function(res)
+                {
+                    try
                     {
-                        showLoginFeatures(hide_main_modal);
-                        if (hide_main_modal === false)
+                        if (contains(res, "Okay"))
                         {
-                            populate_and_open_modal(null, 'modal-content-3');
+                            showLoginFeatures(hide_main_modal);
+                            if (hide_main_modal === false)
+                            {
+                                populate_and_open_modal(null, 'modal-content-3');
+                            }
+                            
+                            if (contains(res, "Landlord"))
+                            {
+                                $("#portal-function a").attr("href", "/landlord/listings");
+                            }
+                            else if (!contains(res, "Tenant"))
+                            {
+                                throw new Error("Problem Logging In");
+                            }
                         }
-                        
-                        if (contains(res, "Landlord"))
+                        else
                         {
-                            $("#portal-function a").attr("href", "/landlord/listings");
+                            throw new Error(res);
                         }
                     }
-                    else
+                    catch(e)
                     {
-                        setError('login', res);
+                        setError('login', e.message);
                     }
-                }
-                catch (e)
+                },
+                error: function(res, err)
                 {
-                    setError('login', "Problem Logging In");
+                    try
+                    {
+                        throw new Error(res + " " + err);
+                    }
+                    catch(e)
+                    {
+                        setError('login', e.message);
+                    }
+                },
+                complete: function()
+                {
+                    resetModal("login", "Log In", false);
                 }
-            },
-            error: function(err, res)
-            {
-                setError('login', res);
-            },
-            complete: function()
-            {
-                resetModal("login", "Log In", false);
-            }
-        });
+            });
+        }
+        catch(e)
+        {
+            setError('login', e.message);
+        }
     }
 }
 
@@ -983,104 +1015,120 @@ function login_facebook_user(userID, accessToken)
     // already handled on the facebook side, the code would not reach
     // here if that was the case...
     
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "login.php",
-        data:
+        $.ajax(
         {
-            command: "facebook_login",
-            data: data,
-            user: userID,
-            endpoint: "Accounts"
-        },
-        success: function(res)
-        {
-            try
+            type: "POST",
+            url: "/api.php",
+            data:
             {
-                if (contains(res, "Okay"))
-                {
-                    if ($("#modal-content-9 label").length != 0)
-                    {
-                        $("#modal-content-9 label").remove();
-                        $("#modal-content-9 .password").remove();
-                    }
-                    
-                    showLoginFeatures(true);
-                }
-                else if (contains(res, "Needs Update"))
-                {
-                    if ($("#modal-content-9 label").length != 0)
-                    {
-                        $("#modal-content-9 label").remove();
-                        $("#modal-content-9 .password").remove();
-                    }
-                    
-                    location.href="/tenant/account";
-                }
-                else
-                {
-                    setError('login', 'Error logging in, please try again later');
-                }
-            }
-            catch (e)
+                command: "facebook_login",
+                data: data,
+                user: userID,
+                endpoint: "Accounts"
+            },
+            success: function(res)
             {
-                setError('login', 'Error logging in, please try again later');
+                try
+                {
+                    if (contains(res, "Okay"))
+                    {
+                        showLoginFeatures(true);
+                    }
+                    else if (!res)
+                    {
+                        throw new Error("Error Logging In"); 
+                    }
+                    else
+                    {
+                        throw new Error(res);
+                    }
+                }
+                catch(e)
+                {
+                    setError('login', e.message);
+                }
+            },
+            error: function(res, err)
+            {
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch(e)
+                {
+                    setError('login', e.message);
+                }
+            },
+            complete: function()
+            {
+                resetModal("login", "Log In", false);
+                
+                $("#delete_account_header").siblings("label").remove();
+                $("#delete_account_header").siblings("input.password").remove();
             }
-        },
-        error: function(err, res)
-        {
-            setError('login', 'Error logging in, please try again later');
-        },
-        complete: function()
-        {
-            resetModal("login", "Log In", false);
-			
-			$("#delete_account_header").siblings("label").remove();
-			$("#delete_account_header").siblings("input.password").remove();
-        }
-    });
+        });
+    }
+    catch(e)
+    {
+        setError('login', e.message);
+    }
 }
 
 function logout_user(isDeleting)
 {
 	removeLoginFeatures();
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "logout.php",
-        success: function(res)
+        $.ajax(
         {
-            try
+            type: "POST",
+            url: "logout.php",
+            success: function(res)
             {
-                if (contains(res, "Successfully"))
+                try
                 {
-                    if (isDeleting)
+                    if (contains(res, "Successfully"))
                     {
-                        populate_and_open_modal(null, "modal-content-13");
+                        if (isDeleting)
+                        {
+                            populate_and_open_modal(null, "modal-content-13");
+                        }
+                        else
+                        {
+                            populate_and_open_modal(null, "modal-content-12");
+                        }
                     }
                     else
                     {
-                        populate_and_open_modal(null, "modal-content-12");
+                        throw new Error("Problem Logging Out");
                     }
                 }
-                else
+                catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'bottom-right'});           
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                }
+            },
+            error: function(res, err)
+            {
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
                 }
             }
-            catch (e)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'bottom-right'});           
-            }
-        },
-        error: function(err, res)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'bottom-right'});           
-        }
-    });
-
-    $("#login").text("Log In");
+        });
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+    }
+    
+    $("#login").text("Log In/Create Account");
     $("#login-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
@@ -1138,49 +1186,63 @@ function create_account()
     }
     else
     {
-        $.ajax(
+        try
         {
-            type: "POST",
-            url: "/api.php",
-            data:
+            $.ajax(
             {
-                command: "create_account",
-                data: data,
-                endpoint: "Accounts"
-            },
-            beforeSend: function()
-            {
-                disableModalSubmit("create_account");
-            },
-            success: function(res)
-            {
-                try
+                type: "POST",
+                url: "/api.php",
+                data:
                 {
-                    if (contains(res, "Okay"))
-                    {
-                        login_user(false);
-                    }
-                    else
-                    {
-                        setError("create_account", res);
-                    }
-                }
-                catch (e)
+                    command: "create_account",
+                    data: data,
+                    endpoint: "Accounts"
+                },
+                beforeSend: function()
                 {
-                    setError("create_account", "Problem Creating Account");
+                    disableModalSubmit("create_account");
+                },
+                success: function(res)
+                {
+                    try
+                    {
+                        if (contains(res, "Okay"))
+                        {
+                            login_user(false);
+                        }
+                        else
+                        {
+                            throw new Error(res);
+                        }
+                    }
+                    catch(e)
+                    {
+                        setError("create_account", e.message);
+                    }
+                },
+                error: function(res, err)
+                {
+                    try
+                    {
+                        throw new Error(res + " " + err);
+                    }
+                    catch(e)
+                    {
+                        setError("create_account", e.message);
+                    }
+                },
+                complete: function()
+                {
+                    resetModal("create_account", "Create Account", false);
+                    
+                    set_default_button_on_enter("");
                 }
-            },
-            error: function(err, res)
-            {
-                setError("create_account", "Problem Creating Account");
-            },
-            complete: function()
-            {
-                resetModal("create_account", "Create Account", false);
-                
-                set_default_button_on_enter("");
-            }
-        });
+            });
+        }
+        catch(e)
+        {
+            setError("create_account", e.message);
+        }
     }
 }
 
@@ -1334,13 +1396,29 @@ function buildError(fields)
 {
     var error = "Please Include<br>";
     
-    if (fields.username == "")
+    if (fields.username === "")
     {
         error += "Username<br>";
     }
-    if (fields.password == "")
+    if (fields.password === "")
     {
         error += "Password<br>";
+    }
+    if (fields.firstname === "")
+    {
+        error += "First Name<br>";
+    }
+    if (fields.lastname === "")
+    {
+        error += "Last Name<br>";
+    }
+    if (fields.email === "" || (fields.email != null && !isValidEmail(fields.email)))
+    {
+        error += "Valid Email<br>";
+    }
+    if (fields.phonenumber === "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    {
+        error += "Valid Phone Number<br>";
     }
     
     return error;
@@ -1350,7 +1428,7 @@ function setError(el, msg)
 {
     if (msg == "")
 	{
-		msg = "Internal Error: Please contact LbKStudios";
+		msg = "Internal Error: Please Try Again Later";
 	}
 	
     var modal = ".modal-body ."

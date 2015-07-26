@@ -16,46 +16,43 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-def to_boolean(str)
-    str == 'true' or str == true
-end
-
-def user_exists(user, pass)
+def user_exists(key, userId, pass)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     accounts = mongo_session[:accounts]
 	
     query = Hash.new
-    query["Username"] = user
+    query[key] = userId
 	
     documents = accounts.find(query).to_a
 	mongo_session.disconnect
     if documents.count == 0
         return false
     else
-        #bypass password check if facebook account
-        return true if to_boolean(documents[0]["IsFacebook"]) 
-        
         return PasswordHash.validatePassword(pass, documents[0]["Password"])
     end
 end
 
-def delete_user(user)
+def delete_user(key, userId)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     usr_obj = Hash.new
-    usr_obj["Username"] = user
+    usr_obj[key] = user
  
     ret_msg = ""
  
     begin
+        #delete the user
         mongo_session.with(safe: true) do |session|
             session[:accounts].find(usr_obj).remove
         end
         
-        #TODO here we need to do a cascade delete in payments and listings
+        #delete the listings associated with the user
+        mongo_session.with(safe: true) do |session|
+            session[:listings].find(usr_obj).remove_all
+        end
         
         ret_msg = "Okay"
     rescue Moped::Errors::OperationFailure => e
@@ -68,11 +65,11 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1]
-    #is_landlord = ARGV[2].to_b if not ARGV[2].nil?
+    id = (is_landlord ? data["userId"] : data["landlordId"])
+    key = (is_landlord ? "UserId" : "LandlordId")
     
-    if user_exists(username, data["password"])
-        puts delete_user(username)
+    if user_exists(key, id, data["password"])
+        puts delete_user(key, username)
     else
         puts "Incorrect Password"
     end

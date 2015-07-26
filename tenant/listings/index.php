@@ -130,9 +130,8 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header actions">
-					<i class="fa fa-check"></i>
-					<h3>Registered Listings</h3>
-                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+					<h3>Registered Listing</h3>
+                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px; display: none;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
                     <label>Click the listing(s) below to update and see more details</label>
@@ -238,9 +237,11 @@
 
 <script>
 
+var userId = "<?php echo $_SESSION["userId"]; ?>";
+
 $(function() 
-{   
-    getAllListings();
+{  
+    getAllListings(userId.trim());
 
     initSpecialFields();
 });

@@ -6,9 +6,9 @@ session_start();
 
 if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST["command"]))
 {
-    $data = (isset($_POST["data"]) ? $data = remove_malicious_characters($_POST["data"]) : NULL);
-    $landlord = (isset($_SESSION["landlord"]) ? 'true' : 'false');
-    $user = (isset($_SESSION["tenant"]) ? $_SESSION["tenant"] : $_SESSION["landlord"]);
+    #all other commands go through this branch
+    
+    $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
     
     // if we're running commands off of the front page, we don't want to filter
     // on user or landlord in the back end
@@ -18,26 +18,27 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
         $user = NULL;
     }
     
-    echo shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' $user $landlord");
-}
-else if (isset($_POST["command"]) && isset($_POST["data"]))
-{
-    $data = $_POST["data"];
-    $data = remove_malicious_characters($data);
+    debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
     
     $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
     
-    if (strpos($result, "Okay") === 0)
-    {
-        if (strpos($result, "Tenant") === 5)
-        {
-            $_SESSION["tenant"] = $user;
-        }
-        else if (strpos($result, "Landlord") === 5)
-        {
-            $_SESSION["landlord"] = $user;
-        }
-    }
+    set_session($result, $data);
+    
     echo $result;
+}
+else if (isset($_POST["command"]))
+{
+    #login.rb, facebook_login.rb, and get_listings.rb all go through this branch
+    
+    $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
+    
+    if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account")
+    {
+        $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+    
+        set_session($result, $data);
+    
+        echo $result;
+    }
 }
 ?>

@@ -10,22 +10,26 @@ require 'json'
 require 'moped'
 require 'bson'
 
-def create_user_from_facebook_credentials(user, pass)
+def create_user_from_facebook_credentials(fbUserId, pass)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
+    #landlords (giving a landlord id) is assigned by admins, or through special portal
+    
     usr_obj = Hash.new
-    usr_obj["Username"] = user
+    # since usernames need to be unique and recognizable in the javascript later
+    usr_obj["Username"] = SecureRandom.hex.to_s + "Facebook"
+    usr_obj["UserId"] = SecureRandom.uuid
+    usr_obj["FacebookId"] = fbUserId
     usr_obj["Password"] = pass
-    usr_obj["Landlord"] = false
-    usr_obj["Email"] = SecureRandom.hex  #just so we can insert it...
-    usr_obj["Active"] = true
+    # since emails need to be unique
+    usr_obj["Email"] = SecureRandom.hex
+    usr_obj["IsActive"] = true
     usr_obj["IsAdmin"] = false
-    usr_obj["IsFacebook"] = true
-    #usr_obj["Verified"] = false
+    usr_obj["IsVerified"] = true # TODO: email verification
  
     query_obj = Hash.new
-    query_obj["Username"] = user
+    query_obj["FacebookId"] = fbUserId
  
     documents = Array.new
     ret_msg = ""
@@ -38,12 +42,12 @@ def create_user_from_facebook_credentials(user, pass)
         mongo_session.with(safe: true) do |session|
             session[:accounts].insert(usr_obj)
         end
-        ret_msg = "Needs Update"
+        ret_msg = "Okay:Created:#{usr_obj["UserId"]}"
     else
-        if documents[0]["Landlord"] == true
-            ret_msg = "Okay:Landlord"
+        if documents[0]["LandlordId"].nil?
+            ret_msg = "Okay:Tenant:#{documents[0]["UserId"]}"
         else
-            ret_msg = "Okay:Tenant"
+            ret_msg = "Okay:Landlord:#{documents[0]["LandlordId"]}"
         end
     end
     
@@ -52,7 +56,6 @@ def create_user_from_facebook_credentials(user, pass)
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
 	
     #create a user from the facebook credentials if there isn't one already
