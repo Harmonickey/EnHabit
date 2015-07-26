@@ -19,7 +19,7 @@ if (!isset($_SESSION['CREATED'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Enhabit | Find Your Perfect Home Away From Home</title>
+        <title>Enhabit</title>
         <!-- favicon -->
         <link rel="icon" type="image/jpg" href="favicon.png">
         <!-- Bootstrap core CSS -->
@@ -63,14 +63,14 @@ if (!isset($_SESSION['CREATED'])) {
                     <li id="login_create-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login_create" class="btn btn-outline-inverse btn-sm">Log In</a></li>
                     <li id="manage_account-function" class="menu-item scroll" style="display: none;" onclick="load_modal(event, 'modal-content-8', 'manage_account');"><a class="btn btn-outline-inverse btn-sm">Manage Account</a></li>
                     <li id="manage_listings-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="listings">Manage Listings</a></li>
-                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
+                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings</a></li>
                 </ul>
                 <div id="Filters">
                     <h1 class="text-center">Filter listings</h1>
                     <div class="item-content">
                         <div class="price-content"">
                             <span>Price Range</span>
-                            <span id="amount" style="border:0; color:#f6931f; font-weight:bold;">$800 - $1500</span>
+                            <span id="amount" style="border:0; color:#b55783; font-weight:bold;">$800 - $1500</span>
                         </div>
                         <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                     </div>
@@ -121,7 +121,7 @@ if (!isset($_SESSION['CREATED'])) {
                         <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
                     </div>
                     <div class="item-content more-filters-content">
-                        <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
+                        <input type="button" class="btn btn-primary" value="Show Extra Filters" onclick="open_extras_view();" />
                     </div>
                 </div>
                 <!-- #main-menu -->

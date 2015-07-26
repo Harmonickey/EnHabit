@@ -17,7 +17,7 @@ var background_settings = {
 }
 
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
-var map = L.mapbox.map('map', 'mapbox.streets').setView([42.059, -87.682], 15);
+var map = L.mapbox.map('map', 'mapbox.streets').setView([42.057, -87.680], 15);
 var markers = new L.FeatureGroup();
 //map.on('draw:created', getPointsWithinPolygon);
 
@@ -1273,8 +1273,6 @@ function load_modal(event, which, enter_default, btnText)
     modal_backdrop_height($('#common-modal.modal'));
 }
 
-/***** MARCEL LOOK HERE!!!!! *****/
-/***** the "extras" functions are what you care about *****/
 function open_listings_list()
 {
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
@@ -1318,7 +1316,7 @@ function close_listings_list()
         {
             width: "0px"
         }, 1000, 'easeInOutCubic', function() {
-            $("#view_listings_list-function a").text("View Listings List");
+            $("#view_listings_list-function a").text("View Listings");
             $("#view_listings_list-function").attr("onclick", "open_listings_list()");
         });
     });
@@ -1343,12 +1341,10 @@ function load_listings_list()
     $("#listings").fadeIn();
     //TODO: aggregate all the information into a listings list
     
-    //then change the view listings list to "close listings list"
-    $("#view_listings_list-function a").text("Close Listings List");
+    //then change the view listings list to "Hide Listings"
+    $("#view_listings_list-function a").text("Hide Listings");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
-
-/***** MARCEL DON'T LOOK PAST HERE!!!!! *****/
 
 function load_update_account_modal(event, title, keepDelete)
 {
