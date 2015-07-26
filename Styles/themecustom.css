@@ -479,3 +479,8 @@
     float: left;
     width: 100%;
 }
+
+.msgGrowl-container
+{
+    z-index: 1;
+}

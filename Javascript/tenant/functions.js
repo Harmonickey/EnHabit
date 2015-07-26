@@ -5,6 +5,8 @@ EVENT HANDLERS
 
 **********************/
 
+var savedUsername = "";
+
 $(document).on("keypress", function(e)
 {
     var code = e.keyCode || e.which;
@@ -14,7 +16,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function getAllListings()
+function getAllListings(userId)
 {
     try
     {
@@ -30,6 +32,10 @@ function getAllListings()
             data: 
             {
                 command: "get_listings",
+                data:
+                {
+                    userId: userId
+                },
                 endpoint: "Listings"
             },
             success: function(res) 
@@ -39,11 +45,14 @@ function getAllListings()
                     if (!res)
                     {
                         throw new Error("Unable to retrieve listings");
-                        $("#accordion").html("<p>No Listings Yet</p>");
+                        $("#accordion").html("<p>No Listing Yet</p>");
+                        $(".actions a").show();
+                        
                     }
                     else if (contains(res, "No Matching Entries"))
                     {
-                        $("#accordion").html("<p>No Listings Yet</p>");
+                        $("#accordion").html("<p>No Listing Yet</p>");
+                        $(".actions a").show();
                     }
                     else
                     {
@@ -54,20 +63,27 @@ function getAllListings()
                         if (contains(res, "Error"))
                         {
                             throw new Error(res);
+                            $(".actions a").show();
                         }
                         else
                         {
                             for (var i = 0; i < data.length; i++)
                             {
                                 var oid = data[i]._id.$oid;
+                                var userId = data[i].UserId;
                                 
-                                $("#accordion").append(createAccordionView(oid, data[i]));
+                                $("#accordion").append(createAccordionView(oid, userId, data[i]));
                                     
                                 setGeocompleteTextBox(oid);
                                 setTextBoxWithAutoNumeric(oid);
                                 setDatePickerTextBox(oid);
                                 setBootstrapSwitches(oid);
                                 setTextBoxWithTags(oid);
+                            }
+                            
+                            if (data.length == 0)
+                            {
+                                $(".actions a").show();
                             }
                         }
                         
@@ -97,7 +113,7 @@ function getAllListings()
     }
 }
 
-function getAccount()
+function getAccount(userId)
 {
     try
     {
@@ -112,19 +128,22 @@ function getAccount()
             data: 
             {
                 command: "get_user_info",
+                data:
+                {
+                    userId: userId
+                },
                 endpoint: "Accounts"
             },
             success: function(res) 
             {
                 try
                 {
-                    if (!res)
+                    if (!res || contains(res, "Could Not Find User"))
                     {
                         throw new Error("Unable to retrieve account info");
                     }
                     else
                     {
-                        console.log(res);
                         $(".account .fa-spinner").remove();
 
                         var data = JSON.parse(res);
@@ -223,6 +242,7 @@ function fillAccountInfo(data)
     {
         $(inputs[0]).val(data["Username"]);
     }
+    savedUsername = data["Username"];
     
     // and, this only skips with facebook accounts too
     if (contains(data["Email"], "@"))
@@ -234,7 +254,7 @@ function fillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function delete_listing(id)
+function delete_listing(id, uuid)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -267,7 +287,8 @@ function delete_listing(id)
                         command: "delete_listing",
                         data:
                         {
-                            id: id
+                            id: id,
+                            userId: uuid
                         },
                         endpoint: "Listings"
                     },
@@ -280,6 +301,8 @@ function delete_listing(id)
                                 // remove the row that we just selected
                                 $("#" + id).parent().remove();
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
+                                $(".actions a").show();
+                                $("#accordion").text("No Listing Yet");
                             }
                             else
                             {
@@ -312,7 +335,7 @@ function delete_listing(id)
     });
 }
 
-function update_listing(id)
+function update_listing(id, userId)
 {
     var inputs = $("#" + id + " input").not(":eq(6)");
     
@@ -322,6 +345,7 @@ function update_listing(id)
     var error = buildError(data);
     
     data.id = id;
+    data.userId = userId;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
@@ -405,6 +429,7 @@ function create_listing()
     data.type = (data.type == true ? "apartment" : "sublet");
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
+    data.userId = userId;
     
     try
     {
@@ -447,9 +472,15 @@ function create_listing()
                             }
                             else
                             {
-                                var oid = listing._id.$oid;
+                                if ($("#accordion").text() == "No Listing Yet")
+                                {
+                                    $("#accordion").html("");
+                                }
                                 
-                                $("#accordion").append(createAccordionView(oid, listing));
+                                var oid = listing._id.$oid;
+                                var userId = listing.UserId;
+                                
+                                $("#accordion").append(createAccordionView(oid, userId, listing));
                                     
                                 setGeocompleteTextBox(oid);
                                 setTextBoxWithAutoNumeric(oid);
@@ -460,6 +491,8 @@ function create_listing()
                                 $("#createListingModal").modal('hide');
                                 
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                                
+                                $(".actions a").hide();
                             }
                         }
                     }
@@ -636,10 +669,12 @@ function update_account()
 {
     var inputs = $(".account input");
     
-    var data = buildData(inputs, ["email", "firstname", "lastname", "phonenumber", "password", "confirm"]);
+    var data = buildData(inputs, ["username", "email", "firstname", "lastname", "phonenumber", "password", "confirm"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
+    
+    data.userId = userId;
     
     try
     {
@@ -671,6 +706,7 @@ function update_account()
                         if (contains(res, "Okay"))
                         {
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-left'});
+                            $("#title_username").html("<i class='fa fa-user'></i>" + data.username + "<b class='caret'></b>");
                         }
                         else
                         {
@@ -721,7 +757,7 @@ function delete_account()
         ]
     }, function(password) {
         
-        var data = {"password": password};
+        var data = {"password": password, "userId": userId};
         
         try
         {
@@ -866,6 +902,10 @@ function buildError(fields)
     
     var beginning = "Please Include ";
     
+    if (fields.username === "")
+    {
+        error_arr.push("Valid Username");
+    }
     if (fields.address === "" || fields.latitude === "" || fields.longitude === "")
     {
         error_arr.push("Valid Address - Must Select Google's Result");
@@ -902,7 +942,7 @@ function buildError(fields)
     {
         if (fields.password != fields.confirm)
         {
-            error_arr.push("Passwords must match");
+            error_arr.push("Matching Password and Confirmation");
         }
     }
     if (error_arr.length > 0)
@@ -961,7 +1001,7 @@ function formattedDate(dateString)
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
-function createAccordionView(oid, data)
+function createAccordionView(oid, uuid, data)
 {
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
@@ -999,16 +1039,16 @@ function createAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Animals</label><input type='checkbox' " + (data.Animals ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Animals</label><input type='checkbox' " + (data.HasAnimals ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Laundry</label><input type='checkbox' " + (data.Laundry ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Laundry</label><input type='checkbox' " + (data.HasLaundry ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Parking</label><input type='checkbox' " + (data.Parking ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Parking</label><input type='checkbox' " + (data.HasParking ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>AC</label><input type='checkbox' " + (data.AirConditioning ? "checked" : "") + " data-size='mini' />" +
+                                "<label>AC</label><input type='checkbox' " + (data.HasAirConditioning ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Type</label><input type='checkbox' " + (data.Type == "apartment" ? "checked" : "") + " data-size='mini' />" +
@@ -1021,8 +1061,8 @@ function createAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\", \"" + uuid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\", \"" + uuid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +

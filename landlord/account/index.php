@@ -81,7 +81,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                             
-                    <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <a id="title_username" href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
                         <?php echo $_SESSION["landlord"]; ?>
                         <b class="caret"></b>
@@ -169,7 +169,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 required">
-                            <label>Phone Number: </label><input type="text" class="form-control" />
+                            <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" />
                         </div>
                     </div>
                     <hr>
@@ -194,7 +194,7 @@
 	    </div> <!-- /col-md-8 -->     	
         <div class="col-md-4">
       		<div class="well">
-      			<h4>Extra Info</h4>
+      			<h4>Did You Know?</h4>
 				<p>You use your account to access everything with Enhabit, including your transactions!</p>										
 				<p>You are <b>not</b> required to change your password every time you make a change to other pieces of your account here.</p>
       		</div>  <!-- /well --> 							
@@ -241,9 +241,11 @@
 
 <script>
 
+var landlordId = "<?php echo $_SESSION["landlordId"]; ?>";
+
 $(function() 
-{
-    getAccount();
+{    
+    getAccount(landlordId);
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

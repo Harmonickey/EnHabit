@@ -247,9 +247,11 @@
 
 <script>
 
+var landlordId = "<?php echo $_SESSION["landlordId"]; ?>";
+
 $(function() 
 {
-    getAllListings();
+    getAllListings(landlordId.trim());
 
     initSpecialFields();
 });

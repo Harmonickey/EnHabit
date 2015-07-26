@@ -15,14 +15,15 @@ require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
+require 'tools'
 
-def update_user(user, firstName, lastName, email, phoneNumber, newPassword)
+def update_user(key, uuid, username, firstName, lastName, email, phoneNumber, newPassword)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     usr_obj = Hash.new
-    usr_obj["Username"] = user
+    usr_obj["Username"] = username
     usr_obj["FirstName"] = firstName
     usr_obj["LastName"] = lastName
     usr_obj["Email"] = email
@@ -30,8 +31,8 @@ def update_user(user, firstName, lastName, email, phoneNumber, newPassword)
     usr_obj["Password"] = PasswordHash.createHash(newPassword) if not newPassword.nil?
  
     query_obj = Hash.new
-    query_obj["Username"] = user
- 
+    query_obj[key] = uuid
+    
     ret_msg = ""
  
     #Username has a unique constraint attached, so we want to catch the raised error just in case
@@ -53,15 +54,15 @@ def update_user(user, firstName, lastName, email, phoneNumber, newPassword)
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
-    username = ARGV[1] if not ARGV[1].nil? and not ARGV[1].empty?
+    #we are checking this because it's an optional thing on the UI
     newPassword = data["password"] if not data["password"].nil? and not data["password"].empty? 
+    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
+    key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
     
-    result = update_user(username, data["firstname"], data["lastname"], data["email"], data["phonenumber"], newPassword)
-
-    puts result
-
+    result = update_user(key, id, data["username"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], newPassword)
+    
+    puts "#{result}:" + (data["landlordId"].nil? ? "Tenant" : "Landlord") + ":" + id
 rescue Exception => e
     puts e.inspect
 end

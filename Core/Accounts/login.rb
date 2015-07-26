@@ -33,16 +33,20 @@ def user_exists(user, pass)
     if documents.count == 0
         return false
     else
-        @is_landlord = true if documents[0]["Landlord"] == true
-        return PasswordHash.validatePassword(pass, documents[0]["Password"])
+        # if you have a landlord ID then they're obviously a landlord
+        @is_landlord = true if not documents[0]["LandlordId"].nil?
+        id = (@is_landlord ? documents[0]["LandlordId"] : documents[0]["UserId"])
+        return {"exists" => PasswordHash.validatePassword(pass, documents[0]["Password"]), "id" => id}
     end
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
 	
-    if user_exists(data["username"], data["password"])
-        puts (@is_landlord ? "Okay:Landlord" : "Okay:Tenant")
+    result = user_exists(data["username"], data["password"])
+    
+    if result["exists"]
+        puts (@is_landlord ? "Okay:Landlord:" : "Okay:Tenant:") + result["id"]
     else
         puts "Incorrect Username/Password"
     end

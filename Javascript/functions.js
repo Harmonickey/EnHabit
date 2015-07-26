@@ -866,13 +866,13 @@ function insertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.Animals + "\", \"" + data.Laundry + "\", \"" + data.Parking + "\", \"" + data.AirConditioning + "\", \"" + data.Tags + "\")' />" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\")' />" +
             "</div>" +
         "</div>"
     );
 }
 
-function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, ac, tags)
+function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags)
 {
     //load up the images into the modal...
     var slideshowContent = "";
@@ -898,7 +898,7 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
     $("#modal-content-15 .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
     $("#modal-content-15 .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
     $("#modal-content-15 .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
-    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(ac));
+    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
     $("#modal-content-15 .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
     
     populate_and_open_modal(null, 'modal-content-15');
@@ -922,6 +922,8 @@ function getPointsWithinPolygon(e)
 */ 
 function login_user(hide_main_modal)
 {
+    resetModal("login", "Log In", false);
+    
     var data = buildData(["username", "password"]);
 
     var error = buildError(data);
@@ -965,7 +967,7 @@ function login_user(hide_main_modal)
                             {
                                 $("#portal-function a").attr("href", "/landlord/listings");
                             }
-                            else
+                            else if (!contains(res, "Tenant"))
                             {
                                 throw new Error("Problem Logging In");
                             }
@@ -1126,8 +1128,7 @@ function logout_user(isDeleting)
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
     }
     
-
-    $("#login").text("Log In");
+    $("#login").text("Log In/Create Account");
     $("#login-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
 }
 
@@ -1394,13 +1395,29 @@ function buildError(fields)
 {
     var error = "Please Include<br>";
     
-    if (fields.username == "")
+    if (fields.username === "")
     {
         error += "Username<br>";
     }
-    if (fields.password == "")
+    if (fields.password === "")
     {
         error += "Password<br>";
+    }
+    if (fields.firstname === "")
+    {
+        error += "First Name<br>";
+    }
+    if (fields.lastname === "")
+    {
+        error += "Last Name<br>";
+    }
+    if (fields.email === "" || (fields.email != null && !isValidEmail(fields.email)))
+    {
+        error += "Valid Email<br>";
+    }
+    if (fields.phonenumber === "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    {
+        error += "Valid Phone Number<br>";
     }
     
     return error;
@@ -1410,7 +1427,7 @@ function setError(el, msg)
 {
     if (msg == "")
 	{
-		msg = "Internal Error: Please contact LbKStudios";
+		msg = "Internal Error: Please Try Again Later";
 	}
 	
     var modal = ".modal-body ."
