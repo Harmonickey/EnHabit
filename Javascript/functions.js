@@ -860,7 +860,7 @@ function insertIntoListView(data)
 {
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets/images/listing_images/pic1.jpg' height='100' width='100' />" +
+            "<img src='assets/images/listing_images/'" + data.Pictures[0] + " height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -1325,7 +1325,8 @@ function load_listings_list()
 {
     $("#listings").fadeIn();
     
-    $("#view_listings_list-function a").text("Close Listings List");
+    //then change the view listings list to "Hide Listings"
+    $("#view_listings_list-function a").text("Hide Listings");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 
