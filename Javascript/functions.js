@@ -9,7 +9,7 @@ var which_modal = "";
 
 var page_is_scrolling = false; // identify when page is being scrolled
 
-var defaultPicture = "../404ImageNotFound.png";
+var defaultPicture = "404ImageNotFound.png";
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
