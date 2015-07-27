@@ -869,7 +869,7 @@ function insertIntoListView(data)
     
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets/images/listing_images/'" + listingPic + " height='100' width='100' />" +
+            "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
