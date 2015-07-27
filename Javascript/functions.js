@@ -827,7 +827,7 @@ function insertMarkers(res)
             if (!images || images.length == 0)
             {
                 images = [];
-                images[0] = defaultPicture;
+                images.push(defaultPicture);
             }
             for(var i = 0; i < images.length; i++) 
             {
@@ -865,7 +865,7 @@ function insertMarkers(res)
 
 function insertIntoListView(data)
 {
-    var listingPic = (!data.Pictures || data.Pictures.length > 0 ? data.Pictures[0] : defaultPicture);
+    var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
     
     $("#listings").append(
         "<div class='item-content listing'>" +
@@ -887,10 +887,10 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "assets/images/listing_images/";
-    if (images.length == 0)
+    if (!images || images.length == 0)
     {
         images = [];
-        images[0] = defaultPicture;
+        images.push(defaultPicture);
     }
     for(var i = 0; i < images.length; i++) 
     {
