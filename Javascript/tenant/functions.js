@@ -6,7 +6,7 @@ EVENT HANDLERS
 **********************/
 
 var savedUsername = "";
-var pendingData = {};
+var pendingData = null;
 var numUploaded = 0;
 
 $(document).on("keypress", function(e)
@@ -389,6 +389,7 @@ function update_listing(id, userId)
                         if (contains(res, "Okay"))
                         {
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                            numUploaded = 0;
                         }
                         else
                         {
@@ -398,6 +399,7 @@ function update_listing(id, userId)
                     catch(e)
                     {
                         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        numUploaded = 0;
                     }
                 },
                 error: function(err, res)
@@ -522,6 +524,10 @@ function process_listing()
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
                         
                         $(".actions a").hide();
+                        
+                        numUploaded = 0;
+                        
+                        pendingData = {};
                     }
                 }
             }
@@ -894,7 +900,10 @@ function createDropzone(key, element, existingPics)
         if (numUploaded == this.files.length - 1)
         {
             numUploaded = 0;
-            process_listing(); 
+            if (pendingData != null)
+            {
+                process_listing(); 
+            }
         }
         else
         {
