@@ -9,6 +9,8 @@ var which_modal = "";
 
 var page_is_scrolling = false; // identify when page is being scrolled
 
+var defaultPicture = "404ImageNotFound.png";
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -822,6 +824,11 @@ function insertMarkers(res)
             var slideshowContent = "";
             var base = "assets/images/listing_images/";
             var images = d.Pictures;
+            if (images.length == 0)
+            {
+                images = [];
+                images[0] = defaultPicture;
+            }
             for(var i = 0; i < images.length; i++) 
             {
                 var source = base + images[i];
@@ -858,9 +865,11 @@ function insertMarkers(res)
 
 function insertIntoListView(data)
 {
+    var listingPic = (data.Pictures.length > 0 ? data.Pictures[0] : defaultPicture);
+    
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets/images/listing_images/'" + data.Pictures[0] + " height='100' width='100' />" +
+            "<img src='assets/images/listing_images/'" + listingPic + " height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -878,6 +887,11 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "assets/images/listing_images/";
+    if (images.length == 0)
+    {
+        images = [];
+        images[0] = defaultPicture;
+    }
     for(var i = 0; i < images.length; i++) 
     {
         var source = base + images[i];
