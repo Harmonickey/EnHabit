@@ -9,8 +9,6 @@
         $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;
         $targetFile =  $targetPath. $_FILES['file']['name'];
         
-        debug_string($targetFile);
-        
         move_uploaded_file($tempFile, $targetFile);
     }
 ?>
