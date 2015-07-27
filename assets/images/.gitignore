@@ -1,0 +1,15 @@
+# Listing Images
+listing_images/*.png
+listing_images/*.PNG
+listing_images/*.jpg
+listing_images/*.JPG
+listing_images/*.jpeg
+listing_images/*.JPEG
+listing_images/*.tiff
+listing_images/*.TIFF
+listing_images/*.gif
+listing_images/*.GIF
+listing_images/*.bmp
+listing_images/*.BMP
+listing_images/*.webp
+listing_images/*.WEBP
