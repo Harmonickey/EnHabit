@@ -824,7 +824,7 @@ function insertMarkers(res)
             var slideshowContent = "";
             var base = "assets/images/listing_images/";
             var images = d.Pictures;
-            if (images.length == 0)
+            if (!images || images.length == 0)
             {
                 images = [];
                 images[0] = defaultPicture;
@@ -865,7 +865,7 @@ function insertMarkers(res)
 
 function insertIntoListView(data)
 {
-    var listingPic = (data.Pictures.length > 0 ? data.Pictures[0] : defaultPicture);
+    var listingPic = (!data.Pictures || data.Pictures.length > 0 ? data.Pictures[0] : defaultPicture);
     
     $("#listings").append(
         "<div class='item-content listing'>" +
