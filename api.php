@@ -18,8 +18,6 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
         $user = NULL;
     }
     
-    debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
-    
     $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
     
     set_session($result, $data);

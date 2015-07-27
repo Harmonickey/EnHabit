@@ -820,16 +820,17 @@ function insertMarkers(res)
             var marker = L.marker([d.WorldCoordinates.x, d.WorldCoordinates.y]).addTo(map);
             
             var slideshowContent = "";
-            var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+            var base = "assets/images/listing_images/";
+            var images = d.Pictures;
             for(var i = 0; i < images.length; i++) 
             {
-                var img = images[i];
+                var source = base + images[i];
 
                 slideshowContent += 
                                     '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                      '<img src="' + img["src"] + '" height="200" width="300"/>' +
-                                      '<div class="caption">' + img["caption"] + '</div>' +
+                                      '<img src="' + source + '" height="200" width="300"/>' +
                                     '</div>';
+                                    //'<div class="caption">' + img["caption"] + '</div>' +
             }
             
             var popupContent =  
@@ -866,26 +867,26 @@ function insertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\")' />" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\", \"" + data.Pictures + "\")' />" +
             "</div>" +
         "</div>"
     );
 }
 
-function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags)
+function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
 {
     //load up the images into the modal...
     var slideshowContent = "";
-    var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+    var base = "assets/images/listing_images/";
     for(var i = 0; i < images.length; i++) 
     {
-        var img = images[i];
+        var source = base + images[i];
 
         slideshowContent += 
                             '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                              '<img src="' + img["src"] + '" />' +
-                              '<div class="caption">' + img["caption"] + '</div>' +
+                              '<img src="' + source + '" />' +
                             '</div>';
+                            //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
     $("#modal-content-15 h3").text(address);

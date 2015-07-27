@@ -210,7 +210,7 @@ begin
 
     listings = mongo_session[:listings]
     
-    documents = listings.find(@main_filter).select(_id: 1, UserId: 1, LandlordId: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1).to_a
+    documents = listings.find(@main_filter).select(_id: 1, UserId: 1, LandlordId: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
     mongo_session.disconnect
 
     if documents.count == 0

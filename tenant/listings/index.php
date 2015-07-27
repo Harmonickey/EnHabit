@@ -48,6 +48,8 @@
     <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
     <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
     
+    <link href="../../Libraries/Styles/dropzone.css" rel="stylesheet">
+    
     <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
     <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
@@ -203,6 +205,9 @@
                 <label>Landlord</label><input type='text' class='form-control' />
                 <br>
                 <label>Tags (Optional)</label><input type='text' data-role='tagsinput' />
+                <br>
+                <label>Images (Will Upload Upon Submit)</label>
+                <form action="/Libraries/upload_file.php" data-pic-id="create" class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
@@ -232,15 +237,22 @@
 <!-- helper for datepicker -->
 <script src="../../Libraries/Javascript/pikaday.js"></script>
 <script src="../../Libraries/Javascript/pikaday.jquery.js"></script>
+<!-- helper for file upload -->
+<script src="../../Libraries/Javascript/dropzone.js"></script>
 
 <script src="../../Javascript/tenant/functions.js"></script>
 
 <script>
+Dropzone.autoDiscover = false;
 
 var userId = "<?php echo $_SESSION["userId"]; ?>";
+var pictures = {}; // object of arrays for update-listing
+var dropzones = {};
 
 $(function() 
 {  
+    createDropzone("create", "#createListingModal form");
+
     getAllListings(userId.trim());
 
     initSpecialFields();
