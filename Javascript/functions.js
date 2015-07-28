@@ -1501,6 +1501,12 @@ $(function ()
 });
 
 $(window).on('resize', function() {
-   //otherwise they get out of place
-   setHiddenSidebars(); 
+    //otherwise they get out of place
+    setHiddenSidebars();
+   
+    if ($("#listings_list").width() > 0)
+    {
+        $("#listings_list").stop();
+        open_listings_list();
+    }
 });
