@@ -390,7 +390,16 @@
     width: 0px;
     height: 100%;
     overflow: hidden;
+}
+
+#extras_view
+{
     background: rgba(0,0,0,0.79);
+}
+
+#listings_list
+{
+    background: rgba(48, 47, 45, 1.0);
 }
 
 @media (min-width: 992px)
