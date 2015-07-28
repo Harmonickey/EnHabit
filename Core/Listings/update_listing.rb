@@ -19,7 +19,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def update_listing(id, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
@@ -30,6 +30,7 @@ def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, b
     listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
+    listing_obj["Unit"] = unit if not unit.nil? and not unit.empty?
     listing_obj["Bedrooms"] = bedrooms.to_i
     listing_obj["Bathrooms"] = bathrooms.to_i
     listing_obj["HasAnimals"] = animals.to_b
@@ -110,7 +111,7 @@ begin
         landlordId = "" if landlordId == "No Match"
     end
     
-    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

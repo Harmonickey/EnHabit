@@ -17,7 +17,7 @@ require 'moped'
 require 'mongoid'
 require 'tools'
 
-def create_listing(userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def create_listing(userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -27,6 +27,7 @@ def create_listing(userId, landlord, landlordId, price, address, bedrooms, bathr
     listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
+    listing_obj["Unit"] = unit if not unit.nil? and not unit.empty?
     listing_obj["Bedrooms"] = bedrooms.to_i
     listing_obj["Bathrooms"] = bathrooms.to_i
     listing_obj["HasAnimals"] = animals.to_b
@@ -52,7 +53,7 @@ def create_listing(userId, landlord, landlordId, price, address, bedrooms, bathr
             #restrict more than one listing to landlords
             if listing.count == 0 and not landlordId.nil?
                 session[:listings].insert(listing_obj)
-                document = session[:listings].find({"Address" => address}).select(_id: 1, UserId: 1, LandlordId: 1, Price: 1, Address: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1, Pictures: 1).one
+                document = session[:listings].find({"Address" => address}).select(_id: 1, UserId: 1, LandlordId: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1, Pictures: 1).one
             else
                 document["error"] = "Tenants can only have one listing at a time."
             end

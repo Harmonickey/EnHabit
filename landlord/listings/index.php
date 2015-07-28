@@ -183,6 +183,7 @@
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
                 <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="off" />
+                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
                 <label>Rent/Month</label><input type='text' class='form-control' />
                 <label>Start Date</label><input type='text' class='form-control' />
                 <label>Bedrooms</label>

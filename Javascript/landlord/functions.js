@@ -340,9 +340,9 @@ function delete_listing(id, uuid)
 
 function update_listing(id, landlordId)
 {
-    var inputs = $("#" + id + " input").not(":eq(6)");
+    var inputs = $("#" + id + " input").not(":eq(7)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
@@ -351,6 +351,7 @@ function update_listing(id, landlordId)
     data.landlordId = landlordId;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
+    data.address = data.address.split(",")[0];
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.pictures = pictures[id];
     
@@ -426,14 +427,15 @@ function update_listing(id, landlordId)
 
 function create_listing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(11)");
+    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(12)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
     
     var error = buildError(data);
     
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
+    data.address = data.address.split(",")[0];
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.landlordId = landlordId;
     data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
@@ -1110,13 +1112,16 @@ function createAccordionView(oid, uuid, data)
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Unit</label><input type='text' class='form-control' value='" + data.Unit + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 
                             "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
                             "</div>" + 
                         "</div>" +

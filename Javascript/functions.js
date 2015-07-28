@@ -842,7 +842,7 @@ function insertMarkers(res)
             
             var popupContent =  
                         '<div id="' + d._id.$oid + '" class="popup">' +
-                            '<h2>' + d.Address + '</h2>' +
+                            '<h2>' + d.Address + ' ' + d.Unit + '</h2>' +
                             '<h3>$' + d.Price + '/month</h2>' +
                             '<div class="slideshow">' +
                                 '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
@@ -871,7 +871,7 @@ function insertIntoListView(data)
         "<div class='item-content listing'>" +
             "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
-                "<p class='listing-address'>" + data.Address + "</p>" +
+                "<p class='listing-address'>" + data.Address + " " + data.Unit + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
@@ -882,7 +882,7 @@ function insertIntoListView(data)
     );
 }
 
-function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
+function openListing(id, address, unit, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
 {
     //load up the images into the modal...
     var slideshowContent = "";
@@ -903,9 +903,8 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
                             //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
-    $("#modal-content-15 h3").text(address);
+    $("#modal-content-15 h3").text(address + " " + unit);
     $("#modal-content-15 .slideshow").html(slideshowContent);
-
     $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
     $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);
     $("#modal-content-15 .popup-price").text("Rent: $" + price + "/month");
