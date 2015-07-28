@@ -1315,7 +1315,7 @@ function close_listings_list()
         {
             width: "0px"
         }, 1000, 'easeInOutCubic', function() {
-            $("#view_listings_list-function a").text("View Listings");
+            $("#view_listings_list-function a").text("View Listings as List");
             $("#view_listings_list-function").attr("onclick", "open_listings_list()");
         });
     });
@@ -1491,6 +1491,13 @@ $(function ()
     loadAllDefaultListings();
     
     setHiddenSidebars();
+    
+    $('#listings').slimScroll({
+        height: '100%',
+        railVisible: true,
+        alwaysVisible: true,
+        size: '10px'
+    });
 });
 
 $(window).on('resize', function() {

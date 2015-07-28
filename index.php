@@ -133,7 +133,7 @@ if (!isset($_SESSION['CREATED'])) {
             </section>
             <div id="listings_list">
                 <div id="listings">
-                    
+                
                 </div>
             </div>
             <div id="extras_view">
@@ -291,6 +291,8 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- helper for datepicker -->
         <script src="Libraries/Javascript/pikaday.js"></script>
         <script src="Libraries/Javascript/pikaday.jquery.js"></script>
+        <!-- fancy scrollbars -->
+        <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>       
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
