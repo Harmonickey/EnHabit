@@ -11,6 +11,9 @@ var page_is_scrolling = false; // identify when page is being scrolled
 
 var defaultPicture = "404ImageNotFound.png";
 
+var entries = {};
+var multi_popup = {};
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -817,50 +820,135 @@ function insertMarkers(res)
     if (res != "")
     {
         var data = JSON.parse(res);
-        data.forEach(function(d)
+        
+        // organize the data, we might have multiple pins
+        // in the same place
+        data.forEach(function(d) 
         {
-            var marker = L.marker([d.WorldCoordinates.x, d.WorldCoordinates.y]).addTo(map);
-            
-            var slideshowContent = "";
-            var base = "assets/images/listing_images/";
-            var images = d.Pictures;
-            if (!images || images.length == 0)
+            if (entries[d.Address] == null)
             {
-                images = [];
-                images.push(defaultPicture);
+                entries[d.Address] = [d];
             }
-            for(var i = 0; i < images.length; i++) 
+            else
             {
-                var source = base + images[i];
-
-                slideshowContent += 
-                                    '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                      '<img src="' + source + '" height="200" width="300"/>' +
-                                    '</div>';
-                                    //'<div class="caption">' + img["caption"] + '</div>' +
+                entries[d.Address].push(d);
             }
-            
-            var popupContent =  
-                        '<div id="' + d._id.$oid + '" class="popup">' +
-                            '<h2>' + d.Address + ' ' + d.Unit + '</h2>' +
-                            '<h3>$' + d.Price + '/month</h2>' +
-                            '<div class="slideshow">' +
-                                '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
-                                '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
-                                slideshowContent +
-                            '</div>' +
-                        '</div>';
-            
-            marker.bindPopup(popupContent, {
-                closeButton: false,
-                minWidth: 320
-            });
-            
-            markers.addLayer(marker);
-            
-            insertIntoListView(d);
         });
+        
+        $.each(entries, function(address, entry) 
+        {
+            if (entry.length == 1)
+            {
+                var marker = L.marker([entry.WorldCoordinates.x, entry.WorldCoordinates.y]).addTo(map);
+                
+                var slideshowContent = "";
+                var base = "assets/images/listing_images/";
+                var images = entry.Pictures;
+                if (!images || images.length == 0)
+                {
+                    images = [];
+                    images.push(defaultPicture);
+                }
+                for(var i = 0; i < images.length; i++) 
+                {
+                    var source = base + images[i];
+
+                    slideshowContent += 
+                                        '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                                          '<img src="' + source + '" height="200" width="300"/>' +
+                                        '</div>';
+                                        //'<div class="caption">' + img["caption"] + '</div>' +
+                }
+                
+                var popupContent =  
+                            '<div id="' + entry._id.$oid + '" class="popup">' +
+                                '<h2>' + entry.Address + ' ' + (entry.Unit ? entry.Unit : "") + '</h2>' +
+                                '<h3>$' + entry.Price + '/month</h2>' +
+                                '<div class="slideshow">' +
+                                    '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
+                                    '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
+                                    slideshowContent +
+                                '</div>' +
+                            '</div>';
+                
+                marker.bindPopup(popupContent, 
+                {
+                    closeButton: false,
+                    minWidth: 320
+                });
+                
+                markers.addLayer(marker);
+                
+                insertIntoListView(entry);
+            }
+            else
+            {
+                var entry = d[0];
+                
+                var marker = L.marker([entry.WorldCoordinates.x, entry.WorldCoordinates.y]).addTo(map);
+                
+                var popupContent =  
+                            '<div class="popup">' +
+                                '<h2>' + entry.Address + '</h2>' +
+                                '<p>Multiple listings available.</p>' +
+                                '<input type="button" class="btn btn-info" value="Show All" onclick="load_multiple_listings(\"' + entry.Address + '\")">' +
+                            '</div>';
+                
+                marker.bindPopup(popupContent, 
+                {
+                    closeButton: false,
+                    minWidth: 320
+                });
+                
+                markers.addLayer(marker);
+                
+                // now that we have a pin, we need to fill in our section of the hash
+                $.each(d, function(index, entry)
+                {
+                    var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
+                    
+                    if (multi_popup[entry.Address] == null)
+                    {
+                        multi_popup[entry.Address] = [
+                            "<div class='item-content listing'>" +
+                                "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+                                "<div class='information'>" +
+                                    "<p class='listing-address'>" + entry.Address + " " + (entry.Unit ? entry.Unit : "") + "</p>" +
+                                    "<p class='listing-bedrooms'>" + entry.Bedrooms + " Bedroom" + (entry.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + entry.Bathrooms + " Bathroom" + (entry.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-price'>$" + entry.Price + "/month</p>" +
+                                    "<p class='listing-type'>" + entry.Type.capitalizeFirstLetter() + "</p><br>" +
+                                "</div>" +
+                            "</div>"];
+                    }
+                    else
+                    {
+                        multi_popup[entry.Address].push(
+                            "<div class='item-content listing'>" +
+                                "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+                                "<div class='information'>" +
+                                    "<p class='listing-address'>" + entry.Address + " " + (entry.Unit ? entry.Unit : "") + "</p>" +
+                                    "<p class='listing-bedrooms'>" + entry.Bedrooms + " Bedroom" + (entry.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + entry.Bathrooms + " Bathroom" + (entry.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-price'>$" + entry.Price + "/month</p>" +
+                                    "<p class='listing-type'>" + entry.Type.capitalizeFirstLetter() + "</p><br>" +
+                                "</div>" +
+                            "</div>");
+                    }
+                });
+            }
+        )};
     }
+}
+
+function open_multiple_listings(address)
+{
+    $.each(multi_popup[address], function(index, entry)
+    {
+        $("#modal-content-16").append(entry);
+    });
+    
+    populate_and_open_modal(null, 'modal-content-16');
 }
 
 function insertIntoListView(data)
@@ -871,7 +959,7 @@ function insertIntoListView(data)
         "<div class='item-content listing'>" +
             "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
-                "<p class='listing-address'>" + data.Address + " " + data.Unit + "</p>" +
+                "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
@@ -903,7 +991,7 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
                             //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
-    $("#modal-content-15 h3").text(address + " " + unit);
+    $("#modal-content-15 h3").text(address + " " + (unit ? unit : ""));
     $("#modal-content-15 .slideshow").html(slideshowContent);
     $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
     $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);

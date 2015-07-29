@@ -214,7 +214,7 @@ function setTextBoxWithAutoNumeric(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
-    $(row[1]).autoNumeric('init', 
+    $(row[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -230,7 +230,7 @@ function setTextBoxWithTags(rowId)
 
 function setDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " input[type='text']")[2]).pikaday(
+    $($("#" + rowId + " input[type='text']")[3]).pikaday(
     {
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
@@ -872,7 +872,7 @@ function initSpecialFields()
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
         
-    $(listing_modal[1]).autoNumeric('init', 
+    $(listing_modal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -880,7 +880,7 @@ function initSpecialFields()
         lZero: 'deny'
     });
     
-    $(listing_modal[2]).pikaday(
+    $(listing_modal[3]).pikaday(
     {
         minDate: new Date(), 
         setDefaultDate: new Date()
@@ -1107,7 +1107,7 @@ function createAccordionView(oid, uuid, data)
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
-                            "<label>Address: " + data.Address + "</label>" + 
+                            "<label>Address: " + data.Address + (data.Unit ? data.Unit : "") + "</label>" + 
                             "<label>Rent: $" + data.Price + "/Month</label>" + 
                             "<label>Start Date: " + formattedDate(data.Start) + "</label>" +
                         "</a>" +
@@ -1120,7 +1120,7 @@ function createAccordionView(oid, uuid, data)
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Unit</label><input type='text' class='form-control' value='" + data.Unit + "' /> " + 
+                                "<label>Unit</label><input type='text' class='form-control' value='" + (data.Unit ? data.Unit : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 

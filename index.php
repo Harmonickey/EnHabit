@@ -77,7 +77,7 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div class="item-content date-content">
                             <label>Available Starting</label>
-                            <input id="datepicker-inline" type="text" class="form-control" placeholder="mm/dd/yyyy"/>
+                            <input id="datepicker-inline" type="text" class="form-control" value="mm/dd/yyyy"/>
                     </div>
                     <div class="double-item-content">
                         <div class="item-content">
@@ -235,7 +235,12 @@ if (!isset($_SESSION['CREATED'])) {
                     </div> 
                 </div>
             </div>
-            <!-- #modal-content-15
+            <!-- #modal-content-15 -->
+            <!-- Multi-Listing -->
+            <div class="content-to-populate-in-modal" id="modal-content-16">
+                
+            </div>
+            <!-- #modal-content-16 -->
             <!-- end: Left Sidebar -->    
         </div>
         <!-- #outer-container -->

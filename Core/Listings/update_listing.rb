@@ -55,10 +55,12 @@ def update_listing(id, userId, landlord, landlordId, price, address, unit, bedro
         # delete all the pictures on disk that aren't in the updated list
         mongo_session.with(safe: true) do |session|
             document = session[:listings].find(query_obj).select(Pictures: 1).one
-            document["Pictures"].each do |pic|
-                if not pictures.nil? and not pictures.include? pic
-                    filename = "#{@deployment_base}/assets/images/listing_images/" + pic
-                    File.delete(filename) if File.exist? filename
+            if not document["Pictures"].nil?
+                document["Pictures"].each do |pic|
+                    if not pictures.nil? and not pictures.include? pic
+                        filename = "#{@deployment_base}/assets/images/listing_images/" + pic
+                        File.delete(filename) if File.exist? filename
+                    end
                 end
             end
         end
