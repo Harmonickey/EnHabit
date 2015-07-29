@@ -388,8 +388,17 @@
     position: fixed;
     z-index: 1;
     width: 0px;
-    height: 100%;
     overflow: hidden;
+}
+
+#listings_list
+{
+    height: 100%;
+}
+
+#extras_view
+{
+    height: 250px;
 }
 
 #extras_view
