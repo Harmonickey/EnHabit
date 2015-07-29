@@ -120,7 +120,7 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div class="item-content search-content">
                         <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
-                        <input type="button" class="btn btn-info" value="Show Extra Filters" onclick="open_extras_view();" />
+                        <input type="button" class="btn btn-primary" value="Show Extra Filters" onclick="open_extras_view();" />
                     </div>
                 </div>
                 <!-- #main-menu -->

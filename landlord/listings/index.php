@@ -218,7 +218,7 @@
                 <label>Tags (Optional)</label><input type='text' data-role='tagsinput' /> 
                 <br>
                 <label>Images (Will Upload Upon Submit)</label>
-                <form action="/Libraries/upload_file.php" data-pic-id="create" "class="dropzone"></form>
+                <form action="/Libraries/upload_file.php" data-pic-id="create" class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
@@ -254,6 +254,7 @@
 <script src="../../Javascript/landlord/functions.js"></script>
 
 <script>
+Dropzone.autoDiscover = false;
 
 var landlordId = "<?php echo $_SESSION["landlordId"]; ?>";
 var pictures = {}; // object of arrays for update-listing

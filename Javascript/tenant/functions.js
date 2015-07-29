@@ -95,7 +95,7 @@ function getAllListings(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -106,14 +106,14 @@ function getAllListings(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -164,7 +164,7 @@ function getAccount(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -175,7 +175,7 @@ function getAccount(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             complete: function()
@@ -186,7 +186,7 @@ function getAccount(userId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -304,7 +304,7 @@ function delete_listing(id, uuid)
                             {
                                 // remove the row that we just selected
                                 $("#" + id).parent().remove();
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 $(".actions a").show();
                                 $("#accordion").text("No Listing Yet");
                                 createDropzone("create", "#createListingModal form");
@@ -316,7 +316,7 @@ function delete_listing(id, uuid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     },
                     error: function(res, err)
@@ -327,14 +327,14 @@ function delete_listing(id, uuid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     }
                 });
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         }
     });
@@ -389,7 +389,7 @@ function update_listing(id, userId)
                     {
                         if (contains(res, "Okay"))
                         {
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
                         }
                         else
@@ -399,7 +399,7 @@ function update_listing(id, userId)
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         numUploaded = 0;
                     }
                 },
@@ -411,7 +411,7 @@ function update_listing(id, userId)
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 complete: function()
@@ -424,7 +424,7 @@ function update_listing(id, userId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -465,7 +465,7 @@ function create_listing()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -523,7 +523,7 @@ function process_listing()
                         
                         $("#createListingModal").modal('hide');
                         
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                         
                         $(".actions a").hide();
                         
@@ -535,7 +535,7 @@ function process_listing()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         },
         error: function(res, err)
@@ -546,7 +546,7 @@ function process_listing()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         },
         complete: function()
@@ -674,7 +674,7 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(err, res)
@@ -685,14 +685,14 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -736,7 +736,7 @@ function update_account()
                     {
                         if (contains(res, "Okay"))
                         {
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-left'});
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-center'});
                             $("#title_username").html("<i class='fa fa-user'></i>" + data.username + "<b class='caret'></b>");
                         }
                         else
@@ -746,7 +746,7 @@ function update_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(err, res)
@@ -757,7 +757,7 @@ function update_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 complete: function()
@@ -770,7 +770,7 @@ function update_account()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -822,7 +822,7 @@ function delete_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(res, err)
@@ -833,14 +833,14 @@ function delete_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 }
             });
         }
         catch(e)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         }
     });
 }
@@ -864,9 +864,11 @@ function initSpecialFields()
     
     $(listing_modal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
-            $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
+            var hiddenFields = $("#createListingModal input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listing_modal[0]).val());
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
@@ -922,7 +924,8 @@ function createDropzone(key, element, existingPics)
         }
         var filename = (file.alreadyUploaded 
                         ? file.name
-                        : file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[1]);
+                        : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
+                                                           : Math.random().toString(36).slice(2) + "_" + file.name));
         pictures[id].push(filename);
         
         if (!file.alreadyUploaded)
@@ -1107,7 +1110,8 @@ function createAccordionView(oid, uuid, data)
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
-                            "<label>Address: " + data.Address + (data.Unit ? data.Unit : "") + "</label>" + 
+                            "<label>Address: " + data.Address + "</label>" + 
+                            (data.Unit ? "<label>Unit: " + data.Unit + "</label>" : "") +
                             "<label>Rent: $" + data.Price + "/Month</label>" + 
                             "<label>Start Date: " + formattedDate(data.Start) + "</label>" +
                         "</a>" +

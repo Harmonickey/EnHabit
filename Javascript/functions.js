@@ -660,7 +660,7 @@ function loadAllDefaultListings()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err) 
@@ -671,14 +671,14 @@ function loadAllDefaultListings()
                 }
                 catch (e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }			
         });
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -716,7 +716,7 @@ function login_facebook()
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-center'});
     }
 }
  
@@ -758,7 +758,7 @@ function searchForListings()
                 }
                 catch (e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
                 }
             },
             error: function(res, err) 
@@ -769,7 +769,7 @@ function searchForListings()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
                 }
             },
             complete: function()
@@ -781,7 +781,7 @@ function searchForListings()
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
     }
 }
 
@@ -839,11 +839,11 @@ function insertMarkers(res)
         {
             if (entry.length == 1)
             {
-                var marker = L.marker([entry.WorldCoordinates.x, entry.WorldCoordinates.y]).addTo(map);
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 
                 var slideshowContent = "";
                 var base = "assets/images/listing_images/";
-                var images = entry.Pictures;
+                var images = entry[0].Pictures;
                 if (!images || images.length == 0)
                 {
                     images = [];
@@ -861,9 +861,9 @@ function insertMarkers(res)
                 }
                 
                 var popupContent =  
-                            '<div id="' + entry._id.$oid + '" class="popup">' +
-                                '<h2>' + entry.Address + ' ' + (entry.Unit ? entry.Unit : "") + '</h2>' +
-                                '<h3>$' + entry.Price + '/month</h2>' +
+                            '<div id="' + entry[0]._id.$oid + '" class="popup">' +
+                                '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
+                                '<h3>$' + entry[0].Price + '/month</h2>' +
                                 '<div class="slideshow">' +
                                     '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
                                     '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
@@ -879,19 +879,17 @@ function insertMarkers(res)
                 
                 markers.addLayer(marker);
                 
-                insertIntoListView(entry);
+                insertIntoListView(entry[0]);
             }
             else
-            {
-                var entry = d[0];
-                
-                var marker = L.marker([entry.WorldCoordinates.x, entry.WorldCoordinates.y]).addTo(map);
+            {   
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 
                 var popupContent =  
                             '<div class="popup">' +
-                                '<h2>' + entry.Address + '</h2>' +
+                                '<h2>' + entry[0].Address + '</h2>' +
                                 '<p>Multiple listings available.</p>' +
-                                '<input type="button" class="btn btn-info" value="Show All" onclick="load_multiple_listings(\"' + entry.Address + '\")">' +
+                                '<input type="button" class="btn btn-info" value="Show All" onclick="load_multiple_listings(\'' + entry[0].Address + '\')">' +
                             '</div>';
                 
                 marker.bindPopup(popupContent, 
@@ -903,45 +901,45 @@ function insertMarkers(res)
                 markers.addLayer(marker);
                 
                 // now that we have a pin, we need to fill in our section of the hash
-                $.each(d, function(index, entry)
+                $.each(entry, function(index, listing)
                 {
-                    var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
+                    var listingPic = (!listing.Pictures || listing.Pictures.length == 0 ? defaultPicture : listing.Pictures[0]);
                     
-                    if (multi_popup[entry.Address] == null)
+                    if (multi_popup[listing.Address] == null)
                     {
-                        multi_popup[entry.Address] = [
+                        multi_popup[listing.Address] = [
                             "<div class='item-content listing'>" +
                                 "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
-                                    "<p class='listing-address'>" + entry.Address + " " + (entry.Unit ? entry.Unit : "") + "</p>" +
-                                    "<p class='listing-bedrooms'>" + entry.Bedrooms + " Bedroom" + (entry.Bedrooms == 1 ? "" : "s") + "</p>" + 
-                                    "<p class='listing-bathrooms'>" + entry.Bathrooms + " Bathroom" + (entry.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                                    "<p class='listing-price'>$" + entry.Price + "/month</p>" +
-                                    "<p class='listing-type'>" + entry.Type.capitalizeFirstLetter() + "</p><br>" +
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
+                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
+                                    "<p class='listing-type'>" + listing.Type.capitalizeFirstLetter() + "</p><br>" +
                                 "</div>" +
                             "</div>"];
                     }
                     else
                     {
-                        multi_popup[entry.Address].push(
+                        multi_popup[listing.Address].push(
                             "<div class='item-content listing'>" +
                                 "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
-                                    "<p class='listing-address'>" + entry.Address + " " + (entry.Unit ? entry.Unit : "") + "</p>" +
-                                    "<p class='listing-bedrooms'>" + entry.Bedrooms + " Bedroom" + (entry.Bedrooms == 1 ? "" : "s") + "</p>" + 
-                                    "<p class='listing-bathrooms'>" + entry.Bathrooms + " Bathroom" + (entry.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                                    "<p class='listing-price'>$" + entry.Price + "/month</p>" +
-                                    "<p class='listing-type'>" + entry.Type.capitalizeFirstLetter() + "</p><br>" +
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
+                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
+                                    "<p class='listing-type'>" + listing.Type.capitalizeFirstLetter() + "</p><br>" +
                                 "</div>" +
                             "</div>");
                     }
                 });
             }
-        )};
+        });
     }
 }
 
-function open_multiple_listings(address)
+function load_multiple_listings(address)
 {
     $.each(multi_popup[address], function(index, entry)
     {
@@ -1209,7 +1207,7 @@ function logout_user(isDeleting)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -1220,14 +1218,14 @@ function logout_user(isDeleting)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
     
     $("#login").text("Log In/Create Account");

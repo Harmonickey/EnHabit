@@ -48,14 +48,22 @@ def create_listing(userId, landlord, landlordId, price, address, unit, bedrooms,
     
     begin
         mongo_session.with(safe: true) do |session|
-            listing = session[:listings].find(query_obj).to_a
+            curr_listings = session[:listings].find(query_obj).to_a
             
             #restrict more than one listing to landlords
-            if listing.count == 0 and not landlordId.nil?
-                session[:listings].insert(listing_obj)
-                document = session[:listings].find({"Address" => address}).select(_id: 1, UserId: 1, LandlordId: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1, Pictures: 1).one
-            else
+            if curr_listings.count > 0 and landlordId.nil?
                 document["error"] = "Tenants can only have one listing at a time."
+            else
+                session[:listings].insert(listing_obj)
+                
+                ret_query_obj = Hash.new
+                ret_query_obj["$and"] = []
+                ret_query_obj["$and"].push({"Address" => address})
+                
+                # if we already had some listings, only grab the new one we just put in
+                ret_query_obj["$and"].push({"$nin" => curr_listings.collect{|l| l["_id"]}}) if curr_listings.count > 0
+                
+                document = session[:listings].find(ret_query_obj).select(_id: 1, UserId: 1, LandlordId: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1, Pictures: 1).one
             end
         end
     rescue Moped::Errors::OperationFailure => e
@@ -100,7 +108,7 @@ begin
         landlordId = "" if landlordId == "No Match"
     end
     
-    result = create_listing(data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    result = create_listing(data["userId"], landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 
     puts result.to_json
 rescue Exception => e
