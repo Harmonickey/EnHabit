@@ -62,9 +62,9 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Menu Icon for smaller viewports -->
                 <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                 <ul id="main-menu">
-                    <li id="login-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-1', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
+                    <li id="login-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-login', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
                     <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo (isset($_SESSION["landlord"]) ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
-                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Listings as List</a></li>
+                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View List</a></li>
                 </ul>
                 <div id="Filters">
                     <h1 class="text-center">Filter listings</h1>
@@ -172,7 +172,7 @@ if (!isset($_SESSION['CREATED'])) {
             </div>
             <!-- #left-sidebar -->
             <!-- Login -->
-            <div class="content-to-populate-in-modal" id="modal-content-1">
+            <div class="content-to-populate-in-modal" id="modal-content-login">
                 <h1>Log In</h1>
                 <label>Username: </label><input type="textbox" class="form-control username" />
                 <label>Password: </label><input type="password" class="form-control password" />
@@ -181,11 +181,11 @@ if (!isset($_SESSION['CREATED'])) {
                 <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
                 <p class="login-error alert alert-danger" style="display: none;"></p>
                 <div></div>
-                <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-2', 'create_account', 'Create an Account');">Create an Account</a>
+                <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-register', 'create_account', 'Create an Account');">Create an Account</a>
             </div>
-            <!-- #modal-content-1 -->
+            <!-- #modal-content-login -->
             <!-- Register -->
-            <div class="content-to-populate-in-modal" id="modal-content-2">
+            <div class="content-to-populate-in-modal" id="modal-content-register">
                 <h1>Create New Account</h1>
                 <label>Username: </label><input type="text" class="form-control username" />
                 <label>Password: </label><input type="password" class="form-control password" />
@@ -196,20 +196,20 @@ if (!isset($_SESSION['CREATED'])) {
                 <input type="button" class="btn btn-outline-inverse btn-lg create_account-btn" onclick="create_account()" value="Create Account" style="margin-top: 15px;" />
                 <p class="create_account-error alert alert-danger" style="display: none;"></p>
             </div>
-            <!-- #modal-content-2 -->
+            <!-- #modal-content-register -->
             <!-- Register -->
-            <div class="content-to-populate-in-modal" id="modal-content-3">
+            <div class="content-to-populate-in-modal" id="modal-content-register-success">
                 <h1>Account Creation Success!</h1>
                 <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
             </div>
-            <!-- #modal-content-3 -->
+            <!-- #modal-content-register-success -->
             <!-- Log out confirmation -->
-            <div class="content-to-populate-in-modal" id="modal-content-12">
+            <div class="content-to-populate-in-modal" id="modal-content-logout">
                 <h1>Logged out successfully!</h1>
             </div>
-            <!-- #modal-content-12 -->
+            <!-- #modal-content-logout -->
             <!-- Pop Up Listing Modal -->
-            <div class="content-to-populate-in-modal" id="modal-content-15">
+            <div class="content-to-populate-in-modal" id="modal-content-popup-listing">
                 <div class="item-content listing"> 
                     <div class="popup">
                         <h3></h3> <!-- Address -->
@@ -235,12 +235,12 @@ if (!isset($_SESSION['CREATED'])) {
                     </div> 
                 </div>
             </div>
-            <!-- #modal-content-15 -->
+            <!-- #modal-content-popup-listing -->
             <!-- Multi-Listing -->
-            <div class="content-to-populate-in-modal" id="modal-content-16">
+            <div class="content-to-populate-in-modal" id="modal-content-popup-multilisting">
                 
             </div>
-            <!-- #modal-content-16 -->
+            <!-- #modal-content-popup-multilisting -->
             <!-- end: Left Sidebar -->    
         </div>
         <!-- #outer-container -->

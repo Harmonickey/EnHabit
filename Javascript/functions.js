@@ -943,10 +943,10 @@ function load_multiple_listings(address)
 {
     $.each(multi_popup[address], function(index, entry)
     {
-        $("#modal-content-16").append(entry);
+        $("#modal-content-popup-multilisting").append(entry);
     });
     
-    populate_and_open_modal(null, 'modal-content-16');
+    populate_and_open_modal(null, 'modal-content-popup-multilisting');
 }
 
 function insertIntoListView(data)
@@ -989,19 +989,19 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
                             //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
-    $("#modal-content-15 h3").text(address + " " + (unit ? unit : ""));
-    $("#modal-content-15 .slideshow").html(slideshowContent);
-    $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
-    $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);
-    $("#modal-content-15 .popup-price").text("Rent: $" + price + "/month");
-    $("#modal-content-15 .popup-type").text("Type: " + type.capitalizeFirstLetter());
-    $("#modal-content-15 .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
-    $("#modal-content-15 .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
-    $("#modal-content-15 .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
-    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
-    $("#modal-content-15 .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
+    $("#modal-content-popup-listing h3").text(address + " " + (unit ? unit : ""));
+    $("#modal-content-popup-listing .slideshow").html(slideshowContent);
+    $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
+    $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
+    $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
+    $("#modal-content-popup-listing .popup-type").text("Type: " + type.capitalizeFirstLetter());
+    $("#modal-content-popup-listing .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
+    $("#modal-content-popup-listing .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
+    $("#modal-content-popup-listing .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
+    $("#modal-content-popup-listing .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
+    $("#modal-content-popup-listing .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
     
-    populate_and_open_modal(null, 'modal-content-15');
+    populate_and_open_modal(null, 'modal-content-popup-listing');
 }
 
 /*
@@ -1058,10 +1058,6 @@ function login_user(hide_main_modal)
                         if (contains(res, "Okay"))
                         {
                             showLoginFeatures(hide_main_modal);
-                            if (hide_main_modal === false)
-                            {
-                                populate_and_open_modal(null, 'modal-content-3');
-                            }
                             
                             if (contains(res, "Landlord"))
                             {
@@ -1176,7 +1172,7 @@ function login_facebook_user(userID, accessToken)
     }
 }
 
-function logout_user(isDeleting)
+function logout_user()
 {
 	removeLoginFeatures();
     try
@@ -1191,14 +1187,7 @@ function logout_user(isDeleting)
                 {
                     if (contains(res, "Successfully"))
                     {
-                        if (isDeleting)
-                        {
-                            populate_and_open_modal(null, "modal-content-13");
-                        }
-                        else
-                        {
-                            populate_and_open_modal(null, "modal-content-12");
-                        }
+                        populate_and_open_modal(null, "modal-content-logout");
                     }
                     else
                     {
@@ -1229,7 +1218,7 @@ function logout_user(isDeleting)
     }
     
     $("#login").text("Log In/Create Account");
-    $("#login-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
+    $("#login-function").attr("onclick", "load_modal(event, 'modal-content-login', 'login', 'Log In');");
 }
 
 function removeLoginFeatures()
@@ -1240,7 +1229,7 @@ function removeLoginFeatures()
 function showLoginFeatures(hide_main_modal)
 {
     $("#login").text("Log Out");
-    $("#login-function").attr("onclick", "logout_user(false)");
+    $("#login-function").attr("onclick", "logout_user()");
     $("#login-function").show();
     
     if (hide_main_modal === true)
@@ -1400,7 +1389,7 @@ function close_listings_list()
         {
             width: "0px"
         }, 1000, 'easeInOutCubic', function() {
-            $("#view_listings_list-function a").text("View Listings as List");
+            $("#view_listings_list-function a").text("View List");
             $("#view_listings_list-function").attr("onclick", "open_listings_list()");
         });
     });
