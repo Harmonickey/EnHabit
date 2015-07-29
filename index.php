@@ -69,7 +69,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div id="Filters">
                     <h1 class="text-center">Filter listings</h1>
                     <div class="item-content">
-                        <div class="price-content"">
+                        <div class="price-content">
                             <span>Price Range</span>
                             <span id="amount" style="border:0; color:#b55783; font-weight:bold;">$800 - $1500</span>
                         </div>
@@ -118,11 +118,11 @@ if (!isset($_SESSION['CREATED'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="item-content search-content">
-                        <input type="button" class="btn btn-primary" onclick="searchForListings()" value="Search" />
-                        <input type="button" class="btn btn-primary" value="Show Extra Filters" onclick="open_extras_view();" />
-                    </div>
                 </div>
+                <ul id="search-section">
+                    <li id="search-function" class="menu-item scroll" onclick="searchForListings();"><a class="btn btn-outline-inverse btn-sm">Search</a></li>
+                    <li id="extra-filters-function" class="menu-item scroll" onclick="open_extras_view();"><a class="btn btn-outline-inverse btn-sm" >Show Extra Filters</a></li>
+                </ul>
                 <!-- #main-menu -->
                 <!-- Footer -->
                 <section id="footer">
@@ -133,7 +133,7 @@ if (!isset($_SESSION['CREATED'])) {
             </section>
             <div id="listings_list">
                 <div id="listings">
-                
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="close_listings_list();">×</button>
                 </div>
             </div>
             <div id="extras_view">
@@ -213,12 +213,8 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="item-content listing"> 
                     <div class="popup">
                         <h3></h3> <!-- Address -->
-                        <div class="slideshow">
+                        <div class="slideshow-lander">
                             <!-- Slideshow content -->
-                        </div>
-                        <div class="cycle">
-                            <a href="#" class=prev>&laquo Previous</a>
-                            <a href="#" class=next>Next &raquo</a>
                         </div>
                     </div>
                     <div class='information'> 

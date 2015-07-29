@@ -734,8 +734,8 @@ function searchForListings()
             url: "/api.php",
             beforeSend: function()
             {
-                $(".search-content input").prop("disabled", true);
-                $(".search-content input").val("Searching...");
+                $($("#search-section a")[0]).prop("disabled", true);
+                $($("#search-section a")[0]).val("Searching...");
             },
             data: 
             {
@@ -774,8 +774,8 @@ function searchForListings()
             },
             complete: function()
             {
-                $(".search-content input").prop("disabled", false);
-                $(".search-content input").val("Search");
+                $($("#search-section a")[0]).prop("disabled", false);
+                $($("#search-section a")[0]).val("Search");
             }
         });
     }
@@ -864,10 +864,15 @@ function insertMarkers(res)
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
                                 '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
                                 '<h3>$' + entry[0].Price + '/month</h2>' +
-                                '<div class="slideshow">' +
-                                    '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
-                                    '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
-                                    slideshowContent +
+                                '<div class="slideshow">';
+                                
+                if (images.length > 1)
+                {
+                    popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
+                                    '<div class="slider-arrow slider-right"<img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>';
+                }
+                
+                popupContent += slideshowContent +
                                 '</div>' +
                             '</div>';
                 
@@ -889,7 +894,7 @@ function insertMarkers(res)
                             '<div class="popup">' +
                                 '<h2>' + entry[0].Address + '</h2>' +
                                 '<p>Multiple listings available.</p>' +
-                                '<input type="button" class="btn btn-info" value="Show All" onclick="load_multiple_listings(\'' + entry[0].Address + '\')">' +
+                                '<input type="button" class="btn btn-outline-inverse btn-sm" value="Show All" onclick="load_multiple_listings(\'' + entry[0].Address + '\')">' +
                             '</div>';
                 
                 marker.bindPopup(popupContent, 
@@ -933,6 +938,8 @@ function insertMarkers(res)
                                 "</div>" +
                             "</div>");
                     }
+                    
+                    insertIntoListView(listing);
                 });
             }
         });
@@ -941,6 +948,8 @@ function insertMarkers(res)
 
 function load_multiple_listings(address)
 {
+    $("#modal-content-popup-multilisting").html("");
+    
     $.each(multi_popup[address], function(index, entry)
     {
         $("#modal-content-popup-multilisting").append(entry);
@@ -953,6 +962,22 @@ function insertIntoListView(data)
 {
     var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
     
+    if (data.Tags && data.Tags.length > 0)
+    {
+        data.Tags = data.Tags.map(function(d)
+        {
+            return "'" + d + "'";
+        }).join(",");
+    }
+    
+    if (data.Pictures && data.Pictures.length > 0)
+    {
+        data.Pictures = data.Pictures.map(function(d)
+        {
+            return "'" + d + "'";
+        }).join(",");
+    }
+    
     $("#listings").append(
         "<div class='item-content listing'>" +
             "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
@@ -962,7 +987,7 @@ function insertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\", \"" + data.Pictures + "\")' />" +
+                "<input type='button' class='btn btn-info' value='More Details' onclick=\"openListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
             "</div>" +
         "</div>"
     );
@@ -984,13 +1009,22 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
 
         slideshowContent += 
                             '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                              '<img src="' + source + '" />' +
+                              '<img src="' + source + '" height="200" width="300" />' +
                             '</div>';
-                            //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
+    var slideshowModalContent = '<div class="slideshow" style="position: relative;">';
+    if (images.length > 1)
+    {
+        slideshowModalContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
+        '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>';
+    }
+    
+    slideshowModalContent += slideshowContent +
+    '</div>';
+    
     $("#modal-content-popup-listing h3").text(address + " " + (unit ? unit : ""));
-    $("#modal-content-popup-listing .slideshow").html(slideshowContent);
+    $("#modal-content-popup-listing .slideshow-lander").html(slideshowModalContent);
     $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
     $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
     $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
@@ -999,7 +1033,7 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#modal-content-popup-listing .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
     $("#modal-content-popup-listing .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
     $("#modal-content-popup-listing .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
-    $("#modal-content-popup-listing .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
+    $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
     
     populate_and_open_modal(null, 'modal-content-popup-listing');
 }
@@ -1376,8 +1410,8 @@ function open_extras_view()
         },
         done: function ()
         {
-            $($(".search-content input")[1]).val("Hide Extra Filters");
-            $($(".search-content input")[1]).attr("onclick", "close_extras_view()");
+            $($("#search-section a")[1]).text("Hide Extra Filters");
+            $($("#search-section a")[1]).attr("onclick", "close_extras_view()");
         }
     });
 }
@@ -1404,8 +1438,8 @@ function close_extras_view()
         paddingLeft: "0px",
         paddingRight: "0px"
     }, 500, 'easeInOutCubic', function() {
-        $($(".search-content input")[1]).val("Show Extra Filters");
-        $($(".search-content input")[1]).attr("onclick", "open_extras_view()");
+        $($("#search-section a")[1]).text("Show Extra Filters");
+        $($("#search-section a")[1]).attr("onclick", "open_extras_view()");
     });
 }
 
