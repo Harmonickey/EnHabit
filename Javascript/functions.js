@@ -725,6 +725,11 @@ function searchForListings()
     resetMarkers();
     
     var query = createQuery();
+    var testDate = new Date(query.Address);
+    if (testDate == "Invalid Date")
+    {
+        query.Address = "";
+    }
 
     try
     {    
