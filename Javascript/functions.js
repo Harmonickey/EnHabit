@@ -13,6 +13,7 @@ var defaultPicture = "404ImageNotFound.png";
 
 var entries = {};
 var multi_popup = {};
+var page_tags = [];
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
@@ -50,25 +51,27 @@ $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
 
 $('#map, #common-modal').on('click', '.popup .slider-arrow img', function() 
 {
-    var $slideshow = $('.slideshow');
+    var $slideshow = $(this).closest('.slideshow');
     var $newSlide;
     
     if ($(this).hasClass('slider-arrow-left')) 
     {
-        $newSlide = $slideshow.find('.active').prev();
-        if ($newSlide.index() < 0) 
+        $newSlide = $slideshow.find('image.active').prev();     
+        if ($newSlide.index() < 2) 
         {
-            $newSlide = $('.image').last();
+            $newSlide = $slideshow.find('.image').last();
         }
     } 
     else 
     {
-        $newSlide = $slideshow.find('.active').next();
+        $newSlide = $slideshow.find('image.active').next();
         if ($newSlide.index() < 0) 
         {
-            $newSlide = $('.image').first();
+            $newSlide = $slideshow.find('.image').first();
         }
     }
+    
+    
 
     $slideshow.find('.active').removeClass('active').hide();
     $newSlide.addClass('active').show();
@@ -824,6 +827,8 @@ function insertMarkers(res)
 {
     if (res != "")
     {
+        page_tags = [];
+        
         var data = JSON.parse(res);
         // organize the data, we might have multiple pins
         // in the same place
@@ -837,6 +842,14 @@ function insertMarkers(res)
             {
                 entries[d.Address].push(d);
             }
+            
+            $.each(d.Tags, function(index, tag)
+            {
+                if (page_tags.indexOf(tag) == -1)
+                {
+                    page_tags.push(tag);
+                }
+            });
         });
         
         $.each(entries, function(address, entry) 
@@ -871,8 +884,8 @@ function insertMarkers(res)
                                 
                 if (images.length > 1)
                 {
-                    popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
-                                    '<div class="slider-arrow slider-right"<img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>';
+                    popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
+                                    '<div class="slider-arrow slider-right"<img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
                 }
                 
                 popupContent += slideshowContent +
@@ -945,6 +958,19 @@ function insertMarkers(res)
                     insertIntoListView(listing);
                 });
             }
+        });
+        
+        $.msgGrowl ({
+            title: 'Tags Used',
+            type: 'info',
+            position: 'top-right',
+            text: 'Tags used with this search result: ',
+            sticky: true
+        });
+        
+        $.each(page_tags, function(index, page_tag)
+        {
+           $('.top-right .msgGrowl-content span').append("<br><b>" + page_tag + "<b>"); 
         });
     }
 }
@@ -1019,8 +1045,8 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     var slideshowModalContent = '<div class="slideshow" style="position: relative;">';
     if (images.length > 1)
     {
-        slideshowModalContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
-        '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>';
+        slideshowModalContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
+        '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
     }
     
     slideshowModalContent += slideshowContent +

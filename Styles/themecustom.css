@@ -535,6 +535,11 @@
     margin-bottom: 0px;
 }
 
+#common-modal .listing
+{
+    margin-bottom: 15px;
+}
+
 #listings .close
 {
     position: absolute;
