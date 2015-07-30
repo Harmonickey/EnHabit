@@ -725,10 +725,10 @@ function searchForListings()
     resetMarkers();
     
     var query = createQuery();
-    var testDate = new Date(query.Address);
+    var testDate = new Date(query.start);
     if (testDate == "Invalid Date")
     {
-        query.Address = "";
+        query.start = "";
     }
 
     try
@@ -825,10 +825,9 @@ function insertMarkers(res)
     if (res != "")
     {
         var data = JSON.parse(res);
-        
         // organize the data, we might have multiple pins
         // in the same place
-        data.forEach(function(d) 
+        $.each(data, function(index, d) 
         {
             if (entries[d.Address] == null)
             {
@@ -862,7 +861,6 @@ function insertMarkers(res)
                                         '<div class="image' + (i === 0 ? ' active' : '') + '">' +
                                           '<img src="' + source + '" height="200" width="300"/>' +
                                         '</div>';
-                                        //'<div class="caption">' + img["caption"] + '</div>' +
                 }
                 
                 var popupContent =  
@@ -969,7 +967,7 @@ function insertIntoListView(data)
     
     if (data.Tags && data.Tags.length > 0)
     {
-        data.Tags = data.Tags.map(function(d)
+        data.Tags = $.map(data.Tags, function(d)
         {
             return "'" + d + "'";
         }).join(",");
@@ -977,7 +975,7 @@ function insertIntoListView(data)
     
     if (data.Pictures && data.Pictures.length > 0)
     {
-        data.Pictures = data.Pictures.map(function(d)
+        data.Pictures = $.map(data.Pictures, function(d)
         {
             return "'" + d + "'";
         }).join(",");
@@ -1416,7 +1414,7 @@ function open_extras_view()
         done: function ()
         {
             $($("#search-section a")[1]).text("Hide Extra Filters");
-            $($("#search-section a")[1]).attr("onclick", "close_extras_view()");
+            $($("#search-section li")[1]).attr("onclick", "close_extras_view()");
         }
     });
 }
@@ -1442,9 +1440,9 @@ function close_extras_view()
         width: "0px",
         paddingLeft: "0px",
         paddingRight: "0px"
-    }, 500, 'easeInOutCubic', function() {
+    }, 500, function() {
         $($("#search-section a")[1]).text("Show Extra Filters");
-        $($("#search-section a")[1]).attr("onclick", "open_extras_view()");
+        $($("#search-section li")[1]).attr("onclick", "open_extras_view()");
     });
 }
 
