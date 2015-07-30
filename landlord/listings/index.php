@@ -183,6 +183,7 @@
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
                 <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="off" />
+                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
                 <label>Rent/Month</label><input type='text' class='form-control' />
                 <label>Start Date</label><input type='text' class='form-control' />
                 <label>Bedrooms</label>
@@ -217,7 +218,7 @@
                 <label>Tags (Optional)</label><input type='text' data-role='tagsinput' /> 
                 <br>
                 <label>Images (Will Upload Upon Submit)</label>
-                <form action="/Libraries/upload_file.php" data-pic-id="create" "class="dropzone"></form>
+                <form action="/Libraries/upload_file.php" data-pic-id="create" class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
@@ -253,6 +254,7 @@
 <script src="../../Javascript/landlord/functions.js"></script>
 
 <script>
+Dropzone.autoDiscover = false;
 
 var landlordId = "<?php echo $_SESSION["landlordId"]; ?>";
 var pictures = {}; // object of arrays for update-listing
