@@ -560,3 +560,23 @@
     outline: none;
     z-index: 100;
 }
+
+#Filters input,
+#Filters select,
+#extras_view input,
+#extras_view select,
+.bootstrap-tagsinput
+{
+    background-color: #ddd;
+    border-radius: 0px;
+}
+
+.popup h2
+{
+    text-shadow: none;
+}
+
+.leaflet-popup-content-wrapper
+{
+    border: 2px grey solid;
+}
