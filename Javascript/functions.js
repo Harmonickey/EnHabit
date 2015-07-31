@@ -11,6 +11,10 @@ var page_is_scrolling = false; // identify when page is being scrolled
 
 var defaultPicture = "404ImageNotFound.png";
 
+var entries = {};
+var multi_popup = {};
+var page_tags = [];
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -47,25 +51,27 @@ $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
 
 $('#map, #common-modal').on('click', '.popup .slider-arrow img', function() 
 {
-    var $slideshow = $('.slideshow');
+    var $slideshow = $(this).closest('.slideshow');
     var $newSlide;
     
     if ($(this).hasClass('slider-arrow-left')) 
     {
-        $newSlide = $slideshow.find('.active').prev();
-        if ($newSlide.index() < 0) 
+        $newSlide = $slideshow.find('image.active').prev();     
+        if ($newSlide.index() < 2) 
         {
-            $newSlide = $('.image').last();
+            $newSlide = $slideshow.find('.image').last();
         }
     } 
     else 
     {
-        $newSlide = $slideshow.find('.active').next();
+        $newSlide = $slideshow.find('image.active').next();
         if ($newSlide.index() < 0) 
         {
-            $newSlide = $('.image').first();
+            $newSlide = $slideshow.find('.image').first();
         }
     }
+    
+    
 
     $slideshow.find('.active').removeClass('active').hide();
     $newSlide.addClass('active').show();
@@ -657,7 +663,7 @@ function loadAllDefaultListings()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err) 
@@ -668,14 +674,14 @@ function loadAllDefaultListings()
                 }
                 catch (e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }			
         });
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -713,7 +719,7 @@ function login_facebook()
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-center'});
     }
 }
  
@@ -722,6 +728,11 @@ function searchForListings()
     resetMarkers();
     
     var query = createQuery();
+    var testDate = new Date(query.start);
+    if (testDate == "Invalid Date")
+    {
+        query.start = "";
+    }
 
     try
     {    
@@ -731,8 +742,8 @@ function searchForListings()
             url: "/api.php",
             beforeSend: function()
             {
-                $(".search-content input").prop("disabled", true);
-                $(".search-content input").val("Searching...");
+                $($("#search-section a")[0]).prop("disabled", true);
+                $($("#search-section a")[0]).val("Searching...");
             },
             data: 
             {
@@ -755,7 +766,7 @@ function searchForListings()
                 }
                 catch (e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
                 }
             },
             error: function(res, err) 
@@ -766,19 +777,19 @@ function searchForListings()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
                 }
             },
             complete: function()
             {
-                $(".search-content input").prop("disabled", false);
-                $(".search-content input").val("Search");
+                $($("#search-section a")[0]).prop("disabled", false);
+                $($("#search-section a")[0]).val("Search");
             }
         });
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'}); 
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
     }
 }
 
@@ -816,73 +827,202 @@ function insertMarkers(res)
 {
     if (res != "")
     {
+        page_tags = [];
+        
         var data = JSON.parse(res);
-        data.forEach(function(d)
+        // organize the data, we might have multiple pins
+        // in the same place
+        $.each(data, function(index, d) 
         {
-            var marker = L.marker([d.WorldCoordinates.x, d.WorldCoordinates.y]).addTo(map);
-            
-            var slideshowContent = "";
-            var base = "assets/images/listing_images/";
-            var images = d.Pictures;
-            if (!images || images.length == 0)
+            if (entries[d.Address] == null)
             {
-                images = [];
-                images.push(defaultPicture);
+                entries[d.Address] = [d];
             }
-            for(var i = 0; i < images.length; i++) 
+            else
             {
-                var source = base + images[i];
-
-                slideshowContent += 
-                                    '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                      '<img src="' + source + '" height="200" width="300"/>' +
-                                    '</div>';
-                                    //'<div class="caption">' + img["caption"] + '</div>' +
+                entries[d.Address].push(d);
             }
             
-            var popupContent =  
-                        '<div id="' + d._id.$oid + '" class="popup">' +
-                            '<h2>' + d.Address + '</h2>' +
-                            '<h3>$' + d.Price + '/month</h2>' +
-                            '<div class="slideshow">' +
-                                '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-left-arrow" /></div>' +
-                                '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-right-arrow" /></div>' +
-                                slideshowContent +
-                            '</div>' +
-                        '</div>';
-            
-            marker.bindPopup(popupContent, {
-                closeButton: false,
-                minWidth: 320
+            $.each(d.Tags, function(index, tag)
+            {
+                if (page_tags.indexOf(tag) == -1)
+                {
+                    page_tags.push(tag);
+                }
             });
-            
-            markers.addLayer(marker);
-            
-            insertIntoListView(d);
+        });
+        
+        $.each(entries, function(address, entry) 
+        {
+            if (entry.length == 1)
+            {
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                
+                var slideshowContent = "";
+                var base = "assets/images/listing_images/";
+                var images = entry[0].Pictures;
+                if (!images || images.length == 0)
+                {
+                    images = [];
+                    images.push(defaultPicture);
+                }
+                for(var i = 0; i < images.length; i++) 
+                {
+                    var source = base + images[i];
+
+                    slideshowContent += 
+                                        '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                                          '<img src="' + source + '" height="200" width="300"/>' +
+                                        '</div>';
+                }
+                
+                var popupContent =  
+                            '<div id="' + entry[0]._id.$oid + '" class="popup">' +
+                                '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
+                                '<h3>$' + entry[0].Price + '/month</h2>' +
+                                '<div class="slideshow">';
+                                
+                if (images.length > 1)
+                {
+                    popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
+                                    '<div class="slider-arrow slider-right"<img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
+                }
+                
+                popupContent += slideshowContent +
+                                '</div>' +
+                            '</div>';
+                
+                marker.bindPopup(popupContent, 
+                {
+                    closeButton: false,
+                    minWidth: 320
+                });
+                
+                markers.addLayer(marker);
+                
+                insertIntoListView(entry[0]);
+            }
+            else
+            {   
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                
+                var popupContent =  
+                            '<div class="popup">' +
+                                '<h2>' + entry[0].Address + '</h2>' +
+                                '<p>Multiple listings available.</p>' +
+                                '<input type="button" class="btn btn-outline-inverse btn-sm" value="Show All" onclick="load_multiple_listings(\'' + entry[0].Address + '\')">' +
+                            '</div>';
+                
+                marker.bindPopup(popupContent, 
+                {
+                    closeButton: false,
+                    minWidth: 320
+                });
+                
+                markers.addLayer(marker);
+                
+                // now that we have a pin, we need to fill in our section of the hash
+                $.each(entry, function(index, listing)
+                {
+                    var listingPic = (!listing.Pictures || listing.Pictures.length == 0 ? defaultPicture : listing.Pictures[0]);
+                    
+                    if (multi_popup[listing.Address] == null)
+                    {
+                        multi_popup[listing.Address] = [
+                            "<div class='item-content listing'>" +
+                                "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+                                "<div class='information'>" +
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
+                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
+                                    "<p class='listing-type'>" + listing.Type.capitalizeFirstLetter() + "</p><br>" +
+                                "</div>" +
+                            "</div>"];
+                    }
+                    else
+                    {
+                        multi_popup[listing.Address].push(
+                            "<div class='item-content listing'>" +
+                                "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+                                "<div class='information'>" +
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
+                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
+                                    "<p class='listing-type'>" + listing.Type.capitalizeFirstLetter() + "</p><br>" +
+                                "</div>" +
+                            "</div>");
+                    }
+                    
+                    insertIntoListView(listing);
+                });
+            }
+        });
+        
+        $.msgGrowl ({
+            title: 'Tags Used',
+            type: 'info',
+            position: 'top-right',
+            text: 'Tags used with this search result: ',
+            sticky: true
+        });
+        
+        $.each(page_tags, function(index, page_tag)
+        {
+           $('.top-right .msgGrowl-content span').append("<br><b>" + page_tag + "<b>"); 
         });
     }
+}
+
+function load_multiple_listings(address)
+{
+    $("#modal-content-popup-multilisting").html("");
+    
+    $.each(multi_popup[address], function(index, entry)
+    {
+        $("#modal-content-popup-multilisting").append(entry);
+    });
+    
+    populate_and_open_modal(null, 'modal-content-popup-multilisting');
 }
 
 function insertIntoListView(data)
 {
     var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
     
+    if (data.Tags && data.Tags.length > 0)
+    {
+        data.Tags = $.map(data.Tags, function(d)
+        {
+            return "'" + d + "'";
+        }).join(",");
+    }
+    
+    if (data.Pictures && data.Pictures.length > 0)
+    {
+        data.Pictures = $.map(data.Pictures, function(d)
+        {
+            return "'" + d + "'";
+        }).join(",");
+    }
+    
     $("#listings").append(
         "<div class='item-content listing'>" +
             "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
-                "<p class='listing-address'>" + data.Address + "</p>" +
+                "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\", \"" + data.Pictures + "\")' />" +
+                "<input type='button' class='btn btn-info' value='More Details' onclick=\"openListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
             "</div>" +
         "</div>"
     );
 }
 
-function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
+function openListing(id, address, unit, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
 {
     //load up the images into the modal...
     var slideshowContent = "";
@@ -898,25 +1038,33 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
 
         slideshowContent += 
                             '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                              '<img src="' + source + '" />' +
+                              '<img src="' + source + '" height="200" width="300" />' +
                             '</div>';
-                            //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
-    $("#modal-content-15 h3").text(address);
-    $("#modal-content-15 .slideshow").html(slideshowContent);
-
-    $("#modal-content-15 .popup-bedrooms").text("Bedrooms: " + bedrooms);
-    $("#modal-content-15 .popup-bathrooms").text("Bathrooms: " + bathrooms);
-    $("#modal-content-15 .popup-price").text("Rent: $" + price + "/month");
-    $("#modal-content-15 .popup-type").text("Type: " + type.capitalizeFirstLetter());
-    $("#modal-content-15 .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
-    $("#modal-content-15 .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
-    $("#modal-content-15 .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
-    $("#modal-content-15 .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
-    $("#modal-content-15 .popup-tags").text("Tags: " + (tags == "" ? tags : tags.join(", ")));
+    var slideshowModalContent = '<div class="slideshow" style="position: relative;">';
+    if (images.length > 1)
+    {
+        slideshowModalContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
+        '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
+    }
     
-    populate_and_open_modal(null, 'modal-content-15');
+    slideshowModalContent += slideshowContent +
+    '</div>';
+    
+    $("#modal-content-popup-listing h3").text(address + " " + (unit ? unit : ""));
+    $("#modal-content-popup-listing .slideshow-lander").html(slideshowModalContent);
+    $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
+    $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
+    $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
+    $("#modal-content-popup-listing .popup-type").text("Type: " + type.capitalizeFirstLetter());
+    $("#modal-content-popup-listing .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
+    $("#modal-content-popup-listing .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
+    $("#modal-content-popup-listing .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
+    $("#modal-content-popup-listing .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
+    $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
+    
+    populate_and_open_modal(null, 'modal-content-popup-listing');
 }
 
 /*
@@ -973,10 +1121,6 @@ function login_user(hide_main_modal)
                         if (contains(res, "Okay"))
                         {
                             showLoginFeatures(hide_main_modal);
-                            if (hide_main_modal === false)
-                            {
-                                populate_and_open_modal(null, 'modal-content-3');
-                            }
                             
                             if (contains(res, "Landlord"))
                             {
@@ -1091,7 +1235,7 @@ function login_facebook_user(userID, accessToken)
     }
 }
 
-function logout_user(isDeleting)
+function logout_user()
 {
 	removeLoginFeatures();
     try
@@ -1106,14 +1250,7 @@ function logout_user(isDeleting)
                 {
                     if (contains(res, "Successfully"))
                     {
-                        if (isDeleting)
-                        {
-                            populate_and_open_modal(null, "modal-content-13");
-                        }
-                        else
-                        {
-                            populate_and_open_modal(null, "modal-content-12");
-                        }
+                        populate_and_open_modal(null, "modal-content-logout");
                     }
                     else
                     {
@@ -1122,7 +1259,7 @@ function logout_user(isDeleting)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -1133,18 +1270,18 @@ function logout_user(isDeleting)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
     
     $("#login").text("Log In/Create Account");
-    $("#login-function").attr("onclick", "load_modal(event, 'modal-content-1', 'login', 'Log In');");
+    $("#login-function").attr("onclick", "load_modal(event, 'modal-content-login', 'login', 'Log In');");
 }
 
 function removeLoginFeatures()
@@ -1155,7 +1292,7 @@ function removeLoginFeatures()
 function showLoginFeatures(hide_main_modal)
 {
     $("#login").text("Log Out");
-    $("#login-function").attr("onclick", "logout_user(false)");
+    $("#login-function").attr("onclick", "logout_user()");
     $("#login-function").show();
     
     if (hide_main_modal === true)
@@ -1302,8 +1439,8 @@ function open_extras_view()
         },
         done: function ()
         {
-            $($(".search-content input")[1]).val("Hide Extra Filters");
-            $($(".search-content input")[1]).attr("onclick", "close_extras_view()");
+            $($("#search-section a")[1]).text("Hide Extra Filters");
+            $($("#search-section li")[1]).attr("onclick", "close_extras_view()");
         }
     });
 }
@@ -1315,7 +1452,7 @@ function close_listings_list()
         {
             width: "0px"
         }, 1000, 'easeInOutCubic', function() {
-            $("#view_listings_list-function a").text("View Listings");
+            $("#view_listings_list-function a").text("View List");
             $("#view_listings_list-function").attr("onclick", "open_listings_list()");
         });
     });
@@ -1329,9 +1466,9 @@ function close_extras_view()
         width: "0px",
         paddingLeft: "0px",
         paddingRight: "0px"
-    }, 500, 'easeInOutCubic', function() {
-        $($(".search-content input")[1]).val("Show Extra Filters");
-        $($(".search-content input")[1]).attr("onclick", "open_extras_view()");
+    }, 500, function() {
+        $($("#search-section a")[1]).text("Show Extra Filters");
+        $($("#search-section li")[1]).attr("onclick", "open_extras_view()");
     });
 }
 
@@ -1491,9 +1628,22 @@ $(function ()
     loadAllDefaultListings();
     
     setHiddenSidebars();
+    
+    $('#listings').slimScroll({
+        height: '100%',
+        railVisible: true,
+        alwaysVisible: true,
+        size: '10px'
+    });
 });
 
 $(window).on('resize', function() {
-   //otherwise they get out of place
-   setHiddenSidebars(); 
+    //otherwise they get out of place
+    setHiddenSidebars();
+   
+    if ($("#listings_list").width() > 0)
+    {
+        $("#listings_list").stop();
+        open_listings_list();
+    }
 });

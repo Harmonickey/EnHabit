@@ -29,7 +29,6 @@
     display: inline-block;
 }
 
-#Filters .search-content input,
 #listings input,
 .popup .information input
 {
@@ -130,20 +129,7 @@
     width: 80%;
 }
 
-.search-content
-{
-    text-align: center;
-    margin-top: 10px;
-    width: 100%;
-}
-
-.search-content input
-{
-    width: 50%;
-}
-
-.type-content,
-.search-content
+.type-content
 {
     display: inline-block;
 }
@@ -151,16 +137,6 @@
 .type-content
 {
     width: 100%;
-}
-
-.search-content input:first-child
-{
-    width: 95px;
-}
-
-.search-content input:last-child
-{
-    width: 140px;
 }
 
 #type-filter
@@ -175,7 +151,7 @@
 
 #datepicker-inline
 {
-    color: black;
+    color: #555;
     font-weight: bold;
     width: 55%;
     text-align: center;
@@ -213,10 +189,9 @@
 
 #listings
 {
-    width: 85%;
+    width: 100%;
     height: 100%;
-    margin: 0 auto;
-    overflow-y: scroll;
+    padding-left: 20px;
     font-size: 20px;
 }
 
@@ -389,9 +364,27 @@
     position: fixed;
     z-index: 1;
     width: 0px;
-    height: 100%;
     overflow: hidden;
+}
+
+#listings_list
+{
+    height: 100%;
+}
+
+#extras_view
+{
+    height: 250px;
+}
+
+#extras_view
+{
     background: rgba(0,0,0,0.79);
+}
+
+#listings_list
+{
+    background: rgba(48, 47, 45, 1.0);
 }
 
 @media (min-width: 992px)
@@ -485,4 +478,105 @@
 .msgGrowl-container
 {
     z-index: 1;
+}
+
+#search-section
+{
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+#search-section > li.menu-item > a
+{
+    display: block;
+    padding: 13px 10px;
+    background: #5259e3;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-weight: normal;
+}
+
+#listings .information input
+{
+    background: #5259e3;
+}
+
+.popup .btn
+{
+    background: #5259e3;
+}
+
+#search-section > li.menu-item
+{
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 768px)
+{
+    #search-section > li.menu-item > a
+    {
+        padding: 7px 10px;
+    }
+}
+
+#search-section > li.menu-item > a:hover,
+#listings .information input:hover
+{
+    background:#b55783;
+}
+
+#common-modal .listing .information p
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#common-modal .listing
+{
+    margin-bottom: 15px;
+}
+
+#listings .close
+{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.19);
+    font-size: 40px;
+    line-height: 40px;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    outline: none;
+    z-index: 100;
+}
+
+#Filters input,
+#Filters select,
+#extras_view input,
+#extras_view select,
+.bootstrap-tagsinput
+{
+    background-color: #ddd;
+    border-radius: 0px;
+}
+
+.popup h2
+{
+    text-shadow: none;
+}
+
+.leaflet-popup-content-wrapper
+{
+    border: 2px grey solid;
 }
