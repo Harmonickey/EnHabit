@@ -1416,7 +1416,7 @@ function open_listings_list()
     $("#listings_list").animate(
     {
         width: openWidth
-    }, 1000, 'easeInOutCubic', load_listings_list);
+    }, 500, 'easeInOutCubic', load_listings_list);
 }
 
 function open_extras_view()
@@ -1447,12 +1447,12 @@ function open_extras_view()
 
 function close_listings_list()
 {
-    $("#listings").fadeOut(400, function() {
+    $("#listings").fadeOut(200, function() {
         $("#listings_list").animate(
         {
             width: "0px"
-        }, 1000, 'easeInOutCubic', function() {
-            $("#view_listings_list-function a").text("View List");
+        }, 500, 'easeInOutCubic', function() {
+            $("#view_listings_list-function a").text("View Details");
             $("#view_listings_list-function").attr("onclick", "open_listings_list()");
         });
     });
@@ -1477,7 +1477,7 @@ function load_listings_list()
     $("#listings").fadeIn();
     
     //then change the view listings list to "Hide Listings"
-    $("#view_listings_list-function a").text("Hide Listings");
+    $("#view_listings_list-function a").text("Hide Details");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 

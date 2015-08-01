@@ -367,24 +367,17 @@
     overflow: hidden;
 }
 
-#listings_list
-{
-    height: 100%;
-}
-
 #extras_view
 {
     height: 250px;
-}
-
-#extras_view
-{
     background: rgba(0,0,0,0.79);
 }
 
 #listings_list
 {
+    height: 100%;
     background: rgba(48, 47, 45, 1.0);
+    z-index: 2;
 }
 
 @media (min-width: 992px)
