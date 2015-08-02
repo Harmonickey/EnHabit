@@ -385,6 +385,14 @@ function update_listing(id, landlordId)
                     {
                         if (contains(res, "Okay"))
                         {
+                            var inputs = $("#" + id + " input");
+                            var headingInputs = $("#heading" + id + " input");
+                            
+                            for (var i = 0; i < 3; i++)
+                            {
+                                $(headingInputs[i]).val($(inputs[i]));
+                            }
+                            
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
                         }
