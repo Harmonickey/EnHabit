@@ -49,6 +49,11 @@ function set_session($result, $data)
             $id = end(explode(":", $result));
             $_SESSION["userId"] = trim($id);
         }
+        
+        if (strpos($result, "Admin") !== false)
+        {
+            $_SESSION["admin"] = json_decode(str_replace("\\", "", $data))->{"username"};
+        }
         // I don't want $_SESSION["username"] outside of the if/else block
         //   because the username will only appear after login actions
     }

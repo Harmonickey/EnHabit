@@ -17,6 +17,7 @@ require 'bson'
 require 'PasswordHash'
 
 @is_landlord = false
+@is_admin = false
 
 def user_exists(user, pass)
 
@@ -35,6 +36,7 @@ def user_exists(user, pass)
     else
         # if you have a landlord ID then they're obviously a landlord
         @is_landlord = true if not documents[0]["LandlordId"].nil?
+        @is_admin = true if not documents[0]["IsAdmin"].nil?
         id = (@is_landlord ? documents[0]["LandlordId"] : documents[0]["UserId"])
         return {"exists" => PasswordHash.validatePassword(pass, documents[0]["Password"]), "id" => id}
     end
@@ -46,7 +48,12 @@ begin
     result = user_exists(data["username"], data["password"])
     
     if result["exists"]
-        puts (@is_landlord ? "Okay:Landlord:" : "Okay:Tenant:") + result["id"]
+        ret_msg = "Okay"
+        ret_msg += ":Landlord" if @is_landlord
+        ret_msg += ":Tenant" if not @is_landlord
+        ret_msg += ":Admin" if @is_admin
+        ret_msg += ":" + result["id"]
+        puts ret_msg
     else
         puts "Incorrect Username/Password"
     end
