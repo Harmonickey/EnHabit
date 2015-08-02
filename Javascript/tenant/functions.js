@@ -6,6 +6,8 @@ EVENT HANDLERS
 **********************/
 
 var savedUsername = "";
+var pendingData = null;
+var numUploaded = 0;
 
 $(document).on("keypress", function(e)
 {
@@ -46,8 +48,7 @@ function getAllListings(userId)
                     {
                         throw new Error("Unable to retrieve listings");
                         $("#accordion").html("<p>No Listing Yet</p>");
-                        $(".actions a").show();
-                        
+                        $(".actions a").show();                      
                     }
                     else if (contains(res, "No Matching Entries"))
                     {
@@ -73,6 +74,10 @@ function getAllListings(userId)
                                 var userId = data[i].UserId;
                                 
                                 $("#accordion").append(createAccordionView(oid, userId, data[i]));
+                                
+                                var selector = "[id='" + oid + "'] form";
+                                
+                                createDropzone(oid, selector, data[i].Pictures);
                                     
                                 setGeocompleteTextBox(oid);
                                 setTextBoxWithAutoNumeric(oid);
@@ -85,8 +90,7 @@ function getAllListings(userId)
                             {
                                 $(".actions a").show();
                             }
-                        }
-                        
+                        }                       
                     }
                 }
                 catch(e)
@@ -303,6 +307,7 @@ function delete_listing(id, uuid)
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
                                 $(".actions a").show();
                                 $("#accordion").text("No Listing Yet");
+                                createDropzone("create", "#createListingModal form");
                             }
                             else
                             {
@@ -350,6 +355,7 @@ function update_listing(id, userId)
     data.type = (data.type == true ? "apartment" : "sublet");
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
+    data.pictures = pictures[id];
     
     try
     {
@@ -359,6 +365,8 @@ function update_listing(id, userId)
         }
         else
         {
+            dropzones[id].processQueue();
+            
             $.ajax(
             {
                 type: "POST",
@@ -381,6 +389,7 @@ function update_listing(id, userId)
                         if (contains(res, "Okay"))
                         {
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                            numUploaded = 0;
                         }
                         else
                         {
@@ -390,6 +399,7 @@ function update_listing(id, userId)
                     catch(e)
                     {
                         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        numUploaded = 0;
                     }
                 },
                 error: function(err, res)
@@ -430,6 +440,7 @@ function create_listing()
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.userId = userId;
+    data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
     {
@@ -439,91 +450,109 @@ function create_listing()
         }
         else
         {
-            $.ajax(
-            {
-                type: "POST",
-                url: "/api.php",
-                beforeSend: function()
-                {
-                    $("#create-listing-button").text("Creating...");
-                    $("#create-listing-button").prop("disabled", false);
-                },
-                data:
-                {
-                    command: "create_listing",
-                    data: data,
-                    endpoint: "Listings"
-                },
-                success: function(res)
-                {    
-                    try
-                    {
-                        if (!res)
-                        {
-                            throw new Error("Unable to Create Listing");
-                        }
-                        else
-                        {
-                            var listing = JSON.parse(res);
-                                
-                            if (listing["error"])
-                            {
-                                throw new Error(listing["error"]);
-                            }
-                            else
-                            {
-                                if ($("#accordion").text() == "No Listing Yet")
-                                {
-                                    $("#accordion").html("");
-                                }
-                                
-                                var oid = listing._id.$oid;
-                                var userId = listing.UserId;
-                                
-                                $("#accordion").append(createAccordionView(oid, userId, listing));
-                                    
-                                setGeocompleteTextBox(oid);
-                                setTextBoxWithAutoNumeric(oid);
-                                setDatePickerTextBox(oid);
-                                setBootstrapSwitches(oid); 
-                                setTextBoxWithTags(oid)
-                                
-                                $("#createListingModal").modal('hide');
-                                
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
-                                
-                                $(".actions a").hide();
-                            }
-                        }
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
-                    }
-                },
-                error: function(res, err)
-                {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
-                    }
-                },
-                complete: function()
-                {
-                    $("#create-listing-button").text("Create New Listing");
-                    $("#create-listing-button").prop("disabled", false);
-                }
-            });
+            // need to put data into a saved state because uploading fileSize
+            // is asynchronous
+            pendingData = data;
+            
+            $("#create-listing-button").text("Creating...");
+            $("#create-listing-button").prop("disabled", false);
+            
+            // async call, caught in dropzone.success event handler below
+            dropzones["create"].processQueue();
         }
     }
     catch(e)
     {
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
     }
+}
+
+function process_listing()
+{
+    var data = pendingData;
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "create_listing",
+            data: data,
+            endpoint: "Listings"
+        },
+        success: function(res)
+        {    
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to Create Listing");
+                }
+                else
+                {
+                    var listing = JSON.parse(res);
+                        
+                    if (listing["error"])
+                    {
+                        throw new Error(listing["error"]);
+                    }
+                    else
+                    {
+                        if ($("#accordion").text() == "No Listing Yet")
+                        {
+                            $("#accordion").html("");
+                        }
+                        
+                        var oid = listing._id.$oid;
+                        var userId = listing.UserId;
+                        
+                        $("#accordion").append(createAccordionView(oid, userId, listing));
+                            
+                        var selector = "[id='" + oid + "'] form";
+                            
+                        createDropzone(oid, selector, listing.Pictures);
+                            
+                        setGeocompleteTextBox(oid);
+                        setTextBoxWithAutoNumeric(oid);
+                        setDatePickerTextBox(oid);
+                        setBootstrapSwitches(oid); 
+                        setTextBoxWithTags(oid)
+                        
+                        $("#createListingModal").modal('hide');
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                        
+                        $(".actions a").hide();
+                        
+                        numUploaded = 0;
+                        
+                        pendingData = {};
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            }
+        },
+        error: function(res, err)
+        {
+            try
+            {
+                throw new Error(res + " " + err);
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            }
+        },
+        complete: function()
+        {
+            $("#create-listing-button").prop("disabled", false);
+            $("#create-listing-button").text("Create New Listing");
+        }
+    });
 }
 
 function login()
@@ -856,6 +885,75 @@ function initSpecialFields()
     });
 }
 
+function createDropzone(key, element, existingPics)
+{
+    dropzones[key] = new Dropzone(element,
+    {
+        addRemoveLinks: true,
+        autoProcessQueue: false
+    });
+    
+    var myDropzone = dropzones[key];
+    
+    myDropzone.on("success", function(file)
+    {
+        if (numUploaded == this.files.length - 1)
+        {
+            numUploaded = 0;
+            if (pendingData != null)
+            {
+                process_listing(); 
+            }
+        }
+        else
+        {
+            numUploaded++;
+        }
+    });
+    
+    myDropzone.on("addedfile", function(file) 
+    {
+        var id = $(this.element).data("pic-id");
+        if (pictures[id] == null)
+        {
+            pictures[id] = [];
+        }
+        var filename = (file.alreadyUploaded 
+                        ? file.name
+                        : file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[1]);
+        pictures[id].push(filename);
+        
+        if (!file.alreadyUploaded)
+        {
+            this.files[this.files.length - 1].serverFileName = filename;
+        }
+    });
+    
+    myDropzone.on("removedfile", function(file) 
+    {
+        var index = this.files.indexOf(file);
+        
+        var id = $(this.element).data("pic-id");
+        if (pictures[id] == null)
+        {
+            pictures[id] = [];
+        }
+        pictures[id].splice(index, 1); 
+    });
+    
+    if (existingPics != null)
+    {
+        for (var i = 0; i < existingPics.length; i++)
+        {
+            var mockFile = { name: existingPics[i], alreadyUploaded: true};
+
+            myDropzone.emit("addedfile", mockFile);
+            myDropzone.emit("thumbnail", mockFile, "/assets/images/listing_images/" + mockFile.name);
+            myDropzone.emit("complete", mockFile);
+        }
+    }
+}
+
 function contains(haystack, needle)
 {  
     return (haystack.indexOf(needle) != -1)
@@ -1002,7 +1100,7 @@ function formattedDate(dateString)
 }
 
 function createAccordionView(oid, uuid, data)
-{
+{   
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
@@ -1056,7 +1154,13 @@ function createAccordionView(oid, uuid, data)
                         "</div>" + 
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord ? data.Landlord : "") + "' />" +
+                                "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord && data.Landlord !== "-" ? data.Landlord : "") + "' />" +
+                            "</div>" + 
+                        "</div>" +
+                        "<div class='row'>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label>Images (Will Upload Upon Submit)</label>" +
+                                "<form action='/Libraries/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +

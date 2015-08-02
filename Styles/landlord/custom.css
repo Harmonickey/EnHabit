@@ -129,3 +129,24 @@ textarea
     position: relative;
     top: -10px;
 }
+
+#create-listing-button
+{
+    margin-top: 10px;
+}
+
+#accordion img
+{
+    width: 120px;
+    height: 120px;
+}
+
+#accordion form
+{
+    margin-top: 10px;
+}
+
+.msgGrowl-container
+{
+    z-index: 100;
+}

@@ -5,6 +5,10 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
+abs_path = Dir.pwd
+base = abs_path.split("/").index("public_html")
+@deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
 require 'json'
 require 'bson'
 require 'moped'
@@ -24,8 +28,13 @@ def delete_listing(objectId, id, key)
         mongo_session.with(safe: true) do |session|
             documents = session[:listings].find(listing_obj).to_a
             
-            #make sure we're not delete someone else's listing
+            #make sure we're not deleting someone else's listing
             if documents[0][key] == id
+                listing = session[:listings].find(listing_obj).select(Pictures: 1).one
+                listing["Pictures"].each do |pic|
+                    filename = "#{@deployment_base}/assets/images/listing_images/" + pic
+                    File.delete(filename) if File.exist? filename
+                end
                 session[:listings].find(listing_obj).remove
                 ret_msg = "Okay"
             else

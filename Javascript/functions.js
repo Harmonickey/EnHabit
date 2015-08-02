@@ -9,6 +9,8 @@ var which_modal = "";
 
 var page_is_scrolling = false; // identify when page is being scrolled
 
+var defaultPicture = "404ImageNotFound.png";
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -820,16 +822,22 @@ function insertMarkers(res)
             var marker = L.marker([d.WorldCoordinates.x, d.WorldCoordinates.y]).addTo(map);
             
             var slideshowContent = "";
-            var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+            var base = "assets/images/listing_images/";
+            var images = d.Pictures;
+            if (!images || images.length == 0)
+            {
+                images = [];
+                images.push(defaultPicture);
+            }
             for(var i = 0; i < images.length; i++) 
             {
-                var img = images[i];
+                var source = base + images[i];
 
                 slideshowContent += 
                                     '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                      '<img src="' + img["src"] + '" height="200" width="300"/>' +
-                                      '<div class="caption">' + img["caption"] + '</div>' +
+                                      '<img src="' + source + '" height="200" width="300"/>' +
                                     '</div>';
+                                    //'<div class="caption">' + img["caption"] + '</div>' +
             }
             
             var popupContent =  
@@ -857,35 +865,42 @@ function insertMarkers(res)
 
 function insertIntoListView(data)
 {
+    var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
+    
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets/images/listing_images/pic1.jpg' height='100' width='100' />" +
+            "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\")' />" +
+                "<input type='button' class='btn btn-info' value='View' onclick='openListing(\"" + data._id.$oid + "\", \"" + data.Address + "\", \"" + data.Bedrooms + "\", \"" + data.Bathrooms + "\", \"" + data.Price + "\", \"" + data.Type + "\", \"" + data.HasAnimals + "\", \"" + data.HasLaundry + "\", \"" + data.HasParking + "\", \"" + data.HasAirConditioning + "\", \"" + data.Tags + "\", \"" + data.Pictures + "\")' />" +
             "</div>" +
         "</div>"
     );
 }
 
-function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags)
+function openListing(id, address, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
 {
     //load up the images into the modal...
     var slideshowContent = "";
-    var images = [{"src": "assets/images/listing_images/pic1.jpg", "caption": "kitchen"}, {"src": "assets/images/listing_images/pic2.jpg", "caption": "living room"}];
+    var base = "assets/images/listing_images/";
+    if (!images || images.length == 0)
+    {
+        images = [];
+        images.push(defaultPicture);
+    }
     for(var i = 0; i < images.length; i++) 
     {
-        var img = images[i];
+        var source = base + images[i];
 
         slideshowContent += 
                             '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                              '<img src="' + img["src"] + '" />' +
-                              '<div class="caption">' + img["caption"] + '</div>' +
+                              '<img src="' + source + '" />' +
                             '</div>';
+                            //'<div class="caption">' + img["caption"] + '</div>' +
     }
     
     $("#modal-content-15 h3").text(address);
@@ -1324,7 +1339,8 @@ function load_listings_list()
 {
     $("#listings").fadeIn();
     
-    $("#view_listings_list-function a").text("Close Listings List");
+    //then change the view listings list to "Hide Listings"
+    $("#view_listings_list-function a").text("Hide Listings");
     $("#view_listings_list-function").attr("onclick", "close_listings_list()");
 }
 

@@ -6,6 +6,8 @@ EVENT HANDLERS
 **********************/
 
 var savedUsername = "";
+var pendingData = null;
+var numUploaded = 0;
 
 $(document).on("keypress", function(e)
 {
@@ -72,6 +74,10 @@ function getAllListings(landlordId)
                                 var landlordId = data[i].LandlordId;
                                 
                                 $("#accordion").append(createAccordionView(oid, landlordId, data[i]));
+                                
+                                var selector = "[id='" + oid + "'] form";
+                                
+                                createDropzone(oid, selector, data[i].Pictures);
                                     
                                 setGeocompleteTextBox(oid);
                                 setTextBoxWithAutoNumeric(oid);
@@ -145,7 +151,7 @@ function getAccount(landlordId)
                         
                         if (contains(res, "Error"))
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-left'});
+                            throw new Error(res);
                         }
                         else
                         {
@@ -346,6 +352,7 @@ function update_listing(id, landlordId)
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
+    data.pictures = pictures[id];
     
     try
     {
@@ -355,6 +362,8 @@ function update_listing(id, landlordId)
         }
         else
         {
+            dropzones[id].processQueue();
+            
             $.ajax(
             {
                 type: "POST",
@@ -377,6 +386,7 @@ function update_listing(id, landlordId)
                         if (contains(res, "Okay"))
                         {
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                            numUploaded = 0;
                         }
                         else
                         {
@@ -386,6 +396,7 @@ function update_listing(id, landlordId)
                     catch(e)
                     {
                         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        numUploaded = 0;
                     }
                 },
                 error: function(err, res)
@@ -425,6 +436,7 @@ function create_listing()
     data.type = (data.type == true ? "apartment" : "sublet");
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.landlordId = landlordId;
+    data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
     {
@@ -434,82 +446,15 @@ function create_listing()
         }
         else
         {
-            $.ajax(
-            {
-                type: "POST",
-                url: "/api.php",
-                beforeSend: function()
-                {
-                    $("#create-listing-button").text("Creating...");
-                    $("#create-listing-button").prop("disabled", false);
-                },
-                data:
-                {
-                    command: "create_listing",
-                    data: data,
-                    endpoint: "Listings"
-                },
-                success: function(res)
-                {    
-                    try
-                    {
-                        if (!res)
-                        {
-                            throw new Error("Problem Creating Listing");
-                        }
-                        else
-                        {
-                            var listing = JSON.parse(res);
-                            
-                            if (listing["error"])
-                            {
-                                throw new Error(listing["error"]);
-                            }
-                            else
-                            {
-                                if ($("#accordion").text() == "No Listing Yet")
-                                {
-                                    $("#accordion").html("");
-                                }
-                                
-                                var oid = listing._id.$oid;
-                                var landlordId = listing.LandlordId;
-                                $("#accordion").append(createAccordionView(oid, landlordId, listing));
-                                    
-                                setGeocompleteTextBox(oid);
-                                setTextBoxWithAutoNumeric(oid);
-                                setDatePickerTextBox(oid);
-                                setBootstrapSwitches(oid); 
-                                setTextBoxWithTags(oid)
-                                
-                                $("#createListingModal").modal('hide');
-                                
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
-                            }
-                        }
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
-                    }
-                },
-                error: function(res, err)
-                {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
-                    }
-                },
-                complete: function()
-                {
-                    $("#create-listing-button").text("Create New Listing");
-                    $("#create-listing-button").prop("disabled", false);
-                }
-            });
+            // need to put data into a saved state because uploading fileSize
+            // is asynchronous
+            pendingData = data;
+            
+            $("#create-listing-button").text("Creating...");
+            $("#create-listing-button").prop("disabled", false);
+            
+            // async call, caught in dropzone.success event handler below
+            dropzones["create"].processQueue();
         }
     }
     catch(e)
@@ -518,10 +463,99 @@ function create_listing()
     }
 }
 
+function process_listing()
+{
+    var data = pendingData;
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "create_listing",
+            data: data,
+            endpoint: "Listings"
+        },
+        success: function(res)
+        {    
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to Create Listing");
+                }
+                else
+                {
+                    var listing = JSON.parse(res);
+                        
+                    if (listing["error"])
+                    {
+                        throw new Error(listing["error"]);
+                    }
+                    else
+                    {
+                        if ($("#accordion").text() == "No Listing Yet")
+                        {
+                            $("#accordion").html("");
+                        }
+                        
+                        var oid = listing._id.$oid;
+                        var userId = listing.UserId;
+                        
+                        $("#accordion").append(createAccordionView(oid, userId, listing));
+                            
+                        var selector = "[id='" + oid + "'] form";
+                            
+                        createDropzone(oid, selector, listing.Pictures);
+                            
+                        setGeocompleteTextBox(oid);
+                        setTextBoxWithAutoNumeric(oid);
+                        setDatePickerTextBox(oid);
+                        setBootstrapSwitches(oid); 
+                        setTextBoxWithTags(oid)
+                        
+                        $("#createListingModal").modal('hide');
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                        
+                        $(".actions a").hide();
+                        
+                        numUploaded = 0;
+                        
+                        pendingData = null;
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            }
+        },
+        error: function(res, err)
+        {
+            try
+            {
+                throw new Error(res + " " + err);
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            }
+        },
+        complete: function()
+        {
+            $("#create-listing-button").prop("disabled", false);
+            $("#create-listing-button").text("Create New Listing");
+        }
+    });
+}
+
 function login()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
+    
     try
     {
         if (!username || !password)
@@ -529,8 +563,7 @@ function login()
             throw new Error("Please enter Username and Password");
         }
         else
-        {
-            
+        {           
             $.ajax(
             {
                 type: "POST",
@@ -624,7 +657,8 @@ function logout()
                 {
                     if (contains(res, "Successfully"))
                     {
-                        // TODO: ideally I'd like this to be a server redirect in PHP
+                        // TODO: Ideally I'd like this to be a server redirect in PHP, location would
+                        // be a POST element, this is good for now
                         location.href = "/landlord/login.php";
                     }
                     else
@@ -847,6 +881,75 @@ function initSpecialFields()
     });
 }
 
+function createDropzone(key, element, existingPics)
+{
+    dropzones[key] = new Dropzone(element,
+    {
+        addRemoveLinks: true,
+        autoProcessQueue: false
+    });
+    
+    var myDropzone = dropzones[key];
+    
+    myDropzone.on("success", function(file)
+    {
+        if (numUploaded == this.files.length - 1)
+        {
+            numUploaded = 0;
+            if (pendingData != null)
+            {
+                process_listing(); 
+            }
+        }
+        else
+        {
+            numUploaded++;
+        }
+    });
+    
+    myDropzone.on("addedfile", function(file) 
+    {
+        var id = $(this.element).data("pic-id");
+        if (pictures[id] == null)
+        {
+            pictures[id] = [];
+        }
+        var filename = (file.alreadyUploaded 
+                        ? file.name
+                        : file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[1]);
+        pictures[id].push(filename);
+        
+        if (!file.alreadyUploaded)
+        {
+            this.files[this.files.length - 1].serverFileName = filename;
+        }
+    });
+    
+    myDropzone.on("removedfile", function(file) 
+    {
+        var index = this.files.indexOf(file);
+        
+        var id = $(this.element).data("pic-id");
+        if (pictures[id] == null)
+        {
+            pictures[id] = [];
+        }
+        pictures[id].splice(index, 1); 
+    });
+    
+    if (existingPics != null)
+    {
+        for (var i = 0; i < existingPics.length; i++)
+        {
+            var mockFile = { name: existingPics[i], alreadyUploaded: true};
+
+            myDropzone.emit("addedfile", mockFile);
+            myDropzone.emit("thumbnail", mockFile, "/assets/images/listing_images/" + mockFile.name);
+            myDropzone.emit("complete", mockFile);
+        }
+    }
+}
+
 function contains(haystack, needle)
 {  
     return (haystack.indexOf(needle) != -1)
@@ -1044,7 +1147,13 @@ function createAccordionView(oid, uuid, data)
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Type</label><input type='checkbox' " + (data.Type == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
-                        "</div>" + 
+                        "</div>" +
+                        "<div class='row'>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label>Images (Will Upload Upon Submit)</label>" +
+                                "<form action='/Libraries/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
+                            "</div>" + 
+                        "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\", \"" + uuid + "\");'>Update</button>" + 

@@ -7,9 +7,9 @@ $: << "/home2/lbkstud1/ruby/gems"
 
 abs_path = Dir.pwd
 base = abs_path.split("/").index("public_html")
-deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+@deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
-$: << "#{deployment_base}/Libraries"
+$: << "#{@deployment_base}/Libraries"
 
 require 'json'
 require 'bson'
@@ -19,7 +19,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags)
+def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
@@ -41,6 +41,7 @@ def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, b
     listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listing_obj["University"] = university
     listing_obj["Tags"] = tags
+    listing_obj["Pictures"] = pictures
     
     #object to search with
     query_obj = Hash.new
@@ -49,6 +50,19 @@ def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, b
     ret_msg = ""
  
     begin
+        # for pictures, we need to do something special
+        # delete all the pictures on disk that aren't in the updated list
+        mongo_session.with(safe: true) do |session|
+            document = session[:listings].find(query_obj).select(Pictures: 1).one
+            document["Pictures"].each do |pic|
+                if not pictures.nil? and not pictures.include? pic
+                    filename = "#{@deployment_base}/assets/images/listing_images/" + pic
+                    File.delete(filename) if File.exist? filename
+                end
+            end
+        end
+    
+    
         mongo_session.with(safe: true) do |session|
             session[:listings].find(query_obj).update('$set' => listing_obj)
         end
@@ -96,7 +110,7 @@ begin
         landlordId = "" if landlordId == "No Match"
     end
     
-    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"])
+    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
