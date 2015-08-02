@@ -1,24 +1,10 @@
 <?php
-
     session_start();
     
     if (!isset($_SESSION["admin"]))
     {
-        header("Location: /admin/login.php", FALSE); // just redirect if the user isn't authorized to go here....
+        header("Location: /admin/login.php", FALSE);
     }
-    else
-    {
-        $one_hour = 3600;
-
-        if (!isset($_SESSION['CREATED'])) {
-            $_SESSION['CREATED'] = time();
-        } else if (time() - $_SESSION['CREATED'] > $one_hour) {
-            // session started more than 1 hour ago
-            session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
-            $_SESSION['CREATED'] = time();  // update creation time
-        }
-    }
-
 ?>
 
 <!DOCTYPE html>

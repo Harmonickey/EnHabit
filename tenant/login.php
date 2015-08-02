@@ -56,7 +56,7 @@
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
     <a class="logo" href="/"><img src='../assets/images/theme_images/logo_white.png' height="50"/></a>
-    <a class="navbar-brand" href="./index.html"> Tenant Portal</a>
+    <a class="navbar-brand" href="./"> Tenant Portal</a>
   </div>
 </div> <!-- /.container -->
 </nav>

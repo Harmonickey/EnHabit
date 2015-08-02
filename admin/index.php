@@ -30,20 +30,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
     
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <link href="./css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-    <link href="./css/font-awesome.min.css" rel="stylesheet">        
+    <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">        
     
-    <link href="./css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    <link href=".../../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
-    <link href="./css/base-admin-3.css" rel="stylesheet">
-    <link href="./css/base-admin-3-responsive.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
-    <link href="./css/pages/dashboard.css" rel="stylesheet">   
+    <link href="../../Libraries/Styles/dashboard.css" rel="stylesheet">   
 
-    <link href="./css/custom.css" rel="stylesheet">
+    <link href="../../Styles/admin/custom.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -409,15 +409,15 @@
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="./js/libs/jquery-1.9.1.min.js"></script>
-<script src="./js/libs/jquery-ui-1.10.0.custom.min.js"></script>
-<script src="./js/libs/bootstrap.min.js"></script>
+<script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
+<script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 
-<script src="./js/plugins/flot/jquery.flot.js"></script>
-<script src="./js/plugins/flot/jquery.flot.pie.js"></script>
-<script src="./js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="../../Libraries/Javascript/plugins/flot/jquery.flot.js"></script>
+<script src="../../Libraries/Javascript/jquery.flot.pie.js"></script>
+<script src="../../Libraries/Javascript/jquery.flot.resize.js"></script>
 
-<script src="./js/functions.js"></script>
+<script src="../../Javascript/admin/functions.js"></script>
 
 <!--<script src="./js/charts/area.js"></script>
 <script src="./js/charts/donut.js"></script>-->
@@ -426,15 +426,6 @@
 
 $(function() 
 {
-    function getFormatted(time)
-    {
-        var hours = parseInt( time / 3600 ) % 24;
-        var minutes = parseInt( time / 60 ) % 60;
-        var seconds = time % 60;
-        
-        return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
-    }
-    
     <?php
         $analytics = getService();
         $profile = getFirstProfileId($analytics);;
@@ -444,20 +435,7 @@ $(function()
         echo "');";
     ?>
     
-    var visits = analytics[0];
-    var percentNewVisits = parseInt(analytics[1]);
-    var uniqueVisits = analytics[2];
-    var averageTimeOnSite = parseInt(analytics[3]);
-    var averagePageLoad = parseInt(analytics[4]);
-    
-    var averageTimeFormatted = getFormatted(averageTimeOnSite);
-    var averageLoadFormatted = getFormatted(averagePageLoad);
-    
-    $("#site-visits").text(visits);
-    $("#unique-visits").text(uniqueVisits);
-    $("#new-visits").text(percentNewVisits + "%");
-    $("#average-time-on-site").text(averageTimeFormatted);
-    $("#page-download-time").text(averageLoadFormatted);
+    displayAnalytics(analytics);
 });
 
 </script>

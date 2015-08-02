@@ -949,6 +949,24 @@ function logout()
     }
 }
 
+function displayAnalytics(analytics)
+{
+    var visits = analytics[0];
+    var percentNewVisits = parseInt(analytics[1]);
+    var uniqueVisits = analytics[2];
+    var averageTimeOnSite = parseInt(analytics[3]);
+    var averagePageLoad = parseInt(analytics[4]);
+    
+    var averageTimeFormatted = formattedTime(averageTimeOnSite);
+    var averageLoadFormatted = formattedTime(averagePageLoad);
+    
+    $("#site-visits").text(visits);
+    $("#unique-visits").text(uniqueVisits);
+    $("#new-visits").text(percentNewVisits + "%");
+    $("#average-time-on-site").text(averageTimeFormatted);
+    $("#page-download-time").text(averageLoadFormatted);
+}
+
 /**********************
 
 UTILITY FUNCTIONS
@@ -1204,6 +1222,15 @@ function formattedDate(dateString)
     
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
+
+function formattedTime(time)
+    {
+        var hours = parseInt( time / 3600 ) % 24;
+        var minutes = parseInt( time / 60 ) % 60;
+        var seconds = time % 60;
+        
+        return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+    }
 
 function createAccordionView(oid, uuid, data)
 {
