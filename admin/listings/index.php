@@ -29,6 +29,8 @@
     <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
     <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
     
+    <link href="../../Libraries/Styles/dropzone.css" rel="stylesheet">
+    
     <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
     <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
@@ -222,9 +224,14 @@
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 <!-- helper for numeric text boxes -->
 <script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
-
+<!-- helper for notifications -->
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
+<!-- helper for datepicker -->
+<script src="../../Libraries/Javascript/pikaday.js"></script>
+<script src="../../Libraries/Javascript/pikaday.jquery.js"></script>
+<!-- helper for file upload -->
+<script src="../../Libraries/Javascript/dropzone.js"></script>
 
 <script src="../../Javascript/admin/functions.js"></script>
 

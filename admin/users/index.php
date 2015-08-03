@@ -28,6 +28,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
     
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../../favicon.png">
+    
     <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
@@ -127,8 +130,9 @@
       <div class="row">
       	<div class="col-md-12">
       		<div class="widget stacked">
-      			<div class="widget-header">
-					<h3>Registered Users</h3>
+                <div class="widget-header actions">
+                    <h3>Registered Users</h3>
+					<a class="btn btn-success" data-toggle="modal" href="#createUserModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="icon-plus"></i>Create New User</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
 					<!-- all the listings go here -->
@@ -141,6 +145,31 @@
       </div> <!-- /row -->
     </div> <!-- /container -->
 </div> <!-- /main -->
+
+<div id="createUserModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Create New User</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Put all the fields to create a listing here -->
+                <label>Username</label><input type='text' class='form-control' />
+                <label>Password</label><input type='text' class='form-control' />
+                <label>First Name</label><input type='text' class='form-control' />
+                <label>Last Name</label><input type='text' class='form-control' />
+                <label>Emails</label><input type='text' class='form-control' />
+                <label>Phone Number</label><input type='text' class='form-control' />         
+                <label>Landlord</label><input type='checkbox' data-size='mini' />
+                <label>Active</label><<input type='checkbox' data-size='mini' />
+                <label>Admin</label><input type='checkbox' data-size='mini' />
+                <label>Verified</label><input type='checkbox' data-size='mini' />
+                <button id="create-user-button" type="button" class="btn btn-success" onclick="create_user()">Create User</button>
+            </div>
+        </div>
+    </div>
+</div>
    
 <div class="footer">
 	<div class="container">
@@ -172,10 +201,10 @@
 <script>
 
 $(function() 
-{
-    init_checkboxes();
-    
-    get_all_users();
+{   
+    initSpecialFieldsUser();
+
+    getAllUsers();
 });
 
 </script>

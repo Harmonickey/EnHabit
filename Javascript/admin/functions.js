@@ -28,22 +28,37 @@ function getAllUsers()
             url: "/api.php",
             data: 
             {
-                command: "get_all_users"
+                command: "get_all_users",
+                endpoint: "Accounts"
             },
             success: function(res) 
             {
                 try
                 {
-                    var data = JSON.parse(res);
-                    
-                    for (var i = 0; i < data.length; i++)
+                    if (!res)
                     {
-                        data[i] = sanitizeUserData(data[i]);
-                       
-                        var oid = data[i]._id.$oid;
-                       
-                        //fill in all user data
-                        $("#accordion").after(createAccordionUsersView(oid, data[i]));
+                        throw new Error("Unable to retrieve users");
+                        $("#accordion").html("<p>No Users Yet</p>");
+                        $(".actions a").show();
+                    }
+                    else if (contains(res, "No Users"))
+                    {
+                        $("#accordion").html("<p>No Users Yet</p>");
+                        $(".actions a").show();
+                    }
+                    else
+                    {                   
+                        var data = JSON.parse(res);
+                        
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                           
+                            //fill in all user data
+                            $("#accordion").append(createAccordionUsersView(oid, data[i]));
+                            
+                            setBootstrapSwitchesForUsers(oid);
+                        }
                     }
                 }
                 catch(e)
@@ -172,7 +187,8 @@ function getAllTransactions()
         url: "/api.php",
         data:
         {
-            command: "get_all_transactions"
+            command: "get_all_transactions",
+            endpoint: "Payments"
         },
         success: function(res) 
         {
@@ -247,7 +263,7 @@ function update_user(id)
     var userfield = $("#" + id + " input[type='text']");
     var switches = $("#" + id + " input[type='checkbox']");
     
-    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "email", "isactive", "isadmin"], switches);
+    var data = buildData(userfield, ["username", "firstname", "lastname", "isadmin", "phonenumber", "email", "isactive", "isverified"], switches);
     
     data["id"] = id;
     
@@ -324,6 +340,11 @@ function setBootstrapSwitches(rowId)
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":last").bootstrapSwitch({onText: "Yes", offText: "No"});
     $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
+}
+
+function setBootstrapSwitchesForUsers(rowId)
+{
+    $("#" + rowId + " input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
 }
 
 function setGeocompleteTextBox(rowId)
@@ -599,7 +620,7 @@ function create_user()
     var userfield = $("#create-user input[type='text'], #create-user input[type='password']");
     var switches = $("#create-user input[type='checkbox']");
     
-    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "active", "isadmin"], switches);
+    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "isactive", "isadmin", "isverified"], switches);
     
     var error = buildError(data);
     
@@ -1009,6 +1030,11 @@ function initSpecialFields()
     });
 }
 
+function initSpecialFieldsUser()
+{    
+    $("#createListingModal input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+}
+
 function createDropzone(key, element, existingPics)
 {
     dropzones[key] = new Dropzone(element,
@@ -1090,7 +1116,8 @@ function buildData(inputs, elements)
     for (var i = 0; i < elements.length; i++)
     {
         if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" 
-         || elements[i] == "airConditioning" || elements[i] == "type")
+         || elements[i] == "airConditioning" || elements[i] == "type" || elements[i] == "isactive"
+         || elements[i] == "isadmin" || elements[i] == "isverified")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -1124,6 +1151,14 @@ function buildError(fields)
     
     var beginning = "Please Include ";
     
+    if (fields.firstname === "")
+    {
+        error_arr.push("Valid First Name");
+    }
+    if (fields.lastname === "")
+    {
+        error_arr.push("Valid Last Name");    
+    }
     if (fields.username === "")
     {
         error_arr.push("Valid Username");
@@ -1308,16 +1343,54 @@ function createAccordionView(oid, uuid, data)
 }
 
 function createAccordionUsersView(oid, data)
-{
-    return "<tr id='" + oid + "'>"   +
-                "<td><input type='text' class='form-control' value='" + data.Username + "' /></td>" +
-                "<td><input type='text' class='form-control' value='" + data.FirstName + "' /></td>" +
-                "<td><input type='text' class='form-control' value='" + data.LastName + "' /></td>" +
-                "<td><input type='text' class='form-control' value='" + data.PhoneNumber + "' /></td>" +
-                "<td><input type='text' class='form-control' value='" + data.Email + "' /></td>" +
-                "<td><input type='checkbox' " + (data.Active ? "checked" : "") + " data-size='mini' /></td>" +
-                "<td><input type='checkbox' " + (data.IsAdmin ? "checked" : "") + " data-size='mini' /></td>" +
-                "<td><button class='btn btn-primary' onclick='update_user(\"" + oid + "\");'>Update</button></td>" + 
-                "<td><button class='btn btn-danger' onclick='delete_user(\"" + oid + "\");'>Delete</button></td>" +
-            "</tr>";
+{           
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Username: " + data.Username + "</label>" + 
+                            "<label>First Name: " + data.FirstName + "</label>" + 
+                            "<label>Last Name: " + data.LastName + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Username</label><input type='text' class='form-control' value='" + data.Username + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>First Name</label><input type='text' class='form-control' value='" + data.FirstName + "' />" + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Last Name</label><input type='text' class='form-control' value='" + data.LastName + "' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Admin</label><br><input type='checkbox' " + (data.IsAdmin ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Phone Number</label><input type='text' class='form-control' value='" + data.PhoneNumber + "' />" +
+                            "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Email Address</label><input type='text' class='form-control' value='" + data.Email + "' />" +
+                            "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Active</label><br><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini' />" + 
+                            "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Verified</label><br><input type='checkbox' " + (data.IsVerified ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary' onclick='update_user(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_user(\"" + oid + "\");'>Delete</button>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
 }

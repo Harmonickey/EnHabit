@@ -28,22 +28,25 @@
     <title>Admin | Home</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">    
+    <meta name="apple-mobile-web-app-capable" content="yes">   
+
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../favicon.png">    
     
-    <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
-    <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-    <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">        
+    <link href="../Libraries/Styles/font-awesome.min.css" rel="stylesheet">        
     
-    <link href=".../../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    <link href="../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
-    <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
-    <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
+    <link href="../Libraries/Styles/base-admin-3.css" rel="stylesheet">
+    <link href="../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
-    <link href="../../Libraries/Styles/dashboard.css" rel="stylesheet">   
+    <link href="../Libraries/Styles/dashboard.css" rel="stylesheet">   
 
-    <link href="../../Styles/admin/custom.css" rel="stylesheet">
+    <link href="../Styles/admin/custom.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -59,7 +62,7 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                <i class="icon-cog"></i>
+                <i class="fa fa-cog"></i>
             </button>
             <a class="navbar-brand" href="./">Enhabit Admin</a>
         </div>
@@ -68,12 +71,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">						
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-user"></i> 
-                        <?php echo $_SESSION["admin"]; ?>
+                        <i class="fa fa-user"></i> 
+                        <?php if(isset($_SESSION["admin"])) { echo $_SESSION["admin"]; } ?>
                         <b class="caret"></b>
                     </a>			
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" onclick="logout_admin()">Logout</a></li>
+                        <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -86,31 +89,31 @@
 		<div class="container">			
 			<a href="javascript:;" class="subnav-toggle" data-toggle="collapse" data-target=".subnav-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                <i class="icon-reorder"></i>
+                <i class="fa fa-bars"></i>
 		    </a>
 			<div class="collapse subnav-collapse">
 				<ul class="mainnav">				
 					<li class="active">
 						<a href="./">
-							<i class="icon-home"></i>
+							<i class="fa fa-home"></i>
 							<span>Home</span>
 						</a>	    				
 					</li>                   
                     <li>
 						<a href="./users">
-							<i class="icon-user"></i>
+							<i class="fa fa-user"></i>
 							<span>Users</span>
 						</a>	    				
 					</li>                   
                     <li>
 						<a href="./listings">
-							<i class="icon-copy"></i>
+							<i class="fa fa-copy"></i>
 							<span>Listings</span>
 						</a>	    				
 					</li>
                     <li>
 						<a href="./payments">
-							<i class="icon-usd"></i>
+							<i class="fa fa-usd"></i>
 							<span>Payments</span>
 						</a>	    				
 					</li>
@@ -126,7 +129,7 @@
             <div class="col-md-12 col-xs-12">
                 <div class="widget stacked">
                     <div class="widget-header">
-                        <i class="icon-star"></i>
+                        <i class="fa fa-star"></i>
                         <h3>Site Analytics</h3>
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
@@ -162,7 +165,7 @@
             <div class="col-md-6 col-xs-12">
                 <div class="widget widget-nopad stacked">	
                     <div class="widget-header">
-                        <i class="icon-list-alt"></i>
+                        <i class="fa fa-list-alt"></i>
                         <h3>Transactions Summary</h3>
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
@@ -202,7 +205,7 @@
                 </div> <!-- /widget -->						
                 <div class="widget stacked">
                     <div class="widget-header">
-                        <i class="icon-file"></i>
+                        <i class="fa fa-file"></i>
                         <h3>Users Summary</h3>
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
@@ -215,41 +218,41 @@
             <div class="col-md-6">	
                 <div class="widget stacked">
                     <div class="widget-header">
-                        <i class="icon-bookmark"></i>
+                        <i class="fa fa-bookmark"></i>
                         <h3>Quick Shortcuts</h3>
                     </div> <!-- /widget-header -->
                     <div class="widget-content">
                         <div class="shortcuts">
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-list-alt"></i>
+                                <i class="shortcut-icon fa fa-list-alt"></i>
                                 <span class="shortcut-label">Apps</span>
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-bookmark"></i>
+                                <i class="shortcut-icon fa fa-bookmark"></i>
                                 <span class="shortcut-label">Bookmarks</span>								
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-signal"></i>
+                                <i class="shortcut-icon fa fa-signal"></i>
                                 <span class="shortcut-label">Reports</span>	
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-comment"></i>
+                                <i class="shortcut-icon fa fa-comment"></i>
                                 <span class="shortcut-label">Comments</span>								
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-user"></i>
+                                <i class="shortcut-icon fa fa-user"></i>
                                 <span class="shortcut-label">Users</span>
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-file"></i>
+                                <i class="shortcut-icon fa fa-file"></i>
                                 <span class="shortcut-label">Notes</span>	
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-picture"></i>
+                                <i class="shortcut-icon fa fa-picture"></i>
                                 <span class="shortcut-label">Photos</span>	
                             </a>						
                             <a href="javascript:;" class="shortcut">
-                                <i class="shortcut-icon icon-tag"></i>
+                                <i class="shortcut-icon fa fa-tag"></i>
                                 <span class="shortcut-label">Tags</span>
                             </a>				
                         </div> <!-- /shortcuts -->					
@@ -257,7 +260,7 @@
                 </div> <!-- /widget -->		
                 <div class="widget stacked">					
                     <div class="widget-header">
-                        <i class="icon-signal"></i>
+                        <i class="fa fa-signal"></i>
                         <h3>Chart</h3>
                     </div> <!-- /widget-header -->			
                     <div class="widget-content">					
@@ -266,7 +269,7 @@
                 </div> <!-- /widget -->				
                 <div class="widget stacked widget-table action-table">					
                     <div class="widget-header">
-                        <i class="icon-th-list"></i>
+                        <i class="fa fa-th-list"></i>
                         <h3>Table</h3>
                     </div> <!-- /widget-header -->				
                     <div class="widget-content">					
@@ -285,7 +288,7 @@
                                          Explorer 4.0</td>
                                     <td class="td-actions">
                                         <a href="javascript:;" class="btn btn-xs btn-primary">
-                                            <i class="btn-icon-only icon-ok"></i>										
+                                            <i class="btn-icon-only fa fa-ok"></i>										
                                         </a>
                                     </td>
                                 </tr>
@@ -295,7 +298,7 @@
                                          Explorer 5.0</td>
                                     <td class="td-actions">
                                         <a href="javascript:;" class="btn btn-xs btn-primary">
-                                            <i class="btn-icon-only icon-ok"></i>										
+                                            <i class="btn-icon-only fa fa-ok"></i>										
                                         </a>
                                     </td>
                                 </tr>
@@ -305,7 +308,7 @@
                                          Explorer 5.5</td>
                                     <td class="td-actions">
                                         <a href="javascript:;" class="btn btn-xs btn-primary">
-                                            <i class="btn-icon-only icon-ok"></i>										
+                                            <i class="btn-icon-only fa fa-ok"></i>										
                                         </a>
                                     </td>
                                 </tr>
@@ -315,7 +318,7 @@
                                          Explorer 5.5</td>
                                     <td class="td-actions">
                                         <a href="javascript:;" class="btn btn-xs btn-primary">
-                                            <i class="btn-icon-only icon-ok"></i>										
+                                            <i class="btn-icon-only fa fa-ok"></i>										
                                         </a>
                                     </td>
                                 </tr>
@@ -325,7 +328,7 @@
                                          Explorer 5.5</td>
                                     <td class="td-actions">
                                         <a href="javascript:;" class="btn btn-xs btn-primary">
-                                            <i class="btn-icon-only icon-ok"></i>
+                                            <i class="btn-icon-only fa fa-ok"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -335,7 +338,7 @@
                                          Explorer 5.5</td>
                                     <td class="td-actions">
                                         <a href="javascript:;" class="btn btn-xs btn-primary">
-                                            <i class="btn-icon-only icon-ok"></i>										
+                                            <i class="btn-icon-only fa fa-ok"></i>										
                                         </a>
                                     </td>
                                 </tr>
@@ -346,58 +349,16 @@
             </div> <!-- /span6 -->	
         </div> <!-- /row -->
     </div> <!-- /container --> 
-</div> <!-- /main -->
-<div class="extra">
-	<div class="container">
-		<div class="row">			
-			<div class="col-md-3">				
-				<h4>About</h4>				
-				<ul>
-					<li><a href="javascript:;">About Us</a></li>
-					<li><a href="javascript:;">Twitter</a></li>
-					<li><a href="javascript:;">Facebook</a></li>
-					<li><a href="javascript:;">Google+</a></li>
-				</ul>				
-			</div> <!-- /span3 -->			
-			<div class="col-md-3">				
-				<h4>Support</h4>				
-				<ul>
-					<li><a href="javascript:;">Frequently Asked Questions</a></li>
-					<li><a href="javascript:;">Ask a Question</a></li>
-					<li><a href="javascript:;">Video Tutorial</a></li>
-					<li><a href="javascript:;">Feedback</a></li>
-				</ul>				
-			</div> <!-- /span3 -->			
-			<div class="col-md-3">				
-				<h4>Legal</h4>				
-				<ul>
-					<li><a href="javascript:;">License</a></li>
-					<li><a href="javascript:;">Terms of Use</a></li>
-					<li><a href="javascript:;">Privacy Policy</a></li>
-					<li><a href="javascript:;">Security</a></li>
-				</ul>				
-			</div> <!-- /span3 -->			
-			<div class="col-md-3">				
-				<h4>Settings</h4>				
-				<ul>
-					<li><a href="javascript:;">Consectetur adipisicing</a></li>
-					<li><a href="javascript:;">Eiusmod tempor </a></li>
-					<li><a href="javascript:;">Fugiat nulla pariatur</a></li>
-					<li><a href="javascript:;">Officia deserunt</a></li>
-				</ul>				
-			</div> <!-- /span3 -->			
-		</div> <!-- /row -->
-	</div> <!-- /container -->
-</div> <!-- /extra -->   
+</div> <!-- /main -->  
 <div class="footer">		
 	<div class="container">		
 		<div class="row">			
 			<div id="footer-copyright" class="col-md-6">
-				&copy; 2012-13 Jumpstart UI.
-			</div> <!-- /span6 -->			
+				&copy; Enhabit LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
-			</div> <!-- /.span6 -->			
+			</div> <!-- /.span6 -->		
 		</div> <!-- /row -->		
 	</div> <!-- /container -->	
 </div> <!-- /footer -->
@@ -409,15 +370,15 @@
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
-<script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
-<script src="../../Libraries/Javascript/bootstrap.min.js"></script>
+<script src="../Libraries/Javascript/jquery-1.9.1.min.js"></script>
+<script src="../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="../Libraries/Javascript/bootstrap.min.js"></script>
 
-<script src="../../Libraries/Javascript/plugins/flot/jquery.flot.js"></script>
-<script src="../../Libraries/Javascript/jquery.flot.pie.js"></script>
-<script src="../../Libraries/Javascript/jquery.flot.resize.js"></script>
+<script src="../Libraries/Javascript/jquery.flot.js"></script>
+<script src="../Libraries/Javascript/jquery.flot.pie.js"></script>
+<script src="../Libraries/Javascript/jquery.flot.resize.js"></script>
 
-<script src="../../Javascript/admin/functions.js"></script>
+<script src="../Javascript/admin/functions.js"></script>
 
 <!--<script src="./js/charts/area.js"></script>
 <script src="./js/charts/donut.js"></script>-->

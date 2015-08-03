@@ -11,7 +11,7 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-def insert_user(user, pass, fn, ln, em, pn, ac, la, ad)
+def insert_user(user, pass, firstname, lastname, email, phonenumber, active, landlord, admin, verified)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -19,15 +19,14 @@ def insert_user(user, pass, fn, ln, em, pn, ac, la, ad)
     usr_obj = Hash.new
     usr_obj["Username"] = user
     usr_obj["Password"] = PasswordHash.createHash(pass)
-    usr_obj["FirstName"] = fn
-    usr_obj["LastName"] = ln
-    usr_obj["Email"] = em
-    usr_obj["PhoneNumber"] = pn
-    usr_obj["Active"] = (ac == "true")
-    usr_obj["Landlord"] = (la == "true")
-    usr_obj["IsFacebook"] = false
-    usr_obj["IsAdmin"] = (ad == "true")
-    #usr_obj["Verified"] = false
+    usr_obj["FirstName"] = firstname
+    usr_obj["LastName"] = lastname
+    usr_obj["Email"] = email
+    usr_obj["PhoneNumber"] = phonenumber
+    usr_obj["IsActive"] = (active == "true")
+    usr_obj["Landlord"] = (landlord == "true")
+    usr_obj["IsAdmin"] = (admin == "true")
+    usr_obj["IsVerified"] = (verified == "true")
  
     document = Hash.new
     
@@ -57,7 +56,7 @@ begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
 
-    result = insert_user(data["username"], data["password"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], data["active"], data["landlord"], data["isadmin"])
+    result = insert_user(data["username"], data["password"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], data["isactive"], data["landlord"], data["isadmin"], data["isverified"])
 
     puts result.to_json
 
