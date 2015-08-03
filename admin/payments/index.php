@@ -41,6 +41,9 @@
     
     <link href="../../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
+    <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
+    
     <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
     <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
@@ -63,7 +66,7 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                <i class="icon-cog"></i>
+                <i class="fa fa-cog"></i>
             </button>
             <a class="navbar-brand" href="./">Enhabit Admin</a>
         </div>
@@ -72,12 +75,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">						
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-user"></i> 
-                        <?php echo $_SESSION["admin"]; ?>
+                        <i class="fa fa-user"></i> 
+                        <?php if (isset($_SESSION["admin"])) { echo $_SESSION["admin"]; } ?>
                         <b class="caret"></b>
                     </a>			
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" onclick="logout_admin()">Logout</a></li>
+                        <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -165,13 +168,16 @@
 <script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 
+<script src="../../Libraries/Javascript/msgGrowl.js"></script>
+<script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
+
 <script src="../../Javascript/admin/functions.js"></script>
 
 <script>
 
 $(function() 
 {
-    get_all_transactions();
+    getAllTransactions();
 });
 
 </script>

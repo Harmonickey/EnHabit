@@ -181,32 +181,72 @@ function getAllListings()
 
 function getAllTransactions()
 {  
-    $.ajax(
+    try
     {
-        type: "POST",
-        url: "/api.php",
-        data:
+        $.ajax(
         {
-            command: "get_all_transactions",
-            endpoint: "Payments"
-        },
-        success: function(res) 
-        {
-            console.log(res);
-            
-            for (var i = 0; i < data.length; i++)
+            type: "POST",
+            url: "/api.php",
+            data:
             {
-               console.log(data[i]);
-               
-               // here I would put all the user information into the table, complete with buttons to delete/update them by id
+                command: "get_all_transactions",
+                endpoint: "Payments"
+            },
+            success: function(res) 
+            {
+                try
+                {
+                    if (!res)
+                    {
+                        throw new Error("Unable to retrieve payments");
+                        $("#accordion").html("<p>No Payments Yet</p>");
+                        $(".actions a").show();
+                    }
+                    else if (contains(res, "No Payments"))
+                    {
+                        $("#accordion").html("<p>No Payments Yet</p>");
+                        $(".actions a").show();
+                    }
+                    else
+                    {
+                        $("#accordion").html("");
+
+                        var data = JSON.parse(res);
+                        
+                        if (contains(res, "Error"))
+                        {
+                            throw new Error(res);
+                            $(".actions a").show();
+                        }
+                        else
+                        {
+                            for (var i = 0; i < data.length; i++)
+                            {
+                                var oid = data[i]._id.$oid;
+                                
+                                $("#accordion").append(createAccordionPaymentsView(oid, data[i]));
+                            }
+                        }
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $(".actions a").show();
+                }    
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-left'});
+                $(".actions a").show();
             }
-        },
-        error: function(res, err)
-        {
-            console.log(res);
-            console.log(err);
-        }
-    });
+        });
+    }
+    catch(e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $(".actions a").show();
+    }
 }
 
 function delete_old_listings()
@@ -617,10 +657,9 @@ function delete_listing(id, uuid)
 
 function create_user()
 {
-    var userfield = $("#create-user input[type='text'], #create-user input[type='password']");
-    var switches = $("#create-user input[type='checkbox']");
+    var userfield = $("#create-user input[type='text']");
     
-    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "isactive", "isadmin", "isverified"], switches);
+    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "isactive", "isadmin", "isverified"]);
     
     var error = buildError(data);
     
@@ -630,78 +669,71 @@ function create_user()
     }
     else
     {
-        $.ajax(
+        try
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            $.ajax(
             {
-                $("#create-user button").text("Creating...");
-                disableButtons();
-            },
-            data:
-            {
-                command: "create_user",
-                data: data
-            },
-            success: function(res)
-            {    
-                var data = JSON.parse(res);
-                
-                if (data["error"])
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
-                }
-                else if (!res)
+                    $("#create-user-button").text("Creating...");
+                    $("#create-user-button").prop("disabled", "true");
+                },
+                data:
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Create User!", position: 'bottom-right'});
-                }
-                else
+                    command: "create_user",
+                    data: data
+                },
+                success: function(res)
+                {    
+                    try
+                    {
+                        if (!res)
+                        {
+                            throw new Error("Unable to Create User");
+                        }
+                        else
+                        {
+                            var user = JSON.parse(res);
+                                
+                            if (user["error"])
+                            {
+                                throw new Error(user["error"]);
+                            }
+                            else
+                            {
+                                if ($("#accordion").text() == "No Users Yet")
+                                {
+                                    $("#accordion").html("");
+                                }
+                                
+                                var oid = user._id.$oid;
+                                
+                                $("#accordion").append(createAccordionUsersView(oid, user));
+                            }
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    }
+                },
+                error: function(res, err)
                 {
-                    //append after the header (first tr)
-                    $("#user-list tr:first").after(
-                        "<tr id='" + data._id.$oid + "'>"   +
-                            "<td><input type='text' class='form-control' value='" + data.Username + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.FirstName + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.LastName + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.PhoneNumber + "' /></td>" +
-                            "<td><input type='text' class='form-control' value='" + data.Email + "' /></td>" +
-                            "<td><input type='checkbox' " + (data.Landlord ? "checked " : "") + "data-size='mini' /></td>" +
-                            "<td><input type='checkbox' " + (data.Active ? "checked " : "") + "data-size='mini' /></td>" +
-                            "<td><input type='checkbox' " + (data.IsAdmin ? "checked " : "") + "data-size='mini' /></td>" +
-                            "<td><button class='btn btn-primary' onclick='update_user(\"" + data._id.$oid + "\");'>Update</button></td>" + 
-                            "<td><button class='btn btn-danger' onclick='delete_user(\"" + data._id.$oid + "\");'>Delete</button></td>" +
-                        "</tr>");
-                        
-                    // activate toggle switches for these new guys
-                    $("#user-list tr:nth-child(2) input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
-                   
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'bottom-right'});
-                    
-                    // reset the create-row
-                    $(userfield[0]).val("");
-                    $(userfield[1]).val("");
-                    $(userfield[2]).val("");
-                    $(userfield[3]).val("");
-                    $(userfield[4]).val("");
-                    $(userfield[5]).val("");
-                    $(switches[0]).prop("checked", false);
-                    $(switches[1]).prop("checked", true);
-                    $(switches[2]).prop("checked", false);
-                
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-left'});
+                },
+                complete: function()
+                {
+                    $("#create-user-button").text("Create New User");
+                    $("#create-user-button").prop("disabled", "false");
                 }
-            },
-            error: function(res, err)
-            {
-                console.log(res);
-                console.log(err);
-            },
-            complete: function()
-            {
-                $("#create-user button").text("Create New User");
-                enableButtons();
-            }
-        });
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        }
     }
 }
 
@@ -793,7 +825,7 @@ function process_listing()
                         setTextBoxWithAutoNumeric(oid);
                         setDatePickerTextBox(oid);
                         setBootstrapSwitches(oid); 
-                        setTextBoxWithTags(oid)
+                        setTextBoxWithTags(oid);
                         
                         $("#createListingModal").modal('hide');
                         
@@ -1390,6 +1422,24 @@ function createAccordionUsersView(oid, data)
                                 "<button class='btn btn-danger' onclick='delete_user(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function createAccordionPaymentsView(oid, data)
+{           
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        
                     "</div>" +
                 "</div>" +
             "</div>";
