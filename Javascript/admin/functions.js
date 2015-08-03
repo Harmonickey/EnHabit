@@ -971,7 +971,7 @@ function logout()
                     {
                         // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                         // be a POST element, this is good for now
-                        location.href = "/landlord/login.php";
+                        location.href = "/admin/login.php";
                     }
                     else
                     {
