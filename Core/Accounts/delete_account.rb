@@ -65,8 +65,8 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    id = (is_landlord ? data["userId"] : data["landlordId"])
-    key = (is_landlord ? "UserId" : "LandlordId")
+    id = ARGV[1]
+    key = ARGV[2]
     
     if user_exists(key, id, data["password"])
         puts delete_user(key, username)

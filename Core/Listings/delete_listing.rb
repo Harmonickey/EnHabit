@@ -50,10 +50,9 @@ def delete_listing(objectId, id, key)
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
-    
-    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
-    key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
+    data = JSON.parse(ARGV[0].delete('\\'))  
+    id = ARGV[1]
+    key = ARGV[2]
     
     result = delete_listing(data["id"], id, key)
 

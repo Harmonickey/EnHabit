@@ -18,7 +18,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function getAllListings(userId)
+function getAllListings()
 {
     try
     {
@@ -34,10 +34,6 @@ function getAllListings(userId)
             data: 
             {
                 command: "get_listings",
-                data:
-                {
-                    userId: userId
-                },
                 endpoint: "Listings"
             },
             success: function(res) 
@@ -71,9 +67,8 @@ function getAllListings(userId)
                             for (var i = 0; i < data.length; i++)
                             {
                                 var oid = data[i]._id.$oid;
-                                var userId = data[i].UserId;
                                 
-                                $("#accordion").append(createAccordionView(oid, userId, data[i]));
+                                $("#accordion").append(createAccordionView(oid, data[i]));
                                 
                                 var selector = "[id='" + oid + "'] form";
                                 
@@ -117,7 +112,7 @@ function getAllListings(userId)
     }
 }
 
-function getAccount(userId)
+function getAccount()
 {
     try
     {
@@ -132,10 +127,6 @@ function getAccount(userId)
             data: 
             {
                 command: "get_user_info",
-                data:
-                {
-                    userId: userId
-                },
                 endpoint: "Accounts"
             },
             success: function(res) 
@@ -258,7 +249,7 @@ function fillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function delete_listing(id, uuid)
+function delete_listing(id)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -291,8 +282,7 @@ function delete_listing(id, uuid)
                         command: "delete_listing",
                         data:
                         {
-                            id: id,
-                            userId: uuid
+                            id: id
                         },
                         endpoint: "Listings"
                     },
@@ -340,7 +330,7 @@ function delete_listing(id, uuid)
     });
 }
 
-function update_listing(id, userId)
+function update_listing(id)
 {
     var inputs = $("#" + id + " input").not(":eq(7)");
     
@@ -350,7 +340,6 @@ function update_listing(id, userId)
     var error = buildError(data);
     
     data.id = id;
-    data.userId = userId;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
     data.address = data.address.split(",")[0];
@@ -441,7 +430,6 @@ function create_listing()
     data.address = data.address.split(",")[0];
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.userId = userId;
     data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
@@ -507,9 +495,8 @@ function process_listing()
                         }
                         
                         var oid = listing._id.$oid;
-                        var userId = listing.UserId;
                         
-                        $("#accordion").append(createAccordionView(oid, userId, listing));
+                        $("#accordion").append(createAccordionView(oid, listing));
                             
                         var selector = "[id='" + oid + "'] form";
                             
@@ -705,8 +692,6 @@ function update_account()
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    data.userId = userId;
-    
     try
     {
         if (error != "Please Include ")
@@ -788,7 +773,7 @@ function delete_account()
         ]
     }, function(password) {
         
-        var data = {"password": password, "userId": userId};
+        var data = {"password": password};
         
         try
         {
@@ -1104,7 +1089,7 @@ function formattedDate(dateString)
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
-function createAccordionView(oid, uuid, data)
+function createAccordionView(oid, data)
 {   
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
@@ -1174,8 +1159,8 @@ function createAccordionView(oid, uuid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\", \"" + uuid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\", \"" + uuid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +

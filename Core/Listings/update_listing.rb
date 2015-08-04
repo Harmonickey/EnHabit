@@ -105,15 +105,16 @@ begin
     # when user updates a listing they only input a landlord (optional)
 
     data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
-    landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
+    id = ARGV[1]
+    landlord = data["landlord"]
+    landlordId = nil
     
-    if landlordId.empty?
-        landlordId = get_landlord_id(landlord);
-        landlordId = "" if landlordId == "No Match"
+    if landlordId.nil? or landlordId.empty?
+        landlordId = get_landlord_id(landlord) if not landlord.nil?
+        landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
     
-    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    puts update_listing(data["id"], id, data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

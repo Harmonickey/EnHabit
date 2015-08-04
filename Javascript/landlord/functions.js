@@ -18,7 +18,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function getAllListings(landlordId)
+function getAllListings()
 {
     try
     {
@@ -34,10 +34,6 @@ function getAllListings(landlordId)
             data: 
             {
                 command: "get_listings",
-                data: 
-                {
-                    landlordId: landlordId
-                },
                 endpoint: "Listings"
             },
             success: function(res) 
@@ -71,9 +67,8 @@ function getAllListings(landlordId)
                             for (var i = 0; i < data.length; i++)
                             {
                                 var oid = data[i]._id.$oid;
-                                var landlordId = data[i].LandlordId;
                                 
-                                $("#accordion").append(createAccordionView(oid, landlordId, data[i]));
+                                $("#accordion").append(createAccordionView(oid, data[i]));
                                 
                                 var selector = "[id='" + oid + "'] form";
                                 
@@ -114,7 +109,7 @@ function getAllListings(landlordId)
     }
 }
 
-function getAccount(landlordId)
+function getAccount()
 {
     try
     {
@@ -129,10 +124,6 @@ function getAccount(landlordId)
             data: 
             {
                 command: "get_user_info",
-                data:
-                {
-                    landlordId: landlordId
-                },
                 endpoint: "Accounts"
             },
             success: function(res) 
@@ -255,7 +246,7 @@ function fillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function delete_listing(id, uuid)
+function delete_listing(id)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -288,8 +279,7 @@ function delete_listing(id, uuid)
                         command: "delete_listing",
                         data:
                         {
-                            id: id,
-                            landlordId: uuid
+                            id: id
                         },
                         endpoint: "Listings"
                     },
@@ -338,7 +328,7 @@ function delete_listing(id, uuid)
     });
 }
 
-function update_listing(id, landlordId)
+function update_listing(id)
 {
     var inputs = $("#" + id + " input").not(":eq(7)");
     
@@ -348,7 +338,6 @@ function update_listing(id, landlordId)
     var error = buildError(data);
     
     data.id = id;
-    data.landlordId = landlordId;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
     data.address = data.address.split(",")[0];
@@ -437,7 +426,6 @@ function create_listing()
     data.type = (data.type == true ? "apartment" : "sublet");
     data.address = data.address.split(",")[0];
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.landlordId = landlordId;
     data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
@@ -503,9 +491,8 @@ function process_listing()
                         }
                         
                         var oid = listing._id.$oid;
-                        var landlordId = listing.LandlordId;
                         
-                        $("#accordion").append(createAccordionView(oid, landlordId, listing));
+                        $("#accordion").append(createAccordionView(oid, listing));
                         
                         var selector = "[id='" + oid + "'] form";
                           
@@ -701,8 +688,6 @@ function update_account()
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    data.landlordId = landlordId;
-    
     try
     {
         if (error != "Please Include ")
@@ -784,7 +769,7 @@ function delete_account()
         ]
     }, function(password) {
         
-        var data = {"password": password, "landlordId": landlordId};
+        var data = {"password": password};
         
         try
         {
@@ -1100,7 +1085,7 @@ function formattedDate(dateString)
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
-function createAccordionView(oid, uuid, data)
+function createAccordionView(oid, data)
 {
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
@@ -1165,8 +1150,8 @@ function createAccordionView(oid, uuid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\", \"" + uuid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\", \"" + uuid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +

@@ -63,7 +63,7 @@ def create_listing(userId, landlord, landlordId, price, address, unit, bedrooms,
                 # if we already had some listings, only grab the new one we just put in
                 ret_query_obj["$and"].push({"$nin" => curr_listings.collect{|l| l["_id"]}}) if curr_listings.count > 0
                 
-                document = session[:listings].find(ret_query_obj).select(_id: 1, UserId: 1, LandlordId: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1, Pictures: 1).one
+                document = session[:listings].find(ret_query_obj).select(_id: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, Tags: 1, Pictures: 1).one
             end
         end
     rescue Moped::Errors::OperationFailure => e
@@ -100,15 +100,15 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
-    landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
+    landlord = data["landlord"]
+    landlordId = nil
     #if we are a user, we don't inherently know the landlordId
-    if landlordId.empty?
-        landlordId = get_landlord_id(landlord);
-        landlordId = "" if landlordId == "No Match"
+    if landlordId.nil? or landlordId.empty?
+        landlordId = get_landlord_id(landlord) if not data["landlord"].nil?
+        landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
     
-    result = create_listing(data["userId"], landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    result = create_listing(data["userId"], data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 
     puts result.to_json
 rescue Exception => e

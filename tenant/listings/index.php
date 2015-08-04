@@ -246,7 +246,6 @@
 <script>
 Dropzone.autoDiscover = false;
 
-var userId = "<?php echo $_SESSION["userId"]; ?>";
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
 
@@ -254,7 +253,7 @@ $(function()
 {  
     createDropzone("create", "#createListingModal form");
 
-    getAllListings(userId.trim());
+    getAllListings();
 
     initSpecialFields();
 });

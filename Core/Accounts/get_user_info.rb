@@ -12,8 +12,8 @@ require 'json'
 begin
 
     data = JSON.parse(ARGV[0].delete('\\'))
-    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"]);
-    key = (data["landlordId"].nil? ? "UserId" : "LandlordId");
+    id = ARGV[1];
+    key = ARGV[2];
     
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database

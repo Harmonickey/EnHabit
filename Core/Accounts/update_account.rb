@@ -57,8 +57,8 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     #we are checking this because it's an optional thing on the UI
     newPassword = data["password"] if not data["password"].nil? and not data["password"].empty? 
-    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
-    key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
+    id = ARGV[1]
+    key = ARGV[2]
     
     result = update_user(key, id, data["username"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], newPassword)
     
