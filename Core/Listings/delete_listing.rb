@@ -9,13 +9,16 @@ abs_path = Dir.pwd
 base = abs_path.split("/").index("public_html")
 @deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
+$: << "#{@deployment_base}/Libraries"
+
 require 'json'
 require 'bson'
 require 'moped'
+require 'tools'
 
 Moped::BSON = BSON
 
-def delete_listing(objectId, id, key)
+def delete_listing(is_admin, objectId, id, key)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) 
     mongo_session.use("enhabit")
 
@@ -29,7 +32,7 @@ def delete_listing(objectId, id, key)
             documents = session[:listings].find(listing_obj).to_a
             
             #make sure we're not deleting someone else's listing
-            if documents[0][key] == id
+            if documents[0][key] == id or is_admin
                 listing = session[:listings].find(listing_obj).select(Pictures: 1).one
                 listing["Pictures"].each do |pic|
                     filename = "#{@deployment_base}/assets/images/listing_images/" + pic
@@ -54,8 +57,9 @@ begin
     
     id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
     key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
+    is_admin = ARGV[3].to_b
     
-    result = delete_listing(data["id"], id, key)
+    result = delete_listing(is_admin, data["id"], id, key)
 
     puts result
 rescue Exception => e

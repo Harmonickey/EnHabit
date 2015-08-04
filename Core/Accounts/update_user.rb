@@ -12,25 +12,26 @@ require 'moped'
 
 Moped::BSON = BSON
 
-def update_user(id, user, fn, ln, em, pn, ac, la, ad)
+def update_user(is_admin, id, userId, user, firstname, lastname, email, phonenumber, isactive, landlord, isadmin, isverified)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
     usr_obj = Hash.new
     usr_obj["Username"] = user
-    usr_obj["FirstName"] = fn
-    usr_obj["LastName"] = ln
-    usr_obj["Email"] = em
-    usr_obj["PhoneNumber"] = pn
-    usr_obj["Active"] = (ac == "true")
-    usr_obj["Landlord"] = (la == "true")
-    usr_obj["IsAdmin"] = (ad == "true")
-    #usr_obj["Verified"] = false
+    usr_obj["FirstName"] = firstname
+    usr_obj["LastName"] = lastname
+    usr_obj["Email"] = email
+    usr_obj["PhoneNumber"] = phonenumber
+    usr_obj["Active"] = isactive.to_b
+    usr_obj["Landlord"] = landlord.to_b
+    usr_obj["IsAdmin"] = isadmin.to_b
+    usr_obj["IsVerified"] = isverified.to_b
  
     query_obj = Hash.new
     query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
- 
+    query_obj["UserId"] = userId if not is_admin
+    
     document = Hash.new
  
     begin
@@ -55,13 +56,13 @@ def update_user(id, user, fn, ln, em, pn, ac, la, ad)
 end
 
 begin
-
     data = JSON.parse(ARGV[0].delete('\\'))
+    userId = ARGV[1]
+    is_admin = ARGV[3]
     
-    result = update_user(data["id"], data["username"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], data["active"], data["landlord"], data["isadmin"])
+    result = update_user(is_admin, data["id"], userId, data["username"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], data["active"], data["landlord"], data["isadmin"], data["isverified"])
 
     puts result.to_json
-
 rescue Exception => e
     puts e.inspect
 end

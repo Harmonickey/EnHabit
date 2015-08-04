@@ -19,13 +19,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def update_listing(is_admin, id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
     #object to insert/update with
     listing_obj = Hash.new
-    listing_obj["UserId"] = userId if not userId.nil? and not userId.empty?
     listing_obj["Landlord"] = landlord if not landlord.nil? and not landlord.empty?
     listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
@@ -46,6 +45,7 @@ def update_listing(id, userId, landlord, landlordId, price, address, bedrooms, b
     #object to search with
     query_obj = Hash.new
     query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    query_obj["UserId"] = userId if not is_admin
     
     ret_msg = ""
  
@@ -104,13 +104,14 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
     landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
+    is_admin = ARGV[3].to_b
     
     if landlordId.empty?
         landlordId = get_landlord_id(landlord);
         landlordId = "" if landlordId == "No Match"
     end
     
-    puts update_listing(data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    puts update_listing(is_admin, data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

@@ -9,7 +9,7 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     #all other commands go through this branch
     
     $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
-    
+    $isAdmin = (isset($_SESSION["admin"]) ? "true" : "false");
     // if we're running commands off of the front page, we don't want to filter
     // on user or landlord in the back end
     if ($_SERVER['HTTP_REFERER'] === "http://dev.lbkstudios.net/")
@@ -18,7 +18,7 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
         $user = NULL;
     }
     
-    $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+    $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' $id $key $isAdmin");
     
     set_session($result, $data);
     

@@ -136,9 +136,8 @@ function getAllListings()
                             for (var i = 0; i < data.length; i++)
                             {
                                 var oid = data[i]._id.$oid;
-                                var landlordId = data[i].LandlordId;
                                 
-                                $("#accordion").append(createAccordionView(oid, landlordId, data[i]));
+                                $("#accordion").append(createAccordionView(oid, data[i]));
                                 
                                 var selector = "[id='" + oid + "'] form";
                                 
@@ -427,7 +426,7 @@ function setDatePickerTextBox(rowId)
     });
 }
 
-function update_listing(id, landlordId)
+function update_listing(id)
 {
     var inputs = $("#" + id + " input").not(":eq(6)");
     
@@ -437,7 +436,6 @@ function update_listing(id, landlordId)
     var error = buildError(data);
     
     data.id = id;
-    data.landlordId = landlordId;
     data.type = (data.type == true ? "apartment" : "sublet");
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.pictures = pictures[id];
@@ -572,7 +570,7 @@ function delete_user(id)
     });  
 }
 
-function delete_listing(id, uuid)
+function delete_listing(id)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -605,8 +603,7 @@ function delete_listing(id, uuid)
                         command: "delete_listing",
                         data:
                         {
-                            id: id,
-                            landlordId: uuid
+                            id: id
                         },
                         endpoint: "Listings"
                     },
@@ -747,7 +744,6 @@ function create_listing()
     
     data.type = (data.type == true ? "apartment" : "sublet");
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.landlordId = landlordId;
     data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
@@ -813,9 +809,8 @@ function process_listing()
                         }
                         
                         var oid = listing._id.$oid;
-                        var userId = listing.UserId;
                         
-                        $("#accordion").append(createAccordionView(oid, userId, listing));
+                        $("#accordion").append(createAccordionView(oid, listing));
                             
                         var selector = "[id='" + oid + "'] form";
                             
@@ -1299,7 +1294,7 @@ function formattedTime(time)
         return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
     }
 
-function createAccordionView(oid, uuid, data)
+function createAccordionView(oid, data)
 {
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
@@ -1364,8 +1359,8 @@ function createAccordionView(oid, uuid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\", \"" + uuid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\", \"" + uuid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
