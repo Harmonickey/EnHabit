@@ -17,7 +17,7 @@ require 'bson'
 require 'PasswordHash'
 require 'tools'
 
-def update_user(key, uuid, username, firstName, lastName, email, phoneNumber, newPassword)
+def update_user(is_admin, key, userId, username, firstName, lastName, email, phoneNumber, newPassword)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -31,7 +31,8 @@ def update_user(key, uuid, username, firstName, lastName, email, phoneNumber, ne
     usr_obj["Password"] = PasswordHash.createHash(newPassword) if not newPassword.nil?
  
     query_obj = Hash.new
-    query_obj[key] = uuid
+    usr_obj["Username"] = username
+    query_obj[key] = userId if not is_admin
     
     ret_msg = ""
  
@@ -57,12 +58,13 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     #we are checking this because it's an optional thing on the UI
     newPassword = data["password"] if not data["password"].nil? and not data["password"].empty? 
-    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
-    key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
+    id = ARGV[1]
+    key = ARGV[2]
+    is_admin = ARGV[3]
     
-    result = update_user(key, id, data["username"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], newPassword)
+    result = update_user(is_admin, key, id, data["username"], data["firstname"], data["lastname"], data["email"], data["phonenumber"], newPassword)
     
-    puts "#{result}:" + (data["landlordId"].nil? ? "Tenant" : "Landlord") + ":" + id
+    puts "#{result}:" + (data["landlordId"].nil? ? "Tenant" : "Landlord")
 rescue Exception => e
     puts e.inspect
 end
