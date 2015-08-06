@@ -98,17 +98,44 @@ def get_landlord_id(landlord)
     end
 end
 
+def get_user_id(user)
+    
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongo_session.use("enhabit") # this is our current database
+
+    begin
+        query_obj = Hash.new
+        query_obj["Username"] = user
+        
+        account = Array.new
+        mongo_session.with(safe: true) do |session|
+            account = session[:accounts].find(query_obj).to_a
+        end
+        
+        if account.count == 0
+            return "No Match"
+        else
+            return account[0]["UserId"]
+        end
+    rescue Moped::Errors::OperationFailure => e
+        return "No Match"
+    end
+end
+
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
+    id = ARGV[1]
     landlord = data["landlord"]
     landlordId = nil
-    #if we are a user, we don't inherently know the landlordId
+    
     if landlordId.nil? or landlordId.empty?
         landlordId = get_landlord_id(landlord) if not data["landlord"].nil?
         landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
+   
+    id = get_user_id(data["username"]) if is_admin
     
-    result = create_listing(data["userId"], data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    result = create_listing(is_admin, id, data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 
     puts result.to_json
 rescue Exception => e

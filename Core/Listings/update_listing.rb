@@ -19,13 +19,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(id, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def update_listing(is_admin, id, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
     #object to insert/update with
     listing_obj = Hash.new
-    listing_obj["UserId"] = userId if not userId.nil? and not userId.empty?
     listing_obj["Landlord"] = landlord if not landlord.nil? and not landlord.empty?
     listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
@@ -47,6 +46,7 @@ def update_listing(id, userId, landlord, landlordId, price, address, unit, bedro
     #object to search with
     query_obj = Hash.new
     query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    query_obj["UserId"] = userId if not is_admin
     
     ret_msg = ""
  
@@ -101,6 +101,30 @@ def get_landlord_id(landlord)
     end
 end
 
+def get_user_id(user)
+    
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongo_session.use("enhabit") # this is our current database
+
+    begin
+        query_obj = Hash.new
+        query_obj["Username"] = user
+        
+        account = Array.new
+        mongo_session.with(safe: true) do |session|
+            account = session[:accounts].find(query_obj).to_a
+        end
+        
+        if account.count == 0
+            return "No Match"
+        else
+            return account[0]["UserId"]
+        end
+    rescue Moped::Errors::OperationFailure => e
+        return "No Match"
+    end
+end
+
 begin
     # when user updates a listing they only input a landlord (optional)
 
@@ -113,6 +137,8 @@ begin
         landlordId = get_landlord_id(landlord) if not landlord.nil?
         landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
+    
+    id = get_user_id(data["username"]) if is_admin
     
     puts update_listing(data["id"], id, data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
