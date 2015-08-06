@@ -751,6 +751,8 @@ function searchForListings()
                     else
                     {
                         insertMarkers(res);
+                        
+                        map.fitBounds(markers.getBounds());
                     }
                 }
                 catch (e)
@@ -1491,6 +1493,8 @@ $(function ()
     loadAllDefaultListings();
     
     setHiddenSidebars();
+    
+    map.fitBounds(markers.getBounds());
 });
 
 $(window).on('resize', function() {
