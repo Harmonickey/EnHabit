@@ -90,7 +90,7 @@ function getAllListings(landlordId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     $(".actions a").show();
                 }    
             },
@@ -102,7 +102,7 @@ function getAllListings(landlordId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     $(".actions a").show();
                 }
             }
@@ -110,7 +110,7 @@ function getAllListings(landlordId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -161,7 +161,7 @@ function getAccount(landlordId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -172,7 +172,7 @@ function getAccount(landlordId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             complete: function()
@@ -183,7 +183,7 @@ function getAccount(landlordId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -301,7 +301,7 @@ function delete_listing(id, uuid)
                             {
                                 // remove the row that we just selected
                                 $("#" + id).parent().remove();
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 if ($("#accordion").text() == "")
                                 {
                                     $("#accordion").text("No Listings Yet");
@@ -314,7 +314,7 @@ function delete_listing(id, uuid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     },
                     error: function(res, err)
@@ -325,14 +325,14 @@ function delete_listing(id, uuid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     }
                 });
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         }
     });
@@ -385,7 +385,15 @@ function update_listing(id, landlordId)
                     {
                         if (contains(res, "Okay"))
                         {
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                            var inputs = $("#" + id + " input");
+                            var headingInputs = $("#heading" + id + " input");
+                            
+                            for (var i = 0; i < 3; i++)
+                            {
+                                $(headingInputs[i]).val($(inputs[i]));
+                            }
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
                         }
                         else
@@ -395,7 +403,7 @@ function update_listing(id, landlordId)
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         numUploaded = 0;
                     }
                 },
@@ -407,7 +415,7 @@ function update_listing(id, landlordId)
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 complete: function()
@@ -420,7 +428,7 @@ function update_listing(id, landlordId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -459,7 +467,7 @@ function create_listing()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -517,7 +525,7 @@ function process_listing()
                         
                         $("#createListingModal").modal('hide');
                         
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                         
                         $(".actions a").hide();
                         
@@ -529,7 +537,7 @@ function process_listing()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         },
         error: function(res, err)
@@ -540,7 +548,7 @@ function process_listing()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         },
         complete: function()
@@ -668,7 +676,7 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }    
             },
             error: function(err, res)
@@ -679,14 +687,14 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -730,7 +738,7 @@ function update_account()
                     {
                         if (contains(res, "Okay"))
                         {
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-left'});
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-center'});
                             $("#title_username").html("<i class='fa fa-user'></i>" + data.username + "<b class='caret'></b>");
                         }
                         else
@@ -740,7 +748,7 @@ function update_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(err, res)
@@ -751,7 +759,7 @@ function update_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 complete: function()
@@ -764,7 +772,7 @@ function update_account()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -816,7 +824,7 @@ function delete_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(res, err)
@@ -827,14 +835,14 @@ function delete_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 }
             });
         }
         catch(e)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         }
     });
 }
