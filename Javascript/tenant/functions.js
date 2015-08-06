@@ -18,7 +18,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function getAllListings(userId)
+function getAllListings()
 {
     try
     {
@@ -34,10 +34,6 @@ function getAllListings(userId)
             data: 
             {
                 command: "get_listings",
-                data:
-                {
-                    userId: userId
-                },
                 endpoint: "Listings"
             },
             success: function(res) 
@@ -71,9 +67,8 @@ function getAllListings(userId)
                             for (var i = 0; i < data.length; i++)
                             {
                                 var oid = data[i]._id.$oid;
-                                var userId = data[i].UserId;
                                 
-                                $("#accordion").append(createAccordionView(oid, userId, data[i]));
+                                $("#accordion").append(createAccordionView(oid, data[i]));
                                 
                                 var selector = "[id='" + oid + "'] form";
                                 
@@ -95,7 +90,7 @@ function getAllListings(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -106,18 +101,18 @@ function getAllListings(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
-function getAccount(userId)
+function getAccount()
 {
     try
     {
@@ -132,10 +127,6 @@ function getAccount(userId)
             data: 
             {
                 command: "get_user_info",
-                data:
-                {
-                    userId: userId
-                },
                 endpoint: "Accounts"
             },
             success: function(res) 
@@ -164,7 +155,7 @@ function getAccount(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
@@ -175,7 +166,7 @@ function getAccount(userId)
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             complete: function()
@@ -186,7 +177,7 @@ function getAccount(userId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -214,7 +205,7 @@ function setTextBoxWithAutoNumeric(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
-    $(row[1]).autoNumeric('init', 
+    $(row[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -230,7 +221,7 @@ function setTextBoxWithTags(rowId)
 
 function setDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " input[type='text']")[2]).pikaday(
+    $($("#" + rowId + " input[type='text']")[3]).pikaday(
     {
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
@@ -258,7 +249,7 @@ function fillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function delete_listing(id, uuid)
+function delete_listing(id)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -291,8 +282,7 @@ function delete_listing(id, uuid)
                         command: "delete_listing",
                         data:
                         {
-                            id: id,
-                            userId: uuid
+                            id: id
                         },
                         endpoint: "Listings"
                     },
@@ -304,7 +294,7 @@ function delete_listing(id, uuid)
                             {
                                 // remove the row that we just selected
                                 $("#" + id).parent().remove();
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 $(".actions a").show();
                                 $("#accordion").text("No Listing Yet");
                                 createDropzone("create", "#createListingModal form");
@@ -316,7 +306,7 @@ function delete_listing(id, uuid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     },
                     error: function(res, err)
@@ -327,32 +317,32 @@ function delete_listing(id, uuid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     }
                 });
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         }
     });
 }
 
-function update_listing(id, userId)
+function update_listing(id)
 {
-    var inputs = $("#" + id + " input").not(":eq(6)");
+    var inputs = $("#" + id + " input").not(":eq(7)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "latitude", "longitude", "selected_address"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
     
     data.id = id;
-    data.userId = userId;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
+    data.address = data.address.split(",")[0];
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.pictures = pictures[id];
@@ -388,7 +378,7 @@ function update_listing(id, userId)
                     {
                         if (contains(res, "Okay"))
                         {
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-left'});
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
                         }
                         else
@@ -398,7 +388,7 @@ function update_listing(id, userId)
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         numUploaded = 0;
                     }
                 },
@@ -410,7 +400,7 @@ function update_listing(id, userId)
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 complete: function()
@@ -423,23 +413,23 @@ function update_listing(id, userId)
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
 function create_listing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(12)");
+    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(13)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "tags", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "tags", "latitude", "longitude", "selected_address"]);
     
     var error = buildError(data);
     
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
+    data.address = data.address.split(",")[0];
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.userId = userId;
     data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
@@ -463,7 +453,7 @@ function create_listing()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -505,9 +495,8 @@ function process_listing()
                         }
                         
                         var oid = listing._id.$oid;
-                        var userId = listing.UserId;
                         
-                        $("#accordion").append(createAccordionView(oid, userId, listing));
+                        $("#accordion").append(createAccordionView(oid, listing));
                             
                         var selector = "[id='" + oid + "'] form";
                             
@@ -521,7 +510,7 @@ function process_listing()
                         
                         $("#createListingModal").modal('hide');
                         
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-left'});
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                         
                         $(".actions a").hide();
                         
@@ -533,7 +522,7 @@ function process_listing()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         },
         error: function(res, err)
@@ -544,7 +533,7 @@ function process_listing()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         },
         complete: function()
@@ -672,7 +661,7 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(err, res)
@@ -683,14 +672,14 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -702,8 +691,6 @@ function update_account()
     
     //first validate that the fields are filled out
     var error = buildError(data);
-    
-    data.userId = userId;
     
     try
     {
@@ -734,7 +721,7 @@ function update_account()
                     {
                         if (contains(res, "Okay"))
                         {
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-left'});
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-center'});
                             $("#title_username").html("<i class='fa fa-user'></i>" + data.username + "<b class='caret'></b>");
                         }
                         else
@@ -744,7 +731,7 @@ function update_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(err, res)
@@ -755,7 +742,7 @@ function update_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 complete: function()
@@ -768,7 +755,7 @@ function update_account()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -786,7 +773,7 @@ function delete_account()
         ]
     }, function(password) {
         
-        var data = {"password": password, "userId": userId};
+        var data = {"password": password};
         
         try
         {
@@ -820,7 +807,7 @@ function delete_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(res, err)
@@ -831,14 +818,14 @@ function delete_account()
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 }
             });
         }
         catch(e)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         }
     });
 }
@@ -862,15 +849,17 @@ function initSpecialFields()
     
     $(listing_modal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
-            $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
+            var hiddenFields = $("#createListingModal input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listing_modal[0]).val());
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
         
-    $(listing_modal[1]).autoNumeric('init', 
+    $(listing_modal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -878,7 +867,7 @@ function initSpecialFields()
         lZero: 'deny'
     });
     
-    $(listing_modal[2]).pikaday(
+    $(listing_modal[3]).pikaday(
     {
         minDate: new Date(), 
         setDefaultDate: new Date()
@@ -920,7 +909,8 @@ function createDropzone(key, element, existingPics)
         }
         var filename = (file.alreadyUploaded 
                         ? file.name
-                        : file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[1]);
+                        : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
+                                                           : Math.random().toString(36).slice(2) + "_" + file.name));
         pictures[id].push(filename);
         
         if (!file.alreadyUploaded)
@@ -1099,13 +1089,14 @@ function formattedDate(dateString)
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
-function createAccordionView(oid, uuid, data)
+function createAccordionView(oid, data)
 {   
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
                             "<label>Address: " + data.Address + "</label>" + 
+                            (data.Unit ? "<label>Unit: " + data.Unit + "</label>" : "") +
                             "<label>Rent: $" + data.Price + "/Month</label>" + 
                             "<label>Start Date: " + formattedDate(data.Start) + "</label>" +
                         "</a>" +
@@ -1114,13 +1105,16 @@ function createAccordionView(oid, uuid, data)
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Unit</label><input type='text' class='form-control' value='" + (data.Unit ? data.Unit : "") + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 
                             "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
                             "</div>" + 
                         "</div>" +
@@ -1165,8 +1159,8 @@ function createAccordionView(oid, uuid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\", \"" + uuid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\", \"" + uuid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +

@@ -19,7 +19,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(is_admin, id, userId, landlord, landlordId, price, address, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def update_listing(is_admin, id, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
@@ -29,6 +29,7 @@ def update_listing(is_admin, id, userId, landlord, landlordId, price, address, b
     listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
+    listing_obj["Unit"] = unit if not unit.nil? and not unit.empty?
     listing_obj["Bedrooms"] = bedrooms.to_i
     listing_obj["Bathrooms"] = bathrooms.to_i
     listing_obj["HasAnimals"] = animals.to_b
@@ -54,10 +55,12 @@ def update_listing(is_admin, id, userId, landlord, landlordId, price, address, b
         # delete all the pictures on disk that aren't in the updated list
         mongo_session.with(safe: true) do |session|
             document = session[:listings].find(query_obj).select(Pictures: 1).one
-            document["Pictures"].each do |pic|
-                if not pictures.nil? and not pictures.include? pic
-                    filename = "#{@deployment_base}/assets/images/listing_images/" + pic
-                    File.delete(filename) if File.exist? filename
+            if not document["Pictures"].nil?
+                document["Pictures"].each do |pic|
+                    if not pictures.nil? and not pictures.include? pic
+                        filename = "#{@deployment_base}/assets/images/listing_images/" + pic
+                        File.delete(filename) if File.exist? filename
+                    end
                 end
             end
         end
@@ -98,20 +101,49 @@ def get_landlord_id(landlord)
     end
 end
 
+def get_user_id(user)
+    
+    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongo_session.use("enhabit") # this is our current database
+
+    begin
+        query_obj = Hash.new
+        query_obj["Username"] = user
+        
+        account = Array.new
+        mongo_session.with(safe: true) do |session|
+            account = session[:accounts].find(query_obj).to_a
+        end
+        
+        if account.count == 0
+            return "No Match"
+        else
+            return account[0]["UserId"]
+        end
+    rescue Moped::Errors::OperationFailure => e
+        return "No Match"
+    end
+end
+
 begin
     # when user updates a listing they only input a landlord (optional)
 
     data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
-    landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
+
+    id = ARGV[1]
+    # key = ARGV[2]
     is_admin = ARGV[3].to_b
+    landlord = data["landlord"]
+    landlordId = nil
     
-    if landlordId.empty?
-        landlordId = get_landlord_id(landlord);
-        landlordId = "" if landlordId == "No Match"
+    if landlordId.nil? or landlordId.empty?
+        landlordId = get_landlord_id(landlord) if not landlord.nil?
+        landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
     
-    puts update_listing(is_admin, data["id"], data["userId"], landlord, landlordId, data["rent"], data["address"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    id = get_user_id(data["username"]) if is_admin
+    
+    puts update_listing(is_admin, data["id"], id, data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

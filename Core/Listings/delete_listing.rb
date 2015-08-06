@@ -18,12 +18,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def delete_listing(is_admin, objectId, id, key)
+def delete_listing(is_admin, oid, id, key)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) 
     mongo_session.use("enhabit")
 
     listing_obj = Hash.new
-    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(objectId.to_s)
+    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(oid.to_s)
     
     ret_msg = ""
  
@@ -53,13 +53,12 @@ def delete_listing(is_admin, objectId, id, key)
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
-    
-    id = (data["landlordId"].nil? ? data["userId"] : data["landlordId"])
-    key = (data["landlordId"].nil? ? "UserId" : "LandlordId")
+    data = JSON.parse(ARGV[0].delete('\\'))  
+    id = ARGV[1]
+    key = ARGV[2]
     is_admin = ARGV[3].to_b
     
-    result = delete_listing(is_admin, data["id"], id, key)
+    result = delete_listing(is_admin, data["oid"], id, key)
 
     puts result
 rescue Exception => e

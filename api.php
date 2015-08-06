@@ -10,16 +10,19 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     
     $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
     $isAdmin = (isset($_SESSION["admin"]) ? "true" : "false");
+    $id = (isset($_SESSION["userId"]) ? $_SESSION["userId"] : $_SESSION["landlordId"]);
+    $key = (isset($_SESSION["userId"]) ? "UserId" : "LandlordId");
+
     // if we're running commands off of the front page, we don't want to filter
     // on user or landlord in the back end
     if ($_SERVER['HTTP_REFERER'] === "http://dev.lbkstudios.net/")
     {
-        $landlord = NULL;
-        $user = NULL;
+        $id = NULL;
+        $key = NULL;
     }
-    
+
     $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' $id $key $isAdmin");
-    
+
     set_session($result, $data);
     
     echo $result;

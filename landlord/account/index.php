@@ -241,11 +241,9 @@
 
 <script>
 
-var landlordId = "<?php echo $_SESSION["landlordId"]; ?>";
-
 $(function() 
 {    
-    getAccount(landlordId);
+    getAccount();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

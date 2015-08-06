@@ -110,13 +110,13 @@ def set_filters
     end
     
     if @userId.nil?
-        @userId = nil
+        @userId_filter = nil
     else
         @userId_filter[:UserId] = @userId
     end
     
     if @landlordId.nil?
-        @landlordId = nil
+        @landlordId_filter = nil
     else
         @landlordId_filter[:LandlordId] = @landlordId
     end
@@ -182,9 +182,16 @@ begin
         @type = data["type"] unless data["type"] == "both" or data["type"].nil?
         @start = data["start"] unless data["start"].nil? or data["start"].empty?
         @university = data["university"] unless data["university"].nil? or data["university"].empty?
-        @tags = data["tags"] unless data["tags"].nil? or data["tags"] == []
-        @userId = data["userId"] unless data["userId"].nil? or data["userId"].empty?
-        @landlordId = data["landlordId"] unless data["landlordId"].nil? or data["landlordId"].empty?
+        @tags = data["tags"] unless data["tags"].nil? or data["tags"].length == 0
+        @userId = ARGV[1]
+        @landlordId = ARGV[1]
+        
+        if (key == "UserId")
+            @landlordId = nil
+        else 
+            @userId = nil
+        end
+        
     end
 
     @price_filter = {}
@@ -208,9 +215,8 @@ begin
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
 
-    listings = mongo_session[:listings]
-    
-    documents = listings.find(@main_filter).select(_id: 1, UserId: 1, LandlordId: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1, University: 1).to_a
+    documents = mongo_session[:listings].find(@main_filter).select(_id: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
+
     mongo_session.disconnect
 
     if documents.count == 0
