@@ -162,7 +162,7 @@
                 <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
                 <label>Rent/Month</label><input type='text' class='form-control' />
                 <label>Start Date</label><input type='text' class='form-control' />
-                <label>University</label><input type='text' class='form-contorl' />
+                <label>University</label><input type='text' class='form-control' />
                 <label>Bedrooms</label>
                     <select id="bedrooms-filter" class="form-control">
                         <option value="studio">Studio</option>
