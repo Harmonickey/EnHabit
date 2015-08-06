@@ -18,9 +18,7 @@
             $_SESSION['CREATED'] = time();  // update creation time
         }
     }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,18 +73,15 @@
             <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
             <a class="navbar-brand" href="./"> Tenant Portal</a>
         </div>
-
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                            
+                <li class="dropdown">                           
                     <a id="title_username" href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php echo $_SESSION["tenant"]; ?>
+                        <?php if (isset($_SESSION["tenant"])) { echo $_SESSION["tenant"]; } ?>
                         <b class="caret"></b>
                     </a>
-                
                     <ul class="dropdown-menu">
                         <li><a style="cursor: pointer;" href="./">Account</a></li>
                         <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>

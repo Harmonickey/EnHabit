@@ -16,7 +16,7 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-def user_exists(key, userId, pass)
+def user_exists(userId, key, pass)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
@@ -34,24 +34,24 @@ def user_exists(key, userId, pass)
     end
 end
 
-def delete_user(key, userId)
+def delete_user(id, key)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
-    usr_obj = Hash.new
-    usr_obj[key] = user
+    query_obj = Hash.new
+    query_obj[key] = id
  
     ret_msg = ""
  
     begin
         #delete the user
         mongo_session.with(safe: true) do |session|
-            session[:accounts].find(usr_obj).remove
+            session[:accounts].find(query_obj).remove
         end
         
-        #delete the listings associated with the user
+        #cascade delete the listings associated with the user
         mongo_session.with(safe: true) do |session|
-            session[:listings].find(usr_obj).remove_all
+            session[:listings].find(query_obj).remove_all
         end
         
         ret_msg = "Okay"
@@ -68,8 +68,8 @@ begin
     id = ARGV[1]
     key = ARGV[2]
     
-    if user_exists(key, id, data["password"])
-        puts delete_user(key, username)
+    if user_exists(id, key, data["password"])
+        puts delete_user(id, key)
     else
         puts "Incorrect Password"
     end

@@ -18,7 +18,6 @@
         }
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -74,7 +73,7 @@
                 <li class="dropdown">	
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php echo $_SESSION["admin"]; ?>
+                        <?php if (isset($_SESSION["admin"])) { echo $_SESSION["admin"]; }?>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">

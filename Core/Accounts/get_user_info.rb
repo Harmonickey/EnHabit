@@ -9,31 +9,39 @@ require 'moped'
 require 'bson'
 require 'json'
 
-begin
+def get_user_info(id, key)
+    mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
+    mongo_session.use("enhabit")# this is our current database
+    
+    ret_msg = Hash.new
+    
+    documents = Array.new
+    
+    query_obj = Hash.new
+    query_obj[key] = id
+    
+    begin
+        mongo_session.with(safe: true) do |session|
+            documents = session[:accounts].find(query_obj).select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).to_a
+            ret_msg = documents[0]
+        end
+    rescue Moped::Errors::OperationFailure => e
+        ret_msg = e
+    end
+    
+	mongo_session.disconnect
+    
+    return ret_msg
+end
 
+begin
     data = JSON.parse(ARGV[0].delete('\\'))
     id = ARGV[1];
     key = ARGV[2];
     
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
-    mongo_session.use("enhabit")# this is our current database
+    result = get_user_info(id, key)
 
-    document = Hash.new
-    
-    query_obj = Hash.new
-    query_obj[key] = id;
-    
-    mongo_session.with(safe: true) do |session|
-        document = session[:accounts].find(query_obj).select(_id: 1, Username: 1, UserId: 1, LandlordId: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).first
-    end
-    mongo_session.disconnect
-
-    if document.nil? or document == {}
-        puts "Could Not Find User"
-    else
-        puts document.to_json
-    end
-
+    puts result.to_json
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

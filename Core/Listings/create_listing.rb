@@ -125,17 +125,17 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     id = ARGV[1]
+    # key = ARGV[2]
+    is_admin = ARGV[3].to_b
     landlord = data["landlord"]
     landlordId = nil
     
     if landlordId.nil? or landlordId.empty?
-        landlordId = get_landlord_id(landlord) if not data["landlord"].nil?
+        landlordId = get_landlord_id(landlord) unless landlord.nil?
         landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
-   
-    id = get_user_id(data["username"]) if is_admin
     
-    result = create_listing(is_admin, id, data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    result = create_listing(id, landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 
     puts result.to_json
 rescue Exception => e

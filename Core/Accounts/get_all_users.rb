@@ -12,7 +12,6 @@ require 'moped'
 Moped::BSON = BSON
 
 begin
-
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
 
@@ -28,7 +27,6 @@ begin
     else
         puts documents.to_json
     end
-
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

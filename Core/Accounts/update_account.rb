@@ -28,11 +28,11 @@ def update_user(is_admin, key, userId, username, firstName, lastName, email, pho
     usr_obj["LastName"] = lastName
     usr_obj["Email"] = email
     usr_obj["PhoneNumber"] = phoneNumber
-    usr_obj["Password"] = PasswordHash.createHash(newPassword) if not newPassword.nil?
+    usr_obj["Password"] = PasswordHash.createHash(newPassword) unless newPassword.nil?
  
     query_obj = Hash.new
-    usr_obj["Username"] = username
-    query_obj[key] = userId if not is_admin
+    query_obj["Username"] = username
+    query_obj[key] = userId unless is_admin
     
     ret_msg = ""
  
@@ -57,7 +57,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     #we are checking this because it's an optional thing on the UI
-    newPassword = data["password"] if not data["password"].nil? and not data["password"].empty? 
+    newPassword = data["password"] unless data["password"].nil? and not data["password"].empty? 
     id = ARGV[1]
     key = ARGV[2]
     is_admin = ARGV[3]

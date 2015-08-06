@@ -156,7 +156,7 @@ function getAllListings()
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
                     $(".actions a").show();
-                }    
+                }
             },
             error: function(res, err)
             {
@@ -297,20 +297,20 @@ function delete_old_listings()
     });
 }
 
-function update_user(id)
+function update_user(oid)
 {
-    var userfield = $("#" + id + " input[type='text']");
-    var switches = $("#" + id + " input[type='checkbox']");
+    var userfield = $("#" + oid + " input[type='text']");
+    var switches = $("#" + oid + " input[type='checkbox']");
     
     var data = buildData(userfield, ["username", "firstname", "lastname", "isadmin", "phonenumber", "email", "isactive", "isverified"], switches);
     
-    data["id"] = id;
+    data.oid = oid;
     
     var error = buildError(data);
     
     if (error != "Please Include ")
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
         
         resetUsers();
     }
@@ -322,7 +322,7 @@ function update_user(id)
             url: "/api.php",
             beforeSend: function()
             {
-                $($("#" + id + " button")[0]).text("Updating...");
+                $($("#" + oid + " button")[0]).text("Updating...");
                 disableButtons();
             },
             data:
@@ -336,13 +336,13 @@ function update_user(id)
                 
                 if (data["error"])
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'top-center'});
                     
                     resetUsers();
                 }
                 else if (!res)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User!", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User!", position: 'top-center'});
                     
                     resetUsers();
                 }
@@ -356,18 +356,18 @@ function update_user(id)
                     $($(userfield)[4]).text(data.Email);
                     $($(switches)[1]).prop("checked", data.IsActive);
                     $($(switches)[2]).prop("checked", data.IsAdmin);
+                    $($(switches)[3]).prop("checked", data.IsVerified);
                     
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'bottom-right'});
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'top-center'});
                 }
             },
             error: function(res, err)
             {
-                console.log(res);
-                console.log(err);
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
             complete: function()
             {
-                $($("#" + id + " button")[0]).text("Update");
+                $($("#" + oid + " button")[0]).text("Update");
                 enableButtons();
             }
         });
@@ -426,19 +426,20 @@ function setDatePickerTextBox(rowId)
     });
 }
 
-function update_listing(id)
+function update_listing(oid)
 {
-    var inputs = $("#" + id + " input").not(":eq(6)");
+    var inputs = $("#" + oid + " input").not(":eq(6)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "university", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    data.id = id;
+    data.oid = oid;
     data.type = (data.type == true ? "apartment" : "sublet");
+    data.address = data.address.split(",")[0];
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.pictures = pictures[id];
+    data.pictures = pictures[oid];
     
     try
     {
@@ -448,7 +449,7 @@ function update_listing(id)
         }
         else
         {
-            dropzones[id].processQueue();
+            dropzones[oid].processQueue();
             
             $.ajax(
             {
@@ -462,8 +463,8 @@ function update_listing(id)
                 },
                 beforeSend: function()
                 {
-                    $("#" + id + " button").prop("disabled", true);
-                    $($("#" + id + " button")[0]).text("Updating...");
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[0]).text("Updating...");
                 },
                 success: function(res)
                 { 
@@ -498,8 +499,8 @@ function update_listing(id)
                 },
                 complete: function()
                 {
-                    $("#" + id + " button").prop("disabled", false);
-                    $($("#" + id + " button")[0]).text("Update");
+                    $("#" + oid + " button").prop("disabled", false);
+                    $($("#" + oid + " button")[0]).text("Update");
                 }
             });
         }
@@ -510,7 +511,7 @@ function update_listing(id)
     }
 }
 
-function delete_user(id)
+function delete_user(uid)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this user?", 
@@ -530,10 +531,10 @@ function delete_user(id)
             $.ajax(
             {
                 type: "POST",
-                url: "/admin/admin_api.php",
+                url: "/api.php",
                 beforeSend: function()
                 {
-                   $($("#" + id + " button")[1]).text("Deleting...");
+                   $($("#" + uid + " button")[1]).text("Deleting...");
                    disableButtons();
                 },
                 data:
@@ -541,7 +542,7 @@ function delete_user(id)
                     command: "delete_user",
                     data:
                     {
-                        id: id
+                        uid: uid
                     }
                 },
                 success: function(res)
@@ -549,18 +550,17 @@ function delete_user(id)
                     if (contains(res, "Okay"))
                     {
                         // remove the row that we just selected
-                        $("#" + id).remove();
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'bottom-right'});
+                        $("#" + uid).remove();
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
                     }
                     else
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'bottom-right'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                     }
                 },
                 error: function(res, err)
                 {
-                    console.log(res);
-                    console.log(err);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 },
                 complete: function() {
                     enableButtons();
@@ -570,7 +570,7 @@ function delete_user(id)
     });  
 }
 
-function delete_listing(id)
+function delete_listing(oid)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -595,15 +595,15 @@ function delete_listing(id)
                     url: "/api.php",
                     beforeSend: function()
                     {
-                        $("#" + id + " button").prop("disabled", true);
-                        $($("#" + id + " button")[1]).text("Deleting...");
+                        $("#" + oid + " button").prop("disabled", true);
+                        $($("#" + oid + " button")[1]).text("Deleting...");
                     },
                     data:
                     {
                         command: "delete_listing",
                         data:
                         {
-                            id: id
+                            oid: oid
                         },
                         endpoint: "Listings"
                     },
@@ -614,7 +614,7 @@ function delete_listing(id)
                             if (contains(res, "Okay"))
                             {
                                 // remove the row that we just selected
-                                $("#" + id).parent().remove();
+                                $("#" + oid).parent().remove();
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
                                 if ($("#accordion").text() == "")
                                 {
@@ -662,7 +662,7 @@ function create_user()
     
     if (error != "Please Include ")
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'bottom-right'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
     }
     else
     {
@@ -705,9 +705,9 @@ function create_user()
                                     $("#accordion").html("");
                                 }
                                 
-                                var oid = user._id.$oid;
+                                var uid = user._id.$oid;
                                 
-                                $("#accordion").append(createAccordionUsersView(oid, user));
+                                $("#accordion").append(createAccordionUsersView(uid, user));
                             }
                         }
                     }
@@ -738,11 +738,12 @@ function create_listing()
 {
     var inputs = $("#createListingModal input, #createListingModal select").not(":eq(11)");
     
-    var data = buildData(inputs, ["address", "rent", "start", "university", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
     
     var error = buildError(data);
     
     data.type = (data.type == true ? "apartment" : "sublet");
+    data.address = data.address.split(",")[0];
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
     data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
@@ -1090,10 +1091,10 @@ function createDropzone(key, element, existingPics)
     
     myDropzone.on("addedfile", function(file) 
     {
-        var id = $(this.element).data("pic-id");
-        if (pictures[id] == null)
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
         {
-            pictures[id] = [];
+            pictures[oid] = [];
         }
         var filename = (file.alreadyUploaded 
                         ? file.name
@@ -1110,12 +1111,12 @@ function createDropzone(key, element, existingPics)
     {
         var index = this.files.indexOf(file);
         
-        var id = $(this.element).data("pic-id");
-        if (pictures[id] == null)
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
         {
-            pictures[id] = [];
+            pictures[oid] = [];
         }
-        pictures[id].splice(index, 1); 
+        pictures[oid].splice(index, 1); 
     });
     
     if (existingPics != null)
@@ -1369,19 +1370,19 @@ function createAccordionView(oid, data)
             "</div>";
 }
 
-function createAccordionUsersView(oid, data)
+function createAccordionUsersView(uid, data)
 {           
     return "<div class='panel panel-default'>" +
-                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
                     "<h4 class='panel-title'>" +
-                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + uid + "' aria-expanded='false' aria-controls='" + uid + "'>" +
                             "<label>Username: " + data.Username + "</label>" + 
                             "<label>First Name: " + data.FirstName + "</label>" + 
                             "<label>Last Name: " + data.LastName + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
-                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                "<div id='" + uid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + uid + "'>" +
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
@@ -1413,8 +1414,8 @@ function createAccordionUsersView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_user(\"" + oid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_user(\"" + oid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_user(\"" + uid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_user(\"" + uid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +

@@ -11,12 +11,12 @@ require 'moped'
 
 Moped::BSON = BSON
 
-def get_listing_info(id)
+def get_listing_info(oid)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) 
     mongo_session.use("enhabit")
 
     listing_obj = Hash.new
-    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(oid.to_s)
     
     ret_msg = Hash.new
  
@@ -36,7 +36,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
  
-    result = get_listing_info(data["id"])
+    result = get_listing_info(data["oid"])
 
     puts result.to_json
 rescue Exception => e

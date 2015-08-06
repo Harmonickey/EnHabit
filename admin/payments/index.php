@@ -18,9 +18,7 @@
             $_SESSION['CREATED'] = time();  // update creation time
         }
     }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>

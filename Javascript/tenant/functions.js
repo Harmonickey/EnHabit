@@ -249,7 +249,7 @@ function fillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function delete_listing(id)
+function delete_listing(oid)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -274,15 +274,15 @@ function delete_listing(id)
                     url: "/api.php",
                     beforeSend: function()
                     {
-                        $("#" + id + " button").prop("disabled", true);
-                        $($("#" + id + " button")[1]).text("Deleting...");
+                        $("#" + oid + " button").prop("disabled", true);
+                        $($("#" + oid + " button")[1]).text("Deleting...");
                     },
                     data:
                     {
                         command: "delete_listing",
                         data:
                         {
-                            id: id
+                            oid: oid
                         },
                         endpoint: "Listings"
                     },
@@ -293,7 +293,7 @@ function delete_listing(id)
                             if (contains(res, "Okay"))
                             {
                                 // remove the row that we just selected
-                                $("#" + id).parent().remove();
+                                $("#" + oid).parent().remove();
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 $(".actions a").show();
                                 $("#accordion").text("No Listing Yet");
@@ -330,22 +330,22 @@ function delete_listing(id)
     });
 }
 
-function update_listing(id)
+function update_listing(oid)
 {
-    var inputs = $("#" + id + " input").not(":eq(7)");
+    var inputs = $("#" + oid + " input").not(":eq(7)");
     
     var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "latitude", "longitude", "selected_address"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    data.id = id;
+    data.oid = oid;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
     data.address = data.address.split(",")[0];
     data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.pictures = pictures[id];
+    data.pictures = pictures[oid];
     
     try
     {
@@ -355,7 +355,7 @@ function update_listing(id)
         }
         else
         {
-            dropzones[id].processQueue();
+            dropzones[oid].processQueue();
             
             $.ajax(
             {
@@ -369,11 +369,11 @@ function update_listing(id)
                 },
                 beforeSend: function()
                 {
-                    $("#" + id + " button").prop("disabled", true);
-                    $($("#" + id + " button")[0]).text("Updating...");
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[0]).text("Updating...");
                 },
                 success: function(res)
-                { 
+                {
                     try
                     {
                         if (contains(res, "Okay"))
@@ -405,8 +405,8 @@ function update_listing(id)
                 },
                 complete: function()
                 {
-                    $("#" + id + " button").prop("disabled", false);
-                    $($("#" + id + " button")[0]).text("Update");
+                    $("#" + oid + " button").prop("disabled", false);
+                    $($("#" + oid + " button")[0]).text("Update");
                 }
             });
         }
@@ -902,16 +902,16 @@ function createDropzone(key, element, existingPics)
     
     myDropzone.on("addedfile", function(file) 
     {
-        var id = $(this.element).data("pic-id");
-        if (pictures[id] == null)
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
         {
-            pictures[id] = [];
+            pictures[oid] = [];
         }
         var filename = (file.alreadyUploaded 
                         ? file.name
                         : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
                                                            : Math.random().toString(36).slice(2) + "_" + file.name));
-        pictures[id].push(filename);
+        pictures[oid].push(filename);
         
         if (!file.alreadyUploaded)
         {
@@ -923,12 +923,12 @@ function createDropzone(key, element, existingPics)
     {
         var index = this.files.indexOf(file);
         
-        var id = $(this.element).data("pic-id");
-        if (pictures[id] == null)
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
         {
-            pictures[id] = [];
+            pictures[oid] = [];
         }
-        pictures[id].splice(index, 1); 
+        pictures[oid].splice(index, 1); 
     });
     
     if (existingPics != null)

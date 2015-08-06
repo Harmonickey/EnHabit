@@ -18,9 +18,7 @@
             $_SESSION['CREATED'] = time();  // update creation time
         }
     }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -85,7 +83,7 @@
                             
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php echo $_SESSION["tenant"]; ?>
+                        <?php if (isset($_SESSION["tenant"])) { echo $_SESSION["tenant"]; } ?>
                         <b class="caret"></b>
                     </a>
                 

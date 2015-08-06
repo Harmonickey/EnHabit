@@ -25,11 +25,11 @@ def update_listing(is_admin, id, userId, landlord, landlordId, price, address, u
 
     #object to insert/update with
     listing_obj = Hash.new
-    listing_obj["Landlord"] = landlord if not landlord.nil? and not landlord.empty?
-    listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
+    listing_obj["Landlord"] = landlord unless landlord.nil? and not landlord.empty?
+    listing_obj["LandlordId"] = landlordId unless landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
-    listing_obj["Unit"] = unit if not unit.nil? and not unit.empty?
+    listing_obj["Unit"] = unit unless unit.nil? and not unit.empty?
     listing_obj["Bedrooms"] = bedrooms.to_i
     listing_obj["Bathrooms"] = bathrooms.to_i
     listing_obj["HasAnimals"] = animals.to_b
@@ -46,7 +46,7 @@ def update_listing(is_admin, id, userId, landlord, landlordId, price, address, u
     #object to search with
     query_obj = Hash.new
     query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
-    query_obj["UserId"] = userId if not is_admin
+    query_obj["UserId"] = userId unless is_admin
     
     ret_msg = ""
  
@@ -127,7 +127,6 @@ end
 
 begin
     # when user updates a listing they only input a landlord (optional)
-
     data = JSON.parse(ARGV[0].delete('\\'))
 
     id = ARGV[1]
@@ -137,13 +136,13 @@ begin
     landlordId = nil
     
     if landlordId.nil? or landlordId.empty?
-        landlordId = get_landlord_id(landlord) if not landlord.nil?
+        landlordId = get_landlord_id(landlord) unless landlord.nil?
         landlordId = "" if landlordId == "No Match" or landlordId.nil?
     end
     
     id = get_user_id(data["username"]) if is_admin
     
-    puts update_listing(is_admin, data["id"], id, data["landlord"], landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    puts update_listing(is_admin, data["id"], id, landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

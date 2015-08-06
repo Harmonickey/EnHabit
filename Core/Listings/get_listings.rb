@@ -167,9 +167,9 @@ end
 
 begin
    
-    data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].empty?
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
     
-    if not data.nil?
+    unless data.nil?
         @lower = data["price"]["low"].to_i unless data["price"].nil?
         @upper = data["price"]["high"].to_i unless data["price"].nil?   
         @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil? or data["bedrooms"] == "studio"
@@ -185,8 +185,9 @@ begin
         @tags = data["tags"] unless data["tags"].nil? or data["tags"].length == 0
         @userId = ARGV[1]
         @landlordId = ARGV[1]
+        @key = ARGV[2]
         
-        if (key == "UserId")
+        if (@key == "UserId")
             @landlordId = nil
         else 
             @userId = nil

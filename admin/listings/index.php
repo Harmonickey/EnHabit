@@ -48,35 +48,31 @@
 <body>
 
 <nav class="navbar navbar-inverse" role="navigation">
-
-<div class="container">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <i class="fa fa-cog"></i>
-    </button>
-    <a class="navbar-brand" href="./">Enhabit Admin</a>
-  </div>
-
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav navbar-right">
-		<li class="dropdown">
-						
-			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="fa fa-user"></i> 
-				<?php echo $_SESSION["admin"]; ?>
-				<b class="caret"></b>
-			</a>
-			
-			<ul class="dropdown-menu">
-				<li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
-			</ul>
-		</li>
-    </ul>
-  </div><!-- /.navbar-collapse -->
-</div> <!-- /.container -->
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <i class="fa fa-cog"></i>
+        </button>
+        <a class="navbar-brand" href="./">Enhabit Admin</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-user"></i> 
+                    <?php if (isset($_SESSION["admin"])) { echo $_SESSION["admin"]; } ?>
+                    <b class="caret"></b>
+                </a>			
+                <ul class="dropdown-menu">
+                    <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div> <!-- /.container -->
 </nav>
     
 <div class="subnavbar">
@@ -163,6 +159,7 @@
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
                 <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" value="" />
+                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
                 <label>Rent/Month</label><input type='text' class='form-control' />
                 <label>Start Date</label><input type='text' class='form-control' />
                 <label>University</label><input type='text' class='form-contorl' />
