@@ -35,7 +35,7 @@ def get_user_info(id, key)
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
     id = ARGV[1];
     key = ARGV[2];
     

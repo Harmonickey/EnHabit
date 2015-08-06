@@ -1315,23 +1315,26 @@ function createAccordionView(oid, data)
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Unit</label><input type='text' class='form-control' value='" + (data.Unit ? data.Unit : "") + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
-                            "</div>" + 
+                            "</div>" +                          
+                        "</div>" +
+                        "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
                             "</div>" + 
-                        "</div>" +
-                        "<div class='row'>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Tags (Optional)</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
                             "</div>" + 
                         "</div>" +

@@ -163,6 +163,10 @@ def combine_filters_into_query
     if not @landlordId_filter.nil?
         @main_filter["$and"].push @landlordId_filter
     end
+    
+    if @main_filter["$and"].count == 0
+        @main_filter = {}
+    end
 end
 
 begin
@@ -191,8 +195,7 @@ begin
             @landlordId = nil
         else 
             @userId = nil
-        end
-        
+        end      
     end
 
     @price_filter = {}
@@ -216,7 +219,11 @@ begin
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
 
-    documents = mongo_session[:listings].find(@main_filter).select(_id: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
+    File.open("error.log", "a") do |output|
+        output.puts @main_filter.inspect
+    end
+    
+    documents = mongo_session[:listings].find(@main_filter).select(_id: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
 
     mongo_session.disconnect
 
