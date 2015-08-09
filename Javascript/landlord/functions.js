@@ -375,8 +375,8 @@ function update_listing(oid)
                     {
                         if (contains(res, "Okay"))
                         {
-                            var inputs = $("#" + id + " input");
-                            var headingInputs = $("#heading" + id + " label");
+                            var inputs = $("#" + oid + " input");
+                            var headingInputs = $("#heading" + oid + " label");
                             
                             $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
@@ -387,7 +387,7 @@ function update_listing(oid)
                             numUploaded = 0;
                             
                             // close the div
-                            $("#heading" + id + " a").click();
+                            $("#heading" + oid + " a").click();
                         }
                         else
                         {

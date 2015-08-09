@@ -472,8 +472,8 @@ function update_listing(oid)
                     {
                         if (contains(res, "Okay"))
                         {
-                            var inputs = $("#" + id + " input");
-                            var headingInputs = $("#heading" + id + " label");
+                            var inputs = $("#" + oid + " input");
+                            var headingInputs = $("#heading" + oid + " label");
                             
                             $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
@@ -484,7 +484,7 @@ function update_listing(oid)
                             numUploaded = 0;
                             
                             // close the div
-                            $("#heading" + id + " a").click();
+                            $("#heading" + oid + " a").click();
                         }
                         else
                         {
@@ -1110,7 +1110,7 @@ function createDropzone(key, element, existingPics)
         var filename = (file.alreadyUploaded 
                         ? file.name
                         : file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[1]);
-        pictures[id].push(filename);
+        pictures[oid].push(filename);
         
         if (!file.alreadyUploaded)
         {
