@@ -208,7 +208,7 @@
                 <label>Tags (Optional)</label><input type='text' data-role='tagsinput' />
                 <br>
                 <label>Images (Will Upload Upon Submit)</label>
-                <form action="/Libraries/upload_file.php" data-pic-id="create" class="dropzone"></form>
+                <form action="http://images.lbkstudios.net/images/enhabit/upload_file.php" data-pic-id="create" class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>

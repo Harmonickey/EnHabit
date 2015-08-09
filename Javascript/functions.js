@@ -1011,7 +1011,7 @@ function insertIntoListView(data)
     
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+            "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -1028,7 +1028,7 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
 {
     //load up the images into the modal...
     var slideshowContent = "";
-    var base = "assets/images/listing_images/";
+    var base = "http://images.lbkstudios.net/enhabit/images/";
     if (!images || images.length == 0)
     {
         images = [];

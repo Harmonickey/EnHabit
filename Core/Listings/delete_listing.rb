@@ -32,7 +32,7 @@ def delete_listing(objectId, id, key)
             if documents[0][key] == id
                 listing = session[:listings].find(listing_obj).select(Pictures: 1).one
                 listing["Pictures"].each do |pic|
-                    filename = "#{@deployment_base}/assets/images/listing_images/" + pic
+                    filename = "#{@deployment_base}/../images/enhabit/images/" + pic
                     File.delete(filename) if File.exist? filename
                 end
                 session[:listings].find(listing_obj).remove
