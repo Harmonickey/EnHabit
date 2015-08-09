@@ -955,7 +955,7 @@ function createDropzone(key, element, existingPics)
             var mockFile = { name: existingPics[i], alreadyUploaded: true};
 
             myDropzone.emit("addedfile", mockFile);
-            myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/images/enhabit/images/" + mockFile.name);
+            myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/enhabit/images/" + mockFile.name);
             myDropzone.emit("complete", mockFile);
         }
     }
@@ -1162,7 +1162,7 @@ function createAccordionView(oid, uuid, data)
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label>Images (Will Upload Upon Submit)</label>" +
-                                "<form action='http://images.lbkstudios.net/images/enhabit/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
+                                "<form action='http://images.lbkstudios.net/enhabit/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
