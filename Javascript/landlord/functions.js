@@ -290,11 +290,7 @@ function delete_listing(oid)
                             if (contains(res, "Okay"))
                             {
                                 // remove the row that we just selected
-<<<<<<< HEAD
                                 $("#" + oid).parent().remove();
-=======
-                                $("#" + id).parent().remove();
->>>>>>> master
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 if ($("#accordion").text() == "")
                                 {
@@ -379,8 +375,6 @@ function update_listing(oid)
                     {
                         if (contains(res, "Okay"))
                         {
-<<<<<<< HEAD
-=======
                             var inputs = $("#" + id + " input");
                             var headingInputs = $("#heading" + id + " label");
                             
@@ -389,7 +383,6 @@ function update_listing(oid)
                             $(headingInputs[2]).text("Rent: " + $(inputs[2]).val());
                             $(headingInputs[3]).text("Start Date: " + $(inputs[3]).val());
                             
->>>>>>> master
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
                             
