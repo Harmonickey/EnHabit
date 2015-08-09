@@ -1363,6 +1363,8 @@ function create_account()
                         if (contains(res, "Okay"))
                         {
                             login_user(false);
+                            
+                            populate_and_open_modal(null, 'modal-content-register-success');
                         }
                         else
                         {

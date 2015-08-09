@@ -23,8 +23,8 @@ def create_listing(userId, landlord, landlordId, price, address, unit, bedrooms,
 
     listing_obj = Hash.new
     listing_obj["UserId"] = userId
-    listing_obj["Landlord"] = landlord if not landlord.nil? and not landlord.empty?
-    listing_obj["LandlordId"] = landlordId if not landlordId.nil? and not landlordId.empty?
+    listing_obj["Landlord"] = landlord unless landlord.nil? and not landlord.empty?
+    listing_obj["LandlordId"] = landlordId unless landlordId.nil? and not landlordId.empty?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
     listing_obj["Unit"] = unit if not unit.nil? and not unit.empty?
@@ -99,8 +99,8 @@ def get_landlord_id(landlord)
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil?
+    landlord = data["landlord"] unless data["landlord"].nil? and not data["landlord"].empty?
     landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
     #if we are a user, we don't inherently know the landlordId
     if landlordId.empty?

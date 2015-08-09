@@ -1,8 +1,7 @@
 <?php
-    include_once "tools.php";
     
     $ds          = DIRECTORY_SEPARATOR;
-    $storeFolder = '../assets/images/listing_images/';
+    $storeFolder = 'images/';
     if (!empty($_FILES)) 
     { 
         $tempFile = $_FILES['file']['tmp_name']; 

@@ -321,6 +321,10 @@
         }
       },
       error: function(file, message) {
+          
+        $("#create-listing-button").prop("disabled", false);
+        $("#create-listing-button").text("Create Listing");
+          
         var node, _i, _len, _ref, _results;
         if (file.previewElement) {
           file.previewElement.classList.add("dz-error");
@@ -1298,8 +1302,7 @@
       progressObj.onprogress = updateProgress;
       headers = {
         "Accept": "application/json",
-        "Cache-Control": "no-cache",
-        "X-Requested-With": "XMLHttpRequest"
+        "Cache-Control": "no-cache"
       };
       if (this.options.headers) {
         extend(headers, this.options.headers);

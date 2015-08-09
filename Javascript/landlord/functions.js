@@ -464,7 +464,7 @@ function create_listing()
             pendingData = data;
             
             $("#create-listing-button").text("Creating...");
-            $("#create-listing-button").prop("disabled", false);
+            $("#create-listing-button").prop("disabled", true);
             
             // async call, caught in dropzone.success event handler below
             dropzones["create"].processQueue();
@@ -472,6 +472,8 @@ function create_listing()
     }
     catch(e)
     {
+        $("#create-listing-button").prop("disabled", false);
+        $("#create-listing-button").text("Create Listing");
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
@@ -559,7 +561,7 @@ function process_listing()
         complete: function()
         {
             $("#create-listing-button").prop("disabled", false);
-            $("#create-listing-button").text("Create New Listing");
+            $("#create-listing-button").text("Create Listing");
         }
     });
 }

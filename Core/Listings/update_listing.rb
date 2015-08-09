@@ -103,9 +103,9 @@ end
 
 begin
     # when user updates a listing they only input a landlord (optional)
-
-    data = JSON.parse(ARGV[0].delete('\\'))
-    landlord = data["landlord"] if not data["landlord"].nil? and not data["landlord"].empty?
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil?
+    
+    landlord = data["landlord"] unless data["landlord"].nil? and not data["landlord"].empty?
     landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
     
     if landlordId.empty?
