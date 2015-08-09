@@ -389,11 +389,11 @@ function update_listing(id, userId)
                         if (contains(res, "Okay"))
                         {
                             var inputs = $("#" + id + " input");
-                            var headingInputs = $("#heading" + id + " input");
+                            var headingInputs = $("#heading" + id + " label");
                             
                             for (var i = 0; i < 3; i++)
                             {
-                                $(headingInputs[i]).val($(inputs[i]));
+                                $(headingInputs[i]).text($(inputs[i]));
                             }
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
