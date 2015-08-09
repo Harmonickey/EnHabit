@@ -824,7 +824,7 @@ function insertMarkers(res)
             var marker = L.marker([d.WorldCoordinates.x, d.WorldCoordinates.y]).addTo(map);
             
             var slideshowContent = "";
-            var base = "assets/images/listing_images/";
+            var base = "http://images.lbkstudios.net/enhabit/images/";
             var images = d.Pictures;
             if (!images || images.length == 0)
             {
@@ -871,7 +871,7 @@ function insertIntoListView(data)
     
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+            "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -888,7 +888,7 @@ function openListing(id, address, bedrooms, bathrooms, price, type, animals, lau
 {
     //load up the images into the modal...
     var slideshowContent = "";
-    var base = "assets/images/listing_images/";
+    var base = "http://images.lbkstudios.net/enhabit/images/";
     if (!images || images.length == 0)
     {
         images = [];
