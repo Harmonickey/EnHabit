@@ -293,7 +293,11 @@ function delete_listing(oid)
                             if (contains(res, "Okay"))
                             {
                                 // remove the row that we just selected
+<<<<<<< HEAD
                                 $("#" + oid).parent().remove();
+=======
+                                $("#" + id).parent().remove();
+>>>>>>> master
                                 $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 $(".actions a").show();
                                 $("#accordion").text("No Listing Yet");
@@ -379,15 +383,27 @@ function update_listing(oid)
                         if (contains(res, "Okay"))
                         {
                             var inputs = $("#" + id + " input");
+<<<<<<< HEAD
                             var headingInputs = $("#heading" + id + " input");
                             
                             for (var i = 0; i < 3; i++)
                             {
                                 $(headingInputs[i]).val($(inputs[i]));
                             }
+=======
+                            var headingInputs = $("#heading" + id + " label");
+                            
+                            $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
+                            $(headingInputs[2]).text("Rent: " + $(inputs[2]).val());
+                            $(headingInputs[3]).text("Start Date: " + $(inputs[3]).val());
+>>>>>>> master
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
+                            
+                            // close the div
+                            $("#heading" + id + " a").click();
                         }
                         else
                         {

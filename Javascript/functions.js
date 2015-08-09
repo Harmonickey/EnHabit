@@ -762,6 +762,8 @@ function searchForListings()
                     else
                     {
                         insertMarkers(res);
+                        
+                        map.fitBounds(markers.getBounds());
                     }
                 }
                 catch (e)
@@ -1629,12 +1631,16 @@ $(function ()
     
     setHiddenSidebars();
     
+<<<<<<< HEAD
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,
         alwaysVisible: true,
         size: '10px'
     });
+=======
+    map.fitBounds(markers.getBounds());
+>>>>>>> master
 });
 
 $(window).on('resize', function() {
