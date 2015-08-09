@@ -1137,7 +1137,7 @@ function createDropzone(key, element, existingPics)
             var mockFile = { name: existingPics[i], alreadyUploaded: true};
 
             myDropzone.emit("addedfile", mockFile);
-            myDropzone.emit("thumbnail", mockFile, "/assets/images/listing_images/" + mockFile.name);
+            myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/images/enhabit/images/" + mockFile.name);
             myDropzone.emit("complete", mockFile);
         }
     }
