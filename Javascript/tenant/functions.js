@@ -392,10 +392,10 @@ function update_listing(id, userId)
                             var inputs = $("#" + id + " input");
                             var headingInputs = $("#heading" + id + " label");
                             
-                            for (var i = 0; i < 3; i++)
-                            {
-                                $(headingInputs[i]).text($(inputs[i]));
-                            }
+                            $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
+                            $(headingInputs[2]).text("Rent: " + $(inputs[2]).val());
+                            $(headingInputs[3]).text("Start Date: " + $(inputs[3]).val());
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
