@@ -440,7 +440,7 @@ function update_listing(id, userId)
 }
 
 function create_listing()
-{
+{   
     var inputs = $("#createListingModal input, #createListingModal select").not(":eq(13)");
     
     var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "tags", "latitude", "longitude", "selected_address"]);
@@ -485,6 +485,11 @@ function create_listing()
 function process_listing()
 {
     var data = pendingData;
+    
+    if (data == null)
+    {
+        return;
+    }
     
     $.ajax(
     {
@@ -542,7 +547,7 @@ function process_listing()
                         
                         numUploaded = 0;
                         
-                        pendingData = {};
+                        pendingData = null;
                     }
                 }
             }

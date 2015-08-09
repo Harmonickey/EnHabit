@@ -60,6 +60,9 @@ def update_listing(id, userId, landlord, landlordId, price, address, unit, bedro
                     if not pictures.nil? and not pictures.include? pic
                         filename = "#{@deployment_base}/../images/enhabit/images/" + pic
                         File.delete(filename) if File.exist? filename
+                    elsif pictures.count == 0
+                        filename = "#{@deployment_base}/../images/enhabit/images/" + pic
+                        File.delete(filename) if File.exist? filename
                     end
                 end
             end

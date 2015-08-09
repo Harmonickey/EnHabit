@@ -482,6 +482,11 @@ function process_listing()
 {
     var data = pendingData;
     
+    if (data == null)
+    {
+        return;
+    }
+    
     $.ajax(
     {
         type: "POST",

@@ -100,6 +100,7 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil?
+    
     landlord = data["landlord"] unless data["landlord"].nil? and not data["landlord"].empty?
     landlordId = (data["landlordId"].nil? ? "" : data["landlordId"])
     #if we are a user, we don't inherently know the landlordId

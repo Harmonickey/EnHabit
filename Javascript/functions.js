@@ -861,7 +861,7 @@ function insertMarkers(res)
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 
                 var slideshowContent = "";
-                var base = "assets/images/listing_images/";
+                var base = "http://images.lbkstudios.net/enhabit/images/";
                 var images = entry[0].Pictures;
                 if (!images || images.length == 0)
                 {
@@ -932,7 +932,7 @@ function insertMarkers(res)
                     {
                         multi_popup[listing.Address] = [
                             "<div class='item-content listing'>" +
-                                "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+                                "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -946,7 +946,7 @@ function insertMarkers(res)
                     {
                         multi_popup[listing.Address].push(
                             "<div class='item-content listing'>" +
-                                "<img src='assets/images/listing_images/" + listingPic + "' height='100' width='100' />" +
+                                "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -975,6 +975,8 @@ function insertMarkers(res)
            $('.top-right .msgGrowl-content span').append("<br><b>" + page_tag + "<b>"); 
         });
     }
+    
+    map.fitBounds(markers.getBounds());
 }
 
 function load_multiple_listings(address)
@@ -1628,19 +1630,17 @@ String.prototype.capitalizeFirstLetter = function() {
 $(function ()
 {
     initMainSidebar();
-    
+ 
     loadAllDefaultListings();
-    
+ 
     setHiddenSidebars();
-
+   
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,
         alwaysVisible: true,
         size: '10px'
     });
-
-    map.fitBounds(markers.getBounds());
 });
 
 $(window).on('resize', function() {
