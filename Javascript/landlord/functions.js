@@ -395,6 +395,9 @@ function update_listing(id, landlordId)
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                             numUploaded = 0;
+                            
+                            // close the div
+                            $("#heading" + id + " a").click();
                         }
                         else
                         {
