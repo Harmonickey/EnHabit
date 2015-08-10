@@ -238,6 +238,7 @@ Dropzone.autoDiscover = false;
 var userId = "<?php echo $_SESSION["userId"]; ?>";
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
+var added_files = {};
 
 $(function() 
 {  
