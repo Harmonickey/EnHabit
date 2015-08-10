@@ -995,6 +995,7 @@ function createDropzone(key, element, existingPics)
         
         if (numAdded < 0)
         {
+            added_files[id] = false;
             numAdded = 0;
         }
     });

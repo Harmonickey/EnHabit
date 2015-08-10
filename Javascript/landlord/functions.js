@@ -938,7 +938,7 @@ function createDropzone(key, element, existingPics)
     {
         var id = $(this.element).data("pic-id");
         
-        if (numUploaded[id] == numAdded[id])
+        if (numUploaded[id] == numAdded[id] - 1)
         {
             numUploaded[id] = 0;
             numAdded[id] = 0;
@@ -988,6 +988,7 @@ function createDropzone(key, element, existingPics)
         
         if (numAdded[id] < 0)
         {
+            added_files[id] = false;
             numAdded[id] = 0;
         }
     });
