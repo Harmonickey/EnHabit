@@ -7,7 +7,9 @@ EVENT HANDLERS
 
 var savedUsername = "";
 var pendingData = null;
-var numUploaded = 0;
+var pendingUpdateData = null;
+var numUploaded = {};
+var numAdded = {};
 
 $(document).on("keypress", function(e)
 {
@@ -1086,13 +1088,13 @@ function createDropzone(key, element, existingPics)
     
     myDropzone.on("success", function(file)
     {
-        if (numUploaded == this.files.length - 1)
+        var oid = $(this.element).data("pic-id");
+        
+        if (numUploaded[oid] == numAdded[oid])
         {
-            numUploaded = 0;
-            if (pendingData != null)
-            {
-                process_listing(); 
-            }
+            numUploaded[oid] = 0;
+            numAdded[oid] = 0;
+            process_listing(); 
         }
         else
         {
@@ -1116,6 +1118,10 @@ function createDropzone(key, element, existingPics)
         {
             this.files[this.files.length - 1].serverFileName = filename;
         }
+        
+        added_file[oid] = true;
+        
+        numAdded[oid]++;
     });
     
     myDropzone.on("removedfile", function(file) 
@@ -1128,6 +1134,13 @@ function createDropzone(key, element, existingPics)
             pictures[oid] = [];
         }
         pictures[oid].splice(index, 1); 
+        
+        numAdded[oid]--;
+        
+        if (numAdded[oid] < 0)
+        {
+            numAdded[oid] = 0;
+        }
     });
     
     if (existingPics != null)
@@ -1137,6 +1150,7 @@ function createDropzone(key, element, existingPics)
             var mockFile = { name: existingPics[i], alreadyUploaded: true};
 
             myDropzone.emit("addedfile", mockFile);
+            numAdded[oid]--;
             myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/images/enhabit/images/" + mockFile.name);
             myDropzone.emit("complete", mockFile);
         }
