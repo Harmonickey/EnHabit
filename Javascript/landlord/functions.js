@@ -8,6 +8,7 @@ EVENT HANDLERS
 var savedUsername = "";
 var pendingData = null;
 var numUploaded = 0;
+var pendingUpdateData = null;
 
 $(document).on("keypress", function(e)
 {
@@ -84,6 +85,8 @@ function getAllListings(landlordId)
                                 setDatePickerTextBox(oid);
                                 setBootstrapSwitches(oid);
                                 setTextBoxWithTags(oid);
+                                
+                                added_files[oid] = false;
                             }
                         }
                     }
@@ -362,76 +365,24 @@ function update_listing(id, landlordId)
             throw new Error(error);
         }
         else
-        {
+        { 
+            pendingUpdateData = data;
+            
+            $($("#" + id + " button")[0]).text("Updating...");
+            $("#" + id + " button").prop("disabled", true);
+            
             dropzones[id].processQueue();
             
-            $.ajax(
+            if (added_files[id] == false)
             {
-                type: "POST",
-                url: "/api.php",
-                data:
-                {
-                    command: "update_listing",
-                    data: data,
-                    endpoint: "Listings"
-                },
-                beforeSend: function()
-                {
-                    $("#" + id + " button").prop("disabled", true);
-                    $($("#" + id + " button")[0]).text("Updating...");
-                },
-                success: function(res)
-                { 
-                    try
-                    {
-                        if (contains(res, "Okay"))
-                        {
-                            var inputs = $("#" + id + " input");
-                            var headingInputs = $("#heading" + id + " label");
-                            
-                            $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
-                            $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Rent: $" + $(inputs[2]).val() + "/Month");
-                            $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
-                            
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
-                            numUploaded = 0;
-                            
-                            // close the div
-                            $("#heading" + id + " a").click();
-                        }
-                        else
-                        {
-                            throw new Error("Problem Updating Listing");
-                        }
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                        numUploaded = 0;
-                    }
-                },
-                error: function(err, res)
-                {
-                    try
-                    {
-                        throw new Error(err + " " + res);
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    }
-                },
-                complete: function()
-                {
-                    $("#" + id + " button").prop("disabled", false);
-                    $($("#" + id + " button")[0]).text("Update");
-                }
-            });
+                process_listing();
+            }
         }
     }
     catch(e)
     {
+        $($("#" + id + " button")[0]).text("Update");
+        $("#" + id + " button").prop("disabled", false);
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
@@ -480,95 +431,164 @@ function create_listing()
 
 function process_listing()
 {
-    var data = pendingData;
-    
-    if (data == null)
+    if (pendingData == null && pendingUpdateData == null)
     {
         return;
     }
     
-    $.ajax(
+    if (pendingData != null)
     {
-        type: "POST",
-        url: "/api.php",
-        data:
+        // create listing
+        $.ajax(
         {
-            command: "create_listing",
-            data: data,
-            endpoint: "Listings"
-        },
-        success: function(res)
-        {    
-            try
+            type: "POST",
+            url: "/api.php",
+            data:
             {
-                if (!res)
+                command: "create_listing",
+                data: pendingData,
+                endpoint: "Listings"
+            },
+            success: function(res)
+            {    
+                try
                 {
-                    throw new Error("Unable to Create Listing");
-                }
-                else
-                {
-                    var listing = JSON.parse(res);
-                        
-                    if (listing["error"])
+                    if (!res)
                     {
-                        throw new Error(listing["error"]);
+                        throw new Error("Unable to Create Listing");
                     }
                     else
                     {
-                        if ($("#accordion").text() == "No Listing Yet")
-                        {
-                            $("#accordion").html("");
-                        }
-                        
-                        var oid = listing._id.$oid;
-                        var landlordId = listing.LandlordId;
-                        
-                        $("#accordion").append(createAccordionView(oid, landlordId, listing));
-                        
-                        var selector = "[id='" + oid + "'] form";
-                          
-                        createDropzone(oid, selector, listing.Pictures);
+                        var listing = JSON.parse(res);
                             
-                        setGeocompleteTextBox(oid);
-                        setTextBoxWithAutoNumeric(oid);
-                        setDatePickerTextBox(oid);
-                        setBootstrapSwitches(oid);
-                        setTextBoxWithTags(oid);
-                        
-                        $("#createListingModal").modal('hide');
-                        
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
-                        
-                        $(".actions a").hide();
-                        
-                        numUploaded = 0;
-                        
-                        pendingData = null;
+                        if (listing["error"])
+                        {
+                            throw new Error(listing["error"]);
+                        }
+                        else
+                        {
+                            if ($("#accordion").text() == "No Listing Yet")
+                            {
+                                $("#accordion").html("");
+                            }
+                            
+                            var oid = listing._id.$oid;
+                            var userId = listing.UserId;
+                            
+                            $("#accordion").append(createAccordionView(oid, userId, listing));
+                                
+                            var selector = "[id='" + oid + "'] form";
+                                
+                            createDropzone(oid, selector, listing.Pictures);
+                                
+                            setGeocompleteTextBox(oid);
+                            setTextBoxWithAutoNumeric(oid);
+                            setDatePickerTextBox(oid);
+                            setBootstrapSwitches(oid); 
+                            setTextBoxWithTags(oid)
+                            
+                            $("#createListingModal").modal('hide');
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
+                            
+                            $(".actions a").hide();
+                            
+                            numUploaded = 0;
+                            
+                            pendingData = null;
+                        }
                     }
                 }
-            }
-            catch(e)
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                try
+                {
+                    throw new Error(res + " " + err);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            complete: function()
+            {
+                $("#create-listing-button").prop("disabled", false);
+                $("#create-listing-button").text("Create Listing");
             }
-        },
-        error: function(res, err)
+        });
+    }
+    else if (pendingUpdateData != null)
+    {
+        var id = pendingUpdateData.id;
+        added_files[id] = false;
+        
+        // update listing
+        $.ajax(
         {
-            try
+            type: "POST",
+            url: "/api.php",
+            data:
             {
-                throw new Error(res + " " + err);
-            }
-            catch(e)
+                command: "update_listing",
+                data: pendingUpdateData,
+                endpoint: "Listings"
+            },
+            success: function(res)
+            { 
+                try
+                {
+                    if (contains(res, "Okay"))
+                    {
+                        var inputs = $("#" + id + " input");
+                        var headingInputs = $("#heading" + id + " label");
+                        
+                        $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
+                        $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
+                        $(headingInputs[2]).text("Rent: $" + $(inputs[2]).autoNumeric('get') + "/Month");
+                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+                        numUploaded = 0;
+                        
+                        pendingUpdateData = null;
+                        
+                        // close the div
+                        $("#heading" + id + " a").click();
+                    }
+                    else
+                    {
+                        throw new Error("Problem Updating Listing");
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    numUploaded = 0;
+                }
+            },
+            error: function(err, res)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                try
+                {
+                    throw new Error(err + " " + res);
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            complete: function()
+            {
+                $("#" + id + " button").prop("disabled", false);
+                $($("#" + id + " button")[0]).text("Update");
             }
-        },
-        complete: function()
-        {
-            $("#create-listing-button").prop("disabled", false);
-            $("#create-listing-button").text("Create Listing");
-        }
-    });
+        });
+    }
 }
 
 function login()
@@ -918,10 +938,7 @@ function createDropzone(key, element, existingPics)
         if (numUploaded == this.files.length - 1)
         {
             numUploaded = 0;
-            if (pendingData != null)
-            {
-                process_listing(); 
-            }
+            process_listing(); 
         }
         else
         {
@@ -946,6 +963,8 @@ function createDropzone(key, element, existingPics)
         {
             this.files[this.files.length - 1].serverFileName = filename;
         }
+        
+        added_files[id] = true;
     });
     
     myDropzone.on("removedfile", function(file) 
@@ -957,7 +976,7 @@ function createDropzone(key, element, existingPics)
         {
             pictures[id] = [];
         }
-        pictures[id].splice(index, 1); 
+        pictures[id].splice(index, 1);       
     });
     
     if (existingPics != null)

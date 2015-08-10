@@ -259,6 +259,7 @@ Dropzone.autoDiscover = false;
 var landlordId = "<?php echo $_SESSION["landlordId"]; ?>";
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
+var added_files = {};
 
 $(function() 
 {  
