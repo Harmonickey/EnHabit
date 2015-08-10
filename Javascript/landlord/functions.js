@@ -7,7 +7,8 @@ EVENT HANDLERS
 
 var savedUsername = "";
 var pendingData = null;
-var numUploaded = 0;
+var numUploaded = {};
+var numAdded = {};
 var pendingUpdateData = null;
 
 $(document).on("keypress", function(e)
@@ -935,14 +936,17 @@ function createDropzone(key, element, existingPics)
     
     myDropzone.on("success", function(file)
     {
-        if (numUploaded == this.files.length - 1)
+        var id = $(this.element).data("pic-id");
+        
+        if (numUploaded[id] == numAdded[id])
         {
-            numUploaded = 0;
+            numUploaded[id] = 0;
+            numAdded[id] = 0;
             process_listing(); 
         }
         else
         {
-            numUploaded++;
+            numUploaded[id]++;
         }
     });
     
@@ -965,6 +969,8 @@ function createDropzone(key, element, existingPics)
         }
         
         added_files[id] = true;
+        
+        numAdded[id]++;
     });
     
     myDropzone.on("removedfile", function(file) 
@@ -976,7 +982,14 @@ function createDropzone(key, element, existingPics)
         {
             pictures[id] = [];
         }
-        pictures[id].splice(index, 1);       
+        pictures[id].splice(index, 1);   
+
+        numAdded[id]--;
+        
+        if (numAdded[id] < 0)
+        {
+            numAdded[id] = 0;
+        }
     });
     
     if (existingPics != null)
@@ -986,6 +999,7 @@ function createDropzone(key, element, existingPics)
             var mockFile = { name: existingPics[i], alreadyUploaded: true};
 
             myDropzone.emit("addedfile", mockFile);
+            numAdded[key]--;
             myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/enhabit/images/" + mockFile.name);
             myDropzone.emit("complete", mockFile);
         }
