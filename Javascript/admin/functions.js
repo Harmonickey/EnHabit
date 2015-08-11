@@ -1146,9 +1146,9 @@ function createDropzone(key, element, existingPics)
             this.files[this.files.length - 1].serverFileName = filename;
         }
         
-        added_files[id] = true;
+        added_files[oid] = true;
         
-        numAdded[id]++;
+        numAdded[oid]++;
     });
     
     myDropzone.on("removedfile", function(file) 
@@ -1166,7 +1166,7 @@ function createDropzone(key, element, existingPics)
         
         if (numAdded[oid] < 0)
         {
-            added_files[id] = false;
+            added_files[oid] = false;
             numAdded[oid] = 0;
         }
     });
@@ -1178,7 +1178,7 @@ function createDropzone(key, element, existingPics)
             var mockFile = { name: existingPics[i], alreadyUploaded: true};
 
             myDropzone.emit("addedfile", mockFile);
-            numAdded[oid]--;
+            numAdded[key]--;
             myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/images/enhabit/images/" + mockFile.name);
             myDropzone.emit("complete", mockFile);
         }
