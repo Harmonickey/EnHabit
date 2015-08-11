@@ -55,17 +55,17 @@ def update_listing(is_admin, id, userId, landlord, landlordId, price, address, u
         # delete all the pictures on disk that aren't in the updated list
         mongo_session.with(safe: true) do |session|
             document = session[:listings].find(query_obj).select(Pictures: 1).one
-            if not document["Pictures"].nil?
+            unless document["Pictures"].nil?
                 document["Pictures"].each do |pic|
-                    if not pictures.nil? and not pictures.include? pic
-                        filename = "#{@deployment_base}/assets/images/listing_images/" + pic
+                    filename = "#{@deployment_base}/../images/enhabit/images/" + pic
+                    if ((not pictures.nil? and not pictures.include? pic) or 
+                        (pictures.nil? or pictures.count == 0))
                         File.delete(filename) if File.exist? filename
                     end
                 end
             end
         end
-    
-    
+      
         mongo_session.with(safe: true) do |session|
             session[:listings].find(query_obj).update('$set' => listing_obj)
         end
@@ -127,14 +127,14 @@ end
 
 begin
     # when user updates a listing they only input a landlord (optional)
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil?
 
     id = ARGV[1]
     # key = ARGV[2]
     is_admin = ARGV[3].to_b
     landlord = data["landlord"]
     landlordId = nil
-    
+
     if landlordId.nil? or landlordId.empty?
         landlordId = get_landlord_id(landlord) unless landlord.nil?
         landlordId = "" if landlordId == "No Match" or landlordId.nil?
