@@ -961,7 +961,7 @@ function createDropzone(key, element, existingPics)
             this.files[this.files.length - 1].serverFileName = filename;
         }
         
-        added_files[id] = true;
+        added_files[oid] = true;
         
         numAdded++;
     });
@@ -982,7 +982,7 @@ function createDropzone(key, element, existingPics)
         
         if (numAdded < 0)
         {
-            added_files[id] = false;
+            added_files[oid] = false;
             numAdded = 0;
         }
     });

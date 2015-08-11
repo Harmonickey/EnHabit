@@ -171,7 +171,7 @@ end
 
 begin
    
-    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil? or ARGV[0].empty?
     
     unless data.nil?
         @lower = data["price"]["low"].to_i unless data["price"].nil?
@@ -186,17 +186,18 @@ begin
         @type = data["type"] unless data["type"] == "both" or data["type"].nil?
         @start = data["start"] unless data["start"].nil? or data["start"].empty?
         @university = data["university"] unless data["university"].nil? or data["university"].empty?
-        @tags = data["tags"] unless data["tags"].nil? or data["tags"].length == 0
-        @userId = ARGV[1]
-        @landlordId = ARGV[1]
-        @key = ARGV[2]
-        
-        if (@key == "UserId")
-            @landlordId = nil
-        else 
-            @userId = nil
-        end      
+        @tags = data["tags"] unless data["tags"].nil? or data["tags"].length == 0    
     end
+    
+    @userId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
+    @landlordId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
+    @key = ARGV[2] unless ARGV[2].nil? or ARGV[2].empty?
+
+    if @key == "UserId"
+        @landlordId = nil
+    elsif @key == "LandlordId" 
+        @userId = nil
+    end  
 
     @price_filter = {}
     @bedroom_filter = {}

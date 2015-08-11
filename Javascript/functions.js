@@ -1641,8 +1641,6 @@ $(function ()
         alwaysVisible: true,
         size: '10px'
     });
-
-    map.fitBounds(markers.getBounds());
 });
 
 $(window).on('resize', function() {

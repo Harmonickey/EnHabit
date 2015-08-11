@@ -885,11 +885,9 @@ function initSpecialFields()
     
     $(listing_modal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            var hiddenFields = $("#createListingModal input[type='hidden']");
-            var keys = Object.keys(result.geometry.location);
-            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
-            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
-            $(hiddenFields[2]).val($(listing_modal[0]).val());
+            $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
+            $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
+            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});

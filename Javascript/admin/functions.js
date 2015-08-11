@@ -306,7 +306,7 @@ function update_user(oid)
     var userfield = $("#" + oid + " input[type='text']");
     var switches = $("#" + oid + " input[type='checkbox']");
     
-    var data = buildData(userfield, ["username", "firstname", "lastname", "isadmin", "phonenumber", "email", "isactive", "isverified"], switches);
+    var data = buildData(userfield, ["username", "firstname", "lastname", "isadmin", "phonenumber", "email", "isactive", "isverified", "islandlord"], switches);
     
     data.oid = oid;
     
@@ -1079,11 +1079,11 @@ function initSpecialFields()
             $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
             $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
         });
-        
+    
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
-        
-    $(listing_modal[1]).autoNumeric('init', 
+    
+    $(listing_modal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -1091,16 +1091,16 @@ function initSpecialFields()
         lZero: 'deny'
     });
     
-    $(listing_modal[2]).pikaday(
+    $(listing_modal[3]).pikaday(
     {
-        minDate: new Date(), 
+        minDate: new Date(),
         setDefaultDate: new Date()
     });
 }
 
 function initSpecialFieldsUser()
 {    
-    $("#createListingModal input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $("#createUserModal input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
 }
 
 function createDropzone(key, element, existingPics)
@@ -1179,7 +1179,7 @@ function createDropzone(key, element, existingPics)
 
             myDropzone.emit("addedfile", mockFile);
             numAdded[key]--;
-            myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/images/enhabit/images/" + mockFile.name);
+            myDropzone.emit("thumbnail", mockFile, "http://images.lbkstudios.net/enhabit/images/" + mockFile.name);
             myDropzone.emit("complete", mockFile);
         }
     }
@@ -1451,22 +1451,25 @@ function createAccordionUsersView(uid, data)
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Last Name</label><input type='text' class='form-control' value='" + data.LastName + "' />" +
                             "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Admin</label><br><input type='checkbox' " + (data.IsAdmin ? "checked" : "") + " data-size='mini' />" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>Phone Number</label><input type='text' class='form-control' value='" + data.PhoneNumber + "' />" +
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Phone Number</label><input type='text' class='form-control' value='" + data.PhoneNumber + "' />" +
-                            "</div>" + 
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Email Address</label><input type='text' class='form-control' value='" + data.Email + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Active</label><br><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini' />" + 
                             "</div>" + 
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Verified</label><br><input type='checkbox' " + (data.IsVerified ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Landlord</label><br><input type='checkbox' " + (data.IsLandlord ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Admin</label><br><input type='checkbox' " + (data.IsAdmin ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +

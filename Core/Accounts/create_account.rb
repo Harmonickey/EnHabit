@@ -16,8 +16,9 @@ require 'moped'
 require 'bson'
 require 'PasswordHash'
 require 'securerandom'
+require 'tools'
 
-def insert_user(user, pass, firstName, lastName, email, phoneNumber)
+def insert_user(is_admin, is_active, is_verified, is_landlord, user, pass, firstName, lastName, email, phoneNumber)
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
@@ -27,14 +28,18 @@ def insert_user(user, pass, firstName, lastName, email, phoneNumber)
     usr_obj = Hash.new
     usr_obj["Username"] = user
     usr_obj["UserId"] = SecureRandom.uuid
+    unless is_landlord.nil? and is_landlord.to_b)
+        usr_obj["LandlordId"] = SecureRandom.uuid
+    end
     usr_obj["Password"] = PasswordHash.createHash(pass)
     usr_obj["FirstName"] = firstName
     usr_obj["LastName"] = lastName
     usr_obj["Email"] = email
     usr_obj["PhoneNumber"] = phoneNumber
-    usr_obj["IsAdmin"] = false
-    usr_obj["IsActive"] = true
-    usr_obj["IsVerified"] = true
+    usr_obj["IsAdmin"] = (is_admin.nil? ? is_admin.to_b : false)
+    usr_obj["IsActive"] = (is_active.nil? ? is_active.to_b : true)
+    usr_obj["IsVerified"] = (is_verified.nil? ? is_verified.to_b : true)
+    usr_obj["IsLandlord"] = (is_landlord.nil? ? is_landlord.to_b : false)
  
     ret_msg = ""
  
@@ -60,8 +65,12 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-
-    result = insert_user(data["username"], data["password"], data["firstname"], data["lastname"], data["email"], data["phonenumber"])
+    is_landlord = data["islandlord"] unless data["islandlord"].nil? and not data["islandlord"].empty?
+    is_verified = data["isverified"] unless data["isverified"].nil? and not data["isverified"].empty?
+    is_active = data["isactive"] unless data["isactive"].nil? and not data["isactive"].empty?
+    is_admin_data = data["isadmin"] unless data["isadmin"].nil? and not data["isadmin"].empty?
+    
+    result = insert_user(is_admin_data, is_active, is_verified, is_landlord, data["username"], data["password"], data["firstname"], data["lastname"], data["email"], data["phonenumber"])
 
     puts result
 rescue Exception => e

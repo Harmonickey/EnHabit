@@ -14,7 +14,10 @@
     <title>Admin | Listings</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">    
+    <meta name="apple-mobile-web-app-capable" content="yes">  
+
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../../favicon.png">    
     
     <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
@@ -121,8 +124,8 @@
       		<div class="widget stacked">
       			<div class="widget-header actions">
 					<h3>Registered Listings</h3>
-                    <button id="purge-btn" style="margin-bottom: 5px;" class='btn btn-info' onclick='delete_old_listings()'><i style="margin-left: 0; margin-right: 4px;" class="icon-bolt"></i>Purge Old Listings</button>
-                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="icon-plus"></i>Create New Listing</a>
+                    <button id="purge-btn" style="margin-bottom: 5px;" class='btn btn-info' onclick='delete_old_listings()'><i style="margin-left: 0; margin-right: 4px;" class="fa fa-bolt"></i>Purge Old Listings</button>
+                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
 					<!-- all the listings go here -->
@@ -197,7 +200,7 @@
                 <label>Tags (Optional)</label><input type='text' data-role='tagsinput' />
                 <br>
                 <label>Images (Will Upload Upon Submit)</label>
-                <form action="http://images.lbkstudios.net/images/enhabit/upload_file.php" data-pic-id="create" class="dropzone"></form>
+                <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
@@ -235,7 +238,6 @@
 <script>
 Dropzone.autoDiscover = false;
 
-var userId = "<?php echo $_SESSION["userId"]; ?>";
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
 var added_files = {};
@@ -244,7 +246,7 @@ $(function()
 {  
     createDropzone("create", "#createListingModal form");
 
-    getAllListings(userId.trim());
+    getAllListings();
 
     initSpecialFields();
 });

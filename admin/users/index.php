@@ -159,11 +159,19 @@
                 <label>First Name</label><input type='text' class='form-control' />
                 <label>Last Name</label><input type='text' class='form-control' />
                 <label>Emails</label><input type='text' class='form-control' />
-                <label>Phone Number</label><input type='text' class='form-control' />         
-                <label>Landlord</label><input type='checkbox' data-size='mini' />
-                <label>Active</label><<input type='checkbox' data-size='mini' />
-                <label>Admin</label><input type='checkbox' data-size='mini' />
-                <label>Verified</label><input type='checkbox' data-size='mini' />
+                <label>Phone Number</label><input type='text' class='form-control' />
+                <div class="modal-switch landlord-content">
+                    <label>Landlord</label><input type='checkbox' data-size='mini' />
+                </div>
+                <div class="modal-switch active-content">
+                    <label>Active</label><input type='checkbox' data-size='mini' />
+                </div>   
+                <div class="modal-switch verified-content">
+                    <label>Verified</label><input type='checkbox' data-size='mini' />
+                </div> 
+                <div class="modal-switch admin-content">
+                    <label>Admin</label><input type='checkbox' data-size='mini' />
+                </div>                 
                 <button id="create-user-button" type="button" class="btn btn-success" onclick="create_user()">Create User</button>
             </div>
         </div>
