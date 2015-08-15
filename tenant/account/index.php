@@ -6,6 +6,10 @@
     {
         header("Location: /tenant/login.php", FALSE); // just redirect if the user isn't authorized to go here....
     }
+    else if (isset($_SESSION["admin"]))
+    {
+        header("Location: /admin", FALSE);
+    }
     else
     {
         $one_hour = 3600;

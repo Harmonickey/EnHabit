@@ -73,20 +73,14 @@ function debug_string($data)
     fclose($output);
 }
 
-
 function no_user_filter()
 {   
     $http_ref = $_SERVER['HTTP_REFERER'];
     
-    if ($http_ref === "http://dev.lbkstudios.net/" ||
-        $http_ref === "http://test.lbkstudios.net/" ||
-        $http_ref === "http://enhabit.lbkstudios.net/" ||
-        $http_ref === "http://dev.lbkstudios.net/admin/listings/" ||
-        $http_ref === "http://test.lbkstudios.net/admin/listings/" ||
-        $http_ref === "http://enhabit.lbkstudios.net/admin/listings/")
-        {
-            return TRUE;
-        }
+    if ($http_ref === "http://dev.lbkstudios.net/")
+    {
+        return TRUE;
+    }
         
     return FALSE;
 }

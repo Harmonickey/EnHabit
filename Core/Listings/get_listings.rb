@@ -189,15 +189,19 @@ begin
         @tags = data["tags"] unless data["tags"].nil? or data["tags"].length == 0    
     end
     
-    @userId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
-    @landlordId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
-    @key = ARGV[2] unless ARGV[2].nil? or ARGV[2].empty?
+    @is_admin = ARGV[3] unless ARGV[3].nil? or ARGV[3].empty?
+    
+    unless @is_admin
+        @userId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
+        @landlordId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
+        @key = ARGV[2] unless ARGV[2].nil? or ARGV[2].empty?
 
-    if @key == "UserId"
-        @landlordId = nil
-    elsif @key == "LandlordId" 
-        @userId = nil
-    end  
+        if @key == "UserId"
+            @landlordId = nil
+        elsif @key == "LandlordId" 
+            @userId = nil
+        end   
+    end
 
     @price_filter = {}
     @bedroom_filter = {}
@@ -224,13 +228,32 @@ begin
         output.puts @main_filter.inspect
     end
     
-    documents = mongo_session[:listings].find(@main_filter).select(_id: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
-
+    documents = mongo_session[:listings].find(@main_filter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
+    
     mongo_session.disconnect
 
     if documents.count == 0
         puts "No Matching Entries"
     else
+        unless @is_admin
+            documents.each do |doc|
+                account = mongo_session[:accounts].find({@key => doc[@key]}).select(Username: 1, User: 1).one
+                
+                doc["Username"] = account["Username"] unless account["Username"].nil?
+                
+                doc.delete("UserId")
+                doc.delete("LandlordId")
+            end
+        else
+            documents.each do |doc|
+                account = mongo_session[:accounts].find({"UserId" => doc["UserId"]}).select(Username: 1, User: 1).one
+                doc["Username"] = account["Username"] unless account.nil?
+                
+                doc.delete("UserId")
+                doc.delete("LandlordId")
+            end
+        end
+        
         puts documents.to_json
     end
 rescue Exception => e

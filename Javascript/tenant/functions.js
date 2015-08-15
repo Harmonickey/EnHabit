@@ -857,14 +857,12 @@ function delete_account()
                 },
                 error: function(res, err)
                 {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    }
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $(".account button").prop("disabled", false);
+                    $($(".account button")[1]).text("Delete");
                 }
             });
         }
@@ -917,6 +915,8 @@ function initSpecialFields()
         minDate: new Date(), 
         setDefaultDate: new Date()
     });
+          
+    $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
 function createDropzone(key, element, existingPics)

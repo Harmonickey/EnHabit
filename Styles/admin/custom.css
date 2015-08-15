@@ -108,7 +108,8 @@ textarea
     margin-left: -15px;
 }
 
-.actions a
+.actions a,
+#purge-btn
 {
     float: right;
     margin-right: 10px;
@@ -146,7 +147,32 @@ textarea
     margin-top: 10px;
 }
 
-.msgGrowl-container
+.msgGrowl-container,
+.ui-autocomplete
 {
-    z-index: 100;
+    z-index: 1040; /* to be above the modal popups at least */
+}
+
+.ui-widget label
+{
+    font: 13px/1.7em 'Open Sans';
+    font-weight: bold;
+}
+
+#createListingModal .row,
+#createUserModal .row
+{
+    margin-left: 0;
+}
+
+.col-lg-2.required:after,
+.col-md-2.required:after,
+.col-sm-2.required:after
+{
+    margin-left: 20px;
+}
+
+.widget-content p 
+{
+    margin-bottom: 10px;
 }

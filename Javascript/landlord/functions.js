@@ -341,7 +341,7 @@ function update_listing(oid)
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    data.oid = oid;
+    data.id = oid;
     data.university = "Northwestern";
     data.type = (data.type == true ? "apartment" : "sublet");
     data.address = data.address.split(",")[0];
@@ -358,12 +358,12 @@ function update_listing(oid)
         { 
             pendingUpdateData = data;
             
-            $($("#" + id + " button")[0]).text("Updating...");
-            $("#" + id + " button").prop("disabled", true);
+            $($("#" + oid + " button")[0]).text("Updating...");
+            $("#" + oid + " button").prop("disabled", true);
             
-            dropzones[id].processQueue();
+            dropzones[oid].processQueue();
             
-            if (added_files[id] == false)
+            if (added_files[oid] == false)
             {
                 process_listing();
             }
@@ -371,8 +371,8 @@ function update_listing(oid)
     }
     catch(e)
     {
-        $($("#" + id + " button")[0]).text("Update");
-        $("#" + id + " button").prop("disabled", false);
+        $($("#" + oid + " button")[0]).text("Update");
+        $("#" + oid + " button").prop("disabled", false);
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
@@ -412,8 +412,8 @@ function create_listing()
     }
     catch(e)
     {
-        $("#create-listing-button").prop("disabled", false);
         $("#create-listing-button").text("Create Listing");
+        $("#create-listing-button").prop("disabled", false);
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
@@ -490,24 +490,19 @@ function process_listing()
                 }
                 catch(e)
                 {
+                    $("#create-listing-button").text("Create Listing");
+                    $("#create-listing-button").prop("disabled", false);
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
             error: function(res, err)
             {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
             complete: function()
             {
-                $("#create-listing-button").prop("disabled", false);
                 $("#create-listing-button").text("Create Listing");
+                $("#create-listing-button").prop("disabled", false);
             }
         });
     }
@@ -848,14 +843,12 @@ function delete_account()
                 },
                 error: function(res, err)
                 {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    }
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $(".account button").prop("disabled", false);
+                    $($(".account button")[1]).text("Delete");
                 }
             });
         }
@@ -885,9 +878,11 @@ function initSpecialFields()
     
     $(listing_modal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
-            $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
+            var hiddenFields = $("#createListingModal input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listing_modal[0]).val());
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
@@ -906,6 +901,8 @@ function initSpecialFields()
         minDate: new Date(), 
         setDefaultDate: new Date()
     });
+     
+    $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
 function createDropzone(key, element, existingPics)
@@ -978,6 +975,8 @@ function createDropzone(key, element, existingPics)
         }
     });
     
+    numAdded[key] = 0;
+    numUploaded[key] = 0;
     if (existingPics != null)
     {
         for (var i = 0; i < existingPics.length; i++)

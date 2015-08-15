@@ -20,6 +20,73 @@ $(document).on("keypress", function(e)
     }
 });
 
+function getAllUsersAndLandlords()
+{
+    try
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            data: 
+            {
+                command: "get_all_users",
+                endpoint: "Accounts"
+            },
+            success: function(res) 
+            {
+                try
+                {
+                    if (res && !contains(res, "No Users"))
+                    {             
+                        var data = JSON.parse(res);
+                        
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            if (data[i].IsLandlord)
+                            {
+                                landlordList.push(data[i].Username)
+                            }
+                            else
+                            {
+                                userList.push(data[i].Username);
+                            }
+                        }
+                        
+                        $($("#createListingModal .ui-widget input")[0]).autocomplete({
+                           source: function(request, response) {
+                                var results = $.ui.autocomplete.filter(landlordList, request.term);
+
+                                response(results.slice(0, 5)); // limit to 5 results at a time
+                            } 
+                        });
+                        
+                        $($("#createListingModal .ui-widget input")[1]).autocomplete({
+                           source: function(request, response) {
+                                var results = $.ui.autocomplete.filter(userList, request.term);
+
+                                response(results.slice(0, 5)); // limit to 5 results at a time
+                            }
+                        });
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            }
+        });
+    }
+    catch (e)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+    }
+}
+
 function getAllUsers()
 {
     try
@@ -28,6 +95,11 @@ function getAllUsers()
         {
             type: "POST",
             url: "/api.php",
+            beforeSend: function()
+            {
+                //spinner on accordion area
+                $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+            },
             data: 
             {
                 command: "get_all_users",
@@ -49,43 +121,37 @@ function getAllUsers()
                         $(".actions a").show();
                     }
                     else
-                    {                   
+                    {             
+                        $("#accordion").html("");
+                
                         var data = JSON.parse(res);
                         
                         for (var i = 0; i < data.length; i++)
                         {
-                            var oid = data[i]._id.$oid;
+                            var uid = data[i]._id.$oid;
                            
                             //fill in all user data
-                            $("#accordion").append(createAccordionUsersView(oid, data[i]));
+                            $("#accordion").append(createAccordionUsersView(uid, data[i]));
                             
-                            setBootstrapSwitchesForUsers(oid);
+                            setBootstrapSwitchesForUsers(uid);
                         }
                     }
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     $(".actions a").show();
                 }
             },
             error: function(res, err)
             {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
-                    $(".actions a").show();
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             }
         });
     }
     catch (e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -158,7 +224,7 @@ function getAllListings()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     $(".actions a").show();
                 }
             },
@@ -170,7 +236,7 @@ function getAllListings()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     $(".actions a").show();
                 }
             }
@@ -178,7 +244,7 @@ function getAllListings()
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -234,20 +300,20 @@ function getAllTransactions()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     $(".actions a").show();
                 }    
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 $(".actions a").show();
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         $(".actions a").show();
     }
 }
@@ -301,80 +367,86 @@ function delete_old_listings()
     });
 }
 
-function update_user(oid)
+function update_account(uid)
 {
-    var userfield = $("#" + oid + " input[type='text']");
-    var switches = $("#" + oid + " input[type='checkbox']");
+    var userfield = $("#" + uid + " input");
     
-    var data = buildData(userfield, ["username", "firstname", "lastname", "isadmin", "phonenumber", "email", "isactive", "isverified", "islandlord"], switches);
+    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "password", "confirm", "email", "isactive", "isverified", "islandlord", "isadmin"]);
     
-    data.oid = oid;
+    data.id = uid;
     
     var error = buildError(data);
     
     if (error != "Please Include ")
     {
         $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
-        
-        resetUsers();
     }
     else
     {
-        $.ajax(
+        try
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            $.ajax(
             {
-                $($("#" + oid + " button")[0]).text("Updating...");
-                disableButtons();
-            },
-            data:
-            {
-                command: "update_user",
-                data: data
-            },
-            success: function(res)
-            {    
-                var data = JSON.parse(res);
-                
-                if (data["error"])
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: data["error"], position: 'top-center'});
-                    
-                    resetUsers();
-                }
-                else if (!res)
+                    $("#" + uid + " button").prop("disabled", true);
+                    $($("#" + uid + " button")[0]).text("Updating...");
+                },
+                data:
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User!", position: 'top-center'});
-                    
-                    resetUsers();
-                }
-                else
+                    command: "update_account",
+                    endpoint: "Accounts",
+                    data: data
+                },
+                success: function(res)
+                {    
+                    try
+                    {
+                        if (!res)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User", position: 'top-center'});
+                        }
+                        else if (contains(res, "Okay"))
+                        {
+                            var inputs = $("#" + uid + " input");
+                            var headingInputs = $("#heading" + uid + " label");
+                            
+                            $(headingInputs[0]).text("Username: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("First Name: " + $(inputs[1]).val());
+                            $(headingInputs[2]).text("Last Name: " + $(inputs[2]).val());
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+                            
+                            // close the div
+                            $("#heading" + uid + " a").click();
+                        }
+                        else
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
                 {
-                    // update the fields from the query 
-                    $($(userfield)[0]).text(data.Username);
-                    $($(userfield)[1]).text(data.FirstName);
-                    $($(userfield)[2]).text(data.LastName);
-                    $($(userfield)[3]).text(data.PhoneNumber);
-                    $($(userfield)[4]).text(data.Email);
-                    $($(switches)[1]).prop("checked", data.IsActive);
-                    $($(switches)[2]).prop("checked", data.IsAdmin);
-                    $($(switches)[3]).prop("checked", data.IsVerified);
-                    
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Updated Successfully!", position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + uid + " button").prop("disabled", false);
+                    $($("#" + uid + " button")[0]).text("Update");
                 }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-            },
-            complete: function()
-            {
-                $($("#" + oid + " button")[0]).text("Update");
-                enableButtons();
-            }
-        });
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+        }
     }
 }
 
@@ -395,11 +467,11 @@ function setGeocompleteTextBox(rowId)
     var row = $("#" + rowId + " div input[type='text']");
     var hidden = $("#" + rowId + " input[type='hidden']");
     
-    $(row[0]).geocomplete()
+    $(row[2]).geocomplete()
         .bind("geocode:result", function(event, result){
             $(hidden[0]).val(result.geometry.location.A);
             $(hidden[1]).val(result.geometry.location.F);
-            $(hidden[2]).val($(row[0]).val());
+            $(hidden[2]).val($(row[2]).val());
         });
 }
 
@@ -407,7 +479,7 @@ function setTextBoxWithAutoNumeric(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
-    $(row[2]).autoNumeric('init', 
+    $(row[4]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -423,23 +495,23 @@ function setTextBoxWithTags(rowId)
 
 function setDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " input[type='text']")[2]).pikaday(
+    $($("#" + rowId + " input[type='text']")[5]).pikaday(
     {
         minDate: new Date(),  //today
-        setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
+        setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[3]).val()) //current
     });
 }
 
 function update_listing(oid)
 {
-    var inputs = $("#" + oid + " input").not(":eq(6)");
+    var inputs = $("#" + oid + " input").not(":eq(10)");
     
-    var data = buildData(inputs, ["address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["user", "landlord", "address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
     
     //first validate that the fields are filled out
     var error = buildError(data);
     
-    data.oid = oid;
+    data.id = oid;
     data.type = (data.type == true ? "apartment" : "sublet");
     data.address = data.address.split(",")[0];
     data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
@@ -455,12 +527,12 @@ function update_listing(oid)
         { 
             pendingUpdateData = data;
             
-            $($("#" + id + " button")[0]).text("Updating...");
-            $("#" + id + " button").prop("disabled", true);
+            $($("#" + oid + " button")[0]).text("Updating...");
+            $("#" + oid + " button").prop("disabled", true);
             
-            dropzones[id].processQueue();
+            dropzones[oid].processQueue();
             
-            if (added_files[id] == false)
+            if (added_files[oid] == false)
             {
                 process_listing();
             }
@@ -468,28 +540,28 @@ function update_listing(oid)
     }
     catch(e)
     {
-        $($("#" + id + " button")[0]).text("Update");
-        $("#" + id + " button").prop("disabled", false);
+        $($("#" + oid + " button")[0]).text("Update");
+        $("#" + oid + " button").prop("disabled", false);
         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
-function delete_user(uid)
+function delete_account(uid)
 {
-    //check if the user really wants to do so
-    $.msgbox("Are you sure that you want to delete this user?", 
-    {
-        type: "confirm",
-		buttons : 
-        [
-            {type: "submit", value: "Yes"},
-            {type: "submit", value: "No"},
-            {type: "cancel", value: "Cancel"}
-		]
-	}, 
-    function(result) 
-    {
-        if (result === "Yes")
+    $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", {
+        type    : "prompt",
+        inputs  : [
+          {type: "password", label: "Password:", required: true}
+        ],
+        buttons : [
+          {type: "submit", value: "OK"},
+          {type: "cancel", value: "Cancel"}
+        ]
+    }, function(password) {
+        
+        var data = {"password": password, "id": uid};
+        
+        try
         {
             $.ajax(
             {
@@ -497,23 +569,21 @@ function delete_user(uid)
                 url: "/api.php",
                 beforeSend: function()
                 {
-                   $($("#" + uid + " button")[1]).text("Deleting...");
-                   disableButtons();
+                    $("#" + uid + " button").prop("disabled", true);
+                    $($("#" + uid + " button")[1]).text("Deleting...");
                 },
                 data:
                 {
-                    command: "delete_user",
-                    data:
-                    {
-                        uid: uid
-                    }
+                    command: "delete_account",
+                    endpoint: "Accounts",
+                    data: data
                 },
                 success: function(res)
                 {
                     if (contains(res, "Okay"))
                     {
                         // remove the row that we just selected
-                        $("#" + uid).remove();
+                        $("#" + uid).parent().remove();
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
                     }
                     else
@@ -525,10 +595,16 @@ function delete_user(uid)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 },
-                complete: function() {
-                    enableButtons();
+                complete: function()
+                {
+                    $("#" + uid + " button").prop("disabled", false);
+                    $($("#" + uid + " button")[1]).text("Delete");
                 }
             });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         }
     });  
 }
@@ -564,10 +640,7 @@ function delete_listing(oid)
                     data:
                     {
                         command: "delete_listing",
-                        data:
-                        {
-                            oid: oid
-                        },
+                        data: { oid: oid },
                         endpoint: "Listings"
                     },
                     success: function(res)
@@ -578,7 +651,7 @@ function delete_listing(oid)
                             {
                                 // remove the row that we just selected
                                 $("#" + oid).parent().remove();
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-left'});
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                                 if ($("#accordion").text() == "")
                                 {
                                     $("#accordion").text("No Listings Yet");
@@ -591,7 +664,7 @@ function delete_listing(oid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     },
                     error: function(res, err)
@@ -602,24 +675,24 @@ function delete_listing(oid)
                         }
                         catch(e)
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                         }
                     }
                 });
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
             }
         }
     });
 }
 
-function create_user()
+function create_account()
 {
-    var userfield = $("#create-user input[type='text']");
+    var userfield = $("#createUserModal input");
     
-    var data = buildData(userfield, ["username", "password", "firstname", "lastname", "phonenumber", "email", "landlord", "isactive", "isadmin", "isverified"]);
+    var data = buildData(userfield, ["username", "password", "confirm", "firstname", "lastname", "email", "phonenumber", "islandlord", "isactive", "isverified", "isadmin"]);
     
     var error = buildError(data);
     
@@ -642,7 +715,8 @@ function create_user()
                 },
                 data:
                 {
-                    command: "create_user",
+                    command: "create_account",
+                    endpoint: "Accounts",
                     data: data
                 },
                 success: function(res)
@@ -671,37 +745,43 @@ function create_user()
                                 var uid = user._id.$oid;
                                 
                                 $("#accordion").append(createAccordionUsersView(uid, user));
+                                
+                                setBootstrapSwitchesForUsers(uid);
+                                
+                                $("#createUserModal").modal('hide');
+                                
+                                $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'top-center'});
                             }
                         }
                     }
                     catch(e)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 },
                 complete: function()
                 {
-                    $("#create-user-button").text("Create New User");
-                    $("#create-user-button").prop("disabled", "false");
+                    $("#create-user-button").text("Create User");
+                    $("#create-user-button").prop("disabled", false);
                 }
             });
         }
         catch(e)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         }
     }
 }
 
 function create_listing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(11)");
+    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(15)");
     
-    var data = buildData(inputs, ["address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "tags", "latitude", "longitude", "selected_address"]);
+    var data = buildData(inputs, ["address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "user", "tags", "latitude", "longitude", "selected_address"]);
     
     var error = buildError(data);
     
@@ -723,7 +803,7 @@ function create_listing()
             pendingData = data;
             
             $("#create-listing-button").text("Creating...");
-            $("#create-listing-button").prop("disabled", false);
+            $("#create-listing-button").prop("disabled", true);
             
             // async call, caught in dropzone.success event handler below
             dropzones["create"].processQueue();
@@ -733,7 +813,7 @@ function create_listing()
     {
         $("#create-listing-button").prop("disabled", false);
         $("#create-listing-button").text("Create Listing");
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -781,9 +861,8 @@ function process_listing()
                             }
                             
                             var oid = listing._id.$oid;
-                            var userId = listing.UserId;
                             
-                            $("#accordion").append(createAccordionView(oid, userId, listing));
+                            $("#accordion").append(createAccordionView(oid, listing));
                                 
                             var selector = "[id='" + oid + "'] form";
                                 
@@ -855,10 +934,11 @@ function process_listing()
                         var inputs = $("#" + id + " input");
                         var headingInputs = $("#heading" + id + " label");
                         
-                        $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
-                        $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
-                        $(headingInputs[2]).text("Rent: $" + $(inputs[2]).autoNumeric('get') + "/Month");
-                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
+                        $(headingInputs[0]).text("Address: " + $(inputs[2]).val());
+                        $(headingInputs[1]).text("Unit: " + $(inputs[3]).val());
+                        $(headingInputs[2]).text("Rent: $" + $(inputs[4]).autoNumeric('get') + "/Month");
+                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[5]).val())));
+                        $(headingInputs[4]).text("University: " + $(inputs[6]).val());
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                         numUploaded = 0;
@@ -881,14 +961,7 @@ function process_listing()
             },
             error: function(err, res)
             {
-                try
-                {
-                    throw new Error(err + " " + res);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
             complete: function()
             {
@@ -1016,7 +1089,7 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }    
             },
             error: function(err, res)
@@ -1027,14 +1100,14 @@ function logout()
                 }
                 catch(e)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             }
         });
     }
     catch(e)
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-left'});
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
     }
 }
 
@@ -1075,9 +1148,11 @@ function initSpecialFields()
     
     $(listing_modal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $($("#createListingModal input[type='hidden']")[0]).val(result.geometry.location.A);
-            $($("#createListingModal input[type='hidden']")[1]).val(result.geometry.location.F);
-            $($("#createListingModal input[type='hidden']")[2]).val($(listing_modal[0]).val());
+            var hiddenFields = $("#createListingModal input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listing_modal[0]).val());
         });
     
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
@@ -1096,6 +1171,8 @@ function initSpecialFields()
         minDate: new Date(),
         setDefaultDate: new Date()
     });
+         
+    $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
 function initSpecialFieldsUser()
@@ -1116,7 +1193,6 @@ function createDropzone(key, element, existingPics)
     myDropzone.on("success", function(file)
     {
         var oid = $(this.element).data("pic-id");
-        
         if (numUploaded[oid] == numAdded[oid] - 1)
         {
             numUploaded[oid] = 0;
@@ -1138,7 +1214,8 @@ function createDropzone(key, element, existingPics)
         }
         var filename = (file.alreadyUploaded 
                         ? file.name
-                        : file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[1]);
+                        : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
+                                                           : Math.random().toString(36).slice(2) + "_" + file.name));
         pictures[oid].push(filename);
         
         if (!file.alreadyUploaded)
@@ -1160,6 +1237,7 @@ function createDropzone(key, element, existingPics)
         {
             pictures[oid] = [];
         }
+        
         pictures[oid].splice(index, 1); 
         
         numAdded[oid]--;
@@ -1171,6 +1249,8 @@ function createDropzone(key, element, existingPics)
         }
     });
     
+    numAdded[key] = 0;
+    numUploaded[key] = 0;
     if (existingPics != null)
     {
         for (var i = 0; i < existingPics.length; i++)
@@ -1198,7 +1278,7 @@ function buildData(inputs, elements)
     {
         if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" 
          || elements[i] == "airConditioning" || elements[i] == "type" || elements[i] == "isactive"
-         || elements[i] == "isadmin" || elements[i] == "isverified")
+         || elements[i] == "isadmin" || elements[i] == "isverified" || elements[i] == "islandlord")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -1283,6 +1363,11 @@ function buildError(fields)
             error_arr.push("Matching Password and Confirmation");
         }
     }
+    if (fields.user === "" && fields.landlord === "")
+    {
+        error_arr.push("Either a Tenant and/or Landlord");
+    }
+    
     if (error_arr.length > 0)
     {
         if (error_arr.length == 1)
@@ -1366,29 +1451,35 @@ function createAccordionView(oid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>User</label><input type='text' class='form-control' value='" + data.Username + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Landlord</label><input type='text' class='form-control' value='" + data.Landlord + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
                                 "<label>Unit</label><input type='text' class='form-control' value='" + (data.Unit ? data.Unit : "") + "' /> " + 
                             "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 
-                            "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
-                            "</div>" +                          
+                            "</div>" +                
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Tags (Optional)</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
                             "</div>" + 
                         "</div>" +
@@ -1412,7 +1503,7 @@ function createAccordionView(oid, data)
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label>Images (Will Upload Upon Submit)</label>" +
-                                "<form action='/Libraries/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
+                                "<form action='http://images.lbkstudios.net/enhabit/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
@@ -1442,19 +1533,27 @@ function createAccordionUsersView(uid, data)
                 "<div id='" + uid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + uid + "'>" +
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Username</label><input type='text' class='form-control' value='" + data.Username + "' /> " + 
                             "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>First Name</label><input type='text' class='form-control' value='" + data.FirstName + "' />" + 
                             "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Last Name</label><input type='text' class='form-control' value='" + data.LastName + "' />" +
                             "</div>" +
-                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Phone Number</label><input type='text' class='form-control' value='" + data.PhoneNumber + "' />" +
                             "</div>" +
-                        "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Password</label><input type='password' class='form-control' />" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Confirm Password</label><input type='password' class='form-control' />" +
+                            "</div>" +
+                        "</div>" + 
                         "<div class='row'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Email Address</label><input type='text' class='form-control' value='" + data.Email + "' />" +
@@ -1474,8 +1573,8 @@ function createAccordionUsersView(uid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_user(\"" + uid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_user(\"" + uid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='update_account(\"" + uid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='delete_account(\"" + uid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +

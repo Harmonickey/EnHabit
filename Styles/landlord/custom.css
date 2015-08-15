@@ -150,3 +150,10 @@ textarea
 {
     z-index: 100;
 }
+
+.col-lg-2.required:after,
+.col-md-2.required:after,
+.col-sm-2.required:after
+{
+    margin-left: 20px;
+}

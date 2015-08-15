@@ -19,17 +19,19 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(is_admin, id, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def update_listing(is_admin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])
     mongo_session.use("enhabit")
 
     #object to insert/update with
     listing_obj = Hash.new
-    listing_obj["Landlord"] = landlord unless landlord.nil? and not landlord.empty?
-    listing_obj["LandlordId"] = landlordId unless landlordId.nil? and not landlordId.empty?
+    listing_obj["Username"] = user unless user.nil?
+    listing_obj["UserId"] = userId unless userId.nil?
+    listing_obj["Landlord"] = landlord unless landlord.nil?
+    listing_obj["LandlordId"] = landlordId unless landlordId.nil?
     listing_obj["Price"] = price.to_i
     listing_obj["Address"] = address
-    listing_obj["Unit"] = unit unless unit.nil? and not unit.empty?
+    listing_obj["Unit"] = unit unless unit.nil?
     listing_obj["Bedrooms"] = bedrooms.to_i
     listing_obj["Bathrooms"] = bathrooms.to_i
     listing_obj["HasAnimals"] = animals.to_b
@@ -46,7 +48,13 @@ def update_listing(is_admin, id, userId, landlord, landlordId, price, address, u
     #object to search with
     query_obj = Hash.new
     query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
-    query_obj["UserId"] = userId unless is_admin
+    unless is_admin
+        if key == "UserId"
+            query_obj[key] = userId
+        elsif key == "LandlordId"
+            query_obj[key] = landlordId
+        end
+    end
     
     ret_msg = ""
  
@@ -92,12 +100,12 @@ def get_landlord_id(landlord)
         end
         
         if account.count == 0
-            return "No Match"
+            return nil
         else
             return account[0]["LandlordId"]
         end
     rescue Moped::Errors::OperationFailure => e
-        return "No Match"
+        return nil
     end
 end
 
@@ -116,12 +124,12 @@ def get_user_id(user)
         end
         
         if account.count == 0
-            return "No Match"
+            return nil
         else
             return account[0]["UserId"]
         end
     rescue Moped::Errors::OperationFailure => e
-        return "No Match"
+        return nil
     end
 end
 
@@ -130,19 +138,24 @@ begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil?
 
     id = ARGV[1]
-    # key = ARGV[2]
+    key = ARGV[2]
     is_admin = ARGV[3].to_b
+    
     landlord = data["landlord"]
-    landlordId = nil
-
-    if landlordId.nil? or landlordId.empty?
-        landlordId = get_landlord_id(landlord) unless landlord.nil?
-        landlordId = "" if landlordId == "No Match" or landlordId.nil?
+    user = data["user"]
+    
+    userId = get_user_id(user) unless user.nil?
+    landlordId = get_landlord_id(landlord) unless landlord.nil?
+    
+    unless is_admin
+        if key == "UserId"
+            userId = id
+        elsif key == "LandlordId"
+            landlordId = id
+        end
     end
     
-    id = get_user_id(data["username"]) if is_admin
-    
-    puts update_listing(is_admin, data["id"], id, landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    puts update_listing(is_admin, key, data["id"], user, userId, landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

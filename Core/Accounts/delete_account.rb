@@ -12,26 +12,37 @@ deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will refere
 $: << "#{deployment_base}/Libraries"
 
 require 'json'
-require 'moped'
 require 'bson'
+require 'moped'
 require 'PasswordHash'
+require 'tools'
 
-def user_exists(userId, key, pass)
+Moped::BSON = BSON
+
+def user_exists(id, key, pass)
     mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongo_session.use("enhabit") # this is our current database
 
-    accounts = mongo_session[:accounts]
-	
-    query = Hash.new
-    query[key] = userId
-	
-    documents = accounts.find(query).to_a
-	mongo_session.disconnect
-    if documents.count == 0
-        return false
-    else
-        return PasswordHash.validatePassword(pass, documents[0]["Password"])
+    query_obj = Hash.new
+    query_obj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
+    
+    documents = Array.new
+    
+    ret_val = false
+    
+    begin
+        mongo_session.with(safe: true) do |session|
+            documents = session[:accounts].find(query_obj).to_a
+        end
+        
+        if documents.count > 0
+            ret_val = PasswordHash.validatePassword(pass, documents[0]["Password"])
+        end
+        
+        mongo_session.disconnect
     end
+    
+    return ret_val
 end
 
 def delete_user(id, key)
@@ -39,10 +50,10 @@ def delete_user(id, key)
     mongo_session.use("enhabit") # this is our current database
 
     query_obj = Hash.new
-    query_obj[key] = id
- 
+    query_obj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
+    
     ret_msg = ""
- 
+    
     begin
         #delete the user
         mongo_session.with(safe: true) do |session|
@@ -67,6 +78,11 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     id = ARGV[1]
     key = ARGV[2]
+    is_admin = ARGV[3].to_b
+    
+    # we can only delete other users if we're an admin
+    id = data["id"] unless data["id"].nil? and not data["id"].empty? and is_admin
+    key = "_id" if is_admin
     
     if user_exists(id, key, data["password"])
         puts delete_user(id, key)

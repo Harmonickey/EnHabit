@@ -58,9 +58,7 @@ begin
     key = ARGV[2]
     is_admin = ARGV[3].to_b
     
-    result = delete_listing(is_admin, data["oid"], id, key)
-
-    puts result
+    puts delete_listing(is_admin, data["oid"], id, key)
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

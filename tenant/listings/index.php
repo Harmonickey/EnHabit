@@ -6,6 +6,10 @@
     {
         header("Location: /tenant/login.php", FALSE); // just redirect if the user isn't authorized to go here....
     }
+    else if (isset($_SESSION["admin"]))
+    {
+        header("Location: /admin", FALSE);
+    }
     else
     {
         $one_hour = 3600;
@@ -168,23 +172,43 @@
             </div>
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
-                <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
+                    </div>
+                </div>
                 <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
-                <label>Rent/Month</label><input type='text' class='form-control' />
-                <label>Start Date</label><input type='text' class='form-control' />
-                <label>Bedrooms</label>
-                    <select id="bedrooms-filter" class="form-control">
-                        <option value="studio">Studio</option>
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
-                        <option value="3">3+</option>
-                    </select>
-                <label>Bathrooms</label>
-                    <select id="bathrooms-filter" class="form-control">
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
-                        <option value="3">3+</option>
-                    </select>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Rent/Month</label><input type='text' class='form-control' />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Start Date</label><input type='text' class='form-control' />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Bedrooms</label>
+                        <select id="bedrooms-filter" class="form-control">
+                            <option value="studio">Studio</option>
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Bathrooms</label>
+                        <select id="bathrooms-filter" class="form-control">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3+</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="modal-switch animals-content">
                     <label>Animals</label><input type='checkbox' data-size='mini' />
                 </div>
@@ -203,7 +227,7 @@
                 <br>
                 <label>Landlord</label><input type='text' class='form-control' />
                 <br>
-                <label>Tags (Optional)</label><input type='text' data-role='tagsinput' />
+                <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' />
                 <br>
                 <label>Images (Will Upload Upon Submit)</label>
                 <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="dropzone"></form>

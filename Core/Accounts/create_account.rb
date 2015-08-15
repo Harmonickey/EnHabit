@@ -28,7 +28,7 @@ def insert_user(is_admin, is_active, is_verified, is_landlord, user, pass, first
     usr_obj = Hash.new
     usr_obj["Username"] = user
     usr_obj["UserId"] = SecureRandom.uuid
-    unless is_landlord.nil? and is_landlord.to_b)
+    unless is_landlord.nil? and is_landlord
         usr_obj["LandlordId"] = SecureRandom.uuid
     end
     usr_obj["Password"] = PasswordHash.createHash(pass)
@@ -36,43 +36,49 @@ def insert_user(is_admin, is_active, is_verified, is_landlord, user, pass, first
     usr_obj["LastName"] = lastName
     usr_obj["Email"] = email
     usr_obj["PhoneNumber"] = phoneNumber
-    usr_obj["IsAdmin"] = (is_admin.nil? ? is_admin.to_b : false)
-    usr_obj["IsActive"] = (is_active.nil? ? is_active.to_b : true)
-    usr_obj["IsVerified"] = (is_verified.nil? ? is_verified.to_b : true)
-    usr_obj["IsLandlord"] = (is_landlord.nil? ? is_landlord.to_b : false)
+    usr_obj["IsAdmin"] = (is_admin.nil? ? is_admin : false)
+    usr_obj["IsActive"] = (is_active.nil? ? is_active : true)
+    usr_obj["IsVerified"] = (is_verified.nil? ? is_verified : true)
+    usr_obj["IsLandlord"] = (is_landlord.nil? ? is_landlord : false)
  
-    ret_msg = ""
+    document = Hash.new
  
     #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongo_session.with(safe: true) do |session|
             session[:accounts].insert(usr_obj)
         end
-        ret_msg = "Okay"
+        
+        query_obj = Hash.new
+        query_obj["UserId"] = usr_obj["UserId"]
+        
+        mongo_session.with(safe: true) do |session|
+            document = session[:accounts].find(query_obj).one
+        end
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Username_1"
-            ret_msg = "That username already exists!"
+            document["error"] = "That username already exists!"
         elsif e.message.include? "enhabit.accounts.$Email_1"
-            ret_msg = "That email is already registered with another user!"
+            document["error"] = "That email is already registered with another user!"
         elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
-            ret_msg = "That phone number is already registered with another user!"
+            document["error"] = "That phone number is already registered with another user!"
         end
     end
     
 	mongo_session.disconnect
-    return ret_msg
+    return document
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
-    is_landlord = data["islandlord"] unless data["islandlord"].nil? and not data["islandlord"].empty?
-    is_verified = data["isverified"] unless data["isverified"].nil? and not data["isverified"].empty?
-    is_active = data["isactive"] unless data["isactive"].nil? and not data["isactive"].empty?
-    is_admin_data = data["isadmin"] unless data["isadmin"].nil? and not data["isadmin"].empty?
+    is_landlord = data["islandlord"].to_b unless data["islandlord"].nil? and not data["islandlord"].empty?
+    is_verified = data["isverified"].to_b unless data["isverified"].nil? and not data["isverified"].empty?
+    is_active = data["isactive"].to_b unless data["isactive"].nil? and not data["isactive"].empty?
+    is_admin_data = data["isadmin"].to_b unless data["isadmin"].nil? and not data["isadmin"].empty?
     
     result = insert_user(is_admin_data, is_active, is_verified, is_landlord, data["username"], data["password"], data["firstname"], data["lastname"], data["email"], data["phonenumber"])
-
-    puts result
+    
+    puts result.to_json
 rescue Exception => e
     puts e.inspect
 end

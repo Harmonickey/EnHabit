@@ -131,7 +131,7 @@
       		<div class="widget stacked">
                 <div class="widget-header actions">
                     <h3>Registered Users</h3>
-					<a class="btn btn-success" data-toggle="modal" href="#createUserModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="icon-plus"></i>Create New User</a>
+					<a class="btn btn-success" data-toggle="modal" href="#createUserModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New User</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
 					<!-- all the listings go here -->
@@ -153,26 +153,63 @@
                 <h4 class="modal-title">Create New User</h4>
             </div>
             <div class="modal-body">
-                <!-- Put all the fields to create a listing here -->
-                <label>Username</label><input type='text' class='form-control' />
-                <label>Password</label><input type='text' class='form-control' />
-                <label>First Name</label><input type='text' class='form-control' />
-                <label>Last Name</label><input type='text' class='form-control' />
-                <label>Emails</label><input type='text' class='form-control' />
-                <label>Phone Number</label><input type='text' class='form-control' />
-                <div class="modal-switch landlord-content">
-                    <label>Landlord</label><input type='checkbox' data-size='mini' />
+                <!-- Put all the fields to create a listing here --> 
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Username: </label><input type="text" class="form-control" />
+                    </div>
                 </div>
-                <div class="modal-switch active-content">
-                    <label>Active</label><input type='checkbox' data-size='mini' />
-                </div>   
-                <div class="modal-switch verified-content">
-                    <label>Verified</label><input type='checkbox' data-size='mini' />
-                </div> 
-                <div class="modal-switch admin-content">
-                    <label>Admin</label><input type='checkbox' data-size='mini' />
-                </div>                 
-                <button id="create-user-button" type="button" class="btn btn-success" onclick="create_user()">Create User</button>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Password: </label><input type="password" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Confirm Password: </label><input type="password" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>First Name: </label><input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Last Name: </label><input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Email: </label><input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="modal-switch landlord-content">
+                            <label>Landlord</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch active-content">
+                            <label>Active</label><input type='checkbox' data-size='mini' />
+                        </div>   
+                        <div class="modal-switch verified-content">
+                            <label>Verified</label><input type='checkbox' data-size='mini' />
+                        </div> 
+                        <div class="modal-switch admin-content">
+                            <label>Admin</label><input type='checkbox' data-size='mini' />
+                        </div>  
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <button id="create-user-button" type="button" class="btn btn-success" onclick="create_account()">Create User</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
