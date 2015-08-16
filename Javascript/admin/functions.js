@@ -977,85 +977,69 @@ function login()
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
     
-    try
+    if (!username || !password)
     {
-        if (!username || !password)
+        throw new Error("Please enter Username and Password");
+    }
+    else
+    {           
+        $.ajax(
         {
-            throw new Error("Please enter Username and Password");
-        }
-        else
-        {           
-            $.ajax(
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function ()
             {
-                type: "POST",
-                url: "/api.php",
-                beforeSend: function ()
+                $(".login-action").text("Processing...");
+                $(".login-action").prop("disabled", true);
+            },
+            data:
+            {
+                command: "login",
+                data: 
                 {
-                    $(".login-action").text("Processing...");
-                    $(".login-action").prop("disabled", true);
+                    "username": username, 
+                    "password": password
                 },
-                data:
+                user: username,
+                endpoint: "Accounts"
+            },
+            success: function(res)
+            {
+                try
                 {
-                    command: "login",
-                    data: 
+                    if (contains(res, "Okay"))
                     {
-                        "username": username, 
-                        "password": password
-                    },
-                    user: username,
-                    endpoint: "Accounts"
-                },
-                success: function(res)
-                {
-                    try
-                    {
-                        if (contains(res, "Okay"))
+                        if (!contains(res, "Admin"))
                         {
-                            if (!contains(res, "Admin"))
-                            {
-                                quick_logout(); // clears the session variables
-                                throw new Error("You Must Be an Admin To Login");
-                            }
-                            else
-                            {
-                                location.href="/admin/";
-                            }                   
+                            quick_logout(); // clears the session variables
+                            throw new Error("You Must Be an Admin To Login");
                         }
                         else
                         {
-                            throw new Error("Problem Logging In");
-                        }
+                            location.href="/admin/";
+                        }                   
                     }
-                    catch(e)
+                    else
                     {
-                        $(".login-error").show();
-                        $(".login-error").text(e.message);
+                        throw new Error("Problem Logging In");
                     }
-                },
-                error: function(res, err)
+                }
+                catch(e)
                 {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        $(".login-error").show();
-                        $(".login-error").text(e.message);
-                    }
-                },
-                complete: function() 
-                {
+                    $(".login-error").show();
+                    $(".login-error").text(e.message);
                     $(".login-action").text("Sign In");
                     $(".login-action").prop("disabled", false);
                 }
-            });
-        }
-    }
-    catch(e)
-    {
-        $(".login-error").show();
-        $(".login-error").text(e.message);
+            },
+            error: function(res, err)
+            {
+                $(".login-error").show();
+                $(".login-error").text(res + " " + err);
+                $(".login-action").text("Sign In");
+                $(".login-action").prop("disabled", false);
+            }
+        });
     }
 }
 
@@ -1066,49 +1050,35 @@ function quick_logout()
 
 function logout()
 {
-    try
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/logout.php",
+        success: function(res)
         {
-            type: "POST",
-            url: "/logout.php",
-            success: function(res)
+            try
             {
-                try
+                if (contains(res, "Successfully"))
                 {
-                    if (contains(res, "Successfully"))
-                    {
-                        // TODO: Ideally I'd like this to be a server redirect in PHP, location would
-                        // be a POST element, this is good for now
-                        location.href = "/admin/login.php";
-                    }
-                    else
-                    {
-                        throw new Error("Problem with Logging Out");
-                    }
+                    // TODO: Ideally I'd like this to be a server redirect in PHP, location would
+                    // be a POST element, this is good for now
+                    location.href = "/admin/login.php";
                 }
-                catch(e)
+                else
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }    
-            },
-            error: function(err, res)
-            {
-                try
-                {
-                    throw new Error(err + " " + res);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    throw new Error("Problem with Logging Out");
                 }
             }
-        });
-    }
-    catch(e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
 }
 
 function displayAnalytics(analytics)
@@ -1365,9 +1335,12 @@ function buildError(fields)
     }
     if (fields.user === "" && fields.landlord === "")
     {
-        error_arr.push("Either a Tenant and/or Landlord");
+        error_arr.push("Valid Tenant and/or Landlord");
     }
-    
+    if (fields.isadmin === true && fields.islandlord === true)
+    {
+        error_arr.push("Either Admin or Landlord, Not Both");
+    }
     if (error_arr.length > 0)
     {
         if (error_arr.length == 1)

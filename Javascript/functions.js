@@ -904,7 +904,7 @@ function insertMarkers(res)
                 
                 insertIntoListView(entry[0]);
             }
-            else if (entries.length > 1)
+            else if (entry.length > 1)
             {   
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 

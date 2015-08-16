@@ -22,95 +22,81 @@ $(document).on("keypress", function(e)
 
 function getAllListings()
 {
-    try
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_listings",
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            try
             {
-                //spinner on accordion area
-                $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
-            },
-            data: 
-            {
-                command: "get_listings",
-                endpoint: "Listings"
-            },
-            success: function(res) 
-            {
-                try
+                if (!res)
                 {
-                    if (!res)
+                    throw new Error("Unable to retrieve listings");
+                    $("#accordion").html("<p>No Listings Yet</p>");
+                    $(".actions a").show();
+                }
+                else if (contains(res, "No Matching Entries"))
+                {
+                    $("#accordion").html("<p>No Listings Yet</p>");
+                    $(".actions a").show();
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (contains(res, "Error"))
                     {
-                        throw new Error("Unable to retrieve listings");
-                        $("#accordion").html("<p>No Listings Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else if (contains(res, "No Matching Entries"))
-                    {
-                        $("#accordion").html("<p>No Listings Yet</p>");
+                        throw new Error(res);
                         $(".actions a").show();
                     }
                     else
                     {
-                        $("#accordion").html("");
-
-                        var data = JSON.parse(res);
-                        
-                        if (contains(res, "Error"))
+                        for (var i = 0; i < data.length; i++)
                         {
-                            throw new Error(res);
-                            $(".actions a").show();
-                        }
-                        else
-                        {
-                            for (var i = 0; i < data.length; i++)
-                            {
-                                var oid = data[i]._id.$oid;
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(createAccordionView(oid, data[i]));
+                            
+                            var selector = "[id='" + oid + "'] form";
+                            
+                            createDropzone(oid, selector, data[i].Pictures);
                                 
-                                $("#accordion").append(createAccordionView(oid, data[i]));
-                                
-                                var selector = "[id='" + oid + "'] form";
-                                
-                                createDropzone(oid, selector, data[i].Pictures);
-                                    
-                                setGeocompleteTextBox(oid);
-                                setTextBoxWithAutoNumeric(oid);
-                                setDatePickerTextBox(oid);
-                                setBootstrapSwitches(oid);
-                                setTextBoxWithTags(oid);
-                                
-                                added_files[oid] = false;
-                            }
+                            setGeocompleteTextBox(oid);
+                            setTextBoxWithAutoNumeric(oid);
+                            setDatePickerTextBox(oid);
+                            setBootstrapSwitches(oid);
+                            setTextBoxWithTags(oid);
+                            
+                            added_files[oid] = false;
                         }
                     }
                 }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    $(".actions a").show();
-                }    
-            },
-            error: function(res, err)
-            {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    $(".actions a").show();
-                }
             }
-        });
-    }
-    catch(e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $(".actions a").show();
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $(".actions a").show();
+        }
+    });
 }
 
 function getAccount()
@@ -949,9 +935,9 @@ function createDropzone(key, element, existingPics)
             this.files[this.files.length - 1].serverFileName = filename;
         }
         
-        added_files[id] = true;
+        added_files[oid] = true;
         
-        numAdded[id]++;
+        numAdded[oid]++;
     });
     
     myDropzone.on("removedfile", function(file) 

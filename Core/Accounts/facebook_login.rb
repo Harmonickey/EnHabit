@@ -22,11 +22,14 @@ def create_user_from_facebook_credentials(fbUserId, pass)
     usr_obj["UserId"] = SecureRandom.uuid
     usr_obj["FacebookId"] = fbUserId
     usr_obj["Password"] = pass
-    # since emails need to be unique
+    usr_obj["FirstName"] = nil
+    usr_obj["LastName"] = nil
+    usr_obj["PhoneNumber"] = SecureRandom.hex
     usr_obj["Email"] = SecureRandom.hex
     usr_obj["IsActive"] = true
     usr_obj["IsAdmin"] = false
-    usr_obj["IsVerified"] = true # TODO: email verification
+    usr_obj["IsVerified"] = true
+    usr_obj["IsLandlord"] = false
  
     query_obj = Hash.new
     query_obj["FacebookId"] = fbUserId
@@ -44,11 +47,11 @@ def create_user_from_facebook_credentials(fbUserId, pass)
         end
         ret_msg = "Okay:Created:#{usr_obj["UserId"]}"
     else
-        if documents[0]["LandlordId"].nil?
-            ret_msg = "Okay:Tenant:#{documents[0]["UserId"]}"
-        else
-            ret_msg = "Okay:Landlord:#{documents[0]["LandlordId"]}"
-        end
+        ret_msg = "Okay"
+        ret_msg += ":Landlord" if documents[0]["IsLandlord"]
+        ret_msg += ":Tenant" if not documents[0]["IsLandlord"]
+        ret_msg += ":Admin" if documents[0]["IsAdmin"]
+        ret_msg += ":" + (documents[0]["IsLandlord"] ? documents[0]["LandlordId"] : documents[0]["UserId"])
     end
     
     mongo_session.disconnect

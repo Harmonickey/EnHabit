@@ -35,8 +35,8 @@ def user_exists(user, pass)
         return false
     else
         # if you have a landlord ID then they're obviously a landlord
-        @is_landlord = true if not documents[0]["LandlordId"].nil? and not documents[0]["LandlordId"].empty?
-        @is_admin = true if not documents[0]["IsAdmin"].nil? and documents[0]["IsAdmin"] == true
+        @is_landlord = documents[0]["IsLandlord"]
+        @is_admin = documents[0]["IsAdmin"]
         id = (@is_landlord ? documents[0]["LandlordId"] : documents[0]["UserId"])
         return {"exists" => PasswordHash.validatePassword(pass, documents[0]["Password"]), "id" => id}
     end

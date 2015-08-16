@@ -148,7 +148,12 @@ textarea
 
 .msgGrowl-container
 {
-    z-index: 100;
+    z-index: 1040;
+}
+
+#createListingModal .row
+{
+    margin-left: 0;
 }
 
 .col-lg-2.required:after,

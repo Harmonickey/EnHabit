@@ -36,8 +36,8 @@ end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
-    id = ARGV[1];
-    key = ARGV[2];
+    id = ARGV[1] unless ARGV[1].empty?
+    key = ARGV[2] unless ARGV[2].empty?
     
     result = get_user_info(id, key)
 

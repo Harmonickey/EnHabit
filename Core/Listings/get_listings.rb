@@ -171,30 +171,30 @@ end
 
 begin
    
-    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil? or ARGV[0].empty?
+    data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
     unless data.nil?
-        @lower = data["price"]["low"].to_i unless data["price"].nil?
-        @upper = data["price"]["high"].to_i unless data["price"].nil?   
-        @bedrooms = data["bedrooms"].to_i unless data["bedrooms"] == "0+" or data["bedrooms"].nil? or data["bedrooms"] == "studio"
+        @lower = data["price"]["low"].to_i if not data["price"].nil?
+        @upper = data["price"]["high"].to_i if not data["price"].nil?   
+        @bedrooms = data["bedrooms"].to_i if not data["bedrooms"].nil? and not data["bedrooms"] == "0+" and not data["bedrooms"] == "studio"
         @bedrooms = data["bedrooms"] if data["bedrooms"] == "studio"
-        @bathrooms = data["bathrooms"].to_i unless data["bathrooms"] == "0+" or data["bathrooms"].nil?
-        @hasLaundry = data["laundry"].to_b unless data["laundry"] == "both" or data["laundry"].nil?
-        @hasParking = data["parking"].to_b unless data["parking"] == "both" or data["parking"].nil?
-        @hasAnimals = data["animals"].to_b unless data["animals"] == "both" or data["animals"].nil?
-        @hasAirConditioning = data["airConditioning"].to_b unless data["airConditioning"] == "both" or data["airConditioning"].nil?
-        @type = data["type"] unless data["type"] == "both" or data["type"].nil?
-        @start = data["start"] unless data["start"].nil? or data["start"].empty?
-        @university = data["university"] unless data["university"].nil? or data["university"].empty?
-        @tags = data["tags"] unless data["tags"].nil? or data["tags"].length == 0    
+        @bathrooms = data["bathrooms"].to_i if not data["bathrooms"].nil? and not data["bathrooms"] == "0+"
+        @hasLaundry = data["laundry"].to_b if not data["laundry"].nil? and not data["laundry"] == "both"
+        @hasParking = data["parking"].to_b if not data["parking"].nil? and not data["parking"] == "both"
+        @hasAnimals = data["animals"].to_b if not data["animals"].nil? and not data["animals"] == "both"
+        @hasAirConditioning = data["airConditioning"].to_b if not data["airConditioning"].nil? and not data["airConditioning"] == "both"
+        @type = data["type"] if not data["type"].nil? and not data["type"] == "both"
+        @start = data["start"] if not data["start"].nil? and not data["start"].empty?
+        @university = data["university"] if not data["university"].nil? and not data["university"].empty?
+        @tags = data["tags"] if not data["tags"].nil? and not data["tags"].length == 0    
     end
     
-    @is_admin = ARGV[3] unless ARGV[3].nil? or ARGV[3].empty?
+    @is_admin = ARGV[3].to_b unless ARGV[3].empty?
     
     unless @is_admin
-        @userId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
-        @landlordId = ARGV[1] unless ARGV[1].nil? or ARGV[1].empty?
-        @key = ARGV[2] unless ARGV[2].nil? or ARGV[2].empty?
+        @userId = ARGV[1] unless ARGV[1].empty?
+        @landlordId = ARGV[1] unless ARGV[1].empty?
+        @key = ARGV[2] unless ARGV[2].empty?
 
         if @key == "UserId"
             @landlordId = nil
@@ -220,13 +220,13 @@ begin
 
     set_filters
     combine_filters_into_query
+    
+    File.open("output.log", "a") do |output|
+        output.puts @main_filter.inspect
+    end
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database
-
-    File.open("error.log", "a") do |output|
-        output.puts @main_filter.inspect
-    end
     
     documents = mongo_session[:listings].find(@main_filter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
     
@@ -235,9 +235,9 @@ begin
     if documents.count == 0
         puts "No Matching Entries"
     else
-        unless @is_admin
+        if not @is_admin and not @key.nil?
             documents.each do |doc|
-                account = mongo_session[:accounts].find({@key => doc[@key]}).select(Username: 1, User: 1).one
+                account = mongo_session[:accounts].find({@key => doc[@key]}).select(Username: 1).one
                 
                 doc["Username"] = account["Username"] unless account["Username"].nil?
                 
@@ -246,7 +246,7 @@ begin
             end
         else
             documents.each do |doc|
-                account = mongo_session[:accounts].find({"UserId" => doc["UserId"]}).select(Username: 1, User: 1).one
+                account = mongo_session[:accounts].find({"UserId" => doc["UserId"]}).select(Username: 1).one
                 doc["Username"] = account["Username"] unless account.nil?
                 
                 doc.delete("UserId")

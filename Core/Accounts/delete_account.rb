@@ -81,7 +81,7 @@ begin
     is_admin = ARGV[3].to_b
     
     # we can only delete other users if we're an admin
-    id = data["id"] unless data["id"].nil? and not data["id"].empty? and is_admin
+    id = data["id"] if not data["id"].nil? and not data["id"].empty? and is_admin
     key = "_id" if is_admin
     
     if user_exists(id, key, data["password"])

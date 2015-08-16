@@ -70,11 +70,11 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     #we are checking this because it's an optional thing on the UI
-    newPassword = data["password"] unless data["password"].nil? and not data["password"].empty? 
-    is_landlord = data["islandlord"].to_b unless data["islandlord"].nil? and not data["islandlord"].empty?
-    is_verified = data["isverified"].to_b unless data["isverified"].nil? and not data["isverified"].empty?
-    is_active = data["isactive"].to_b unless data["isactive"].nil? and not data["isactive"].empty?
-    is_admin_data = data["isadmin"].to_b unless data["isadmin"].nil? and not data["isadmin"].empty?
+    newPassword = data["password"] if not data["password"].nil? and not data["password"].empty? 
+    is_landlord = data["islandlord"].to_b if not data["islandlord"].nil? and not data["islandlord"].empty?
+    is_verified = data["isverified"].to_b if not data["isverified"].nil? and not data["isverified"].empty?
+    is_active = data["isactive"].to_b if not data["isactive"].nil? and not data["isactive"].empty?
+    is_admin_data = data["isadmin"].to_b if not data["isadmin"].nil? and not data["isadmin"].empty?
     
     id = ARGV[1]
     key = ARGV[2]

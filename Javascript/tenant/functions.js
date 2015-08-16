@@ -22,98 +22,147 @@ $(document).on("keypress", function(e)
 
 function getAllListings()
 {
-    try
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_listings",
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            try
             {
-                //spinner on accordion area
-                $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
-            },
-            data: 
-            {
-                command: "get_listings",
-                endpoint: "Listings"
-            },
-            success: function(res) 
-            {
-                try
+                if (!res)
                 {
-                    if (!res)
+                    throw new Error("Unable to retrieve listings");
+                    $("#accordion").html("<p>No Listing Yet</p>");
+                    $(".actions a").show();                      
+                }
+                else if (contains(res, "No Matching Entries"))
+                {
+                    $("#accordion").html("<p>No Listing Yet</p>");
+                    $(".actions a").show();
+                }
+                else
+                {
+                    $("#accordion").html("");
+                    
+                    var data = JSON.parse(res);
+                    
+                    if (contains(res, "Error"))
                     {
-                        throw new Error("Unable to retrieve listings");
-                        $("#accordion").html("<p>No Listing Yet</p>");
-                        $(".actions a").show();                      
-                    }
-                    else if (contains(res, "No Matching Entries"))
-                    {
-                        $("#accordion").html("<p>No Listing Yet</p>");
+                        throw new Error(res);
                         $(".actions a").show();
                     }
                     else
                     {
-                        $("#accordion").html("");
-                        
-                        var data = JSON.parse(res);
-                        
-                        if (contains(res, "Error"))
+                        for (var i = 0; i < data.length; i++)
                         {
-                            throw new Error(res);
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(createAccordionView(oid, data[i]));
+                            
+                            var selector = "[id='" + oid + "'] form";
+                            
+                            createDropzone(oid, selector, data[i].Pictures);
+                                
+                            setGeocompleteTextBox(oid);
+                            setTextBoxWithAutoNumeric(oid);
+                            setDatePickerTextBox(oid);
+                            setBootstrapSwitches(oid);
+                            setTextBoxWithTags(oid);
+                            
+                            added_files[oid] = false;
+                        }
+                        
+                        if (data.length == 0)
+                        {
                             $(".actions a").show();
                         }
-                        else
-                        {
-                            for (var i = 0; i < data.length; i++)
-                            {
-                                var oid = data[i]._id.$oid;
-                                
-                                $("#accordion").append(createAccordionView(oid, data[i]));
-                                
-                                var selector = "[id='" + oid + "'] form";
-                                
-                                createDropzone(oid, selector, data[i].Pictures);
-                                    
-                                setGeocompleteTextBox(oid);
-                                setTextBoxWithAutoNumeric(oid);
-                                setDatePickerTextBox(oid);
-                                setBootstrapSwitches(oid);
-                                setTextBoxWithTags(oid);
-                                
-                                added_files[oid] = false;
-                            }
-                            
-                            if (data.length == 0)
-                            {
-                                $(".actions a").show();
-                            }
-                        }                       
-                    }
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
-            },
-            error: function(res, err)
-            {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }                       
                 }
             }
-        });
-    }
-    catch(e)
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            try
+            {
+                throw new Error(res + " " + err);
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        }
+    });
+}
+
+function getAllLandlords()
+{
+    $.ajax(
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_all_users",
+            endpoint: "Accounts"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !contains(res, "No Users"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        if (data[i].IsLandlord)
+                        {
+                            landlordList.push(data[i].Username)
+                        }
+                    }
+                    
+                    $($("#createListingModal .ui-widget input")[0]).autocomplete({
+                       source: function(request, response) {
+                            var results = $.ui.autocomplete.filter(landlordList, request.term);
+
+                            response(results.slice(0, 5)); // limit to 5 results at a time
+                        } 
+                    });
+                    
+                    $($("#createListingModal .ui-widget input")[1]).autocomplete({
+                       source: function(request, response) {
+                            var results = $.ui.autocomplete.filter(userList, request.term);
+
+                            response(results.slice(0, 5)); // limit to 5 results at a time
+                        }
+                    });
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
 }
 
 function getAccount()

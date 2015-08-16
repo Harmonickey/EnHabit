@@ -22,13 +22,23 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
         $key = NULL;
     }
     
+    // shoot out the command to output.log
     debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' '$id' '$key' '$isAdmin'");
     
     $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' '$id' '$key' '$isAdmin'");
 
     set_session($result, $data);
     
-    echo $result;
+    if (strpos($result, "Okay") === 0)
+    {
+        // we don't want to expose UserIds or LandlordIds, or UserIds that belong to Admins
+        echo "Okay";
+    }
+    else
+    {
+        // we can print out the errors though, in full
+        echo $result;
+    }
 }
 else if (isset($_POST["command"]))
 {
@@ -38,7 +48,9 @@ else if (isset($_POST["command"]))
     
     if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account")
     {
-        $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data'");
+        debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' '' '' 'false'");
+        
+        $result = shell_exec("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' '' '' 'false'");
     
         set_session($result, $data);
     

@@ -60,7 +60,7 @@ def create_listing(is_admin, key, user, userId, landlord, landlordId, price, add
             curr_listings = session[:listings].find(query_obj).to_a
             
             #restrict more than one listing to landlords
-            unless is_admin and curr_listings.count > 0 and landlordId.nil?
+            curr_listings.count > 0 and not userId.nil?
                 document["error"] = "Tenants can only have one listing at a time."
                 
                 remove_uploaded_pics pictures

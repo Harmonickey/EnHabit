@@ -189,7 +189,11 @@
                         <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
-                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 required">
                         <label>Rent/Month</label><input type='text' class='form-control' />
@@ -221,29 +225,43 @@
                         </select>
                     </div>
                 </div>
-                <div class="modal-switch animals-content">
-                    <label>Animals</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="modal-switch animals-content">
+                            <label>Animals</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch laundry-content">
+                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch parking-content">
+                            <label>Parking</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch airConditioning-content">
+                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch type-content">
+                            <label>Type</label><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-switch laundry-content">
-                    <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' /> 
+                    </div>
                 </div>
-                <div class="modal-switch parking-content">
-                    <label>Parking</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Images (Will Upload Upon Submit)</label>
+                        <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
+                    </div>
                 </div>
-                <div class="modal-switch airConditioning-content">
-                    <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
-                </div>
-                <div class="modal-switch type-content">
-                    <label>Type</label><input type='checkbox' data-size='mini' />
-                </div>
-                <br>
-                <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' /> 
-                <br>
-                <label>Images (Will Upload Upon Submit)</label>
-                <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" "class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
-                <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

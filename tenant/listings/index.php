@@ -45,7 +45,7 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
     
-    <link href="../../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/jquery-ui.min.css" rel="stylesheet">
     
     <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
     <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
@@ -177,7 +177,11 @@
                         <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
-                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 required">
                         <label>Rent/Month</label><input type='text' class='form-control' />
@@ -209,31 +213,48 @@
                         </select>
                     </div>
                 </div>
-                <div class="modal-switch animals-content">
-                    <label>Animals</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="modal-switch animals-content">
+                            <label>Animals</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch laundry-content">
+                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch parking-content">
+                            <label>Parking</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch airConditioning-content">
+                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch type-content">
+                            <label>Type</label><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-switch laundry-content">
-                    <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <label>Landlord</label><input type='text' class='form-control' />
+                    </div>
                 </div>
-                <div class="modal-switch parking-content">
-                    <label>Parking</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' />
+                    </div>
                 </div>
-                <div class="modal-switch airConditioning-content">
-                    <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Images (Will Upload Upon Submit)</label>
+                        <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
+                    </div>
                 </div>
-                <div class="modal-switch type-content">
-                    <label>Type</label><input type='checkbox' data-size='mini' />
-                </div>
-                <br>
-                <label>Landlord</label><input type='text' class='form-control' />
-                <br>
-                <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' />
-                <br>
-                <label>Images (Will Upload Upon Submit)</label>
-                <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="dropzone"></form>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
-                <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -244,7 +265,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
-<script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="../../Libraries/Javascript/jquery-ui.min.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
@@ -271,12 +292,14 @@ Dropzone.autoDiscover = false;
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
 var added_files = {};
+var landlordList = [];
 
 $(function() 
 {  
     createDropzone("create", "#createListingModal form");
 
     getAllListings();
+    getAllLandlords();
 
     initSpecialFields();
 });

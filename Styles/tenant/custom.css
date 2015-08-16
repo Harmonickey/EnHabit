@@ -148,7 +148,19 @@ textarea
 
 .msgGrowl-container
 {
-    z-index: 100;
+    z-index: 1040;
+}
+
+.ui-widget label
+{
+    font: 13px/1.7em 'Open Sans';
+    font-weight: bold;
+}
+
+#createListingModal .row,
+#createUserModal .row
+{
+    margin-left: 0;
 }
 
 .col-lg-2.required:after,
