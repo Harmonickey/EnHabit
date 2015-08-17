@@ -41,8 +41,8 @@
     font-weight: bold;
 }
 
-#parking-filter,
-#animals-filter,
+#Parking-filter,
+#Animals-filter,
 #Laundry-filter,
 #AirConditioning-filter
 {
@@ -238,23 +238,23 @@
     }
 }
 
-.username, 
-.password,
-.firstname, 
-.lastname,
-.email, 
-.phonenumber,
-.address, 
-.bedrooms,
-.bathrooms, 
-.rent
+.Username, 
+.Password,
+.FirstName, 
+.LastName,
+.Email, 
+.PhoneNumber,
+.Address, 
+.Bedrooms,
+.Bathrooms, 
+.Rent
 {
 	text-align: center;
 	width: 50%;
 	margin: 0 auto;
 }
 
-.animals,
+.Animals,
 .Laundry
 {
     width: 45px;
