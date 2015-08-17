@@ -64,7 +64,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <ul id="main-menu">
                     <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
                     <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo (isset($_SESSION["landlord"]) ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
-                    <li id="view_listings_list-function" class="menu-item scroll" onclick="openListingsList();"><a class="btn btn-outline-inverse btn-sm">View Details</a></li>
+                    <li id="view_listings_list-function" class="menu-item scroll" onclick="OpenListingsList();"><a class="btn btn-outline-inverse btn-sm">View Details</a></li>
                 </ul>
                 <div id="Filters">
                     <h1 class="text-center">Filter listings</h1>
@@ -120,8 +120,8 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                 </div>
                 <ul id="search-section">
-                    <li id="search-function" class="menu-item scroll" onclick="searchForListings();"><a class="btn btn-outline-inverse btn-sm">Search</a></li>
-                    <li id="extra-filters-function" class="menu-item scroll" onclick="openExtrasView();"><a class="btn btn-outline-inverse btn-sm" >Show Extra Filters</a></li>
+                    <li id="search-function" class="menu-item scroll" onclick="SearchForListings();"><a class="btn btn-outline-inverse btn-sm">Search</a></li>
+                    <li id="extra-filters-function" class="menu-item scroll" onclick="OpenExtrasView();"><a class="btn btn-outline-inverse btn-sm" >Show Extra Filters</a></li>
                 </ul>
                 <!-- #main-menu -->
                 <!-- Footer -->
@@ -133,7 +133,7 @@ if (!isset($_SESSION['CREATED'])) {
             </section>
             <div id="listings_list">
                 <div id="listings">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeListingsList();">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseListingsList();">×</button>
                 </div>
             </div>
             <div id="extras_view">
@@ -300,7 +300,7 @@ if (!isset($_SESSION['CREATED'])) {
         <?php 
             if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']))
             {
-                echo "<script type='text/javascript'>showLoginFeatures(); </script>\n";
+                echo "<script type='text/javascript'>ShowLoginFeatures(); </script>\n";
             }
             else
             {
