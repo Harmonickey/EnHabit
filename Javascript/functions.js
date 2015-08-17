@@ -17,10 +17,10 @@ var pageTags = [];
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
     change_on_nonmobile: true, // if true, bg changes on tablet and desktop devices
-    use_script: true, // set to false if you want to set a custom background (css, video, etc)
+    use_script: true // set to false if you want to set a custom background (css, video, etc)
 }
 
-L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g'; //may want to secure this somehow...
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
 var map = L.mapbox.map('map', 'mapbox.streets').setView([42.057, -87.680], 15);
 var markers = new L.FeatureGroup();
 //map.on('draw:created', getPointsWithinPolygon);
@@ -800,7 +800,7 @@ function ResetMarkers()
 
 function InsertMarkers(res)
 {
-    if (res != "")
+    if (res !== "")
     {
         pageTags = [];
         
@@ -809,7 +809,7 @@ function InsertMarkers(res)
         // in the same place
         $.each(data, function(index, d) 
         {
-            if (entries[d.Address] == null)
+            if (entries[d.Address] === null)
             {
                 entries[d.Address] = [d];
             }
@@ -836,7 +836,7 @@ function InsertMarkers(res)
                 var slideshowContent = "";
                 var base = "http://images.lbkstudios.net/enhabit/images/";
                 var images = entry[0].Pictures;
-                if (!images || images.length == 0)
+                if (!images || images.length === 0)
                 {
                     images = [];
                     images.push(defaultPicture);
@@ -879,7 +879,8 @@ function InsertMarkers(res)
                     
                     var image = $("#" + entry[0]._id.$oid + " .slideshow img").not(".slider-arrow-left").not(".slider-arrow-right")[i];
                     var downloadingImage = new Image();
-                    downloadingImage.onload = function(){
+                    downloadingImage.onload = function()
+                    {
                         image.src = this.src;   
                     };
                     downloadingImage.src = source;
@@ -945,7 +946,8 @@ function InsertMarkers(res)
             }
         });
         
-        $.msgGrowl ({
+        $.msgGrowl (
+        {
             title: 'Tags Used',
             type: 'info',
             position: 'top-right',
@@ -1005,12 +1007,12 @@ function InsertIntoListView(data)
                 "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
                 "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
             "</div>" +
-        "</div>"
-    );
+        "</div>");
     
     var image = $("#listings .item-content img").last()[0];
     var downloadingImage = new Image();
-    downloadingImage.onload = function(){
+    downloadingImage.onload = function()
+    {
         image.src = this.src;   
     };
     downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + listingPic;
@@ -1021,7 +1023,7 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "http://images.lbkstudios.net/enhabit/images/";
-    if (!images || images.length == 0)
+    if (!images || images.length === 0)
     {
         images = [];
         images.push(defaultPicture);
@@ -1273,9 +1275,7 @@ function ResetModal(modal, btnText, hide)
 
 function DisableModalSubmit(modal)
 {
-    $("." + modal + "-btn")
-        .val("Processing...")
-        .attr("disabled", true);
+    $("." + modal + "-btn").val("Processing...").attr("disabled", true);
 }
 
 function CreateAccount()
@@ -1333,7 +1333,7 @@ function CreateAccount()
             {
                 ResetModal("CreateAccount", "Create Account", false);
                 
-                setDefaultButtonOnEnter("");
+                SetDefaultButtonOnEnter("");
             }
         });
     }
@@ -1343,7 +1343,7 @@ function LoadModal(event, which, enterDefault, btnText)
 {
     PopulateAndOpenModal(event, which); 
     ResetModal(enterDefault, btnText, true); 
-    setDefaultButtonOnEnter(enterDefault);
+    SetDefaultButtonOnEnter(enterDefault);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
     
@@ -1422,9 +1422,9 @@ function LoadListingsList()
     $("#view_listings_list-function").attr("onclick", "CloseListingsList()");
 }
 
-function setDefaultButtonOnEnter(modal)
+function SetDefaultButtonOnEnter(modal)
 {
-    if (modal != "")
+    if (modal !== "")
     {
         //reset for next set
         $(document).unbind("keypress");
@@ -1505,11 +1505,11 @@ function BuildError(fields)
     {
         error += "Last Name<br>";
     }
-    if (fields.Email === "" || (fields.Email != null && !IsValidEmail(fields.Email)))
+    if (fields.Email === "" || (fields.Email !== null && !IsValidEmail(fields.Email)))
     {
         error += "Valid Email<br>";
     }
-    if (fields.PhoneNumber === "" || (fields.PhoneNumber != null && !IsValidPhoneNumber(fields.PhoneNumber)))
+    if (fields.PhoneNumber === "" || (fields.PhoneNumber !== null && !IsValidPhoneNumber(fields.PhoneNumber)))
     {
         error += "Valid Phone Number<br>";
     }
@@ -1519,7 +1519,7 @@ function BuildError(fields)
 
 function SetError(el, msg)
 {
-    if (msg == "")
+    if (msg === "")
 	{
 		msg = "Internal Error: Please Try Again Later";
 	}
@@ -1544,7 +1544,7 @@ function Contains(haystack, needle)
 
 function BooleanToHumanReadable(data)
 {
-    return (data == true ? "Yes" : "No");
+    return (data === true ? "Yes" : "No");
 }
 
 function SelectToQueryField(field)
