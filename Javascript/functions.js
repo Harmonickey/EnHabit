@@ -54,23 +54,25 @@ $('#map, #common-modal').on('click', '.popup .slider-arrow img', function()
     
     if ($(this).hasClass('slider-arrow-left')) 
     {
-        $newSlide = $slideshow.find('image.active').prev();     
+        console.log("Left");
+        $newSlide = $slideshow.find('.image.active').prev();     
+        console.log($newSlide.index());
         if ($newSlide.index() < 2) 
         {
             $newSlide = $slideshow.find('.image').last();
         }
     } 
-    else 
+    else if ($(this).hasClass('slider-arrow-right')) 
     {
-        $newSlide = $slideshow.find('image.active').next();
+        console.log("Right");
+        $newSlide = $slideshow.find('.image.active').next();
+        console.log($newSlide.index());
         if ($newSlide.index() < 0) 
         {
             $newSlide = $slideshow.find('.image').first();
         }
     }
     
-    
-
     $slideshow.find('.active').removeClass('active').hide();
     $newSlide.addClass('active').show();
     return false;
@@ -857,7 +859,7 @@ function InsertMarkers(res)
                 if (images.length > 1)
                 {
                     popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
-                                    '<div class="slider-arrow slider-right"<img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
+                                    '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
                 }
                 
                 popupContent += slideshowContent +
@@ -882,7 +884,7 @@ function InsertMarkers(res)
                             '<div class="popup">' +
                                 '<h2>' + entry[0].Address + '</h2>' +
                                 '<p>Multiple listings available.</p>' +
-                                '<input type="button" class="btn btn-outline-inverse btn-sm" value="Show All" onclick="load_multiple_listings(\'' + entry[0].Address + '\')">' +
+                                '<input type="button" class="btn btn-outline-inverse btn-sm" value="Show All" onclick="LoadMultipleListings(\'' + entry[0].Address + '\')">' +
                             '</div>';
                 
                 marker.bindPopup(popupContent, 
@@ -949,7 +951,7 @@ function InsertMarkers(res)
     map.fitBounds(markers.getBounds());
 }
 
-function loadMultipleListings(address)
+function LoadMultipleListings(address)
 {
     $("#modal-content-popup-multilisting").html("");
     

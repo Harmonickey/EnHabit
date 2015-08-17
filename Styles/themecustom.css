@@ -402,14 +402,16 @@
     cursor: pointer;
 }
 
-.slider-left
+.slider-left,
+.slider-left img
 {
-    left: 10px;
+    left: 0;
 }
 
-.slider-right
+.slider-right,
+.slider-right img
 {
-    right: 10px;
+    right: 0;
 }
 
 .slider-left-arrow,
@@ -572,4 +574,20 @@
 .leaflet-popup-content-wrapper
 {
     border: 2px grey solid;
+}
+
+.slideshow
+{
+    position: relative;
+}
+
+.slider-arrow
+{
+    height: 100%;
+}
+
+.slider-arrow img
+{
+    position: absolute;
+    top: 34%;
 }
