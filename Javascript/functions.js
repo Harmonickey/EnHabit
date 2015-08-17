@@ -54,9 +54,7 @@ $('#map, #common-modal').on('click', '.popup .slider-arrow img', function()
     
     if ($(this).hasClass('slider-arrow-left')) 
     {
-        console.log("Left");
         $newSlide = $slideshow.find('.image.active').prev();     
-        console.log($newSlide.index());
         if ($newSlide.index() < 2) 
         {
             $newSlide = $slideshow.find('.image').last();
@@ -64,9 +62,7 @@ $('#map, #common-modal').on('click', '.popup .slider-arrow img', function()
     } 
     else if ($(this).hasClass('slider-arrow-right')) 
     {
-        console.log("Right");
         $newSlide = $slideshow.find('.image.active').next();
-        console.log($newSlide.index());
         if ($newSlide.index() < 0) 
         {
             $newSlide = $slideshow.find('.image').first();
