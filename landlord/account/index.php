@@ -91,7 +91,7 @@
                 
                     <ul class="dropdown-menu">
                         <li><a style="cursor: pointer;" href="./">Account</a></li>
-                        <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
+                        <li><a style="cursor: pointer;" onclick="Logout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
