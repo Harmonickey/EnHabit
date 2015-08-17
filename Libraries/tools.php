@@ -33,29 +33,29 @@ function set_session($result, $data)
     {
         if (strpos($result, "Tenant") === 5)
         {
-            $_SESSION["tenant"] = json_decode(str_replace("\\", "", $data))->{"username"};
+            $_SESSION["tenant"] = json_decode(str_replace("\\", "", $data))->{"Username"};
             $id = end(explode(":", $result));
             $_SESSION["userId"] = trim($id);
         }
         else if (strpos($result, "Landlord") === 5)
         {
-            $_SESSION["landlord"] = json_decode(str_replace("\\", "", $data))->{"username"};
+            $_SESSION["landlord"] = json_decode(str_replace("\\", "", $data))->{"Username"};
             $id = end(explode(":", $result));
             $_SESSION["landlordId"] = trim($id);
         }
         else if (strpos($result, "Created") === 5)
         {
-            $_SESSION["tenant"] = json_decode(str_replace("\\", "", $data))->{"username"};
+            $_SESSION["tenant"] = json_decode(str_replace("\\", "", $data))->{"Username"};
             $id = end(explode(":", $result));
             $_SESSION["userId"] = trim($id);
         }
         
         if (strpos($result, "Admin") !== false)
         {
-            $_SESSION["admin"] = json_decode(str_replace("\\", "", $data))->{"username"};
+            $_SESSION["admin"] = json_decode(str_replace("\\", "", $data))->{"Username"};
         }
-        // I don't want $_SESSION["username"] outside of the if/else block
-        //   because the username will only appear after login actions
+        // I don't want $data->{"Username"} outside of the if/else block
+        //   because the username will only appear after login actions, and it's null otherwise
     }
 }
 

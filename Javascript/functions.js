@@ -1104,7 +1104,7 @@ function LoginUser(hideMainModal)
             },
             beforeSend: function()
             {
-                disableModalSubmit('login');
+                DisableModalSubmit('login');
             },
             success: function(res)
             {
@@ -1518,11 +1518,11 @@ function BuildError(fields)
     {
         error += "Last Name<br>";
     }
-    if (fields.Email === "" || (fields.Email !== null && !IsValidEmail(fields.Email)))
+    if (fields.Email === "" || (fields.Email !== undefined && !IsValidEmail(fields.Email)))
     {
         error += "Valid Email<br>";
     }
-    if (fields.PhoneNumber === "" || (fields.PhoneNumber !== null && !IsValidPhoneNumber(fields.PhoneNumber)))
+    if (fields.PhoneNumber === "" || (fields.PhoneNumber !== undefined && !IsValidPhoneNumber(fields.PhoneNumber)))
     {
         error += "Valid Phone Number<br>";
     }

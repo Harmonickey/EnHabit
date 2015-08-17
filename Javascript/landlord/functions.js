@@ -984,11 +984,11 @@ function BuildError(fields)
     {
         errorArr.push("Valid Last Name");
     }
-    if (fields.Email === "" || (fields.Email != null && !IsValidEmail(fields.Email)))
+    if (fields.Email === "" || (fields.Email !== undefined && !IsValidEmail(fields.Email)))
     {
         errorArr.push("Valid Email");
     }
-    if (fields.PhoneNumber === "" || (fields.PhoneNumber != null && !IsValidPhoneNumber(fields.PhoneNumber)))
+    if (fields.PhoneNumber === "" || (fields.PhoneNumber !== undefined && !IsValidPhoneNumber(fields.PhoneNumber)))
     {
         errorArr.push("Valid Phone Number");
     }
@@ -996,9 +996,9 @@ function BuildError(fields)
     {
         errorArr.push("Valid Lease Start Date");
     }
-    if (fields.Password != "" || fields.Confirm != "")
+    if (fields.Password !== "" || fields.Confirm !== "")
     {
-        if (fields.Password != fields.Confirm)
+        if (fields.Password !== fields.Confirm)
         {
             errorArr.push("Matching Password and Confirmation");
         }
