@@ -809,7 +809,7 @@ function InsertMarkers(res)
         // in the same place
         $.each(data, function(index, d) 
         {
-            if (entries[d.Address] === null)
+            if (entries[d.Address] === undefined)
             {
                 entries[d.Address] = [d];
             }
@@ -912,7 +912,7 @@ function InsertMarkers(res)
                 {
                     var listingPic = (!listing.Pictures || listing.Pictures.length == 0 ? defaultPicture : listing.Pictures[0]);
                     
-                    if (multiPopup[listing.Address] == null)
+                    if (multiPopup[listing.Address] === undefined)
                     {
                         multiPopup[listing.Address] = [
                             "<div class='item-content listing'>" +
