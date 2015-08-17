@@ -900,6 +900,8 @@ function InsertMarkers(res)
                 $.each(entry, function(index, listing)
                 {
                     var listingPic = (!listing.Pictures || listing.Pictures.length == 0 ? defaultPicture : listing.Pictures[0]);
+                    listing.Tags = ToStringFromList(listing.Tags);
+                    listing.Pictures = ToStringFromList(listing.Pictures);
                     
                     if (multiPopup[listing.Address] === undefined)
                     {
@@ -971,21 +973,8 @@ function InsertIntoListView(data)
 {
     var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
     
-    if (data.Tags && data.Tags.length > 0)
-    {
-        data.Tags = $.map(data.Tags, function(d)
-        {
-            return "'" + d + "'";
-        }).join(",");
-    }
-    
-    if (data.Pictures && data.Pictures.length > 0)
-    {
-        data.Pictures = $.map(data.Pictures, function(d)
-        {
-            return "'" + d + "'";
-        }).join(",");
-    }
+    data.Tags = ToStringFromList(data.Tags);
+    data.Pictures = ToStringFromList(data.Pictures);
     
     $("#listings").append(
         "<div class='item-content listing'>" +
@@ -1455,6 +1444,21 @@ function IsValidPhoneNumber(pn)
 	*/
 
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
+}
+
+function ToStringFromList(input)
+{
+    var dataList = input;
+    
+    if (dataList && dataList.length > 0)
+    {
+        dataList = $.map(dataList, function(d)
+        {
+            return "'" + d + "'";
+        }).join(",");
+    }
+   
+    return dataList;
 }
 
 function BuildData(elements)
