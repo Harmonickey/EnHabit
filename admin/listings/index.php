@@ -214,13 +214,13 @@
                         <div class="modal-switch animals-content">
                             <label>Animals</label><input type='checkbox' data-size='mini' />
                         </div>
-                        <div class="modal-switch laundry-content">
+                        <div class="modal-switch Laundry-content">
                             <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
                         </div>
                         <div class="modal-switch parking-content">
                             <label>Parking</label><input type='checkbox' data-size='mini' />
                         </div>
-                        <div class="modal-switch airConditioning-content">
+                        <div class="modal-switch AirConditioning-content">
                             <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
                         </div>
                         <div class="modal-switch type-content">

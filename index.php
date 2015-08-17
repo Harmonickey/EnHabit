@@ -82,7 +82,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <div class="double-item-content">
                         <div class="item-content">
                             <label>Bedrooms?</label>
-                            <select id="bedrooms-filter" class="form-control">
+                            <select id="Bedrooms-filter" class="form-control">
                                 <option value="studio">Studio</option>
                                 <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
                                 <option value="1">1</option>
@@ -92,7 +92,7 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                         <div class="item-content">
                             <label>Bathrooms?</label>
-                            <select id="bathrooms-filter" class="form-control">
+                            <select id="Bathrooms-filter" class="form-control">
                                 <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -103,7 +103,7 @@ if (!isset($_SESSION['CREATED'])) {
                     <div class="double-item-content">
                         <div class="item-content parking-content">
                             <label>Parking?</label>
-                            <select id="parking-filter" class="form-control">
+                            <select id="Parking-filter" class="form-control">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                                 <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
@@ -111,7 +111,7 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                         <div class="item-content animals-content">
                             <label>Animals?</label>
-                            <select id="animals-filter" class="form-control">
+                            <select id="Animals-filter" class="form-control">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                                 <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
@@ -141,15 +141,15 @@ if (!isset($_SESSION['CREATED'])) {
                     <div class="double-item-content">
                         <div class="item-content laundry-content">
                             <label>In-Unit Laundry?</label>
-                            <select id="laundry-filter" class="form-control">
+                            <select id="Laundry-filter" class="form-control">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                                 <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
                             </select>
                         </div>
-                        <div class="item-content airConditioning-content">
+                        <div class="item-content AirConditioning-content">
                             <label>AC Unit?</label>
-                            <select id="airConditioning-filter" class="form-control">
+                            <select id="AirConditioning-filter" class="form-control">
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                                 <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
@@ -158,7 +158,7 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div class="item-content type-content">
                         <label>Apartment or Sublet?</label>
-                        <select id="type-filter" class="form-control">
+                        <select id="Type-filter" class="form-control">
                             <option value="both">Both</option>
                             <option value="apartment">Apartment</option>
                             <option value="sublet">Sublet</option>
@@ -166,7 +166,7 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                     <div class="item-content tags-content">
                         <label>Tags (i.e. north campus)</label>
-                        <input id="tags-filter" type="text" value="" data-role="tagsinput" />
+                        <input id="Tags-filter" type="text" value="" data-role="tagsinput" />
                     </div>
                 </div>
             </div>
@@ -174,8 +174,8 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- Login -->
             <div class="content-to-populate-in-modal" id="modal-content-login">
                 <h1>Log In</h1>
-                <label>Username: </label><input type="textbox" class="form-control username" />
-                <label>Password: </label><input type="password" class="form-control password" />
+                <label>Username: </label><input type="textbox" class="form-control Username" />
+                <label>Password: </label><input type="password" class="form-control Password" />
                 <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="LoginUser(true);" style="margin-top: 15px;"/>
                 <p style="text-align: center;">Or</p>
                 <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="LoginFacebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
@@ -187,12 +187,12 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- Register -->
             <div class="content-to-populate-in-modal" id="modal-content-register">
                 <h1>Create New Account</h1>
-                <label>Username: </label><input type="text" class="form-control username" />
-                <label>Password: </label><input type="password" class="form-control password" />
-                <label>First Name: </label><input type="text" class="form-control firstname" />
-                <label>Last Name: </label><input type="text" class="form-control lastname" />
-                <label>Email: </label><input type="text" class="form-control email" />
-                <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
+                <label>Username: </label><input type="text" class="form-control Username" />
+                <label>Password: </label><input type="password" class="form-control Password" />
+                <label>First Name: </label><input type="text" class="form-control FirstName" />
+                <label>Last Name: </label><input type="text" class="form-control LastName" />
+                <label>Email: </label><input type="text" class="form-control Email" />
+                <label>Phone Number: </label><input type="text" class="form-control PhoneNumber" placeholder="xxx-xxx-xxxx" />
                 <input type="button" class="btn btn-outline-inverse btn-lg CreateAccount-btn" onclick="CreateAccount()" value="Create Account" style="margin-top: 15px;" />
                 <p class="CreateAccount-error alert alert-danger" style="display: none;"></p>
             </div>

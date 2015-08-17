@@ -43,8 +43,8 @@
 
 #parking-filter,
 #animals-filter,
-#laundry-filter,
-#airConditioning-filter
+#Laundry-filter,
+#AirConditioning-filter
 {
     padding-right: 0;
     padding-left: 5px;
@@ -97,7 +97,7 @@
 	margin: 0 auto;
 }
 
-#type-filter
+#Tags-filter
 {
     padding: 0;
 }
@@ -139,7 +139,7 @@
     width: 100%;
 }
 
-#type-filter
+#Tags-filter
 {
     width: 45%;
 }
@@ -255,7 +255,7 @@
 }
 
 .animals,
-.laundry
+.Laundry
 {
     width: 45px;
 }

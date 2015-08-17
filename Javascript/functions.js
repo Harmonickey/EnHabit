@@ -715,6 +715,8 @@ function SearchForListings()
     {
         query.Start = "";
     }
+    
+    console.log(query);
    
     $.ajax(
     {
@@ -763,22 +765,22 @@ function SearchForListings()
     });
 }
 
-function createQuery()
+function CreateQuery()
 {
     var query = {};
     query.Price = {Low: 0, High: 0};
     
     query.Price.Low = $("#PriceRangeSlider").slider("values", 0);
     query.Price.High = $("#PriceRangeSlider").slider("values", 1);
-    query.Bedrooms = SelectToQueryField($("#bedrooms-filter").val());
-    query.Bathrooms = SelectToQueryField($("#bathrooms-filter").val());
+    query.Bedrooms = SelectToQueryField($("#Bedrooms-filter").val());
+    query.Bathrooms = SelectToQueryField($("#Bathrooms-filter").val());
     query.Start = $.datepicker.formatDate('mm/dd/yy', new Date($("#datepicker-inline").val()));
-    query.Type = $("#type-filter").val();
-    query.Laundry = SelectToQueryField($("#laundry-filter").val());
-    query.Parking = SelectToQueryField($("#parking-filter").val());
-    query.AirConditioning = SelectToQueryField($("#airConditioning-filter").val());
-    query.Animals = SelectToQueryField($("#animals-filter").val());
-    query.Tags = $("#tags-filter").tagsinput('items');
+    query.Type = $("#Tags-filter").val();
+    query.Laundry = SelectToQueryField($("#Laundry-filter").val());
+    query.Parking = SelectToQueryField($("#Parking-filter").val());
+    query.AirConditioning = SelectToQueryField($("#AirConditioning-filter").val());
+    query.Animals = SelectToQueryField($("#Animals-filter").val());
+    query.Tags = $("#Tags-filter").tagsinput('items');
     query.University = "Northwestern"; // will be set by text box later
     
     return query;
@@ -790,6 +792,9 @@ function ResetMarkers()
     {
         map.removeLayer(marker);
     });
+    // close the tags-used popup
+    $(".msgGrowl-close").click();
+    
     markers = new L.FeatureGroup();
 }
 
@@ -838,11 +843,9 @@ function InsertMarkers(res)
                 }
                 for(var i = 0; i < images.length; i++) 
                 {
-                    var source = base + images[i];
-
                     slideshowContent += 
                                         '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                          '<img src="' + source + '" height="200" width="300"/>' +
+                                          '<img src="assets\images\theme_images\loader.gif" height="200" width="300"/>' +
                                         '</div>';
                 }
                 
@@ -869,6 +872,18 @@ function InsertMarkers(res)
                 });
                 
                 markers.addLayer(marker);
+                
+                for (var i = 0; i < images.length; i++)
+                {
+                    var source = base + images[i];
+                    
+                    var image = $("#" + entry[0]._id.$oid + " .slideshow img").not(".slider-arrow-left").not(".slider-arrow-right")[i];
+                    var downloadingImage = new Image();
+                    downloadingImage.onload = function(){
+                        image.src = this.src;   
+                    };
+                    downloadingImage.src = source;
+                }
                 
                 InsertIntoListView(entry[0]);
             }
@@ -981,20 +996,27 @@ function InsertIntoListView(data)
     
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
+            "<img src='assets\images\theme_images\loader.gif' height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='More Details' onclick=\"openListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
+                "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
             "</div>" +
         "</div>"
     );
+    
+    var image = $("#listings .item-content img").last()[0];
+    var downloadingImage = new Image();
+    downloadingImage.onload = function(){
+        image.src = this.src;   
+    };
+    downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + listingPic;
 }
 
-function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
+function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, Laundry, parking, AirConditioning, tags, images)
 {
     //load up the images into the modal...
     var slideshowContent = "";
@@ -1031,9 +1053,9 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
     $("#modal-content-popup-listing .popup-type").text("Type: " + type.CapitalizeFirstLetter());
     $("#modal-content-popup-listing .popup-animals").text("Animals? "+ BooleanToHumanReadable(animals));
-    $("#modal-content-popup-listing .popup-laundry").text("In-Unit Laundry? " + BooleanToHumanReadable(laundry));
+    $("#modal-content-popup-listing .popup-Laundry").text("In-Unit Laundry? " + BooleanToHumanReadable(Laundry));
     $("#modal-content-popup-listing .popup-parking").text("Parking? " + BooleanToHumanReadable(parking));
-    $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(airConditioning));
+    $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(AirConditioning));
     $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
     
     PopulateAndOpenModal(null, 'modal-content-popup-listing');
