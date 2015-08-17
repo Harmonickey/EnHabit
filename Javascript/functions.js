@@ -707,7 +707,7 @@ function LoginFacebook()
  
 function SearchForListings()
 {
-    ResetMarkers();
+    ResetListings();
     
     var query = CreateQuery();
     var testDate = new Date(query.Start);
@@ -716,8 +716,6 @@ function SearchForListings()
         query.Start = "";
     }
     
-    console.log(query);
-   
     $.ajax(
     {
         type: "POST",
@@ -775,7 +773,7 @@ function CreateQuery()
     query.Bedrooms = SelectToQueryField($("#Bedrooms-filter").val());
     query.Bathrooms = SelectToQueryField($("#Bathrooms-filter").val());
     query.Start = $.datepicker.formatDate('mm/dd/yy', new Date($("#datepicker-inline").val()));
-    query.Type = $("#Tags-filter").val();
+    query.Type = $("#Type-filter").val();
     query.Laundry = SelectToQueryField($("#Laundry-filter").val());
     query.Parking = SelectToQueryField($("#Parking-filter").val());
     query.AirConditioning = SelectToQueryField($("#AirConditioning-filter").val());
@@ -786,25 +784,29 @@ function CreateQuery()
     return query;
 }
 
-function ResetMarkers()
+function ResetListings()
 {
     $.each(markers._layers, function(id, marker) 
     {
         map.removeLayer(marker);
     });
+    
     // close the tags-used popup
     $(".msgGrowl-close").click();
+    $("#listings").html("<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseListingsList();'>×</button>")
     
     markers = new L.FeatureGroup();
+    entries = {};
+    multiPopup = {};
+    pageTags = [];
 }
 
 function InsertMarkers(res)
 {
     if (res !== "")
     {
-        pageTags = [];
-        
         var data = JSON.parse(res);
+        
         // organize the data, we might have multiple pins
         // in the same place
         $.each(data, function(index, d) 
@@ -895,14 +897,15 @@ function InsertMarkers(res)
                 });
                 
                 markers.addLayer(marker);
-                
+                 
                 // now that we have a pin, we need to fill in our section of the hash
                 $.each(entry, function(index, listing)
                 {
-                    var listingPic = (!listing.Pictures || listing.Pictures.length == 0 ? defaultPicture : listing.Pictures[0]);
                     listing.Tags = ToStringFromList(listing.Tags);
                     listing.Pictures = ToStringFromList(listing.Pictures);
                     
+                    var listingPic = (listing.Pictures !== "" ? listing.Pictures.split(",")[0].replace(/'/, "") : defaultPicture);
+
                     if (multiPopup[listing.Address] === undefined)
                     {
                         multiPopup[listing.Address] = [
@@ -971,14 +974,18 @@ function LoadMultipleListings(address)
 
 function InsertIntoListView(data)
 {
-    var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
-    
-    data.Tags = ToStringFromList(data.Tags);
-    data.Pictures = ToStringFromList(data.Pictures);
+    if (typeof data.Tags === "object")
+    {
+        data.Tags = ToStringFromList(data.Tags);
+    }
+    if (typeof data.Pictures === "object")
+    {
+        data.Pictures = ToStringFromList(data.Pictures);
+    }
     
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<img src='assets\images\theme_images\loader.gif' height='100' width='100' />" +
+            "<img src='assets/images/theme_images/loader.gif' height='100' width='100' />" +
             "<div class='information'>" +
                 "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -995,7 +1002,18 @@ function InsertIntoListView(data)
     {
         image.src = this.src;   
     };
-    downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + listingPic;
+    if (typeof data.Pictures === "object" && data.Pictures.length > 0)
+    {
+        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Pictures[0];
+    }
+    else if (typeof data.Pictures === "string" && data.Pictures !== "")
+    {
+        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Pictures.split(",")[0].replace(/'/g, "");
+    }
+    else
+    {
+        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + defaultPicture;
+    }
 }
 
 function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, Laundry, parking, AirConditioning, tags, images)
@@ -1450,7 +1468,7 @@ function ToStringFromList(input)
 {
     var dataList = input;
     
-    if (dataList && dataList.length > 0)
+    if (typeof dataList !== "string" && dataList.length > 0)
     {
         dataList = $.map(dataList, function(d)
         {
