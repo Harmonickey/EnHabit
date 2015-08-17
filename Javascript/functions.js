@@ -843,9 +843,11 @@ function InsertMarkers(res)
                 }
                 for(var i = 0; i < images.length; i++) 
                 {
+                    var source = base + images[i];
+                    
                     slideshowContent += 
                                         '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                                          '<img src="assets\images\theme_images\loader.gif" height="200" width="300"/>' +
+                                          '<img src="' + source + '" height="200" width="300"/>' +
                                         '</div>';
                 }
                 
@@ -872,19 +874,6 @@ function InsertMarkers(res)
                 });
                 
                 markers.addLayer(marker);
-                
-                for (var i = 0; i < images.length; i++)
-                {
-                    var source = base + images[i];
-                    
-                    var image = $("#" + entry[0]._id.$oid + " .slideshow img").not(".slider-arrow-left").not(".slider-arrow-right")[i];
-                    var downloadingImage = new Image();
-                    downloadingImage.onload = function()
-                    {
-                        image.src = this.src;   
-                    };
-                    downloadingImage.src = source;
-                }
                 
                 InsertIntoListView(entry[0]);
             }
@@ -923,6 +912,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Pictures + "])\" />"
                                 "</div>" +
                             "</div>"];
                     }
@@ -937,6 +927,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Pictures + "])\" />"
                                 "</div>" +
                             "</div>");
                     }
