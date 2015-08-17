@@ -5,11 +5,11 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
-abs_path = Dir.pwd
-base = abs_path.split("/").index("public_html")
-@deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+@deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
-$: << "#{@deployment_base}/Libraries"
+$: << "#{@deploymentBase}/Libraries"
 
 require 'json'
 require 'bson'
@@ -19,53 +19,53 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def update_listing(is_admin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])
-    mongo_session.use("enhabit")
+def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017'])
+    mongoSession.use("enhabit")
 
     #object to insert/update with
-    listing_obj = Hash.new
-    listing_obj["Username"] = user unless user.nil?
-    listing_obj["UserId"] = userId unless userId.nil?
-    listing_obj["Landlord"] = landlord unless landlord.nil?
-    listing_obj["LandlordId"] = landlordId unless landlordId.nil?
-    listing_obj["Price"] = price.to_i
-    listing_obj["Address"] = address
-    listing_obj["Unit"] = unit unless unit.nil?
-    listing_obj["Bedrooms"] = bedrooms.to_i
-    listing_obj["Bathrooms"] = bathrooms.to_i
-    listing_obj["HasAnimals"] = animals.to_b
-    listing_obj["HasLaundry"] = laundry.to_b
-    listing_obj["HasParking"] = parking.to_b
-    listing_obj["HasAirConditioning"] = airConditioning.to_b
-    listing_obj["Type"] = type
-    listing_obj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
-    listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
-    listing_obj["University"] = university
-    listing_obj["Tags"] = tags
-    listing_obj["Pictures"] = pictures
+    listingObj = Hash.new
+    listingObj["Username"] = user unless user.nil?
+    listingObj["UserId"] = userId unless userId.nil?
+    listingObj["Landlord"] = landlord unless landlord.nil?
+    listingObj["LandlordId"] = landlordId unless landlordId.nil?
+    listingObj["Price"] = price.to_i
+    listingObj["Address"] = address
+    listingObj["Unit"] = unit unless unit.nil?
+    listingObj["Bedrooms"] = bedrooms.to_i
+    listingObj["Bathrooms"] = bathrooms.to_i
+    listingObj["HasAnimals"] = animals.to_b
+    listingObj["HasLaundry"] = laundry.to_b
+    listingObj["HasParking"] = parking.to_b
+    listingObj["HasAirConditioning"] = airConditioning.to_b
+    listingObj["Type"] = type
+    listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
+    listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
+    listingObj["University"] = university
+    listingObj["Tags"] = tags
+    listingObj["Pictures"] = pictures
     
     #object to search with
-    query_obj = Hash.new
-    query_obj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
-    unless is_admin
+    queryObj = Hash.new
+    queryObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    unless isAdmin
         if key == "UserId"
-            query_obj[key] = userId
+            queryObj[key] = userId
         elsif key == "LandlordId"
-            query_obj[key] = landlordId
+            queryObj[key] = landlordId
         end
     end
     
-    ret_msg = ""
+    retMsg = ""
  
     begin
         # for pictures, we need to do something special
         # delete all the pictures on disk that aren't in the updated list
-        mongo_session.with(safe: true) do |session|
-            document = session[:listings].find(query_obj).select(Pictures: 1).one
+        mongoSession.with(safe: true) do |session|
+            document = session[:listings].find(queryObj).select(Pictures: 1).one
             unless document["Pictures"].nil?
                 document["Pictures"].each do |pic|
-                    filename = "#{@deployment_base}/../images/enhabit/images/" + pic
+                    filename = "#{@deploymentBase}/../images/enhabit/images/" + pic
                     if ((not pictures.nil? and not pictures.include? pic) or 
                         (pictures.nil? or pictures.count == 0))
                         File.delete(filename) if File.exist? filename
@@ -74,29 +74,29 @@ def update_listing(is_admin, key, id, user, userId, landlord, landlordId, price,
             end
         end
       
-        mongo_session.with(safe: true) do |session|
-            session[:listings].find(query_obj).update('$set' => listing_obj)
+        mongoSession.with(safe: true) do |session|
+            session[:listings].find(queryObj).update('$set' => listingObj)
         end
-        ret_msg = "Okay"
+        retMsg = "Okay"
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
+        retMsg = e
     end
     
-	mongo_session.disconnect
-    return ret_msg
+	mongoSession.disconnect
+    return retMsg
 end
 
-def get_landlord_id(landlord)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+def GetLandlordId(landlord)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
     begin
-        query_obj = Hash.new
-        query_obj["Landlord"] = landlord
+        queryObj = Hash.new
+        queryObj["Landlord"] = landlord
         
         account = Array.new
-        mongo_session.with(safe: true) do |session|
-            account = session[:accounts].find(query_obj).to_a
+        mongoSession.with(safe: true) do |session|
+            account = session[:accounts].find(queryObj).to_a
         end
         
         if account.count == 0
@@ -109,18 +109,18 @@ def get_landlord_id(landlord)
     end
 end
 
-def get_user_id(user)
+def GetUserId(user)
     
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
     begin
-        query_obj = Hash.new
-        query_obj["Username"] = user
+        queryObj = Hash.new
+        queryObj["Username"] = user
         
         account = Array.new
-        mongo_session.with(safe: true) do |session|
-            account = session[:accounts].find(query_obj).to_a
+        mongoSession.with(safe: true) do |session|
+            account = session[:accounts].find(queryObj).to_a
         end
         
         if account.count == 0
@@ -135,19 +135,19 @@ end
 
 begin
     # when user updates a listing they only input a landlord (optional)
-    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].nil?
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
 
-    id = ARGV[1]
-    key = ARGV[2]
-    is_admin = ARGV[3].to_b
+    id = ARGV[1] unless ARGV[1].emtpy?
+    key = ARGV[2] unless ARGV[2].emtpy?
+    isAdmin = ARGV[3].to_b unless ARGV[3].emtpy?
     
-    landlord = data["landlord"]
-    user = data["user"]
+    landlord = data["Landlord"]
+    user = data["User"]
     
-    userId = get_user_id(user) unless user.nil?
-    landlordId = get_landlord_id(landlord) unless landlord.nil?
+    userId = GetUserId(user) unless user.nil?
+    landlordId = GetLandlordId(landlord) unless landlord.nil?
     
-    unless is_admin
+    unless isAdmin
         if key == "UserId"
             userId = id
         elsif key == "LandlordId"
@@ -155,7 +155,7 @@ begin
         end
     end
     
-    puts update_listing(is_admin, key, data["id"], user, userId, landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["Type"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Tags"], data["Pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

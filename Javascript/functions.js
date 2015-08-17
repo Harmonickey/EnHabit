@@ -5,15 +5,13 @@
 window.xs_screen_max = 767;
 window.sm_screen_max = 991;
 
-var which_modal = "";
-
-var page_is_scrolling = false; // identify when page is being scrolled
+var whichModal = "";
 
 var defaultPicture = "404ImageNotFound.png";
 
 var entries = {};
-var multi_popup = {};
-var page_tags = [];
+var multiPopup = {};
+var pageTags = [];
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
@@ -428,7 +426,7 @@ function set_height_of_parent_content_wrappers()
  * @param add_class_to_modal - optional - add a class to the modal container (#common-modal)
  * @param keepSidebar - optional - keeps the sidebar in view
  */
-function populate_and_open_modal(event, modal_content_id, section_in_modal, add_class_to_modal)
+function PopulateAndOpenModal(event, modal_content_id, section_in_modal, add_class_to_modal)
 {
     var modal = $("#common-modal.modal");
     var modal_body = modal.find(".modal-body");
@@ -481,7 +479,7 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
             }
 
             // since bootstrap 3.3.1 - fix backdrop height after all elements inside the popup are loaded
-            modal_backdrop_height(modal);
+            ModalBackdropHeight(modal);
         });
 
         // when modal starts to close, fade in main content 
@@ -520,7 +518,7 @@ function populate_and_open_modal(event, modal_content_id, section_in_modal, add_
  *
  * @param modal - the modal as an object
  */
-function modal_backdrop_height(modal)
+function ModalBackdropHeight(modal)
 {
     modal.find(".modal-backdrop").css(
     {
@@ -600,20 +598,20 @@ window.fbAsyncInit = function()
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-function resetSidebar()
+function ResetSidebar()
 {
-    initMainSidebar();
+    InitMainSidebar();
 }
 
-function initMainSidebar()
+function InitMainSidebar()
 {
-    initSlider();
-    initDatePicker();
+    InitSlider();
+    InitDatePicker();
 }
 
-function initSlider()
+function InitSlider()
 {
-    $( "#PriceRangeSlider" ).slider(
+    $("#PriceRangeSlider").slider(
     {
         range: true,
         min: 400,
@@ -622,12 +620,12 @@ function initSlider()
         values: [ 800, 1500 ],
         slide: function( event, ui )
         {
-            $( "#amount" ).text ( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
         }
     });
 }
 
-function initDatePicker()
+function InitDatePicker()
 {
     $("#datepicker-inline").pikaday(
     {
@@ -636,56 +634,42 @@ function initDatePicker()
     });
 }
 
-function loadAllDefaultListings()
+function LoadAllDefaultListings()
 {
-    var data = {"university": "Northwestern"};
+    var data = {"University": "Northwestern"};
     
-    try
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        data: 
         {
-            type: "POST",
-            url: "/api.php",
-            data: 
+            command: "get_listings",
+            data: data,
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            try
             {
-                command: "get_listings",
-                data: data,
-                endpoint: "Listings"
-            },
-            success: function(res) 
+                if (!Contains(res, "No Matching Entries"))
+                {
+                    InsertMarkers(res);
+                }
+            }
+            catch(e)
             {
-                try
-                {
-                    if (!contains(res, "No Matching Entries"))
-                    {
-                        insertMarkers(res);
-                    }
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
-            },
-            error: function(res, err) 
-            {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch (e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
-            }			
-        });
-    }
-    catch (e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err) 
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }			
+    });
 }
 
-function setHiddenSidebars()
+function SetHiddenSidebars()
 {
     var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
     
@@ -693,7 +677,7 @@ function setHiddenSidebars()
     $("#extras_view").css("left", listingsListWidth);
 }
 
-function checkLoginState() 
+function CheckLoginState() 
 {
     FB.getLoginStatus(function(response) 
     {
@@ -701,7 +685,7 @@ function checkLoginState()
     });
 }
 
-function login_facebook()
+function LoginFacebook()
 {
     try
     {
@@ -713,7 +697,7 @@ function login_facebook()
                 var userID = response.authResponse.userID;
                 var accessToken = response.authResponse.accessToken;
                 
-                login_facebook_user(userID, accessToken);
+                LoginFacebookUser(userID, accessToken);
             }
         });
     }
@@ -723,100 +707,86 @@ function login_facebook()
     }
 }
  
-function searchForListings()
+function SearchForListings()
 {
-    resetMarkers();
+    ResetMarkers();
     
-    var query = createQuery();
-    var testDate = new Date(query.start);
+    var query = CreateQuery();
+    var testDate = new Date(query.Start);
     if (testDate == "Invalid Date")
     {
-        query.start = "";
+        query.Start = "";
     }
-
-    try
-    {    
-        $.ajax(
-        {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
-            {
-                $($("#search-section a")[0]).prop("disabled", true);
-                $($("#search-section a")[0]).val("Searching...");
-            },
-            data: 
-            {
-                command: "get_listings",
-                data: query,
-                endpoint: "Listings"
-            },
-            success: function(res) 
-            {
-                try
-                {
-                    if (contains(res, "No Matching Entries"))
-                    {
-                        throw new Error(res);
-                    }
-                    else
-                    {
-                        insertMarkers(res);
-                        
-                        map.fitBounds(markers.getBounds());
-                    }
-                }
-                catch (e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
-                }
-            },
-            error: function(res, err) 
-            {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
-                }
-            },
-            complete: function()
-            {
-                $($("#search-section a")[0]).prop("disabled", false);
-                $($("#search-section a")[0]).val("Search");
-            }
-        });
-    }
-    catch (e)
+   
+    $.ajax(
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
-    }
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $($("#search-section a")[0]).prop("disabled", true);
+            $($("#search-section a")[0]).val("Searching...");
+        },
+        data: 
+        {
+            command: "get_listings",
+            data: query,
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (Contains(res, "No Matching Entries"))
+                {
+                    throw new Error(res);
+                }
+                else
+                {
+                    InsertMarkers(res);
+                    
+                    map.fitBounds(markers.getBounds());
+                }
+            }
+            catch (e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
+            }
+        },
+        error: function(res, err) 
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'}); 
+        },
+        complete: function()
+        {
+            $($("#search-section a")[0]).prop("disabled", false);
+            $($("#search-section a")[0]).val("Search");
+        }
+    });
 }
 
 function createQuery()
 {
     var query = {};
-    query.price = {low: 0, high: 0};
+    query.Price = {Low: 0, High: 0};
     
-    query.price.low = $("#PriceRangeSlider").slider("values", 0);
-    query.price.high = $("#PriceRangeSlider").slider("values", 1);
-    query.bedrooms = selectToQueryField($("#bedrooms-filter").val());
-    query.bathrooms = selectToQueryField($("#bathrooms-filter").val());
-    query.start = $.datepicker.formatDate('mm/dd/yy', new Date($("#datepicker-inline").val()));
-    query.type = $("#type-filter").val();
-    query.laundry = selectToQueryField($("#laundry-filter").val());
-    query.parking = selectToQueryField($("#parking-filter").val());
-    query.airConditioning = selectToQueryField($("#airConditioning-filter").val());
-    query.animals = selectToQueryField($("#animals-filter").val());
-    query.tags = $("#tags-filter").tagsinput('items');
-    query.university = "Northwestern"; // will be set by text box later
+    query.Price.Low = $("#PriceRangeSlider").slider("values", 0);
+    query.Price.High = $("#PriceRangeSlider").slider("values", 1);
+    query.Bedrooms = SelectToQueryField($("#bedrooms-filter").val());
+    query.Bathrooms = SelectToQueryField($("#bathrooms-filter").val());
+    query.Start = $.datepicker.formatDate('mm/dd/yy', new Date($("#datepicker-inline").val()));
+    query.Type = $("#type-filter").val();
+    query.Laundry = SelectToQueryField($("#laundry-filter").val());
+    query.Parking = SelectToQueryField($("#parking-filter").val());
+    query.AirConditioning = SelectToQueryField($("#airConditioning-filter").val());
+    query.Animals = SelectToQueryField($("#animals-filter").val());
+    query.Tags = $("#tags-filter").tagsinput('items');
+    query.University = "Northwestern"; // will be set by text box later
     
     return query;
 }
 
-function resetMarkers()
+function ResetMarkers()
 {
     $.each(markers._layers, function(id, marker) 
     {
@@ -825,11 +795,11 @@ function resetMarkers()
     markers = new L.FeatureGroup();
 }
 
-function insertMarkers(res)
+function InsertMarkers(res)
 {
     if (res != "")
     {
-        page_tags = [];
+        pageTags = [];
         
         var data = JSON.parse(res);
         // organize the data, we might have multiple pins
@@ -847,9 +817,9 @@ function insertMarkers(res)
             
             $.each(d.Tags, function(index, tag)
             {
-                if (page_tags.indexOf(tag) == -1)
+                if (pageTags.indexOf(tag) == -1)
                 {
-                    page_tags.push(tag);
+                    pageTags.push(tag);
                 }
             });
         });
@@ -902,7 +872,7 @@ function insertMarkers(res)
                 
                 markers.addLayer(marker);
                 
-                insertIntoListView(entry[0]);
+                InsertIntoListView(entry[0]);
             }
             else if (entry.length > 1)
             {   
@@ -928,9 +898,9 @@ function insertMarkers(res)
                 {
                     var listingPic = (!listing.Pictures || listing.Pictures.length == 0 ? defaultPicture : listing.Pictures[0]);
                     
-                    if (multi_popup[listing.Address] == null)
+                    if (multiPopup[listing.Address] == null)
                     {
-                        multi_popup[listing.Address] = [
+                        multiPopup[listing.Address] = [
                             "<div class='item-content listing'>" +
                                 "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
@@ -938,13 +908,13 @@ function insertMarkers(res)
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-type'>" + listing.Type.capitalizeFirstLetter() + "</p><br>" +
+                                    "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
                                 "</div>" +
                             "</div>"];
                     }
                     else
                     {
-                        multi_popup[listing.Address].push(
+                        multiPopup[listing.Address].push(
                             "<div class='item-content listing'>" +
                                 "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
@@ -952,12 +922,12 @@ function insertMarkers(res)
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-type'>" + listing.Type.capitalizeFirstLetter() + "</p><br>" +
+                                    "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
                                 "</div>" +
                             "</div>");
                     }
                     
-                    insertIntoListView(listing);
+                    InsertIntoListView(listing);
                 });
             }
         });
@@ -970,28 +940,28 @@ function insertMarkers(res)
             sticky: true
         });
         
-        $.each(page_tags, function(index, page_tag)
+        $.each(pageTags, function(index, pageTag)
         {
-           $('.top-right .msgGrowl-content span').append("<br><b>" + page_tag + "<b>"); 
+           $('.top-right .msgGrowl-content span').append("<br><b>" + pageTag + "<b>"); 
         });
     }
     
     map.fitBounds(markers.getBounds());
 }
 
-function load_multiple_listings(address)
+function loadMultipleListings(address)
 {
     $("#modal-content-popup-multilisting").html("");
     
-    $.each(multi_popup[address], function(index, entry)
+    $.each(multiPopup[address], function(index, entry)
     {
         $("#modal-content-popup-multilisting").append(entry);
     });
     
-    populate_and_open_modal(null, 'modal-content-popup-multilisting');
+    PopulateAndOpenModal(null, 'modal-content-popup-multilisting');
 }
 
-function insertIntoListView(data)
+function InsertIntoListView(data)
 {
     var listingPic = (!data.Pictures || data.Pictures.length == 0 ? defaultPicture : data.Pictures[0]);
     
@@ -1019,14 +989,14 @@ function insertIntoListView(data)
                 "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
-                "<p class='listing-type'>" + data.Type.capitalizeFirstLetter() + "</p><br>" +
+                "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
                 "<input type='button' class='btn btn-info' value='More Details' onclick=\"openListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
             "</div>" +
         "</div>"
     );
 }
 
-function openListing(id, address, unit, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
+function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, laundry, parking, airConditioning, tags, images)
 {
     //load up the images into the modal...
     var slideshowContent = "";
@@ -1061,14 +1031,14 @@ function openListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
     $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
     $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
-    $("#modal-content-popup-listing .popup-type").text("Type: " + type.capitalizeFirstLetter());
-    $("#modal-content-popup-listing .popup-animals").text("Animals? "+ booleanToHumanReadable(animals));
-    $("#modal-content-popup-listing .popup-laundry").text("In-Unit Laundry? " + booleanToHumanReadable(laundry));
-    $("#modal-content-popup-listing .popup-parking").text("Parking? " + booleanToHumanReadable(parking));
-    $("#modal-content-popup-listing .popup-ac").text("AC? " + booleanToHumanReadable(airConditioning));
+    $("#modal-content-popup-listing .popup-type").text("Type: " + type.CapitalizeFirstLetter());
+    $("#modal-content-popup-listing .popup-animals").text("Animals? "+ BooleanToHumanReadable(animals));
+    $("#modal-content-popup-listing .popup-laundry").text("In-Unit Laundry? " + BooleanToHumanReadable(laundry));
+    $("#modal-content-popup-listing .popup-parking").text("Parking? " + BooleanToHumanReadable(parking));
+    $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(airConditioning));
     $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
     
-    populate_and_open_modal(null, 'modal-content-popup-listing');
+    PopulateAndOpenModal(null, 'modal-content-popup-listing');
 }
 
 /*
@@ -1087,98 +1057,19 @@ function getPointsWithinPolygon(e)
     }
 } 
 */ 
-function login_user(hide_main_modal)
+function LoginUser(hideMainModal)
 {
-    resetModal("login", "Log In", false);
+    ResetModal("login", "Log In", false);
     
-    var data = buildData(["username", "password"]);
+    var data = BuildData(["Username", "Password"]);
 
-    var error = buildError(data);
+    var error = BuildError(data);
     
     if (error != "Please Include<br>")
     {
-        setError("login", error);
+        SetError("login", error);
     }
     else
-    {
-        try
-        {
-            $.ajax(
-            {
-                type: "POST",
-                url: "/api.php",
-                data:
-                {
-                    command: "login",
-                    data: data,
-                    user: data["username"], //to be used as session variable later
-                    endpoint: "Accounts"
-                },
-                beforeSend: function()
-                {
-                    disableModalSubmit('login');
-                },
-                success: function(res)
-                {
-                    try
-                    {
-                        if (contains(res, "Okay"))
-                        {
-                            showLoginFeatures(hide_main_modal);
-                            
-                            if (contains(res, "Landlord"))
-                            {
-                                $("#portal-function a").attr("href", "/landlord/listings");
-                            }
-                            else if (!contains(res, "Tenant"))
-                            {
-                                throw new Error("Problem Logging In");
-                            }
-                        }
-                        else
-                        {
-                            throw new Error(res);
-                        }
-                    }
-                    catch(e)
-                    {
-                        setError('login', e.message);
-                    }
-                },
-                error: function(res, err)
-                {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        setError('login', e.message);
-                    }
-                },
-                complete: function()
-                {
-                    resetModal("login", "Log In", false);
-                }
-            });
-        }
-        catch(e)
-        {
-            setError('login', e.message);
-        }
-    }
-}
-
-function login_facebook_user(userID, accessToken)
-{
-    var data = {"username": userID, "password": accessToken};
-    
-    //facebook already does the validation of username and password
-    // in addition, we don't need to check for null values because it's
-    // already handled on the facebook side, the code would not reach
-    // here if that was the case...
-    
-    try
     {
         $.ajax(
         {
@@ -1186,22 +1077,31 @@ function login_facebook_user(userID, accessToken)
             url: "/api.php",
             data:
             {
-                command: "facebook_login",
+                command: "login",
                 data: data,
-                user: userID,
+                user: data["Username"], //to be used as session variable later
                 endpoint: "Accounts"
+            },
+            beforeSend: function()
+            {
+                disableModalSubmit('login');
             },
             success: function(res)
             {
                 try
                 {
-                    if (contains(res, "Okay"))
+                    if (Contains(res, "Okay"))
                     {
-                        showLoginFeatures(true);
-                    }
-                    else if (!res)
-                    {
-                        throw new Error("Error Logging In"); 
+                        ShowLoginFeatures(hideMainModal);
+                        
+                        if (Contains(res, "Landlord"))
+                        {
+                            $("#portal-function a").attr("href", "/landlord/listings");
+                        }
+                        else if (!Contains(res, "Tenant"))
+                        {
+                            throw new Error("Problem Logging In");
+                        }
                     }
                     else
                     {
@@ -1210,109 +1110,138 @@ function login_facebook_user(userID, accessToken)
                 }
                 catch(e)
                 {
-                    setError('login', e.message);
+                    SetError('login', e.message);
                 }
             },
             error: function(res, err)
             {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    setError('login', e.message);
-                }
+                SetError('login', res + " " + err);
             },
             complete: function()
             {
-                resetModal("login", "Log In", false);
-                
-                $("#delete_account_header").siblings("label").remove();
-                $("#delete_account_header").siblings("input.password").remove();
+                ResetModal("login", "Log In", false);
             }
         });
-    }
-    catch(e)
-    {
-        setError('login', e.message);
     }
 }
 
-function logout_user()
+function LoginFacebookUser(userID, accessToken)
 {
-	removeLoginFeatures();
-    try
+    var data = {"Username": userID, "Password": accessToken};
+    
+    //facebook already does the validation of username and password
+    // in addition, we don't need to check for null values because it's
+    // already handled on the facebook side, the code would not reach
+    // here if that was the case...
+    
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        data:
         {
-            type: "POST",
-            url: "logout.php",
-            success: function(res)
+            command: "facebook_login",
+            data: data,
+            user: userID,
+            endpoint: "Accounts"
+        },
+        success: function(res)
+        {
+            try
             {
-                try
+                if (Contains(res, "Okay"))
                 {
-                    if (contains(res, "Successfully"))
-                    {
-                        populate_and_open_modal(null, "modal-content-logout");
-                    }
-                    else
-                    {
-                        throw new Error("Problem Logging Out");
-                    }
+                    ShowLoginFeatures(true);
                 }
-                catch(e)
+                else if (!res)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    throw new Error("Error Logging In"); 
                 }
-            },
-            error: function(res, err)
-            {
-                try
+                else
                 {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    throw new Error(res);
                 }
             }
-        });
-    }
-    catch(e)
+            catch(e)
+            {
+                SetError('login', e.message);
+            }
+        },
+        error: function(res, err)
+        {
+            SetError('login', res + " " + err);
+        },
+        complete: function()
+        {
+            ResetModal("login", "Log In", false);
+            
+            $("#DeleteAccount_header").siblings("label").remove();
+            $("#DeleteAccount_header").siblings("input.password").remove();
+        }
+    });
+}
+
+function LogoutUser()
+{
+	RemoveLoginFeatures();
+    
+    $.ajax(
     {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+        type: "POST",
+        url: "logout.php",
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Successfully"))
+                {
+                    PopulateAndOpenModal(null, "modal-content-logout");
+                }
+                else
+                {
+                    throw new Error("Problem Logging Out");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
     
     $("#login").text("Log In/Create Account");
-    $("#login-function").attr("onclick", "load_modal(event, 'modal-content-login', 'login', 'Log In');");
+    $("#login-function").attr("onclick", "LoadModal(event, 'modal-content-login', 'login', 'Log In');");
 }
 
-function removeLoginFeatures()
+function RemoveLoginFeatures()
 {
     $("#portal-function").hide();
 }
 
-function showLoginFeatures(hide_main_modal)
+function ShowLoginFeatures(hideMainModal)
 {
     $("#login").text("Log Out");
-    $("#login-function").attr("onclick", "logout_user()");
+    $("#login-function").attr("onclick", "LogoutUser()");
     $("#login-function").show();
     
-    if (hide_main_modal === true)
+    if (hideMainModal === true)
     {
-        hideMainModal();
+        HideMainModal();
     }
     
     $("#portal-function").show();
 }
 
-function hideMainModal()
+function HideMainModal()
 {
     $("#common-modal").modal('hide');
 }
 
-function resetModal(modal, btnText, hide)
+function ResetModal(modal, btnText, hide)
 {  
     $("." + modal + "-btn").val(btnText);
     $("." + modal + "-btn").attr('disabled', false);
@@ -1322,110 +1251,96 @@ function resetModal(modal, btnText, hide)
     }
 }
 
-function disableModalSubmit(modal)
+function DisableModalSubmit(modal)
 {
     $("." + modal + "-btn")
         .val("Processing...")
         .attr("disabled", true);
 }
 
-function create_account()
+function CreateAccount()
 {
-    var data = buildData(["username", "password", "firstname", "lastname",
-                                    "email", "phonenumber"]);
+    var data = BuildData(["Username", "Password", "FirstName", "LastName",
+                                    "Email", "PhoneNumber"]);
                                     
-    var error = buildError(data);
+    var error = BuildError(data);
     
     if (error != "Please Include<br>")
     {
-        setError("create_account", error);
+        SetError("CreateAccount", error);
     }
     else
     {
-        try
+        $.ajax(
         {
-            $.ajax(
+            type: "POST",
+            url: "/api.php",
+            data:
             {
-                type: "POST",
-                url: "/api.php",
-                data:
+                command: "CreateAccount",
+                data: data,
+                endpoint: "Accounts"
+            },
+            beforeSend: function()
+            {
+                DisableModalSubmit("CreateAccount");
+            },
+            success: function(res)
+            {
+                try
                 {
-                    command: "create_account",
-                    data: data,
-                    endpoint: "Accounts"
-                },
-                beforeSend: function()
-                {
-                    disableModalSubmit("create_account");
-                },
-                success: function(res)
-                {
-                    try
+                    if (Contains(res, "Okay"))
                     {
-                        if (contains(res, "Okay"))
-                        {
-                            login_user(false);
-                            
-                            populate_and_open_modal(null, 'modal-content-register-success');
-                        }
-                        else
-                        {
-                            throw new Error(res);
-                        }
+                        LoginUser(false);
+                        
+                        PopulateAndOpenModal(null, 'modal-content-register-success');
                     }
-                    catch(e)
+                    else
                     {
-                        setError("create_account", e.message);
+                        throw new Error(res);
                     }
-                },
-                error: function(res, err)
-                {
-                    try
-                    {
-                        throw new Error(res + " " + err);
-                    }
-                    catch(e)
-                    {
-                        setError("create_account", e.message);
-                    }
-                },
-                complete: function()
-                {
-                    resetModal("create_account", "Create Account", false);
-                    
-                    set_default_button_on_enter("");
                 }
-            });
-        }
-        catch(e)
-        {
-            setError("create_account", e.message);
-        }
+                catch(e)
+                {
+                    SetError("CreateAccount", e.message);
+                }
+            },
+            error: function(res, err)
+            {
+                SetError("CreateAccount", res + " " + err);
+            },
+            complete: function()
+            {
+                ResetModal("CreateAccount", "Create Account", false);
+                
+                setDefaultButtonOnEnter("");
+            }
+        });
     }
 }
 
-function load_modal(event, which, enter_default, btnText)
+function LoadModal(event, which, enterDefault, btnText)
 {
-    populate_and_open_modal(event, which); 
-    resetModal(enter_default, btnText, true); 
-    set_default_button_on_enter(enter_default);
+    PopulateAndOpenModal(event, which); 
+    ResetModal(enterDefault, btnText, true); 
+    setDefaultButtonOnEnter(enterDefault);
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
     
-    modal_backdrop_height($('#common-modal.modal'));
+    ModalBackdropHeight($('#common-modal.modal'));
 }
 
-function open_listings_list()
+function OpenListingsList()
 {
     //do not want to open 100% of page width because our 'left' offset needs to be accounted for
     var openWidth = parseFloat($("html").css("width")) - parseFloat($("#listings_list").css("left"));
     $("#listings_list").animate(
     {
         width: openWidth
-    }, 500, 'easeInOutCubic', load_listings_list);
+    }, 500, 'easeInOutCubic', LoadListingsList);
 }
 
-function open_extras_view()
+function OpenExtrasView()
 {
     $("#extras_view").animate(
     {
@@ -1446,12 +1361,12 @@ function open_extras_view()
         done: function ()
         {
             $($("#search-section a")[1]).text("Hide Extra Filters");
-            $($("#search-section li")[1]).attr("onclick", "close_extras_view()");
+            $($("#search-section li")[1]).attr("onclick", "CloseExtrasView()");
         }
     });
 }
 
-function close_listings_list()
+function CloseListingsList()
 {
     $("#listings").fadeOut(200, function() {
         $("#listings_list").animate(
@@ -1459,12 +1374,12 @@ function close_listings_list()
             width: "0px"
         }, 500, 'easeInOutCubic', function() {
             $("#view_listings_list-function a").text("View Details");
-            $("#view_listings_list-function").attr("onclick", "open_listings_list()");
+            $("#view_listings_list-function").attr("onclick", "OpenListingsList()");
         });
     });
 }
 
-function close_extras_view()
+function CloseExtrasView()
 {
     $("#extras").fadeOut(200);
     $("#extras_view").animate(
@@ -1474,20 +1389,20 @@ function close_extras_view()
         paddingRight: "0px"
     }, 500, function() {
         $($("#search-section a")[1]).text("Show Extra Filters");
-        $($("#search-section li")[1]).attr("onclick", "open_extras_view()");
+        $($("#search-section li")[1]).attr("onclick", "OpenExtrasView()");
     });
 }
 
-function load_listings_list()
+function LoadListingsList()
 {
     $("#listings").fadeIn();
     
     //then change the view listings list to "Hide Listings"
     $("#view_listings_list-function a").text("Hide Details");
-    $("#view_listings_list-function").attr("onclick", "close_listings_list()");
+    $("#view_listings_list-function").attr("onclick", "CloseListingsList()");
 }
 
-function set_default_button_on_enter(modal)
+function setDefaultButtonOnEnter(modal)
 {
     if (modal != "")
     {
@@ -1510,13 +1425,13 @@ function set_default_button_on_enter(modal)
     });
 }
 
-function isValidEmail(em)
+function IsValidEmail(em)
 {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(em);
 }
 
-function isValidPhoneNumber(pn)
+function IsValidPhoneNumber(pn)
 {
     /*
 	Valid Formats are...
@@ -1531,7 +1446,7 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
-function buildData(elements)
+function BuildData(elements)
 {
     var modalAttr = ".modal-body .";
     
@@ -1550,31 +1465,31 @@ function buildData(elements)
     return data;
 }
 
-function buildError(fields)
+function BuildError(fields)
 {
     var error = "Please Include<br>";
     
-    if (fields.username === "")
+    if (fields.Username === "")
     {
         error += "Username<br>";
     }
-    if (fields.password === "")
+    if (fields.Password === "")
     {
         error += "Password<br>";
     }
-    if (fields.firstname === "")
+    if (fields.FirstName === "")
     {
         error += "First Name<br>";
     }
-    if (fields.lastname === "")
+    if (fields.LastName === "")
     {
         error += "Last Name<br>";
     }
-    if (fields.email === "" || (fields.email != null && !isValidEmail(fields.email)))
+    if (fields.Email === "" || (fields.Email != null && !IsValidEmail(fields.Email)))
     {
         error += "Valid Email<br>";
     }
-    if (fields.phonenumber === "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    if (fields.PhoneNumber === "" || (fields.PhoneNumber != null && !IsValidPhoneNumber(fields.PhoneNumber)))
     {
         error += "Valid Phone Number<br>";
     }
@@ -1582,7 +1497,7 @@ function buildError(fields)
     return error;
 }
 
-function setError(el, msg)
+function SetError(el, msg)
 {
     if (msg == "")
 	{
@@ -1594,10 +1509,10 @@ function setError(el, msg)
     $(modal + el + "-error").show();
 
     //reset the height because the error bar increases it...
-    modal_backdrop_height($('#common-modal.modal'));
+    ModalBackdropHeight($('#common-modal.modal'));
 }
 
-function contains(haystack, needle)
+function Contains(haystack, needle)
 {
     if (typeof haystack != "string") 
     {
@@ -1607,12 +1522,12 @@ function contains(haystack, needle)
     return (haystack.indexOf(needle) != -1)
 }
 
-function booleanToHumanReadable(data)
+function BooleanToHumanReadable(data)
 {
     return (data == true ? "Yes" : "No");
 }
 
-function selectToQueryField(field)
+function SelectToQueryField(field)
 {
     if (field == "true" || field == "false")
     {
@@ -1622,18 +1537,18 @@ function selectToQueryField(field)
     return field;
 }
 
-String.prototype.capitalizeFirstLetter = function() {
+String.prototype.CapitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 /********** STARTUP SCRIPTS *************/
 $(function ()
 {
-    initMainSidebar();
+    InitMainSidebar();
  
-    loadAllDefaultListings();
+    LoadAllDefaultListings();
  
-    setHiddenSidebars();
+    SetHiddenSidebars();
 
     $('#listings').slimScroll({
         height: '100%',
@@ -1645,11 +1560,11 @@ $(function ()
 
 $(window).on('resize', function() {
     //otherwise they get out of place
-    setHiddenSidebars();
+    SetHiddenSidebars();
    
     if ($("#listings_list").width() > 0)
     {
         $("#listings_list").stop();
-        open_listings_list();
+        OpenListingsList();
     }
 });

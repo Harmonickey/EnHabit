@@ -20,308 +20,276 @@ $(document).on("keypress", function(e)
     }
 });
 
-function getAllUsersAndLandlords()
+function GetAllUsersAndLandlords()
 {
-    try
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        data: 
         {
-            type: "POST",
-            url: "/api.php",
-            data: 
-            {
-                command: "get_all_users",
-                endpoint: "Accounts"
-            },
-            success: function(res) 
-            {
-                try
-                {
-                    if (res && !contains(res, "No Users"))
-                    {             
-                        var data = JSON.parse(res);
-                        
-                        for (var i = 0; i < data.length; i++)
-                        {
-                            if (data[i].IsLandlord)
-                            {
-                                landlordList.push(data[i].Username)
-                            }
-                            else
-                            {
-                                userList.push(data[i].Username);
-                            }
-                        }
-                        
-                        $($("#createListingModal .ui-widget input")[0]).autocomplete({
-                           source: function(request, response) {
-                                var results = $.ui.autocomplete.filter(landlordList, request.term);
-
-                                response(results.slice(0, 5)); // limit to 5 results at a time
-                            } 
-                        });
-                        
-                        $($("#createListingModal .ui-widget input")[1]).autocomplete({
-                           source: function(request, response) {
-                                var results = $.ui.autocomplete.filter(userList, request.term);
-
-                                response(results.slice(0, 5)); // limit to 5 results at a time
-                            }
-                        });
-                    }
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-            }
-        });
-    }
-    catch (e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
-}
-
-function getAllUsers()
-{
-    try
-    {
-        $.ajax(
+            command: "get_all_users",
+            endpoint: "Accounts"
+        },
+        success: function(res) 
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            try
             {
-                //spinner on accordion area
-                $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
-            },
-            data: 
-            {
-                command: "get_all_users",
-                endpoint: "Accounts"
-            },
-            success: function(res) 
-            {
-                try
-                {
-                    if (!res)
+                if (res && !Contains(res, "No Users"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
                     {
-                        throw new Error("Unable to retrieve users");
-                        $("#accordion").html("<p>No Users Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else if (contains(res, "No Users"))
-                    {
-                        $("#accordion").html("<p>No Users Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else
-                    {             
-                        $("#accordion").html("");
-                
-                        var data = JSON.parse(res);
-                        
-                        for (var i = 0; i < data.length; i++)
+                        if (data[i].IsLandlord)
                         {
-                            var uid = data[i]._id.$oid;
-                           
-                            //fill in all user data
-                            $("#accordion").append(createAccordionUsersView(uid, data[i]));
-                            
-                            setBootstrapSwitchesForUsers(uid);
-                        }
-                    }
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    $(".actions a").show();
-                }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-            }
-        });
-    }
-    catch (e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
-}
-
-function getAllListings()
-{
-    try
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
-            {
-                //spinner on accordion area
-                $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
-            },
-            data:
-            {
-                command: "get_listings",
-                endpoint: "Listings"
-            },
-            success: function(res) 
-            {
-                try
-                {
-                    if (!res)
-                    {
-                        throw new Error("Unable to retrieve listings");
-                        $("#accordion").html("<p>No Listings Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else if (contains(res, "No Matching Entries"))
-                    {
-                        $("#accordion").html("<p>No Listings Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else
-                    {
-                        $("#accordion").html("");
-
-                        var data = JSON.parse(res);
-                        
-                        if (contains(res, "Error"))
-                        {
-                            throw new Error(res);
-                            $(".actions a").show();
+                            landlordList.push(data[i].Username)
                         }
                         else
                         {
-                            for (var i = 0; i < data.length; i++)
-                            {
-                                var oid = data[i]._id.$oid;
-                                
-                                $("#accordion").append(createAccordionView(oid, data[i]));
-                                
-                                var selector = "[id='" + oid + "'] form";
-                                
-                                createDropzone(oid, selector, data[i].Pictures);
-                                    
-                                setGeocompleteTextBox(oid);
-                                setTextBoxWithAutoNumeric(oid);
-                                setDatePickerTextBox(oid);
-                                setBootstrapSwitches(oid);
-                                setTextBoxWithTags(oid);
-                                
-                                added_files[oid] = false;
-                            }
+                            userList.push(data[i].Username);
                         }
                     }
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    $(".actions a").show();
-                }
-            },
-            error: function(res, err)
-            {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    $(".actions a").show();
+                    
+                    $($("#createListingModal .ui-widget input")[0]).autocomplete(
+                    {
+                        source: function(request, response) 
+                        {
+                            var results = $.ui.autocomplete.filter(landlordList, request.term);
+
+                            response(results.slice(0, 5)); // limit to 5 results at a time
+                        } 
+                    });
+                    
+                    $($("#createListingModal .ui-widget input")[1]).autocomplete(
+                    {
+                        source: function(request, response) 
+                        {
+                            var results = $.ui.autocomplete.filter(userList, request.term);
+
+                            response(results.slice(0, 5)); // limit to 5 results at a time
+                        }
+                    });
                 }
             }
-        });
-    }
-    catch(e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
 }
 
-function getAllTransactions()
-{  
-    try
+function GetAllUsers()
+{
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
         {
-            type: "POST",
-            url: "/api.php",
-            data:
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_all_users",
+            endpoint: "Accounts"
+        },
+        success: function(res) 
+        {
+            try
             {
-                command: "get_all_transactions",
-                endpoint: "Payments"
-            },
-            success: function(res) 
-            {
-                try
+                if (!res)
                 {
-                    if (!res)
+                    throw new Error("No Users Found");
+                    $("#accordion").html("<p>No Users Yet</p>");
+                    $(".actions a").show();
+                }
+                else if (Contains(res, "No Users"))
+                {
+                    $("#accordion").html("<p>No Users Yet</p>");
+                    $(".actions a").show();
+                }
+                else
+                {             
+                    $("#accordion").html("");
+            
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
                     {
-                        throw new Error("Unable to retrieve payments");
-                        $("#accordion").html("<p>No Payments Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else if (contains(res, "No Payments"))
-                    {
-                        $("#accordion").html("<p>No Payments Yet</p>");
-                        $(".actions a").show();
-                    }
-                    else
-                    {
-                        $("#accordion").html("");
-
-                        var data = JSON.parse(res);
+                        var uid = data[i]._id.$oid;
+                       
+                        //fill in all user data
+                        $("#accordion").append(CreateAccordionUsersView(uid, data[i]));
                         
-                        if (contains(res, "Error"))
-                        {
-                            throw new Error(res);
-                            $(".actions a").show();
-                        }
-                        else
-                        {
-                            for (var i = 0; i < data.length; i++)
-                            {
-                                var oid = data[i]._id.$oid;
-                                
-                                $("#accordion").append(createAccordionPaymentsView(oid, data[i]));
-                            }
-                        }
+                        SetBootstrapSwitchesForUsers(uid);
                     }
                 }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    $(".actions a").show();
-                }    
-            },
-            error: function(res, err)
+            }
+            catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 $(".actions a").show();
             }
-        });
-    }
-    catch(e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-        $(".actions a").show();
-    }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
 }
 
-function delete_old_listings()
+function GetAllListings()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data:
+        {
+            command: "get_listings",
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("No Listings Found");
+                    $("#accordion").html("<p>No Listings</p>");
+                    $(".actions a").show();
+                }
+                else if (Contains(res, "No Matching Entries"))
+                {
+                    $("#accordion").html("<p>No Listings</p>");
+                    $(".actions a").show();
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                        $(".actions a").show();
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionView(oid, data[i]));
+                            
+                            var selector = "[id='" + oid + "'] form";
+                            
+                            CreateDropzone(oid, selector, data[i].Pictures);
+                                
+                            SetGeocompleteTextBox(oid);
+                            SetTextBoxWithAutoNumeric(oid);
+                            SetDatePickerTextBox(oid);
+                            SetBootstrapSwitches(oid);
+                            SetTextBoxWithTags(oid);
+                            
+                            addedFiles[oid] = false;
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $(".actions a").show();
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $(".actions a").show();
+        }
+    });
+}
+
+function GetAllTransactions()
+{  
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "get_all_transactions",
+            endpoint: "Payments"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to retrieve payments");
+                    $("#accordion").html("<p>No Payments Yet</p>");
+                    $(".actions a").show();
+                }
+                else if (Contains(res, "No Payments"))
+                {
+                    $("#accordion").html("<p>No Payments Yet</p>");
+                    $(".actions a").show();
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                        $(".actions a").show();
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionPaymentsView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $(".actions a").show();
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $(".actions a").show();
+        }
+    });
+}
+
+function DeleteOldListings()
 {
     // check if the user really wants to do so
-    $.msgbox("Are you sure that you want to delete all records older than ONE year?", 
+    $.msgbox("Are you sure that you want to delete all listings older than ONE year?", 
     {
         type: "confirm",
 		buttons : 
@@ -342,7 +310,7 @@ function delete_old_listings()
                 beforeSend: function()
                 {
                     $("#purge-btn").text("Purging...");
-                    disableButtons(); 
+                    DisableButtons(); 
                 },
                 data:
                 {
@@ -350,7 +318,7 @@ function delete_old_listings()
                 },
                 success: function(res)
                 {
-                    resetListings();
+                    ResetListings();
                 },
                 error: function(res, err)
                 {
@@ -360,22 +328,22 @@ function delete_old_listings()
                 complete: function()
                 {
                     $("#purge-btn").text("Purge Old Listings");
-                    enableButtons();
+                    EnableButtons();
                 }
             });
         }
     });
 }
 
-function update_account(uid)
+function UpdateAccount(uid)
 {
     var userfield = $("#" + uid + " input");
     
-    var data = buildData(userfield, ["username", "firstname", "lastname", "phonenumber", "password", "confirm", "email", "isactive", "isverified", "islandlord", "isadmin"]);
+    var data = BuildData(userfield, ["Username", "FirstName", "LastName", "PhoneNumber", "Password", "Confirm", "Email", "IsActive", "IsVerified", "IsLandlord", "IsAdmin"]);
     
     data.id = uid;
     
-    var error = buildError(data);
+    var error = BuildError(data);
     
     if (error != "Please Include ")
     {
@@ -396,7 +364,7 @@ function update_account(uid)
                 },
                 data:
                 {
-                    command: "update_account",
+                    command: "UpdateAccount",
                     endpoint: "Accounts",
                     data: data
                 },
@@ -408,7 +376,7 @@ function update_account(uid)
                         {
                             $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update User", position: 'top-center'});
                         }
-                        else if (contains(res, "Okay"))
+                        else if (Contains(res, "Okay"))
                         {
                             var inputs = $("#" + uid + " input");
                             var headingInputs = $("#heading" + uid + " label");
@@ -450,19 +418,19 @@ function update_account(uid)
     }
 }
 
-function setBootstrapSwitches(rowId)
+function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":last").bootstrapSwitch({onText: "Yes", offText: "No"});
     $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
 }
 
-function setBootstrapSwitchesForUsers(rowId)
+function SetBootstrapSwitchesForUsers(rowId)
 {
     $("#" + rowId + " input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
 }
 
-function setGeocompleteTextBox(rowId)
+function SetGeocompleteTextBox(rowId)
 {
     var row = $("#" + rowId + " div input[type='text']");
     var hidden = $("#" + rowId + " input[type='hidden']");
@@ -475,7 +443,7 @@ function setGeocompleteTextBox(rowId)
         });
 }
 
-function setTextBoxWithAutoNumeric(rowId)
+function SetTextBoxWithAutoNumeric(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
@@ -488,12 +456,12 @@ function setTextBoxWithAutoNumeric(rowId)
     });
 }
 
-function setTextBoxWithTags(rowId)
+function SetTextBoxWithTags(rowId)
 {
    $("#" + rowId + " input[data-role='tagsinput']").tagsinput();
 }
 
-function setDatePickerTextBox(rowId)
+function SetDatePickerTextBox(rowId)
 {
     $($("#" + rowId + " input[type='text']")[5]).pikaday(
     {
@@ -502,20 +470,20 @@ function setDatePickerTextBox(rowId)
     });
 }
 
-function update_listing(oid)
+function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input").not(":eq(10)");
     
-    var data = buildData(inputs, ["user", "landlord", "address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "latitude", "longitude", "selected_address"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
-    var error = buildError(data);
+    var error = BuildError(data);
     
     data.id = oid;
-    data.type = (data.type == true ? "apartment" : "sublet");
-    data.address = data.address.split(",")[0];
-    data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.pictures = pictures[oid];
+    data.Type = (data.Type == true ? "apartment" : "sublet");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures[oid];
     
     try
     {
@@ -532,9 +500,9 @@ function update_listing(oid)
             
             dropzones[oid].processQueue();
             
-            if (added_files[oid] == false)
+            if (addedFiles[oid] == false)
             {
-                process_listing();
+                ProcessListing();
             }
         }
     }
@@ -546,7 +514,7 @@ function update_listing(oid)
     }
 }
 
-function delete_account(uid)
+function DeleteAccount(uid)
 {
     $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", {
         type    : "prompt",
@@ -561,55 +529,48 @@ function delete_account(uid)
         
         var data = {"password": password, "id": uid};
         
-        try
+        $.ajax(
         {
-            $.ajax(
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
             {
-                type: "POST",
-                url: "/api.php",
-                beforeSend: function()
+                $("#" + uid + " button").prop("disabled", true);
+                $($("#" + uid + " button")[1]).text("Deleting...");
+            },
+            data:
+            {
+                command: "DeleteAccount",
+                endpoint: "Accounts",
+                data: data
+            },
+            success: function(res)
+            {
+                if (Contains(res, "Okay"))
                 {
-                    $("#" + uid + " button").prop("disabled", true);
-                    $($("#" + uid + " button")[1]).text("Deleting...");
-                },
-                data:
-                {
-                    command: "delete_account",
-                    endpoint: "Accounts",
-                    data: data
-                },
-                success: function(res)
-                {
-                    if (contains(res, "Okay"))
-                    {
-                        // remove the row that we just selected
-                        $("#" + uid).parent().remove();
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
-                    }
-                    else
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
-                    }
-                },
-                error: function(res, err)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-                },
-                complete: function()
-                {
-                    $("#" + uid + " button").prop("disabled", false);
-                    $($("#" + uid + " button")[1]).text("Delete");
+                    // remove the row that we just selected
+                    $("#" + uid).parent().remove();
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
                 }
-            });
-        }
-        catch(e)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-        }
+                else
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#" + uid + " button").prop("disabled", false);
+                $($("#" + uid + " button")[1]).text("Delete");
+            }
+        });
     });  
 }
 
-function delete_listing(oid)
+function DeleteListing(oid)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -626,132 +587,38 @@ function delete_listing(oid)
     {
         if (result === "Yes")
         {
-            try
-            {
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "/api.php",
-                    beforeSend: function()
-                    {
-                        $("#" + oid + " button").prop("disabled", true);
-                        $($("#" + oid + " button")[1]).text("Deleting...");
-                    },
-                    data:
-                    {
-                        command: "delete_listing",
-                        data: { oid: oid },
-                        endpoint: "Listings"
-                    },
-                    success: function(res)
-                    {
-                        try
-                        {
-                            if (contains(res, "Okay"))
-                            {
-                                // remove the row that we just selected
-                                $("#" + oid).parent().remove();
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
-                                if ($("#accordion").text() == "")
-                                {
-                                    $("#accordion").text("No Listings Yet");
-                                }
-                            }
-                            else
-                            {
-                                throw new Error("Problem Deleting Listing");
-                            }
-                        }
-                        catch(e)
-                        {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                        }
-                    },
-                    error: function(res, err)
-                    {
-                        try
-                        {
-                            throw new Error(res + " " + err);
-                        }
-                        catch(e)
-                        {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                        }
-                    }
-                });
-            }
-            catch(e)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-            }
-        }
-    });
-}
-
-function create_account()
-{
-    var userfield = $("#createUserModal input");
-    
-    var data = buildData(userfield, ["username", "password", "confirm", "firstname", "lastname", "email", "phonenumber", "islandlord", "isactive", "isverified", "isadmin"]);
-    
-    var error = buildError(data);
-    
-    if (error != "Please Include ")
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
-    }
-    else
-    {
-        try
-        {
             $.ajax(
             {
                 type: "POST",
                 url: "/api.php",
                 beforeSend: function()
                 {
-                    $("#create-user-button").text("Creating...");
-                    $("#create-user-button").prop("disabled", "true");
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[1]).text("Deleting...");
                 },
                 data:
                 {
-                    command: "create_account",
-                    endpoint: "Accounts",
-                    data: data
+                    command: "DeleteListing",
+                    data: { oid: oid },
+                    endpoint: "Listings"
                 },
                 success: function(res)
-                {    
+                {
                     try
                     {
-                        if (!res)
+                        if (Contains(res, "Okay"))
                         {
-                            throw new Error("Unable to Create User");
+                            // remove the row that we just selected
+                            $("#" + oid).parent().remove();
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
+                            if ($("#accordion").text() == "")
+                            {
+                                $("#accordion").text("No Listings");
+                            }
                         }
                         else
                         {
-                            var user = JSON.parse(res);
-                                
-                            if (user["error"])
-                            {
-                                throw new Error(user["error"]);
-                            }
-                            else
-                            {
-                                if ($("#accordion").text() == "No Users Yet")
-                                {
-                                    $("#accordion").html("");
-                                }
-                                
-                                var uid = user._id.$oid;
-                                
-                                $("#accordion").append(createAccordionUsersView(uid, user));
-                                
-                                setBootstrapSwitchesForUsers(uid);
-                                
-                                $("#createUserModal").modal('hide');
-                                
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'top-center'});
-                            }
+                            throw new Error("Problem Deleting Listing");
                         }
                     }
                     catch(e)
@@ -762,33 +629,106 @@ function create_account()
                 error: function(res, err)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-                },
-                complete: function()
-                {
-                    $("#create-user-button").text("Create User");
-                    $("#create-user-button").prop("disabled", false);
                 }
             });
         }
-        catch(e)
+    });
+}
+
+function CreateAccount()
+{
+    var userfield = $("#createUserModal input");
+    
+    var data = BuildData(userfield, ["Username", "Password", "Confirm", "FirstName", "LastName", "Email", "PhoneNumber", "IsLandlord", "IsActive", "IsVerified", "IsAdmin"]);
+    
+    var error = BuildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+    {
+        $.ajax(
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-        }
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
+            {
+                $("#create-user-button").text("Creating...");
+                $("#create-user-button").prop("disabled", "true");
+            },
+            data:
+            {
+                command: "CreateAccount",
+                endpoint: "Accounts",
+                data: data
+            },
+            success: function(res)
+            {    
+                try
+                {
+                    if (!res)
+                    {
+                        throw new Error("Unable to Create User");
+                    }
+                    else
+                    {
+                        var user = JSON.parse(res);
+                            
+                        if (user["error"])
+                        {
+                            throw new Error(user["error"]);
+                        }
+                        else
+                        {
+                            if ($("#accordion").text() == "No Users Yet")
+                            {
+                                $("#accordion").html("");
+                            }
+                            
+                            var uid = user._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionUsersView(uid, user));
+                            
+                            SetBootstrapSwitchesForUsers(uid);
+                            
+                            $("#createUserModal").modal('hide');
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'top-center'});
+                        }
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#create-user-button").text("Create User");
+                $("#create-user-button").prop("disabled", false);
+            }
+        });
     }
 }
 
-function create_listing()
+function CreateListing()
 {
     var inputs = $("#createListingModal input, #createListingModal select").not(":eq(15)");
     
-    var data = buildData(inputs, ["address", "unit", "rent", "start", "university", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "user", "tags", "latitude", "longitude", "selected_address"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Landlord", "User", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
     
-    var error = buildError(data);
+    var error = BuildError(data);
     
-    data.type = (data.type == true ? "apartment" : "sublet");
-    data.address = data.address.split(",")[0];
-    data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    data.Type = (data.Type == true ? "apartment" : "sublet");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
     {
@@ -817,7 +757,7 @@ function create_listing()
     }
 }
 
-function process_listing()
+function ProcessListing()
 {
     if (pendingData == null && pendingUpdateData == null)
     {
@@ -833,7 +773,7 @@ function process_listing()
             url: "/api.php",
             data:
             {
-                command: "create_listing",
+                command: "CreateListing",
                 data: pendingData,
                 endpoint: "Listings"
             },
@@ -862,17 +802,17 @@ function process_listing()
                             
                             var oid = listing._id.$oid;
                             
-                            $("#accordion").append(createAccordionView(oid, listing));
+                            $("#accordion").append(CreateAccordionView(oid, listing));
                                 
                             var selector = "[id='" + oid + "'] form";
                                 
-                            createDropzone(oid, selector, listing.Pictures);
+                            CreateDropzone(oid, selector, listing.Pictures);
                                 
-                            setGeocompleteTextBox(oid);
-                            setTextBoxWithAutoNumeric(oid);
-                            setDatePickerTextBox(oid);
-                            setBootstrapSwitches(oid); 
-                            setTextBoxWithTags(oid)
+                            SetGeocompleteTextBox(oid);
+                            SetTextBoxWithAutoNumeric(oid);
+                            SetDatePickerTextBox(oid);
+                            SetBootstrapSwitches(oid); 
+                            SetTextBoxWithTags(oid)
                             
                             $("#createListingModal").modal('hide');
                             
@@ -893,14 +833,7 @@ function process_listing()
             },
             error: function(res, err)
             {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
             complete: function()
             {
@@ -912,7 +845,7 @@ function process_listing()
     else if (pendingUpdateData != null)
     {
         var id = pendingUpdateData.id;
-        added_files[id] = false;
+        addedFiles[id] = false;
         
         // update listing
         $.ajax(
@@ -921,7 +854,7 @@ function process_listing()
             url: "/api.php",
             data:
             {
-                command: "update_listing",
+                command: "UpdateListing",
                 data: pendingUpdateData,
                 endpoint: "Listings"
             },
@@ -929,7 +862,7 @@ function process_listing()
             { 
                 try
                 {
-                    if (contains(res, "Okay"))
+                    if (Contains(res, "Okay"))
                     {
                         var inputs = $("#" + id + " input");
                         var headingInputs = $("#heading" + id + " label");
@@ -959,7 +892,7 @@ function process_listing()
                     numUploaded = 0;
                 }
             },
-            error: function(err, res)
+            error: function(res, err)
             {
                 $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
@@ -972,7 +905,7 @@ function process_listing()
     }
 }
 
-function login()
+function Login()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
@@ -1007,11 +940,11 @@ function login()
             {
                 try
                 {
-                    if (contains(res, "Okay"))
+                    if (Contains(res, "Okay"))
                     {
-                        if (!contains(res, "Admin"))
+                        if (!Contains(res, "Admin"))
                         {
-                            quick_logout(); // clears the session variables
+                            QuickLogout(); // clears the session variables
                             throw new Error("You Must Be an Admin To Login");
                         }
                         else
@@ -1043,12 +976,12 @@ function login()
     }
 }
 
-function quick_logout()
+function QuickLogout()
 {
     $.post("/logout.php");
 }
 
-function logout()
+function Logout()
 {
     $.ajax(
     {
@@ -1058,7 +991,7 @@ function logout()
         {
             try
             {
-                if (contains(res, "Successfully"))
+                if (Contains(res, "Successfully"))
                 {
                     // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                     // be a POST element, this is good for now
@@ -1081,7 +1014,7 @@ function logout()
     });
 }
 
-function displayAnalytics(analytics)
+function DisplayAnalytics(analytics)
 {
     var visits = analytics[0];
     var percentNewVisits = parseInt(analytics[1]);
@@ -1089,8 +1022,8 @@ function displayAnalytics(analytics)
     var averageTimeOnSite = parseInt(analytics[3]);
     var averagePageLoad = parseInt(analytics[4]);
     
-    var averageTimeFormatted = formattedTime(averageTimeOnSite);
-    var averageLoadFormatted = formattedTime(averagePageLoad);
+    var averageTimeFormatted = FormattedTime(averageTimeOnSite);
+    var averageLoadFormatted = FormattedTime(averagePageLoad);
     
     $("#site-visits").text(visits);
     $("#unique-visits").text(uniqueVisits);
@@ -1105,30 +1038,30 @@ UTILITY FUNCTIONS
 
 **********************/
 
-function resetListings()
+function ResetListings()
 {
     $("#listing-list tr").not(":first").remove();
     
-    getAllListings();
+    GetAllListings();
 }
 
-function initSpecialFields()
+function InitSpecialFields()
 {
-    var listing_modal = $("#createListingModal input");
+    var listingModal = $("#createListingModal input");
     
-    $(listing_modal[0]).geocomplete()
+    $(listingModal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
             var hiddenFields = $("#createListingModal input[type='hidden']");
             var keys = Object.keys(result.geometry.location);
             $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
             $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
-            $(hiddenFields[2]).val($(listing_modal[0]).val());
+            $(hiddenFields[2]).val($(listingModal[0]).val());
         });
     
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
     
-    $(listing_modal[2]).autoNumeric('init', 
+    $(listingModal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -1136,7 +1069,7 @@ function initSpecialFields()
         lZero: 'deny'
     });
     
-    $(listing_modal[3]).pikaday(
+    $(listingModal[3]).pikaday(
     {
         minDate: new Date(),
         setDefaultDate: new Date()
@@ -1145,12 +1078,12 @@ function initSpecialFields()
     $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
-function initSpecialFieldsUser()
+function InitSpecialFieldsUser()
 {    
     $("#createUserModal input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
 }
 
-function createDropzone(key, element, existingPics)
+function CreateDropzone(key, element, existingPics)
 {
     dropzones[key] = new Dropzone(element,
     {
@@ -1167,7 +1100,7 @@ function createDropzone(key, element, existingPics)
         {
             numUploaded[oid] = 0;
             numAdded[oid] = 0;
-            process_listing(); 
+            ProcessListing(); 
         }
         else
         {
@@ -1193,7 +1126,7 @@ function createDropzone(key, element, existingPics)
             this.files[this.files.length - 1].serverFileName = filename;
         }
         
-        added_files[oid] = true;
+        addedFiles[oid] = true;
         
         numAdded[oid]++;
     });
@@ -1214,7 +1147,7 @@ function createDropzone(key, element, existingPics)
         
         if (numAdded[oid] < 0)
         {
-            added_files[oid] = false;
+            addedFiles[oid] = false;
             numAdded[oid] = 0;
         }
     });
@@ -1235,28 +1168,28 @@ function createDropzone(key, element, existingPics)
     }
 }
 
-function contains(haystack, needle)
+function Contains(haystack, needle)
 {  
     return (haystack.indexOf(needle) != -1)
 }
 
-function buildData(inputs, elements)
+function BuildData(inputs, elements)
 {   
     var data = {};
     
     for (var i = 0; i < elements.length; i++)
     {
-        if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" 
-         || elements[i] == "airConditioning" || elements[i] == "type" || elements[i] == "isactive"
-         || elements[i] == "isadmin" || elements[i] == "isverified" || elements[i] == "islandlord")
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
+         || elements[i] == "AirConditioning" || elements[i] == "Type" || elements[i] == "IsActive"
+         || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "latitude" || elements[i] == "longitude" || elements[i] == "selected_address")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress")
         {
             data[elements[i]] = $(inputs[i]).val();
         }
-        else if (elements[i] == "rent")
+        else if (elements[i] == "Rent")
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }
@@ -1276,96 +1209,96 @@ function buildData(inputs, elements)
     return data;
 }
 
-function buildError(fields)
+function BuildError(fields)
 {
-    var error_arr = [];
+    var errorArr = [];
     
     var beginning = "Please Include ";
     
-    if (fields.firstname === "")
+    if (fields.FirstName === "")
     {
-        error_arr.push("Valid First Name");
+        errorArr.push("Valid First Name");
     }
-    if (fields.lastname === "")
+    if (fields.LastName === "")
     {
-        error_arr.push("Valid Last Name");    
+        errorArr.push("Valid Last Name");    
     }
-    if (fields.username === "")
+    if (fields.Username === "")
     {
-        error_arr.push("Valid Username");
+        errorArr.push("Valid Username");
     }
-    if (fields.address === "" || fields.latitude === "" || fields.longitude === "")
+    if (fields.Address === "" || fields.Latitude === "" || fields.Longitude === "")
     {
-        error_arr.push("Valid Address - Must Select Google's Result");
+        errorArr.push("Valid Address - Must Select Google's Result");
     }
-    if (fields.address !== "" && fields.address !== fields.selected_address)
+    if (fields.Address !== "" && fields.Address !== fields.SelectedAddress)
 	{
-		error_arr.push("Valid Address - Do Not Modify Google's Result After Selecting");
+		errorArr.push("Valid Address - Do Not Modify Google's Result After Selecting");
 	}
-    if (fields.rent === "")
+    if (fields.Rent === "")
     {
-        error_arr.push("Valid Monthly Rent Amount");
+        errorArr.push("Valid Monthly Rent Amount");
     }
-    if (fields.firstname === "")
+    if (fields.FirstName === "")
     {
-        error_arr.push("Valid First Name");
+        errorArr.push("Valid First Name");
     }
-    if (fields.lastname === "")
+    if (fields.LastName === "")
     {
-        error_arr.push("Valid Last Name");
+        errorArr.push("Valid Last Name");
     }
-    if (fields.email === "" || (fields.email != null && !isValidEmail(fields.email)))
+    if (fields.Email === "" || (fields.Email != null && !IsValidEmail(fields.Email)))
     {
-        error_arr.push("Valid Email");
+        errorArr.push("Valid Email");
     }
-    if (fields.phonenumber === "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    if (fields.PhoneNumber === "" || (fields.PhoneNumber != null && !IsValidPhoneNumber(fields.PhoneNumber)))
     {
-        error_arr.push("Valid Phone Number");
+        errorArr.push("Valid Phone Number");
     }
-    if (fields.start === "")
+    if (fields.Start === "")
     {
-        error_arr.push("Valid Lease Start Date");
+        errorArr.push("Valid Lease Start Date");
     }
-    if (fields.password != "" || fields.confirm != "")
+    if (fields.Password != "" || fields.Confirm != "")
     {
-        if (fields.password != fields.confirm)
+        if (fields.Password != fields.Confirm)
         {
-            error_arr.push("Matching Password and Confirmation");
+            errorArr.push("Matching Password and Confirmation");
         }
     }
-    if (fields.user === "" && fields.landlord === "")
+    if (fields.User === "" && fields.Landlord === "")
     {
-        error_arr.push("Valid Tenant and/or Landlord");
+        errorArr.push("Valid Tenant and/or Landlord");
     }
-    if (fields.isadmin === true && fields.islandlord === true)
+    if (fields.IsAdmin === true && fields.IsLandlord === true)
     {
-        error_arr.push("Either Admin or Landlord, Not Both");
+        errorArr.push("Either Admin or Landlord, Not Both");
     }
-    if (error_arr.length > 0)
+    if (errorArr.length > 0)
     {
-        if (error_arr.length == 1)
+        if (errorArr.length == 1)
         {
-            return beginning + error_arr[0];
+            return beginning + errorArr[0];
         }
         else
         {
-            var last = " and " + error_arr[error_arr.length - 1];
-            error_arr.splice(error_arr.length - 1, 1);
+            var last = " and " + errorArr[errorArr.length - 1];
+            errorArr.splice(errorArr.length - 1, 1);
             
-            return beginning + error_arr.join(", ") + last;
+            return beginning + errorArr.join(", ") + last;
         }
     }
     
     return beginning;
 }
 
-function isValidEmail(em)
+function IsValidEmail(em)
 {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(em);
 }
 
-function isValidPhoneNumber(pn)
+function IsValidPhoneNumber(pn)
 {
     /*
 	Valid Formats are...
@@ -1380,33 +1313,33 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
-function disableButtons()
+function DisableButtons()
 {
     $("button").prop("disabled", true);
 }
 
-function enableButtons()
+function EnableButtons()
 {
     $("button").prop("disabled", false);
 }
 
-function formattedDate(dateString)
+function FormattedDate(dateString)
 {
     var parts = dateString.split("T")[0].split("-");
     
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
-function formattedTime(time)
-    {
-        var hours = parseInt( time / 3600 ) % 24;
-        var minutes = parseInt( time / 60 ) % 60;
-        var seconds = time % 60;
-        
-        return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
-    }
+function FormattedTime(time)
+{
+    var hours = parseInt( time / 3600 ) % 24;
+    var minutes = parseInt( time / 60 ) % 60;
+    var seconds = time % 60;
+    
+    return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+}
 
-function createAccordionView(oid, data)
+function CreateAccordionView(oid, data)
 {
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
@@ -1415,7 +1348,7 @@ function createAccordionView(oid, data)
                             "<label>Address: " + data.Address + "</label>" +
                             (data.Unit ? "<label>Unit: " + data.Unit + "</label>" : "") +
                             "<label>Rent: $" + data.Price + "/Month</label>" + 
-                            "<label>Start Date: " + formattedDate(data.Start) + "</label>" +
+                            "<label>Start Date: " + FormattedDate(data.Start) + "</label>" +
                             "<label>University: " + data.University + "</label>" +
                         "</a>" +
                     "</h4>" +
@@ -1441,7 +1374,7 @@ function createAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
+                                "<label>Start Date</label><input type='text' class='form-control' value='" + FormattedDate(data.Start) + "' />" +
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
@@ -1481,8 +1414,8 @@ function createAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='DeleteListing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
@@ -1491,7 +1424,7 @@ function createAccordionView(oid, data)
             "</div>";
 }
 
-function createAccordionUsersView(uid, data)
+function CreateAccordionUsersView(uid, data)
 {           
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
@@ -1546,8 +1479,8 @@ function createAccordionUsersView(uid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_account(\"" + uid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_account(\"" + uid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='UpdateAccount(\"" + uid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='DeleteAccount(\"" + uid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
@@ -1555,19 +1488,17 @@ function createAccordionUsersView(uid, data)
             "</div>";
 }
 
-function createAccordionPaymentsView(oid, data)
+function CreateAccordionPaymentsView(oid, data)
 {           
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
-                            
                         "</a>" +
                     "</h4>" +
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
-                    "<div class='panel-body'>" +
-                        
+                    "<div class='panel-body'>" +                       
                     "</div>" +
                 "</div>" +
             "</div>";

@@ -5,11 +5,11 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
-abs_path = Dir.pwd
-base = abs_path.split("/").index("public_html")
-deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
-$: << "#{deployment_base}/Libraries"
+$: << "#{deploymentBase}/Libraries"
 
 require 'json'
 require 'bson'
@@ -23,175 +23,174 @@ MAX_BATHROOMS_FOR_FILTER = 3
 MIN_BEDROOMS_FOR_FILTER = 0
 MIN_BATHROOMS_FOR_FILTER = 0
 
-def set_filters
+def setFilters
     if @lower.nil? and @upper.nil? 
-        @price_filter = nil
+        @priceFilter = nil
     else
-        @price_filter[:Price] = {}
-        @price_filter[:Price][:$gte] = @lower
-        @price_filter[:Price][:$lte] = @upper
+        @priceFilter[:Price] = {}
+        @priceFilter[:Price][:$gte] = @lower
+        @priceFilter[:Price][:$lte] = @upper
     end
 
     if @bedrooms.nil? 
-        @bedroom_filter = nil
+        @bedroomFilter = nil
     else
-        @bedroom_filter[:Bedrooms] = {}
+        @bedroomFilter[:Bedrooms] = {}
         if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
-            @bedroom_filter[:Bedrooms][:$gte] = @bedrooms
+            @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
         else
-            @bedroom_filter[:Bedrooms][:$eq] = @bedrooms
+            @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
         end
     end
 
     if @bathrooms.nil? 
-        @bathroom_filter = nil
+        @bathroomFilter = nil
     else
-        @bathroom_filter[:Bathrooms] = {}
+        @bathroomFilter[:Bathrooms] = {}
         if @bathrooms == MAX_BATHROOMS_FOR_FILTER || @bathrooms == MIN_BATHROOMS_FOR_FILTER
-            @bathroom_filter[:Bathrooms][:$gte] = @bathrooms
+            @bathroomFilter[:Bathrooms][:$gte] = @bathrooms
         else
-            @bathroom_filter[:Bathrooms][:$eq] = @bathrooms
+            @bathroomFilter[:Bathrooms][:$eq] = @bathrooms
         end
     end
 
     if @hasLaundry.nil? 
-        @hasLaundry_filter = nil
+        @hasLaundryFilter = nil
     else
-        @hasLaundry_filter[:HasLaundry] = {}
-        @hasLaundry_filter[:HasLaundry][:$eq] = @hasLaundry
+        @hasLaundryFilter[:HasLaundry] = {}
+        @hasLaundryFilter[:HasLaundry][:$eq] = @hasLaundry
     end
     
     if @hasAnimals.nil? 
-        @hasAnimals_filter = nil
+        @hasAnimalsFilter = nil
     else
-        @hasAnimals_filter[:HasAnimals] = {}
-        @hasAnimals_filter[:HasAnimals][:$eq] = @hasAnimals
+        @hasAnimalsFilter[:HasAnimals] = {}
+        @hasAnimalsFilter[:HasAnimals][:$eq] = @hasAnimals
     end
     
     if @hasParking.nil? 
-        @hasParking_filter = nil
+        @hasParkingFilter = nil
     else
-        @hasParking_filter[:HasParking] = {}
-        @hasParking_filter[:HasParking][:$eq] = @hasParking
+        @hasParkingFilter[:HasParking] = {}
+        @hasParkingFilter[:HasParking][:$eq] = @hasParking
     end
     
     if @hasAirConditioning.nil? 
-        @hasAirConditioning_filter = nil
+        @hasAirConditioningFilter = nil
     else
-        @hasAirConditioning_filter[:HasAirConiditioning] = {}
-        @hasAirConditioning_filter[:HasAirConiditioning][:$eq] = @hasAirConditioning
+        @hasAirConditioningFilter[:HasAirConiditioning] = {}
+        @hasAirConditioningFilter[:HasAirConiditioning][:$eq] = @hasAirConditioning
     end
     
     if @type.nil? 
-        @type_filter = nil
+        @typeFilter = nil
     else
-        @type_filter[:Type] = {}
-        @type_filter[:Type][:$eq] = @type
+        @typeFilter[:Type] = {}
+        @typeFilter[:Type][:$eq] = @type
     end
     
     if @start.nil? 
-        @start_filter = nil
+        @startFilter = nil
     else 
-        @start_filter[:Start] = {}
-        @start_filter[:Start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
+        @startFilter[:Start] = {}
+        @startFilter[:Start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
     end
 
     if @tags.nil? 
-        @tag_filter = nil
+        @tagFilter = nil
     else 
-        @tag_filter[:Tags] = {}
-        @tag_filter[:Tags][:$in] = @tags # $in matches on either of the elements
+        @tagFilter[:Tags] = {}
+        @tagFilter[:Tags][:$in] = @tags # $in matches on either of the elements
     end
     
     if @university.nil?
-        @university_filter = nil
+        @universityFilter = nil
     else
-        @university_filter[:University] = @university
+        @universityFilter[:University] = @university
     end
     
     if @userId.nil?
-        @userId_filter = nil
+        @userIdFilter = nil
     else
-        @userId_filter[:UserId] = @userId
+        @userIdFilter[:UserId] = @userId
     end
     
     if @landlordId.nil?
-        @landlordId_filter = nil
+        @landlordIdFilter = nil
     else
-        @landlordId_filter[:LandlordId] = @landlordId
+        @landlordIdFilter[:LandlordId] = @landlordId
     end
 end
 
-def combine_filters_into_query 
-    @main_filter["$and"] = Array.new
-    if not @price_filter.nil? 
-        @main_filter["$and"].push @price_filter
+def combineFiltersIntoQuery 
+    @mainFilter["$and"] = Array.new
+    if not @priceFilter.nil? 
+        @mainFilter["$and"].push @priceFilter
     end
-    if not @bedroom_filter.nil? 
-        @main_filter["$and"].push @bedroom_filter
+    if not @bedroomFilter.nil? 
+        @mainFilter["$and"].push @bedroomFilter
     end
-    if not @bathroom_filter.nil? 
-        @main_filter["$and"].push @bathroom_filter
+    if not @bathroomFilter.nil? 
+        @mainFilter["$and"].push @bathroomFilter
     end
-    if not @hasLaundry_filter.nil? 
-        @main_filter["$and"].push @hasLaundry_filter
+    if not @hasLaundryFilter.nil? 
+        @mainFilter["$and"].push @hasLaundryFilter
     end
-    if not @hasParking_filter.nil? 
-        @main_filter["$and"].push @hasParking_filter
+    if not @hasParkingFilter.nil? 
+        @mainFilter["$and"].push @hasParkingFilter
     end
-    if not @hasAirConditioning_filter.nil? 
-        @main_filter["$and"].push @hasAirConditioning_filter
+    if not @hasAirConditioningFilter.nil? 
+        @mainFilter["$and"].push @hasAirConditioningFilter
     end
-    if not @hasAnimals_filter.nil? 
-        @main_filter["$and"].push @hasAnimals_filter
+    if not @hasAnimalsFilter.nil? 
+        @mainFilter["$and"].push @hasAnimalsFilter
     end
-    if not @type_filter.nil? 
-        @main_filter["$and"].push @type_filter
+    if not @typeFilter.nil? 
+        @mainFilter["$and"].push @typeFilter
     end
-    if not @start_filter.nil? 
-        @main_filter["$and"].push @start_filter
+    if not @startFilter.nil? 
+        @mainFilter["$and"].push @startFilter
     end
-    if not @tag_filter.nil? 
-        @main_filter["$and"].push @tag_filter
+    if not @tagFilter.nil? 
+        @mainFilter["$and"].push @tagFilter
     end
-    if not @university_filter.nil?
-        @main_filter["$and"].push @university_filter
+    if not @universityFilter.nil?
+        @mainFilter["$and"].push @universityFilter
     end
-    if not @userId_filter.nil?
-        @main_filter["$and"].push @userId_filter
+    if not @userIdFilter.nil?
+        @mainFilter["$and"].push @userIdFilter
     end
-    if not @landlordId_filter.nil?
-        @main_filter["$and"].push @landlordId_filter
+    if not @landlordIdFilter.nil?
+        @mainFilter["$and"].push @landlordIdFilter
     end
     
-    if @main_filter["$and"].count == 0
-        @main_filter = {}
+    if @mainFilter["$and"].count == 0
+        @mainFilter = {}
     end
 end
 
 begin
-   
-    data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
     
     unless data.nil?
-        @lower = data["price"]["low"].to_i if not data["price"].nil?
-        @upper = data["price"]["high"].to_i if not data["price"].nil?   
-        @bedrooms = data["bedrooms"].to_i if not data["bedrooms"].nil? and not data["bedrooms"] == "0+" and not data["bedrooms"] == "studio"
-        @bedrooms = data["bedrooms"] if data["bedrooms"] == "studio"
-        @bathrooms = data["bathrooms"].to_i if not data["bathrooms"].nil? and not data["bathrooms"] == "0+"
-        @hasLaundry = data["laundry"].to_b if not data["laundry"].nil? and not data["laundry"] == "both"
-        @hasParking = data["parking"].to_b if not data["parking"].nil? and not data["parking"] == "both"
-        @hasAnimals = data["animals"].to_b if not data["animals"].nil? and not data["animals"] == "both"
-        @hasAirConditioning = data["airConditioning"].to_b if not data["airConditioning"].nil? and not data["airConditioning"] == "both"
-        @type = data["type"] if not data["type"].nil? and not data["type"] == "both"
-        @start = data["start"] if not data["start"].nil? and not data["start"].empty?
-        @university = data["university"] if not data["university"].nil? and not data["university"].empty?
-        @tags = data["tags"] if not data["tags"].nil? and not data["tags"].length == 0    
+        @lower = data["Price"]["Low"].to_i if not data["Price"].nil?
+        @upper = data["Price"]["High"].to_i if not data["Price"].nil?   
+        @bedrooms = data["Bedrooms"].to_i if not data["Bedrooms"].nil? and not data["Bedrooms"] == "0+" and not data["Bedrooms"] == "studio"
+        @bedrooms = data["Bedrooms"] if data["Bedrooms"] == "studio"
+        @bathrooms = data["Bathrooms"].to_i if not data["Bathrooms"].nil? and not data["Bathrooms"] == "0+"
+        @hasLaundry = data["Laundry"].to_b if not data["Laundry"].nil? and not data["Laundry"] == "both"
+        @hasParking = data["Parking"].to_b if not data["Parking"].nil? and not data["Parking"] == "both"
+        @hasAnimals = data["Animals"].to_b if not data["Animals"].nil? and not data["Animals"] == "both"
+        @hasAirConditioning = data["AirConditioning"].to_b if not data["AirConditioning"].nil? and not data["AirConditioning"] == "both"
+        @type = data["Type"] if not data["Type"].nil? and not data["Type"] == "both"
+        @start = data["Start"] if not data["Start"].nil? and not data["Start"].empty?
+        @university = data["University"] if not data["University"].nil? and not data["University"].empty?
+        @tags = data["Tags"] if not data["Tags"].nil? and not data["Tags"].length == 0    
     end
     
-    @is_admin = ARGV[3].to_b unless ARGV[3].empty?
+    @isAdmin = ARGV[3].to_b unless ARGV[3].empty?
     
-    unless @is_admin
+    unless @isAdmin
         @userId = ARGV[1] unless ARGV[1].empty?
         @landlordId = ARGV[1] unless ARGV[1].empty?
         @key = ARGV[2] unless ARGV[2].empty?
@@ -203,41 +202,41 @@ begin
         end   
     end
 
-    @price_filter = {}
-    @bedroom_filter = {}
-    @bathroom_filter = {}
-    @hasLaundry_filter = {}
-    @hasParking_filter = {}
-    @hasAnimals_filter = {}
-    @hasAirConditioning_filter = {}
-    @type_filter = {}
-    @start_filter = {}
-    @university_filter = {}
-    @tag_filter = {}
-    @main_filter = {}
-    @userId_filter = {}
-    @landlordId_filter = {}
+    @priceFilter = {}
+    @bedroomFilter = {}
+    @bathroomFilter = {}
+    @hasLaundryFilter = {}
+    @hasParkingFilter = {}
+    @hasAnimalsFilter = {}
+    @hasAirConditioningFilter = {}
+    @typeFilter = {}
+    @startFilter = {}
+    @universityFilter = {}
+    @tagFilter = {}
+    @mainFilter = {}
+    @userIdFilter = {}
+    @landlordIdFilter = {}
 
-    set_filters
-    combine_filters_into_query
+    setFilters
+    combineFiltersIntoQuery
     
     File.open("output.log", "a") do |output|
-        output.puts @main_filter.inspect
+        output.puts @mainFilter.inspect
     end
 
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
-    mongo_session.use("enhabit")# this is our current database
+    mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
+    mongoSession.use("enhabit")# this is our current database
     
-    documents = mongo_session[:listings].find(@main_filter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1).to_a
     
-    mongo_session.disconnect
+    mongoSession.disconnect
 
     if documents.count == 0
         puts "No Matching Entries"
     else
-        if not @is_admin and not @key.nil?
+        if not @isAdmin and not @key.nil?
             documents.each do |doc|
-                account = mongo_session[:accounts].find({@key => doc[@key]}).select(Username: 1).one
+                account = mongoSession[:accounts].find({@key => doc[@key]}).select(Username: 1).one
                 
                 doc["Username"] = account["Username"] unless account["Username"].nil?
                 
@@ -246,7 +245,7 @@ begin
             end
         else
             documents.each do |doc|
-                account = mongo_session[:accounts].find({"UserId" => doc["UserId"]}).select(Username: 1).one
+                account = mongoSession[:accounts].find({"UserId" => doc["UserId"]}).select(Username: 1).one
                 doc["Username"] = account["Username"] unless account.nil?
                 
                 doc.delete("UserId")

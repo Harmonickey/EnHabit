@@ -93,7 +93,7 @@
                 
                     <ul class="dropdown-menu">
                         <li><a style="cursor: pointer;" href="../account">Account</a></li>
-                        <li><a style="cursor: pointer;" onclick="logout()">Logout</a></li>
+                        <li><a style="cursor: pointer;" onclick="Logout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -252,7 +252,7 @@
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="create_listing()">Create Listing</button>
+                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="CreateListing()">Create Listing</button>
                     </div>
                 </div>
             </div>
@@ -291,17 +291,17 @@ Dropzone.autoDiscover = false;
 
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
-var added_files = {};
+var addedFiles = {};
 var landlordList = [];
 
 $(function() 
 {  
-    createDropzone("create", "#createListingModal form");
+    CreateDropzone("create", "#createListingModal form");
 
-    getAllListings();
-    getAllLandlords();
+    GetAllListings();
+    GetAllLandlords();
 
-    initSpecialFields();
+    InitSpecialFields();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

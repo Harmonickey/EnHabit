@@ -5,11 +5,11 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
-abs_path = Dir.pwd
-base = abs_path.split("/").index("public_html")
-deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
-$: << "#{deployment_base}/Libraries"
+$: << "#{deploymentBase}/Libraries"
 
 require 'json'
 require 'bson'
@@ -19,73 +19,73 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def user_exists(id, key, pass)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+def UserExists(id, key, pass)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
-    query_obj = Hash.new
-    query_obj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
+    queryObj = Hash.new
+    queryObj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
     
     documents = Array.new
     
-    ret_val = false
+    retVal = false
     
     begin
-        mongo_session.with(safe: true) do |session|
-            documents = session[:accounts].find(query_obj).to_a
+        mongoSession.with(safe: true) do |session|
+            documents = session[:accounts].find(queryObj).to_a
         end
         
         if documents.count > 0
-            ret_val = PasswordHash.validatePassword(pass, documents[0]["Password"])
+            retVal = PasswordHash.validatePassword(pass, documents[0]["Password"])
         end
         
-        mongo_session.disconnect
+        mongoSession.disconnect
     end
     
-    return ret_val
+    return retVal
 end
 
-def delete_user(id, key)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+def DeleteUser(id, key)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
-    query_obj = Hash.new
-    query_obj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
+    queryObj = Hash.new
+    queryObj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
     
-    ret_msg = ""
+    retMsg = ""
     
     begin
         #delete the user
-        mongo_session.with(safe: true) do |session|
-            session[:accounts].find(query_obj).remove
+        mongoSession.with(safe: true) do |session|
+            session[:accounts].find(queryObj).remove
         end
         
         #cascade delete the listings associated with the user
-        mongo_session.with(safe: true) do |session|
-            session[:listings].find(query_obj).remove_all
+        mongoSession.with(safe: true) do |session|
+            session[:listings].find(queryObj).remove_all
         end
         
-        ret_msg = "Okay"
+        retMsg = "Okay"
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e.message
+        retMsg = e.message
     end
     
-    mongo_session.disconnect
-    return ret_msg
+    mongoSession.disconnect
+    return retMsg
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
-    id = ARGV[1]
-    key = ARGV[2]
-    is_admin = ARGV[3].to_b
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
+    id = ARGV[1] unless ARGV[1].empty?
+    key = ARGV[2] unless ARGV[2].empty?
+    isAdmin = ARGV[3].to_b unless ARGV[3].empty?
     
     # we can only delete other users if we're an admin
-    id = data["id"] if not data["id"].nil? and not data["id"].empty? and is_admin
-    key = "_id" if is_admin
+    id = data["id"] if not data["id"].nil? and not data["id"].empty? and isAdmin
+    key = "_id" if isAdmin
     
-    if user_exists(id, key, data["password"])
-        puts delete_user(id, key)
+    if UserExists(id, key, data["Password"])
+        puts DeleteUser(id, key)
     else
         puts "Incorrect Password"
     end

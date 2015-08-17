@@ -207,7 +207,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-user-button" type="button" class="btn btn-success" onclick="create_account()">Create User</button>
+                        <button id="create-user-button" type="button" class="btn btn-success" onclick="CreateAccount()">Create User</button>
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@
 
 $(function() 
 {   
-    initSpecialFieldsUser();
+    InitSpecialFieldsUser();
 
     getAllUsers();
 });

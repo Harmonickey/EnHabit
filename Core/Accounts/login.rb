@@ -5,55 +5,55 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
-abs_path = Dir.pwd
-base = abs_path.split("/").index("public_html")
-deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
-$: << "#{deployment_base}/Libraries"
+$: << "#{deploymentBase}/Libraries"
 
 require 'json'
 require 'moped'
 require 'bson'
 require 'PasswordHash'
 
-@is_landlord = false
-@is_admin = false
+@isLandlord = false
+@isAdmin = false
 
-def user_exists(user, pass)
+def UserExists(user, pass)
 
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
-    accounts = mongo_session[:accounts]
+    accounts = mongoSession[:accounts]
 	
-    query = Hash.new
-    query["Username"] = user
+    queryObj = Hash.new
+    queryObj["Username"] = user
 	
-    documents = accounts.find(query).to_a
-    mongo_session.disconnect
+    documents = accounts.find(queryObj).to_a
+    mongoSession.disconnect
     if documents.count == 0
         return false
     else
         # if you have a landlord ID then they're obviously a landlord
-        @is_landlord = documents[0]["IsLandlord"]
-        @is_admin = documents[0]["IsAdmin"]
-        id = (@is_landlord ? documents[0]["LandlordId"] : documents[0]["UserId"])
+        @isLandlord = documents[0]["IsLandlord"]
+        @isAdmin = documents[0]["IsAdmin"]
+        id = (@isLandlord ? documents[0]["LandlordId"] : documents[0]["UserId"])
         return {"exists" => PasswordHash.validatePassword(pass, documents[0]["Password"]), "id" => id}
     end
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
 	
-    result = user_exists(data["username"], data["password"])
+    result = UserExists(data["Username"], data["Password"])
     
     if result["exists"]
-        ret_msg = "Okay"
-        ret_msg += ":Landlord" if @is_landlord
-        ret_msg += ":Tenant" if not @is_landlord
-        ret_msg += ":Admin" if @is_admin
-        ret_msg += ":" + result["id"]
-        puts ret_msg
+        retMsg = "Okay"
+        retMsg += ":Landlord" if @isLandlord
+        retMsg += ":Tenant" if not @isLandlord
+        retMsg += ":Admin" if @isAdmin
+        retMsg += ":" + result["id"]
+        puts retMsg
     else
         puts "Incorrect Username/Password"
     end

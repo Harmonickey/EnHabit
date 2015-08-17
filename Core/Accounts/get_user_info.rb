@@ -9,29 +9,29 @@ require 'moped'
 require 'bson'
 require 'json'
 
-def get_user_info(id, key)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
-    mongo_session.use("enhabit")# this is our current database
+def GetUserInfo(id, key)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
+    mongoSession.use("enhabit")# this is our current database
     
-    ret_msg = Hash.new
+    retMsg = Hash.new
     
     documents = Array.new
     
-    query_obj = Hash.new
-    query_obj[key] = id
+    queryObj = Hash.new
+    queryObj[key] = id
     
     begin
-        mongo_session.with(safe: true) do |session|
-            documents = session[:accounts].find(query_obj).select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).to_a
-            ret_msg = documents[0]
+        mongoSession.with(safe: true) do |session|
+            documents = session[:accounts].find(queryObj).select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).to_a
+            retMsg = documents[0]
         end
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
+        retMsg = e
     end
     
-	mongo_session.disconnect
+	mongoSession.disconnect
     
-    return ret_msg
+    return retMsg
 end
 
 begin
@@ -39,7 +39,7 @@ begin
     id = ARGV[1] unless ARGV[1].empty?
     key = ARGV[2] unless ARGV[2].empty?
     
-    result = get_user_info(id, key)
+    result = GetUserInfo(id, key)
 
     puts result.to_json
 rescue Exception => e

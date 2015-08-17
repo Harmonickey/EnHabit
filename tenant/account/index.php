@@ -172,8 +172,8 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
-                            <button class='btn btn-primary' onclick='update_account();'>Update Account</button> 
-                            <button class='btn btn-danger' onclick='delete_account();'>Delete Account</button>
+                            <button class='btn btn-primary' onclick='UpdateAccount();'>Update Account</button> 
+                            <button class='btn btn-danger' onclick='DeleteAccount();'>Delete Account</button>
                         </div> 
                     </div>
 				</div> <!-- /widget-content -->

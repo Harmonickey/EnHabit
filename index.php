@@ -62,9 +62,9 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Menu Icon for smaller viewports -->
                 <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                 <ul id="main-menu">
-                    <li id="login-function" class="menu-item scroll" onclick="load_modal(event, 'modal-content-login', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
+                    <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
                     <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo (isset($_SESSION["landlord"]) ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
-                    <li id="view_listings_list-function" class="menu-item scroll" onclick="open_listings_list();"><a class="btn btn-outline-inverse btn-sm">View Details</a></li>
+                    <li id="view_listings_list-function" class="menu-item scroll" onclick="openListingsList();"><a class="btn btn-outline-inverse btn-sm">View Details</a></li>
                 </ul>
                 <div id="Filters">
                     <h1 class="text-center">Filter listings</h1>
@@ -121,7 +121,7 @@ if (!isset($_SESSION['CREATED'])) {
                 </div>
                 <ul id="search-section">
                     <li id="search-function" class="menu-item scroll" onclick="searchForListings();"><a class="btn btn-outline-inverse btn-sm">Search</a></li>
-                    <li id="extra-filters-function" class="menu-item scroll" onclick="open_extras_view();"><a class="btn btn-outline-inverse btn-sm" >Show Extra Filters</a></li>
+                    <li id="extra-filters-function" class="menu-item scroll" onclick="openExtrasView();"><a class="btn btn-outline-inverse btn-sm" >Show Extra Filters</a></li>
                 </ul>
                 <!-- #main-menu -->
                 <!-- Footer -->
@@ -133,7 +133,7 @@ if (!isset($_SESSION['CREATED'])) {
             </section>
             <div id="listings_list">
                 <div id="listings">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="close_listings_list();">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="closeListingsList();">×</button>
                 </div>
             </div>
             <div id="extras_view">
@@ -176,12 +176,12 @@ if (!isset($_SESSION['CREATED'])) {
                 <h1>Log In</h1>
                 <label>Username: </label><input type="textbox" class="form-control username" />
                 <label>Password: </label><input type="password" class="form-control password" />
-                <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="login_user(true);" style="margin-top: 15px;"/>
+                <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="LoginUser(true);" style="margin-top: 15px;"/>
                 <p style="text-align: center;">Or</p>
-                <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="login_facebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
+                <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="LoginFacebook();" style="margin-top: 15px"/><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
                 <p class="login-error alert alert-danger" style="display: none;"></p>
                 <div></div>
-                <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="load_modal(event, 'modal-content-register', 'create_account', 'Create an Account');">Create an Account</a>
+                <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');">Create an Account</a>
             </div>
             <!-- #modal-content-login -->
             <!-- Register -->
@@ -193,8 +193,8 @@ if (!isset($_SESSION['CREATED'])) {
                 <label>Last Name: </label><input type="text" class="form-control lastname" />
                 <label>Email: </label><input type="text" class="form-control email" />
                 <label>Phone Number: </label><input type="text" class="form-control phonenumber" placeholder="xxx-xxx-xxxx" />
-                <input type="button" class="btn btn-outline-inverse btn-lg create_account-btn" onclick="create_account()" value="Create Account" style="margin-top: 15px;" />
-                <p class="create_account-error alert alert-danger" style="display: none;"></p>
+                <input type="button" class="btn btn-outline-inverse btn-lg CreateAccount-btn" onclick="CreateAccount()" value="Create Account" style="margin-top: 15px;" />
+                <p class="CreateAccount-error alert alert-danger" style="display: none;"></p>
             </div>
             <!-- #modal-content-register -->
             <!-- Register -->

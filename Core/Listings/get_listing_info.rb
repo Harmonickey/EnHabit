@@ -11,32 +11,32 @@ require 'moped'
 
 Moped::BSON = BSON
 
-def get_listing_info(oid)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) 
-    mongo_session.use("enhabit")
+def GetListingInfo(oid)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) 
+    mongoSession.use("enhabit")
 
-    listing_obj = Hash.new
-    listing_obj["_id"] = Moped::BSON::ObjectId.from_string(oid.to_s)
+    listingObj = Hash.new
+    listingObj["_id"] = Moped::BSON::ObjectId.from_string(oid.to_s)
     
-    ret_msg = Hash.new
+    retMsg = Hash.new
  
     begin
-        mongo_session.with(safe: true) do |session|
-            documents = session[:listings].find(listing_obj).to_a
-            ret_msg = documents[0]
+        mongoSession.with(safe: true) do |session|
+            documents = session[:listings].find(listingObj).to_a
+            retMsg = documents[0]
         end
     rescue Moped::Errors::OperationFailure => e
-        ret_msg = e
+        retMsg = e
     end
     
-	mongo_session.disconnect
-    return ret_msg
+	mongoSession.disconnect
+    return retMsg
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
  
-    result = get_listing_info(data["oid"])
+    result = GetListingInfo(data["oid"])
 
     puts result.to_json
 rescue Exception => e

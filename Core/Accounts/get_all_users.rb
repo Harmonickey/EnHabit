@@ -12,15 +12,15 @@ require 'moped'
 Moped::BSON = BSON
 
 begin
-    mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
-    mongo_session.use("enhabit")# this is our current database
+    mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
+    mongoSession.use("enhabit")# this is our current database
 
     documents = Array.new
     
-    mongo_session.with(safe: true) do |session|
+    mongoSession.with(safe: true) do |session|
         documents = session[:accounts].find().select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1, IsActive: 1, IsAdmin: 1, IsVerified: 1, IsLandlord: 1).to_a
     end
-    mongo_session.disconnect
+    mongoSession.disconnect
 
     if documents.count == 0
         puts "No Users"

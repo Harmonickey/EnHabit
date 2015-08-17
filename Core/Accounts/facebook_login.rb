@@ -10,59 +10,59 @@ require 'json'
 require 'moped'
 require 'bson'
 
-def create_user_from_facebook_credentials(fbUserId, pass)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+def CreateUserFromFacebookCredentials(fbUserId, pass)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
     #landlords (giving a landlord id) is assigned by admins, or through special portal
     
-    usr_obj = Hash.new
+    usrObj = Hash.new
     # since usernames need to be unique and recognizable in the javascript later
-    usr_obj["Username"] = SecureRandom.hex.to_s + "Facebook"
-    usr_obj["UserId"] = SecureRandom.uuid
-    usr_obj["FacebookId"] = fbUserId
-    usr_obj["Password"] = pass
-    usr_obj["FirstName"] = nil
-    usr_obj["LastName"] = nil
-    usr_obj["PhoneNumber"] = SecureRandom.hex
-    usr_obj["Email"] = SecureRandom.hex
-    usr_obj["IsActive"] = true
-    usr_obj["IsAdmin"] = false
-    usr_obj["IsVerified"] = true
-    usr_obj["IsLandlord"] = false
+    usrObj["Username"] = SecureRandom.hex.to_s + "Facebook"
+    usrObj["UserId"] = SecureRandom.uuid
+    usrObj["FacebookId"] = fbUserId
+    usrObj["Password"] = pass
+    usrObj["FirstName"] = nil
+    usrObj["LastName"] = nil
+    usrObj["PhoneNumber"] = SecureRandom.hex
+    usrObj["Email"] = SecureRandom.hex
+    usrObj["IsActive"] = true
+    usrObj["IsAdmin"] = false
+    usrObj["IsVerified"] = true
+    usrObj["IsLandlord"] = false
  
-    query_obj = Hash.new
-    query_obj["FacebookId"] = fbUserId
+    queryObj = Hash.new
+    queryObj["FacebookId"] = fbUserId
  
     documents = Array.new
-    ret_msg = ""
+    retMsg = ""
  
-    mongo_session.with(safe: true) do |session|
-        documents = session[:accounts].find(query_obj).to_a
+    mongoSession.with(safe: true) do |session|
+        documents = session[:accounts].find(queryObj).to_a
     end
     
     if documents.count == 0 # no users yet, create it automatically
-        mongo_session.with(safe: true) do |session|
-            session[:accounts].insert(usr_obj)
+        mongoSession.with(safe: true) do |session|
+            session[:accounts].insert(usrObj)
         end
-        ret_msg = "Okay:Created:#{usr_obj["UserId"]}"
+        retMsg = "Okay:Created:#{usrObj["UserId"]}"
     else
-        ret_msg = "Okay"
-        ret_msg += ":Landlord" if documents[0]["IsLandlord"]
-        ret_msg += ":Tenant" if not documents[0]["IsLandlord"]
-        ret_msg += ":Admin" if documents[0]["IsAdmin"]
-        ret_msg += ":" + (documents[0]["IsLandlord"] ? documents[0]["LandlordId"] : documents[0]["UserId"])
+        retMsg = "Okay"
+        retMsg += ":Landlord" if documents[0]["IsLandlord"]
+        retMsg += ":Tenant" if not documents[0]["IsLandlord"]
+        retMsg += ":Admin" if documents[0]["IsAdmin"]
+        retMsg += ":" + (documents[0]["IsLandlord"] ? documents[0]["LandlordId"] : documents[0]["UserId"])
     end
     
-    mongo_session.disconnect
-    return ret_msg
+    mongoSession.disconnect
+    return retMsg
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
 	
     #create a user from the facebook credentials if there isn't one already
-    puts create_user_from_facebook_credentials(data["username"], data["password"])
+    puts CreateUserFromFacebookCredentials(data["Username"], data["Password"])
 rescue Exception => e
     puts e.message
 end

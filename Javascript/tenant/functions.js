@@ -20,7 +20,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function getAllListings()
+function GetAllListings()
 {
     $.ajax(
     {
@@ -42,11 +42,11 @@ function getAllListings()
             {
                 if (!res)
                 {
-                    throw new Error("Unable to retrieve listings");
+                    throw new Error("No Listings Found");
                     $("#accordion").html("<p>No Listing Yet</p>");
                     $(".actions a").show();                      
                 }
-                else if (contains(res, "No Matching Entries"))
+                else if (Contains(res, "No Matching Entries"))
                 {
                     $("#accordion").html("<p>No Listing Yet</p>");
                     $(".actions a").show();
@@ -57,7 +57,7 @@ function getAllListings()
                     
                     var data = JSON.parse(res);
                     
-                    if (contains(res, "Error"))
+                    if (Contains(res, "Error"))
                     {
                         throw new Error(res);
                         $(".actions a").show();
@@ -68,19 +68,19 @@ function getAllListings()
                         {
                             var oid = data[i]._id.$oid;
                             
-                            $("#accordion").append(createAccordionView(oid, data[i]));
+                            $("#accordion").append(CreateAccordionView(oid, data[i]));
                             
                             var selector = "[id='" + oid + "'] form";
                             
-                            createDropzone(oid, selector, data[i].Pictures);
+                            CreateDropzone(oid, selector, data[i].Pictures);
                                 
-                            setGeocompleteTextBox(oid);
-                            setTextBoxWithAutoNumeric(oid);
-                            setDatePickerTextBox(oid);
-                            setBootstrapSwitches(oid);
-                            setTextBoxWithTags(oid);
+                            SetGeocompleteTextBox(oid);
+                            SetTextBoxWithAutoNumeric(oid);
+                            SetDatePickerTextBox(oid);
+                            SetBootstrapSwitches(oid);
+                            SetTextBoxWithTags(oid);
                             
-                            added_files[oid] = false;
+                            addedFiles[oid] = false;
                         }
                         
                         if (data.length == 0)
@@ -97,14 +97,7 @@ function getAllListings()
         },
         error: function(res, err)
         {
-            try
-            {
-                throw new Error(res + " " + err);
-            }
-            catch(e)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-            }
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
         }
     });
 }
@@ -124,7 +117,7 @@ function getAllLandlords()
         {
             try
             {
-                if (res && !contains(res, "No Users"))
+                if (res && !Contains(res, "No Users"))
                 {             
                     var data = JSON.parse(res);
                     
@@ -136,16 +129,20 @@ function getAllLandlords()
                         }
                     }
                     
-                    $($("#createListingModal .ui-widget input")[0]).autocomplete({
-                       source: function(request, response) {
+                    $($("#createListingModal .ui-widget input")[0]).autocomplete(
+                    {
+                        source: function(request, response) 
+                        {
                             var results = $.ui.autocomplete.filter(landlordList, request.term);
 
                             response(results.slice(0, 5)); // limit to 5 results at a time
                         } 
                     });
                     
-                    $($("#createListingModal .ui-widget input")[1]).autocomplete({
-                       source: function(request, response) {
+                    $($("#createListingModal .ui-widget input")[1]).autocomplete(
+                    {
+                        source: function(request, response) 
+                        {
                             var results = $.ui.autocomplete.filter(userList, request.term);
 
                             response(results.slice(0, 5)); // limit to 5 results at a time
@@ -167,81 +164,67 @@ function getAllLandlords()
 
 function getAccount()
 {
-    try
+    $.ajax(
     {
-        $.ajax(
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            $(".account").prepend("<i class='fa fa-spinner fa-pulse' />");
+        },
+        data: 
+        {
+            command: "get_user_info",
+            endpoint: "Accounts"
+        },
+        success: function(res) 
+        {
+            try
             {
-                $(".account").prepend("<i class='fa fa-spinner fa-pulse' />");
-            },
-            data: 
-            {
-                command: "get_user_info",
-                endpoint: "Accounts"
-            },
-            success: function(res) 
-            {
-                try
+                if (!res || Contains(res, "Could Not Find User"))
                 {
-                    if (!res || contains(res, "Could Not Find User"))
+                    throw new Error("Unable to retrieve account info");
+                }
+                else
+                {
+                    $(".account .fa-spinner").remove();
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
                     {
-                        throw new Error("Unable to retrieve account info");
+                        throw new Error(res);
                     }
                     else
                     {
-                        $(".account .fa-spinner").remove();
-
-                        var data = JSON.parse(res);
-                        
-                        if (contains(res, "Error"))
-                        {
-                            throw new Error(res);
-                        }
-                        else
-                        {
-                            fillAccountInfo(data);
-                        }
+                        FillAccountInfo(data);
                     }
                 }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
-            },
-            error: function(res, err)
-            {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
-            },
-            complete: function()
-            {
-                $(".account .fa-spinner").remove();
             }
-        });
-    }
-    catch(e)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-    }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $(".account .fa-spinner").remove();
+        }
+    });
 }
 
-function setBootstrapSwitches(rowId)
+function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":last").bootstrapSwitch({onText: "Yes", offText: "No"});
     $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
 }
 
-function setGeocompleteTextBox(rowId)
+function SetGeocompleteTextBox(rowId)
 {
     var row = $("#" + rowId + " div input[type='text']");
     var hidden = $("#" + rowId + " input[type='hidden']");
@@ -254,7 +237,7 @@ function setGeocompleteTextBox(rowId)
         });
 }
 
-function setTextBoxWithAutoNumeric(rowId)
+function SetTextBoxWithAutoNumeric(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
@@ -267,12 +250,12 @@ function setTextBoxWithAutoNumeric(rowId)
     });
 }
 
-function setTextBoxWithTags(rowId)
+function SetTextBoxWithTags(rowId)
 {
    $("#" + rowId + " input[data-role='tagsinput']").tagsinput();
 }
 
-function setDatePickerTextBox(rowId)
+function SetDatePickerTextBox(rowId)
 {
     $($("#" + rowId + " input[type='text']")[3]).pikaday(
     {
@@ -281,19 +264,19 @@ function setDatePickerTextBox(rowId)
     });
 }
 
-function fillAccountInfo(data)
+function FillAccountInfo(data)
 {
     var inputs = $(".account input");
     
     // this only skips with facebook accounts
-    if (!contains(data["Username"], "Facebook"))
+    if (!Contains(data["Username"], "Facebook"))
     {
         $(inputs[0]).val(data["Username"]);
     }
     savedUsername = data["Username"];
     
     // and, this only skips with facebook accounts too
-    if (contains(data["Email"], "@"))
+    if (Contains(data["Email"], "@"))
     {
         $(inputs[1]).val(data["Email"]);
     }
@@ -302,7 +285,7 @@ function fillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function delete_listing(oid)
+function DeleteListing(oid)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -319,86 +302,72 @@ function delete_listing(oid)
     {
         if (result === "Yes")
         {
-            try
+            $.ajax(
             {
-                $.ajax(
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    type: "POST",
-                    url: "/api.php",
-                    beforeSend: function()
-                    {
-                        $("#" + oid + " button").prop("disabled", true);
-                        $($("#" + oid + " button")[1]).text("Deleting...");
-                    },
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[1]).text("Deleting...");
+                },
+                data:
+                {
+                    command: "DeleteListing",
                     data:
                     {
-                        command: "delete_listing",
-                        data:
-                        {
-                            oid: oid
-                        },
-                        endpoint: "Listings"
+                        oid: oid
                     },
-                    success: function(res)
+                    endpoint: "Listings"
+                },
+                success: function(res)
+                {
+                    try
                     {
-                        try
+                        if (Contains(res, "Okay"))
                         {
-                            if (contains(res, "Okay"))
-                            {
-                                // remove the row that we just selected
-                                $("#" + oid).parent().remove();
-                                $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
-                                $(".actions a").show();
-                                $("#accordion").text("No Listing Yet");
-                                createDropzone("create", "#createListingModal form");
-                            }
-                            else
-                            {
-                                throw new Error("Problem Deleting Listing");
-                            }
+                            // remove the row that we just selected
+                            $("#" + oid).parent().remove();
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
+                            $(".actions a").show();
+                            $("#accordion").text("No Listing Yet");
+                            CreateDropzone("create", "#createListingModal form");
                         }
-                        catch(e)
+                        else
                         {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                        }
-                    },
-                    error: function(res, err)
-                    {
-                        try
-                        {
-                            throw new Error(res + " " + err);
-                        }
-                        catch(e)
-                        {
-                            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                            throw new Error("Problem Deleting Listing");
                         }
                     }
-                });
-            }
-            catch(e)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-            }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                }
+            });
         }
     });
 }
 
-function update_listing(oid)
+function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input").not(":eq(7)");
     
-    var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "tags", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "latitude", "longitude", "selected_address"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Landlord", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
-    var error = buildError(data);
+    var error = BuildError(data);
     
-    data.oid = oid;
-    data.university = "Northwestern";
-    data.type = (data.type == true ? "apartment" : "sublet");
-    data.address = data.address.split(",")[0];
-    data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
-    data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.pictures = pictures[oid];
+    data.id = oid;
+    data.University = "Northwestern";
+    data.Type = (data.Type == true ? "apartment" : "sublet");
+    data.Address = data.Address.split(",")[0];
+    data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures[oid];
     
     try
     {
@@ -415,9 +384,9 @@ function update_listing(oid)
             
             dropzones[id].processQueue();
             
-            if (added_files[id] == false)
+            if (addedFiles[id] == false)
             {             
-                process_listing();
+                ProcessListing();
             }
         }
     }
@@ -429,20 +398,20 @@ function update_listing(oid)
     }
 }
 
-function create_listing()
+function CreateListing()
 {   
     var inputs = $("#createListingModal input, #createListingModal select").not(":eq(13)");
     
-    var data = buildData(inputs, ["address", "unit", "rent", "start", "bedrooms", "bathrooms", "animals", "laundry", "parking", "airConditioning", "type", "landlord", "tags", "latitude", "longitude", "selected_address"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Landlord", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
     
-    var error = buildError(data);
+    var error = BuildError(data);
     
-    data.university = "Northwestern";
-    data.type = (data.type == true ? "apartment" : "sublet");
-    data.address = data.address.split(",")[0];
-    data.landlord = (data.landlord == "" ? data.landlord = '-' : data.landlord);
-    data.start = $.datepicker.formatDate('mm/dd/yy', new Date(data.start));
-    data.pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    data.University = "Northwestern";
+    data.Type = (data.Type == true ? "apartment" : "sublet");
+    data.Address = data.Address.split(",")[0];
+    data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
     try
     {
@@ -471,7 +440,7 @@ function create_listing()
     }
 }
 
-function process_listing()
+function ProcessListing()
 {
     if (pendingData == null && pendingUpdateData == null)
     {
@@ -487,7 +456,7 @@ function process_listing()
             url: "/api.php",
             data:
             {
-                command: "create_listing",
+                command: "CreateListing",
                 data: pendingData,
                 endpoint: "Listings"
             },
@@ -517,17 +486,17 @@ function process_listing()
                             var oid = listing._id.$oid;
                             var userId = listing.UserId;
                             
-                            $("#accordion").append(createAccordionView(oid, userId, listing));
+                            $("#accordion").append(CreateAccordionView(oid, userId, listing));
                                 
                             var selector = "[id='" + oid + "'] form";
                                 
-                            createDropzone(oid, selector, listing.Pictures);
+                            CreateDropzone(oid, selector, listing.Pictures);
                                 
-                            setGeocompleteTextBox(oid);
-                            setTextBoxWithAutoNumeric(oid);
-                            setDatePickerTextBox(oid);
-                            setBootstrapSwitches(oid); 
-                            setTextBoxWithTags(oid)
+                            SetGeocompleteTextBox(oid);
+                            SetTextBoxWithAutoNumeric(oid);
+                            SetDatePickerTextBox(oid);
+                            SetBootstrapSwitches(oid); 
+                            SetTextBoxWithTags(oid)
                             
                             $("#createListingModal").modal('hide');
                             
@@ -548,14 +517,7 @@ function process_listing()
             },
             error: function(res, err)
             {
-                try
-                {
-                    throw new Error(res + " " + err);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
             complete: function()
             {
@@ -567,7 +529,7 @@ function process_listing()
     else if (pendingUpdateData != null)
     {
         var id = pendingUpdateData.id;
-        added_files[id] = false;
+        addedFiles[id] = false;
         
         // update listing
         $.ajax(
@@ -576,7 +538,7 @@ function process_listing()
             url: "/api.php",
             data:
             {
-                command: "update_listing",
+                command: "UpdateListing",
                 data: pendingUpdateData,
                 endpoint: "Listings"
             },
@@ -589,7 +551,7 @@ function process_listing()
             { 
                 try
                 {
-                    if (contains(res, "Okay"))
+                    if (Contains(res, "Okay"))
                     {
                         var inputs = $("#" + id + " input");
                         var headingInputs = $("#heading" + id + " label");
@@ -618,16 +580,9 @@ function process_listing()
                     numUploaded = 0;
                 }
             },
-            error: function(err, res)
+            error: function(res, err)
             {
-                try
-                {
-                    throw new Error(err + " " + res);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             },
             complete: function()
             {
@@ -638,7 +593,7 @@ function process_listing()
     }
 }
 
-function login()
+function Login()
 {
     var username = $("#username").val().trim();
     var password = $("#password").val().trim();
@@ -675,11 +630,11 @@ function login()
                 {
                     try
                     {
-                        if (contains(res, "Okay"))
+                        if (Contains(res, "Okay"))
                         {
-                            if (contains(res, "Landlord"))
+                            if (Contains(res, "Landlord"))
                             {
-                                quick_logout(); // clears the session variables
+                                QuickLogout(); // clears the session variables
                                 throw new Error("Landlords Cannot Login to Tenant Portal");
                             }
                             else
@@ -725,12 +680,12 @@ function login()
     }
 }
 
-function quick_logout()
+function QuickLogout()
 {
     $.post("/logout.php");
 }
 
-function logout()
+function Logout()
 {
     try
     {
@@ -742,7 +697,7 @@ function logout()
             {
                 try
                 {
-                    if (contains(res, "Successfully"))
+                    if (Contains(res, "Successfully"))
                     {
                         // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                         // be a POST element, this is good for now
@@ -758,16 +713,9 @@ function logout()
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                 }
             },
-            error: function(err, res)
+            error: function(res, err)
             {
-                try
-                {
-                    throw new Error(err + " " + res);
-                }
-                catch(e)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                }
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             }
         });
     }
@@ -777,14 +725,14 @@ function logout()
     }
 }
 
-function update_account()
+function UpdateAccount()
 {
     var inputs = $(".account input");
     
-    var data = buildData(inputs, ["username", "email", "firstname", "lastname", "phonenumber", "password", "confirm"]);
+    var data = BuildData(inputs, ["Username", "Email", "FirstName", "LastName", "PhoneNumber", "Password", "Confirm"]);
     
     //first validate that the fields are filled out
-    var error = buildError(data);
+    var error = BuildError(data);
     
     try
     {
@@ -800,7 +748,7 @@ function update_account()
                 url: "/api.php",
                 data:
                 {
-                    command: "update_account",
+                    command: "UpdateAccount",
                     data: data,
                     endpoint: "Accounts"
                 },
@@ -813,10 +761,10 @@ function update_account()
                 { 
                     try
                     {
-                        if (contains(res, "Okay"))
+                        if (Contains(res, "Okay"))
                         {
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-center'});
-                            $("#title_username").html("<i class='fa fa-user'></i>" + data.username + "<b class='caret'></b>");
+                            $("#title_username").html("<i class='fa fa-user'></i>" + data.Username + "<b class='caret'></b>");
                         }
                         else
                         {
@@ -828,16 +776,9 @@ function update_account()
                         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
                     }
                 },
-                error: function(err, res)
+                error: function(res, err)
                 {
-                    try
-                    {
-                        throw new Error(err + " " + res);
-                    }
-                    catch(e)
-                    {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    }
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 },
                 complete: function()
                 {
@@ -853,7 +794,7 @@ function update_account()
     }
 }
 
-function delete_account()
+function DeleteAccount()
 {
     //check if the user really wants to do so
     $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", {
@@ -869,56 +810,49 @@ function delete_account()
         
         var data = {"password": password};
         
-        try
+        $.ajax(
         {
-            $.ajax(
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
             {
-                type: "POST",
-                url: "/api.php",
-                beforeSend: function()
+                $(".account button").prop("disabled", true);
+                $($(".account button")[1]).text("Deleting...");
+            },
+            data:
+            {
+                command: "DeleteAccount",
+                data: data,
+                endpoint: "Accounts"
+            },
+            success: function(res)
+            {
+                try
                 {
-                    $(".account button").prop("disabled", true);
-                    $($(".account button")[1]).text("Deleting...");
-                },
-                data:
-                {
-                    command: "delete_account",
-                    data: data,
-                    endpoint: "Accounts"
-                },
-                success: function(res)
-                {
-                    try
+                    if (Contains(res, "Okay"))
                     {
-                        if (contains(res, "Okay"))
-                        {
-                            logout();
-                        }
-                        else
-                        {
-                            throw new Error(res);
-                        }
+                        Logout();
                     }
-                    catch(e)
+                    else
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                        throw new Error(res);
                     }
-                },
-                error: function(res, err)
+                }
+                catch(e)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                },
-                complete: function()
-                {
-                    $(".account button").prop("disabled", false);
-                    $($(".account button")[1]).text("Delete");
                 }
-            });
-        }
-        catch(e)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-        }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $(".account button").prop("disabled", false);
+                $($(".account button")[1]).text("Delete");
+            }
+        });
     });
 }
 
@@ -928,30 +862,30 @@ UTILITY FUNCTIONS
 
 **********************/
 
-function resetListings()
+function ResetListings()
 {
     $("#listing-list tr").not(":first").remove();
     
-    getAllListings();
+    GetAllListings();
 }
 
-function initSpecialFields()
+function InitSpecialFields()
 {
-    var listing_modal = $("#createListingModal input");
+    var listingModal = $("#createListingModal input");
     
-    $(listing_modal[0]).geocomplete()
+    $(listingModal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
             var hiddenFields = $("#createListingModal input[type='hidden']");
             var keys = Object.keys(result.geometry.location);
             $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
             $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
-            $(hiddenFields[2]).val($(listing_modal[0]).val());
+            $(hiddenFields[2]).val($(listingModal[0]).val());
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
         
-    $(listing_modal[2]).autoNumeric('init', 
+    $(listingModal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -959,7 +893,7 @@ function initSpecialFields()
         lZero: 'deny'
     });
     
-    $(listing_modal[3]).pikaday(
+    $(listingModal[3]).pikaday(
     {
         minDate: new Date(), 
         setDefaultDate: new Date()
@@ -968,7 +902,7 @@ function initSpecialFields()
     $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
-function createDropzone(key, element, existingPics)
+function CreateDropzone(key, element, existingPics)
 {
     dropzones[key] = new Dropzone(element,
     {
@@ -984,7 +918,7 @@ function createDropzone(key, element, existingPics)
         {
             numUploaded = 0;
             numAdded = 0;
-            process_listing(); 
+            ProcessListing(); 
         }
         else
         {
@@ -1010,7 +944,7 @@ function createDropzone(key, element, existingPics)
             this.files[this.files.length - 1].serverFileName = filename;
         }
         
-        added_files[oid] = true;
+        addedFiles[oid] = true;
         
         numAdded++;
     });
@@ -1031,7 +965,7 @@ function createDropzone(key, element, existingPics)
         
         if (numAdded < 0)
         {
-            added_files[oid] = false;
+            addedFiles[oid] = false;
             numAdded = 0;
         }
     });
@@ -1050,27 +984,27 @@ function createDropzone(key, element, existingPics)
     }
 }
 
-function contains(haystack, needle)
+function Contains(haystack, needle)
 {  
     return (haystack.indexOf(needle) != -1)
 }
 
-function buildData(inputs, elements)
+function BuildData(inputs, elements)
 {   
     var data = {};
     
     for (var i = 0; i < elements.length; i++)
     {
-        if (elements[i] == "animals" || elements[i] == "laundry" || elements[i] == "parking" 
-         || elements[i] == "airConditioning" || elements[i] == "type")
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
+         || elements[i] == "AirConditioning" || elements[i] == "Type")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "latitude" || elements[i] == "longitude" || elements[i] == "selected_address")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress")
         {
             data[elements[i]] = $(inputs[i]).val();
         }
-        else if (elements[i] == "rent")
+        else if (elements[i] == "Rent")
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }
@@ -1090,80 +1024,80 @@ function buildData(inputs, elements)
     return data;
 }
 
-function buildError(fields)
+function BuildError(fields)
 {
-    var error_arr = [];
+    var errorArr = [];
     
     var beginning = "Please Include ";
     
-    if (fields.username === "")
+    if (fields.Username === "")
     {
-        error_arr.push("Valid Username");
+        errorArr.push("Valid Username");
     }
-    if (fields.address === "" || fields.latitude === "" || fields.longitude === "")
+    if (fields.Address === "" || fields.Latitude === "" || fields.Longitude === "")
     {
-        error_arr.push("Valid Address - Must Select Google's Result");
+        errorArr.push("Valid Address - Must Select Google's Result");
     }
-    if (fields.address !== "" && fields.address !== fields.selected_address)
+    if (fields.Address !== "" && fields.Address !== fields.SelectedAddress)
 	{
-		error_arr.push("Valid Address - Do Not Modify Google's Result After Selecting");
+		errorArr.push("Valid Address - Do Not Modify Google's Result After Selecting");
 	}
-    if (fields.rent === "")
+    if (fields.Rent === "")
     {
-        error_arr.push("Valid Monthly Rent Amount");
+        errorArr.push("Valid Monthly Rent Amount");
     }
-    if (fields.firstname == "")
+    if (fields.FirstName == "")
     {
-        error_arr.push("Valid First Name");
+        errorArr.push("Valid First Name");
     }
-    if (fields.lastname == "")
+    if (fields.LastName == "")
     {
-        error_arr.push("Valid Last Name");
+        errorArr.push("Valid Last Name");
     }
-    if (fields.email == "" || (fields.email != null && !isValidEmail(fields.email)))
+    if (fields.Email == "" || (fields.Email != null && !IsValidEmail(fields.Email)))
     {
-        error_arr.push("Valid Email");
+        errorArr.push("Valid Email");
     }
-    if (fields.phonenumber == "" || (fields.phonenumber != null && !isValidPhoneNumber(fields.phonenumber)))
+    if (fields.PhoneNumber == "" || (fields.PhoneNumber != null && !IsValidPhoneNumber(fields.PhoneNumber)))
     {
-        error_arr.push("Valid Phone Number");
+        errorArr.push("Valid Phone Number");
     }
-    if (fields.start === "")
+    if (fields.Start === "")
     {
-        error_arr.push("Valid Lease Start Date");
+        errorArr.push("Valid Lease Start Date");
     }
-    if (fields.password != "" || fields.confirm != "")
+    if (fields.Password != "" || fields.Confirm != "")
     {
-        if (fields.password != fields.confirm)
+        if (fields.Password != fields.Confirm)
         {
-            error_arr.push("Matching Password and Confirmation");
+            errorArr.push("Matching Password and Confirmation");
         }
     }
-    if (error_arr.length > 0)
+    if (errorArr.length > 0)
     {
-        if (error_arr.length == 1)
+        if (errorArr.length == 1)
         {
-            return beginning + error_arr[0];
+            return beginning + errorArr[0];
         }
         else
         {
-            var last = " and " + error_arr[error_arr.length - 1];
-            error_arr.splice(error_arr.length - 1, 1);
+            var last = " and " + errorArr[errorArr.length - 1];
+            errorArr.splice(errorArr.length - 1, 1);
             
-            return beginning + error_arr.join(", ") + last;
+            return beginning + errorArr.join(", ") + last;
         }
     }
     
     return beginning;
 }
 
-function isValidEmail(em)
+function IsValidEmail(em)
 {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(em);
 }
 
-function isValidPhoneNumber(pn)
+function IsValidPhoneNumber(pn)
 {
     /*
 	Valid Formats are...
@@ -1178,24 +1112,24 @@ function isValidPhoneNumber(pn)
     return (pn.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im) !== null);
 }
 
-function disableButtons()
+function DisableButtons()
 {
     $("button").prop("disabled", true);
 }
 
-function enableButtons()
+function EnableButtons()
 {
     $("button").prop("disabled", false);
 }
 
-function formattedDate(dateString)
+function FormattedDate(dateString)
 {
     var parts = dateString.split("T")[0].split("-");
     
     return parts[1] + "/" + parts[2] + "/" + parts[0];
 }
 
-function createAccordionView(oid, data)
+function CreateAccordionView(oid, data)
 {   
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
@@ -1204,7 +1138,7 @@ function createAccordionView(oid, data)
                             "<label>Address: " + data.Address + "</label>" + 
                             (data.Unit ? "<label>Unit: " + data.Unit + "</label>" : "") +
                             "<label>Rent: $" + data.Price + "/Month</label>" + 
-                            "<label>Start Date: " + formattedDate(data.Start) + "</label>" +
+                            "<label>Start Date: " + FormattedDate(data.Start) + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
@@ -1221,7 +1155,7 @@ function createAccordionView(oid, data)
                                 "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />" + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Start Date</label><input type='text' class='form-control' value='" + formattedDate(data.Start) + "' />" +
+                                "<label>Start Date</label><input type='text' class='form-control' value='" + FormattedDate(data.Start) + "' />" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" +
@@ -1265,8 +1199,8 @@ function createAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='update_listing(\"" + oid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='delete_listing(\"" + oid + "\");'>Delete</button>" +
+                                "<button class='btn btn-primary' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-danger' onclick='DeleteListing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +

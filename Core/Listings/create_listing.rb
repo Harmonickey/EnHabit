@@ -5,11 +5,11 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
-abs_path = Dir.pwd
-base = abs_path.split("/").index("public_html")
-@deployment_base = abs_path.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+@deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
 
-$: << "#{@deployment_base}/Libraries"
+$: << "#{@deploymentBase}/Libraries"
 
 require 'json'
 require 'bson'
@@ -19,97 +19,97 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def create_listing(is_admin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
-    listing_obj = Hash.new
-    listing_obj["Username"] = user unless user.nil?
-    listing_obj["UserId"] = userId unless userId.nil?
-    listing_obj["Landlord"] = landlord unless landlord.nil?
-    listing_obj["LandlordId"] = landlordId unless landlordId.nil?
-    listing_obj["Price"] = price.to_i
-    listing_obj["Address"] = address
-    listing_obj["Unit"] = unit unless unit.nil?
-    listing_obj["Bedrooms"] = bedrooms.to_i
-    listing_obj["Bathrooms"] = bathrooms.to_i
-    listing_obj["HasAnimals"] = animals.to_b
-    listing_obj["HasLaundry"] = laundry.to_b
-    listing_obj["HasParking"] = parking.to_b
-    listing_obj["HasAirConditioning"] = airConditioning.to_b
-    listing_obj["Type"] = type
-    listing_obj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
-    listing_obj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
-    listing_obj["University"] = university
-    listing_obj["Tags"] = tags
-    listing_obj["Pictures"] = pictures
+    listingObj = Hash.new
+    listingObj["Username"] = user unless user.nil?
+    listingObj["UserId"] = userId unless userId.nil?
+    listingObj["Landlord"] = landlord unless landlord.nil?
+    listingObj["LandlordId"] = landlordId unless landlordId.nil?
+    listingObj["Price"] = price.to_i
+    listingObj["Address"] = address
+    listingObj["Unit"] = unit unless unit.nil?
+    listingObj["Bedrooms"] = bedrooms.to_i
+    listingObj["Bathrooms"] = bathrooms.to_i
+    listingObj["HasAnimals"] = animals.to_b
+    listingObj["HasLaundry"] = laundry.to_b
+    listingObj["HasParking"] = parking.to_b
+    listingObj["HasAirConditioning"] = airConditioning.to_b
+    listingObj["Type"] = type
+    listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
+    listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
+    listingObj["University"] = university
+    listingObj["Tags"] = tags
+    listingObj["Pictures"] = pictures
     
-    query_obj = Hash.new
-    unless is_admin
+    queryObj = Hash.new
+    unless isAdmin
         if key == "UserId"
-            query_obj[key] = userId
+            queryObj[key] = userId
         elsif key == "LandlordId"
-            query_obj[key] = landlordId
+            queryObj[key] = landlordId
         end
     end
     
     document = Hash.new
     
     begin
-        mongo_session.with(safe: true) do |session|
-            curr_listings = session[:listings].find(query_obj).to_a
+        mongoSession.with(safe: true) do |session|
+            currListings = session[:listings].find(queryObj).to_a
             
             #restrict more than one listing to landlords
-            curr_listings.count > 0 and not userId.nil?
+            currListings.count > 0 and not userId.nil?
                 document["error"] = "Tenants can only have one listing at a time."
                 
-                remove_uploaded_pics pictures
+                RemoveUploaded_pics pictures
             else
-                session[:listings].insert(listing_obj)
+                session[:listings].insert(listingObj)
                 
-                ret_query_obj = Hash.new
-                ret_query_obj["$and"] = []
-                ret_query_obj["$and"].push({"Address" => address})
+                retQueryObj = Hash.new
+                retQueryObj["$and"] = []
+                retQueryObj["$and"].push({"Address" => address})
                 
                 # if we already had some listings, only grab the new one we just put in
-                ret_query_obj["$and"].push({"_id" => {"$nin" => curr_listings.collect{|l| l["_id"]}}}) if curr_listings.count > 0
+                retQueryObj["$and"].push({"_id" => {"$nin" => currListings.collect{|l| l["_id"]}}}) if currListings.count > 0
                 
-                document = session[:listings].find(ret_query_obj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Tags: 1, Pictures: 1).one
+                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Tags: 1, Pictures: 1).one
             end
         end
     rescue Moped::Errors::OperationFailure => e
         document["error"] = e
         
-        remove_uploaded_pics pictures
+        RemoveUploadedPics pictures
     end
     
-	mongo_session.disconnect
+	mongoSession.disconnect
     return document
 end
 
-def remove_uploaded_pics(pictures)
+def RemoveUploadedPics(pictures)
 
     return if pictures.nil?
 
     # delete all these pictures because we failed a query
     pictures.each do |pic|
-        filename = "#{@deployment_base}/../images/enhabit/images/" + pic 
+        filename = "#{@deploymentBase}/../images/enhabit/images/" + pic 
         File.delete(filename) if File.exist? filename
     end         
 end
 
-def get_landlord_id(landlord)
+def GetLandlordId(landlord)
     
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
     begin
-        query_obj = Hash.new
-        query_obj["Landlord"] = landlord
+        queryObj = Hash.new
+        queryObj["Landlord"] = landlord
         
         account = Array.new
-        mongo_session.with(safe: true) do |session|
-            account = session[:accounts].find(query_obj).to_a
+        mongoSession.with(safe: true) do |session|
+            account = session[:accounts].find(queryObj).to_a
         end
         
         if account.count == 0
@@ -122,18 +122,18 @@ def get_landlord_id(landlord)
     end
 end
 
-def get_user_id(user)
+def GetUserId(user)
     
-    mongo_session = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongo_session.use("enhabit") # this is our current database
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
 
     begin
-        query_obj = Hash.new
-        query_obj["Username"] = user
+        queryObj = Hash.new
+        queryObj["Username"] = user
         
         account = Array.new
-        mongo_session.with(safe: true) do |session|
-            account = session[:accounts].find(query_obj).to_a
+        mongoSession.with(safe: true) do |session|
+            account = session[:accounts].find(queryObj).to_a
         end
         
         if account.count == 0
@@ -147,19 +147,19 @@ def get_user_id(user)
 end
 
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
-    id = ARGV[1]
+    id = ARGV[1] if not ARGV[0].nil?
     key = ARGV[2]
-    is_admin = ARGV[3].to_b
+    isAdmin = ARGV[3].to_b
     
-    landlord = data["landlord"]
-    user = data["user"]
+    landlord = data["Landlord"]
+    user = data["User"]
     
-    userId = get_user_id(user) unless user.nil?
-    landlordId = get_landlord_id(landlord) unless landlord.nil?
+    userId = GetUserId(user) unless user.nil?
+    landlordId = GetLandlordId(landlord) unless landlord.nil?
     
-    unless is_admin
+    unless isAdmin
         if key == "UserId"
             userId = id
         elsif key == "LandlordId"
@@ -167,7 +167,7 @@ begin
         end
     end
     
-    result = create_listing(is_admin, key, user, userId, landlord, landlordId, data["rent"], data["address"], data["unit"], data["bedrooms"], data["bathrooms"], data["animals"], data["laundry"], data["parking"], data["airConditioning"], data["type"], data["start"], data["latitude"], data["longitude"], data["university"], data["tags"], data["pictures"])
+    result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["Type"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Tags"], data["Pictures"])
 
     puts result.to_json
 rescue Exception => e
@@ -176,9 +176,9 @@ rescue Exception => e
         output.puts e.backtrace.inspect
     end
     
-    data = JSON.parse(ARGV[0].delete('\\'))
-    pictures = data["pictures"]
-    remove_uploaded_pics pictures
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
+    pictures = data["Pictures"] unless data["Pictures"].nil?
+    RemoveUploadedPics pictures
     
     result = Hash.new
     result["error"] = e.inspect
