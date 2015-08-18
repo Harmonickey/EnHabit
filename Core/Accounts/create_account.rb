@@ -48,10 +48,10 @@ def InsertUser(isAdmin, isActive, isVerified, isLandlord, user, pass, firstName,
         end
         
         queryObj = Hash.new
-        queryObj["UserId"] = usr_obj["UserId"]
+        queryObj["UserId"] = usrObj["UserId"]
         
         mongoSession.with(safe: true) do |session|
-            document = session[:accounts].find(queryObj).one
+            document = session[:accounts].find(queryObj).select(_id: 1, Username: 1, Password: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1, IsAdmin: 1, IsActive: 1, IsVerified: 1, IsLandlord: 1).one
         end
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Username_1"
@@ -64,19 +64,18 @@ def InsertUser(isAdmin, isActive, isVerified, isLandlord, user, pass, firstName,
     end
     
 	mongoSession.disconnect
-    return document
+    return document.to_json
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
+    
     isLandlord = data["IsLandlord"].to_b unless data["IsLandlord"].nil?
     isVerified = data["IsVerified"].to_b unless data["IsVerified"].nil?
     isActive = data["IsActive"].to_b unless data["IsActive"].nil?
     isAdminData = data["IsAdmin"].to_b unless data["IsAdmin"].nil?
     
-    result = insert_user(isAdminData, isActive, isVerified, isLandlord, data["Username"], data["Password"], data["FirstName"], data["LastName"], data["Email"], data["PhoneNumber"])
-    
-    puts result.to_json
+    puts InsertUser(isAdminData, isActive, isVerified, isLandlord, data["Username"], data["Password"], data["FirstName"], data["LastName"], data["Email"], data["PhoneNumber"])
 rescue Exception => e
     puts e.inspect
 end

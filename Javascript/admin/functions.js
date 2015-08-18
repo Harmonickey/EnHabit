@@ -364,7 +364,7 @@ function UpdateAccount(uid)
                 },
                 data:
                 {
-                    command: "UpdateAccount",
+                    command: "update_account",
                     endpoint: "Accounts",
                     data: data
                 },
@@ -540,7 +540,7 @@ function DeleteAccount(uid)
             },
             data:
             {
-                command: "DeleteAccount",
+                command: "delete_account",
                 endpoint: "Accounts",
                 data: data
             },
@@ -570,7 +570,7 @@ function DeleteAccount(uid)
     });  
 }
 
-function DeleteListing(oid)
+function DeleteListing(id)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -593,13 +593,16 @@ function DeleteListing(oid)
                 url: "/api.php",
                 beforeSend: function()
                 {
-                    $("#" + oid + " button").prop("disabled", true);
-                    $($("#" + oid + " button")[1]).text("Deleting...");
+                    $("#" + id + " button").prop("disabled", true);
+                    $($("#" + id + " button")[1]).text("Deleting...");
                 },
                 data:
                 {
-                    command: "DeleteListing",
-                    data: { oid: oid },
+                    command: "delete_listing",
+                    data: 
+                    { 
+                        id: id 
+                    },
                     endpoint: "Listings"
                 },
                 success: function(res)
@@ -609,7 +612,7 @@ function DeleteListing(oid)
                         if (Contains(res, "Okay"))
                         {
                             // remove the row that we just selected
-                            $("#" + oid).parent().remove();
+                            $("#" + id).parent().remove();
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                             if ($("#accordion").text() == "")
                             {
@@ -624,11 +627,15 @@ function DeleteListing(oid)
                     catch(e)
                     {
                         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                        $("#" + id + " button").prop("disabled", false);
+                        $($("#" + id + " button")[1]).text("Delete");
                     }
                 },
                 error: function(res, err)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $("#" + id + " button").prop("disabled", false);
+                    $($("#" + id + " button")[1]).text("Delete");
                 }
             });
         }
@@ -660,7 +667,7 @@ function CreateAccount()
             },
             data:
             {
-                command: "CreateAccount",
+                command: "create_account",
                 endpoint: "Accounts",
                 data: data
             },
@@ -773,7 +780,7 @@ function ProcessListing()
             url: "/api.php",
             data:
             {
-                command: "CreateListing",
+                command: "create_listing",
                 data: pendingData,
                 endpoint: "Listings"
             },
@@ -839,6 +846,10 @@ function ProcessListing()
             {
                 $("#create-listing-button").prop("disabled", false);
                 $("#create-listing-button").text("Create Listing");
+                
+                dropzones["create"].destroy();
+                
+                CreateDropzone("create", "#createListingModal form");
             }
         });
     }
@@ -854,7 +865,7 @@ function ProcessListing()
             url: "/api.php",
             data:
             {
-                command: "UpdateListing",
+                command: "update_listing",
                 data: pendingUpdateData,
                 endpoint: "Listings"
             },

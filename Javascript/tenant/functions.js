@@ -102,7 +102,7 @@ function GetAllListings()
     });
 }
 
-function getAllLandlords()
+function GetAllLandlords()
 {
     $.ajax(
     {
@@ -285,7 +285,7 @@ function FillAccountInfo(data)
     $(inputs[4]).val(data["PhoneNumber"]);
 }
 
-function DeleteListing(oid)
+function DeleteListing(id)
 {
     //check if the user really wants to do so
     $.msgbox("Are you sure that you want to delete this listing?", 
@@ -308,15 +308,15 @@ function DeleteListing(oid)
                 url: "/api.php",
                 beforeSend: function()
                 {
-                    $("#" + oid + " button").prop("disabled", true);
-                    $($("#" + oid + " button")[1]).text("Deleting...");
+                    $("#" + id + " button").prop("disabled", true);
+                    $($("#" + id + " button")[1]).text("Deleting...");
                 },
                 data:
                 {
-                    command: "DeleteListing",
+                    command: "delete_listing",
                     data:
                     {
-                        oid: oid
+                        id: id
                     },
                     endpoint: "Listings"
                 },
@@ -327,11 +327,10 @@ function DeleteListing(oid)
                         if (Contains(res, "Okay"))
                         {
                             // remove the row that we just selected
-                            $("#" + oid).parent().remove();
+                            $("#" + id).parent().remove();
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                             $(".actions a").show();
                             $("#accordion").text("No Listing Yet");
-                            CreateDropzone("create", "#createListingModal form");
                         }
                         else
                         {
@@ -341,33 +340,37 @@ function DeleteListing(oid)
                     catch(e)
                     {
                         $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                        $("#" + id + " button").prop("disabled", false);
+                        $($("#" + id + " button")[1]).text("Delete");
                     }
                 },
                 error: function(res, err)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $("#" + id + " button").prop("disabled", false);
+                    $($("#" + id + " button")[1]).text("Delete");
                 }
             });
         }
     });
 }
 
-function UpdateListing(oid)
+function UpdateListing(id)
 {
-    var inputs = $("#" + oid + " input").not(":eq(7)");
+    var inputs = $("#" + id + " input").not(":eq(7)");
     
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Landlord", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
     
-    data.id = oid;
+    data.id = id;
     data.University = "Northwestern";
     data.Type = (data.Type == true ? "apartment" : "sublet");
     data.Address = data.Address.split(",")[0];
     data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
-    data.Pictures = pictures[oid];
+    data.Pictures = pictures[id];
     
     try
     {
@@ -456,7 +459,7 @@ function ProcessListing()
             url: "/api.php",
             data:
             {
-                command: "CreateListing",
+                command: "create_listing",
                 data: pendingData,
                 endpoint: "Listings"
             },
@@ -486,7 +489,7 @@ function ProcessListing()
                             var oid = listing._id.$oid;
                             var userId = listing.UserId;
                             
-                            $("#accordion").append(CreateAccordionView(oid, userId, listing));
+                            $("#accordion").append(CreateAccordionView(oid, listing));
                                 
                             var selector = "[id='" + oid + "'] form";
                                 
@@ -523,6 +526,10 @@ function ProcessListing()
             {
                 $("#create-listing-button").prop("disabled", false);
                 $("#create-listing-button").text("Create Listing");
+                
+                dropzones["create"].destroy();
+                
+                CreateDropzone("create", "#createListingModal form");
             }
         });
     }
@@ -538,7 +545,7 @@ function ProcessListing()
             url: "/api.php",
             data:
             {
-                command: "UpdateListing",
+                command: "update_listing",
                 data: pendingUpdateData,
                 endpoint: "Listings"
             },
@@ -577,7 +584,6 @@ function ProcessListing()
                 catch(e)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    numUploaded = 0;
                 }
             },
             error: function(res, err)
@@ -588,6 +594,8 @@ function ProcessListing()
             {
                 $("#" + id + " button").prop("disabled", false);
                 $($("#" + id + " button")[0]).text("Update");
+                numUploaded = 0;
+                pendingUpdateData = null;
             }
         });
     }
@@ -748,7 +756,7 @@ function UpdateAccount()
                 url: "/api.php",
                 data:
                 {
-                    command: "UpdateAccount",
+                    command: "update_account",
                     data: data,
                     endpoint: "Accounts"
                 },
@@ -821,7 +829,7 @@ function DeleteAccount()
             },
             data:
             {
-                command: "DeleteAccount",
+                command: "delete_account",
                 data: data,
                 endpoint: "Accounts"
             },

@@ -18,12 +18,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def DeleteListing(isAdmin, oid, id, key)
+def DeleteListing(isAdmin, listingId, userId, key)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) 
     mongoSession.use("enhabit")
 
     listingObj = Hash.new
-    listingObj["_id"] = Moped::BSON::ObjectId.from_string(oid.to_s)
+    listingObj["_id"] = Moped::BSON::ObjectId.from_string(listingId.to_s)
     
     retMsg = ""
  
@@ -32,7 +32,7 @@ def DeleteListing(isAdmin, oid, id, key)
             documents = session[:listings].find(listingObj).to_a
             
             #make sure we're not deleting someone else's listing
-            if documents[0][key] == id or isAdmin
+            if documents[0][key] == userId or isAdmin
                 listing = session[:listings].find(listingObj).select(Pictures: 1).one
                 listing["Pictures"].each do |pic|
                     filename = "#{@deploymentBase}/../images/enhabit/images/" + pic
@@ -56,9 +56,9 @@ begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
     id = ARGV[1] unless ARGV[1].empty?
     key = ARGV[2] unless ARGV[1].empty?
-    is_admin = ARGV[3].to_b unless ARGV[3].empty?
+    isAdmin = ARGV[3].to_b unless ARGV[3].empty?
     
-    puts DeleteListing(isAdmin, data["oid"], id, key)
+    puts DeleteListing(isAdmin, data["id"], id, key)
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

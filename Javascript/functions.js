@@ -1295,7 +1295,7 @@ function CreateAccount()
             url: "/api.php",
             data:
             {
-                command: "CreateAccount",
+                command: "create_account",
                 data: data,
                 endpoint: "Accounts"
             },
@@ -1307,7 +1307,7 @@ function CreateAccount()
             {
                 try
                 {
-                    if (Contains(res, "Okay"))
+                    if (Contains(res, "_id"))
                     {
                         LoginUser(false);
                         

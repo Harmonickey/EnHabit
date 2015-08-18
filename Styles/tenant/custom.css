@@ -146,9 +146,10 @@ textarea
     margin-top: 10px;
 }
 
-.msgGrowl-container
+.msgGrowl-container,
+.ui-autocomplete
 {
-    z-index: 1040;
+    z-index: 1040; /* to be above the modal popups at least */
 }
 
 .ui-widget label
