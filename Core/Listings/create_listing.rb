@@ -105,7 +105,7 @@ def GetLandlordId(landlord)
 
     begin
         queryObj = Hash.new
-        queryObj["Landlord"] = landlord
+        queryObj["Username"] = landlord
         
         account = Array.new
         mongoSession.with(safe: true) do |session|
