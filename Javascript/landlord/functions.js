@@ -480,7 +480,7 @@ function ProcessListing()
             url: "/api.php",
             data:
             {
-                command: "UpdateListing",
+                command: "update_listing",
                 data: pendingUpdateData,
                 endpoint: "Listings"
             },
