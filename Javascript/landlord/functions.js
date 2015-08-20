@@ -442,7 +442,7 @@ function ProcessListing()
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                             
-                            numUploaded = 0;
+                            numUploaded[oid] = 0;
                             
                             pendingData = null;
                         }
@@ -499,7 +499,7 @@ function ProcessListing()
                         $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
-                        numUploaded = 0;
+                        numUploaded[id] = 0;
                         
                         pendingUpdateData = null;
                         
@@ -514,7 +514,7 @@ function ProcessListing()
                 catch(e)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    numUploaded = 0;
+                    numUploaded[id] = 0;
                 }
             },
             error: function(res, err)

@@ -827,7 +827,7 @@ function ProcessListing()
                             
                             $(".actions a").hide();
                             
-                            numUploaded = 0;
+                            numUploaded[oid] = 0;
                             
                             pendingData = null;
                         }
@@ -885,7 +885,7 @@ function ProcessListing()
                         $(headingInputs[4]).text("University: " + $(inputs[6]).val());
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
-                        numUploaded = 0;
+                        numUploaded[id] = 0;
                         
                         pendingUpdateData = null;
                         
@@ -900,7 +900,7 @@ function ProcessListing()
                 catch(e)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                    numUploaded = 0;
+                    numUploaded[id] = 0;
                 }
             },
             error: function(res, err)
