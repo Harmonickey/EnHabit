@@ -61,68 +61,86 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- .logo -->
                 <!-- Menu Icon for smaller viewports -->
                 <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
-                <ul id="main-menu">
-                    <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');"><a id="login" class="btn btn-outline-inverse btn-sm">Log In/Create Account</a></li>
-                    <li id="portal-function" class="menu-item scroll" style="display: none;"><a class="btn btn-outline-inverse btn-sm" href="/<?php echo (isset($_SESSION["landlord"]) ? "landlord" : "tenant"); ?>/listings" >Account/Listings</a></li>
-                    <li id="view_listings_list-function" class="menu-item scroll" onclick="OpenListingsList();"><a class="btn btn-outline-inverse btn-sm">View Details</a></li>
-                </ul>
                 <div id="Filters">
-                    <h1 class="text-center">Filter listings</h1>
-                    <div class="item-content">
-                        <div class="price-content">
-                            <span>Price Range</span>
-                            <span id="amount" style="border:0; color:#b55783; font-weight:bold;">$800 - $1500</span>
-                        </div>
+                    <div id="price-label" class="row">
+                        <span>Price Range</span>
+                        <span id="amount">$800 - $1500</span>
+                    </div>
+                    <div id="price-slider" class="row">
                         <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                     </div>
-                    <div class="item-content date-content">
-                            <label>Available Starting</label>
-                            <input id="datepicker-inline" type="text" class="form-control" value="mm/dd/yyyy"/>
+                    <div id="datepicker-row" class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <label>Available</label>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <input id="datepicker-inline" type="text" class="form-control" value="MM/DD/YYYY"/>
+                        </div>
                     </div>
                     <div class="double-item-content">
                         <div class="item-content">
-                            <label>Bedrooms?</label>
-                            <select id="Bedrooms-filter" class="form-control">
-                                <option value="studio">Studio</option>
-                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3+</option>
-                            </select>
+                            <label>Bedrooms</label>
+                            <div class="styled-select">
+                                <select id="Bedrooms-filter" class="form-control">
+                                    <option value="studio">Studio</option>
+                                    <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="item-content">
-                            <label>Bathrooms?</label>
-                            <select id="Bathrooms-filter" class="form-control">
-                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3+</option>
-                            </select>
+                        <div class="item-content">                        
+                            <label>Bathrooms</label>
+                            <div class="styled-select"> 
+                                <select id="Bathrooms-filter" class="form-control">
+                                    <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3+</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="double-item-content">
                         <div class="item-content parking-content">
-                            <label>Parking?</label>
-                            <select id="Parking-filter" class="form-control">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
-                            </select>
+                            <label>Parking</label>
+                            <div class="styled-select">
+                                <select id="Parking-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
                         </div>
                         <div class="item-content animals-content">
-                            <label>Animals?</label>
-                            <select id="Animals-filter" class="form-control">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
-                            </select>
+                            <label>Animals</label>
+                            <div class="styled-select">
+                                <select id="Animals-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <div class="double-item-content">
+                        <div class="item-content list-view-button">
+                            <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
+                        </div>
+                        <div class="item-content extra-filter-button">
+                            <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
+                        </div>
+                    </div>
+                    <ul id="action-menu">
+                        <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
+                            <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
+                        </li>
+                        <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
+                            <a id="login" class="btn btn-outline-inverse btn-sm">Log In</a>
+                        </li>
+                    </ul>
                 </div>
-                <ul id="search-section">
-                    <li id="search-function" class="menu-item scroll" onclick="SearchForListings();"><a class="btn btn-outline-inverse btn-sm">Search</a></li>
-                    <li id="extra-filters-function" class="menu-item scroll" onclick="OpenExtrasView();"><a class="btn btn-outline-inverse btn-sm" >Show Extra Filters</a></li>
-                </ul>
                 <!-- #main-menu -->
                 <!-- Footer -->
                 <section id="footer">
@@ -140,29 +158,35 @@ if (!isset($_SESSION['CREATED'])) {
                 <div id="extras">
                     <div class="double-item-content">
                         <div class="item-content laundry-content">
-                            <label>In-Unit Laundry?</label>
-                            <select id="Laundry-filter" class="form-control">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
-                            </select>
+                            <label>In-Unit Laundry</label>
+                            <div class="styled-select">
+                                <select id="Laundry-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
                         </div>
                         <div class="item-content AirConditioning-content">
-                            <label>AC Unit?</label>
-                            <select id="AirConditioning-filter" class="form-control">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
-                            </select>
+                            <label>AC Unit</label>
+                            <div class="styled-select">
+                                <select id="AirConditioning-filter" class="form-control">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="item-content type-content">
-                        <label>Apartment or Sublet?</label>
-                        <select id="Type-filter" class="form-control">
-                            <option value="both">Both</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="sublet">Sublet</option>
-                        </select>
+                        <label>Apartment or Sublet</label>
+                        <div class="styled-select">
+                            <select id="Type-filter" class="form-control">
+                                <option value="both">Both</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="sublet">Sublet</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="item-content tags-content">
                         <label>Tags (i.e. north campus)</label>

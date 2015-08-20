@@ -1374,40 +1374,42 @@ function OpenExtrasView()
             setTimeout(function()
             {
                 $("#extras").fadeIn(200);
-            }, 300)
+            }, 400)
         },
         done: function ()
         {
-            $($("#search-section a")[1]).text("Hide Extra Filters");
-            $($("#search-section li")[1]).attr("onclick", "CloseExtrasView()");
+            $(".extra-filter-button input").attr("onclick", "CloseExtrasView()");
         }
     });
 }
 
 function CloseListingsList()
 {
-    $("#listings").fadeOut(200, function() {
+    $("#listings").fadeOut(200, function() 
+    {
         $("#listings_list").animate(
         {
             width: "0px"
-        }, 500, 'easeInOutCubic', function() {
-            $("#view_listings_list-function a").text("View Details");
-            $("#view_listings_list-function").attr("onclick", "OpenListingsList()");
+        }, 500, 'easeInOutCubic', function() 
+        {
+            $(".list-view-button input").attr("onclick", "OpenListingsList()");
         });
     });
 }
 
 function CloseExtrasView()
 {
-    $("#extras").fadeOut(200);
-    $("#extras_view").animate(
+    $("#extras").fadeOut(200, function() 
     {
-        width: "0px",
-        paddingLeft: "0px",
-        paddingRight: "0px"
-    }, 500, function() {
-        $($("#search-section a")[1]).text("Show Extra Filters");
-        $($("#search-section li")[1]).attr("onclick", "OpenExtrasView()");
+        $("#extras_view").animate(
+        {
+            width: "0px",
+            paddingLeft: "0px",
+            paddingRight: "0px"
+        }, 500, function() 
+        {
+            $(".extra-filter-button input").attr("onclick", "OpenExtrasView()");
+        });
     });
 }
 
@@ -1416,8 +1418,7 @@ function LoadListingsList()
     $("#listings").fadeIn();
     
     //then change the view listings list to "Hide Listings"
-    $("#view_listings_list-function a").text("Hide Details");
-    $("#view_listings_list-function").attr("onclick", "CloseListingsList()");
+    $(".list-view-button input").attr("onclick", "CloseListingsList()");
 }
 
 function SetDefaultButtonOnEnter(modal)
