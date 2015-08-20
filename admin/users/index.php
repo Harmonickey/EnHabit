@@ -248,7 +248,7 @@ $(function()
 {   
     InitSpecialFieldsUser();
 
-    getAllUsers();
+    GetAllUsers();
 });
 
 </script>

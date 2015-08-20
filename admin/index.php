@@ -215,7 +215,7 @@ $(function()
         echo "');";
     ?>
     
-    displayAnalytics(analytics);
+    DisplayAnalytics(analytics);
 });
 
 </script>

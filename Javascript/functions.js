@@ -1233,7 +1233,7 @@ function LogoutUser()
         }
     });
     
-    $("#login").text("Log In/Create Account");
+    $("#login").text("Log In");
     $("#login-function").attr("onclick", "LoadModal(event, 'modal-content-login', 'login', 'Log In');");
 }
 
