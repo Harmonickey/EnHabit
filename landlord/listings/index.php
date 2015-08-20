@@ -246,7 +246,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' /> 
+                        <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' /> 
                     </div>
                 </div>
                 <div class="row">

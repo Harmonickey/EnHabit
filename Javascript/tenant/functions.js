@@ -481,7 +481,7 @@ function ProcessListing()
                         }
                         else
                         {
-                            if ($("#accordion").text() == "No Listing Yet")
+                            if ($("#accordion").text() == "No Listings")
                             {
                                 $("#accordion").html("");
                             }

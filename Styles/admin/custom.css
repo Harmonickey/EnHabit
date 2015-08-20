@@ -159,7 +159,8 @@ textarea
     font-weight: bold;
 }
 
-#createListingModal .row
+#createListingModal .row,
+#createUserModal .row
 {
     margin-left: 0;
 }

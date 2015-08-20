@@ -418,7 +418,7 @@ function ProcessListing()
                         }
                         else
                         {
-                            if ($("#accordion").text() == "No Listing Yet")
+                            if ($("#accordion").text() == "No Listings")
                             {
                                 $("#accordion").html("");
                             }
@@ -441,8 +441,6 @@ function ProcessListing()
                             $("#createListingModal").modal('hide');
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
-                            
-                            $(".actions a").hide();
                             
                             numUploaded = 0;
                             
