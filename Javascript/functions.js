@@ -1358,29 +1358,12 @@ function OpenListingsList()
     }, 500, 'easeInOutCubic', LoadListingsList);
 }
 
-function OpenExtrasView()
+function LoadListingsList()
 {
-    $("#extras_view").animate(
-    {
-        width: parseFloat($("#left-sidebar").css("width")),
-        paddingLeft: "5px",
-        paddingRight: "5px"
-    },
-    {
-        duration: 500,
-        easing: 'easeInOutCubic',
-        start: function ()
-        {
-            setTimeout(function()
-            {
-                $("#extras").fadeIn(200);
-            }, 400)
-        },
-        done: function ()
-        {
-            $(".extra-filter-button input").attr("onclick", "CloseExtrasView()");
-        }
-    });
+    $("#listings").fadeIn();
+    
+    //then change the view listings list to "Hide Listings"
+    $(".list-view-button input").attr("onclick", "CloseListingsList()");
 }
 
 function CloseListingsList()
@@ -1397,6 +1380,25 @@ function CloseListingsList()
     });
 }
 
+function OpenExtrasView()
+{
+    $("#extras_view").animate(
+    {
+        width: parseFloat($("#left-sidebar").css("width")),
+        paddingLeft: "5px",
+        paddingRight: "5px"
+    },
+    {
+        duration: 300,
+        easing: 'easeInOutCubic',
+        done: function ()
+        {
+			$("#extras").fadeIn(200);
+            $(".extra-filter-button input").attr("onclick", "CloseExtrasView()");
+        }
+    });
+}
+
 function CloseExtrasView()
 {
     $("#extras").fadeOut(200, function() 
@@ -1406,19 +1408,11 @@ function CloseExtrasView()
             width: "0px",
             paddingLeft: "0px",
             paddingRight: "0px"
-        }, 500, function() 
+        }, 300, function() 
         {
             $(".extra-filter-button input").attr("onclick", "OpenExtrasView()");
         });
     });
-}
-
-function LoadListingsList()
-{
-    $("#listings").fadeIn();
-    
-    //then change the view listings list to "Hide Listings"
-    $(".list-view-button input").attr("onclick", "CloseListingsList()");
 }
 
 function SetDefaultButtonOnEnter(modal)
