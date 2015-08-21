@@ -64,7 +64,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div id="Filters">
                     <div id="price-label" class="row">
                         <span>Price Range</span>
-                        <span id="amount">$800 - $1500</span>
+                        <span id="amount"></span>
                     </div>
                     <div id="price-slider" class="row">
                         <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>

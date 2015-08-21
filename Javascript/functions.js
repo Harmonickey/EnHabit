@@ -609,16 +609,32 @@ function InitMainSidebar()
 
 function InitSlider()
 {
-    $("#PriceRangeSlider").slider(
+    $.ajax(
     {
-        range: true,
-        min: 400,
-        max: 3000,
-        step: 100,
-        values: [ 800, 1500 ],
-        slide: function( event, ui )
+        type: "POST",
+        url: "/api.php",
+        data:
         {
-            $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+            command: "get_price_range",
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            $("#amount").html("");
+            var data = JSON.parse(res);
+            $("#amount").text("$" + data.MinRent.Price + " - $" + data.MaxRent.Price);
+            $("#PriceRangeSlider").slider(
+            {
+                range: true,
+                min: data.MinRent.Price,
+                max: data.MaxRent.Price,
+                step: 100,
+                values: [ data.MaxRent.Price / 2, Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) ],
+                slide: function( event, ui )
+                {
+                    $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+                }
+           }); 
         }
     });
 }
@@ -1577,7 +1593,7 @@ String.prototype.CapitalizeFirstLetter = function() {
 
 /********** STARTUP SCRIPTS *************/
 $(function ()
-{
+{   
     InitMainSidebar();
  
     LoadAllDefaultListings();
