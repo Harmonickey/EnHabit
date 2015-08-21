@@ -11,6 +11,7 @@ var defaultPicture = "404ImageNotFound.png";
 
 var entries = {};
 var multiPopup = {};
+var listingSlideshows = {};
 var pageTags = [];
 
 // page background default settings - to change, override them at the top of initialise-functions.js
@@ -837,7 +838,7 @@ function InsertMarkers(res)
                 
                 var slideshowContent = "";
                 var base = "http://images.lbkstudios.net/enhabit/images/";
-                var images = entry[0].Pictures;
+                var images = entry[0].Thumbnails;
                 if (!images || images.length === 0)
                 {
                     images = [];
@@ -878,6 +879,8 @@ function InsertMarkers(res)
                 markers.addLayer(marker);
                 
                 InsertIntoListView(entry[0]);
+                
+                InsertIntoListingSlideshowObject(entry[0]);
             }
             else if (entry.length > 1)
             {   
@@ -902,9 +905,9 @@ function InsertMarkers(res)
                 $.each(entry, function(index, listing)
                 {
                     listing.Tags = ToStringFromList(listing.Tags);
-                    listing.Pictures = ToStringFromList(listing.Pictures);
+                    listing.Thumbnails = ToStringFromList(listing.Thumbnails);
                     
-                    var listingPic = (listing.Pictures !== "" ? listing.Pictures.split(",")[0].replace(/'/, "") : defaultPicture);
+                    var listingPic = (listing.Thumbnails !== "" ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
 
                     if (multiPopup[listing.Address] === undefined)
                     {
@@ -917,7 +920,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Pictures + "])\" />" + 
+                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "])\" />" + 
                                 "</div>" +
                             "</div>"];
                     }
@@ -932,12 +935,14 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Pictures + "])\" />" +
+                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "])\" />" +
                                 "</div>" +
                             "</div>");
                     }
                     
                     InsertIntoListView(listing);
+                    
+                    InsertIntoListingSlideshowObject(listing);
                 });
             }
         });
@@ -960,6 +965,24 @@ function InsertMarkers(res)
     map.fitBounds(markers.getBounds());
 }
 
+function InsertIntoListingSlideshowObject(entry)
+{
+    var slideShowHTML = 
+    "<h1>Sed scelerisque</h1>" +
+    "<p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat.<br></p>" +
+    "<div id='owl-slider-'" + entry._id.$oid + " class='owl-carousel popup-image-gallery'>";
+    for (var i = 0; i < entry.Pictures.length; i++)
+    {
+        slideShowHTML += 
+        "<div>" +
+            "<img class='lazyOwl' data-src='" + entry.Pictures[i] + "'>" +
+        "</div>";
+    }
+    slideShowHTML += "</div>";
+    
+    listingSlideshows[entry._id.$oid + ""] = slideShowHTML;
+}
+
 function LoadMultipleListings(address)
 {
     $("#modal-content-popup-multilisting").html("");
@@ -978,9 +1001,9 @@ function InsertIntoListView(data)
     {
         data.Tags = ToStringFromList(data.Tags);
     }
-    if (typeof data.Pictures === "object")
+    if (typeof data.Thumbnails === "object")
     {
-        data.Pictures = ToStringFromList(data.Pictures);
+        data.Thumbnails = ToStringFromList(data.Thumbnails);
     }
     
     $("#listings").append(
@@ -992,7 +1015,7 @@ function InsertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Pictures + "])\" />" +
+                "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "])\" />" +
             "</div>" +
         "</div>");
     
@@ -1002,13 +1025,13 @@ function InsertIntoListView(data)
     {
         image.src = this.src;   
     };
-    if (typeof data.Pictures === "object" && data.Pictures.length > 0)
+    if (typeof data.Thumbnails === "object" && data.Thumbnails.length > 0)
     {
-        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Pictures[0];
+        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Thumbnails[0];
     }
-    else if (typeof data.Pictures === "string" && data.Pictures !== "")
+    else if (typeof data.Thumbnails === "string" && data.Thumbnails !== "")
     {
-        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Pictures.split(",")[0].replace(/'/g, "");
+        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Thumbnails.split(",")[0].replace(/'/g, "");
     }
     else
     {
@@ -1058,7 +1081,16 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(AirConditioning));
     $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
     
+    $("#modal-content-popup-listing .owl-carousel-button").attr("onclick", "LoadOwlCarousel();");
+    
     PopulateAndOpenModal(null, 'modal-content-popup-listing');
+}
+
+function LoadOwlCarousel(id)
+{
+    $("#modal-content-owl-carousel").html(listingSlideshows[id]);
+    
+    populate_and_open_modal(event, 'modal-content-owl-carousel');
 }
 
 /*

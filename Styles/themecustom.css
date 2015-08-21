@@ -706,3 +706,8 @@
     color: #ffffff;
     margin-top: 10px;
 }
+
+.modal-content .item-content .information 
+{
+    min-height: 200px;
+}
