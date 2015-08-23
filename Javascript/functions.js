@@ -621,22 +621,59 @@ function InitSlider()
         success: function(res) 
         {
             $("#amount").html("");
-            var data = JSON.parse(res);
-            $("#amount").text("$" + data.MinRent.Price + " - $" + data.MaxRent.Price);
-            $("#PriceRangeSlider").slider(
+            try
             {
-                range: true,
-                min: data.MinRent.Price,
-                max: data.MaxRent.Price,
-                step: 100,
-                values: [ data.MaxRent.Price / 2, Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) ],
-                slide: function( event, ui )
+                var data = JSON.parse(res);
+                
+                if (data == null || 
+                    data.MinRent == null || data.MinRent.Price == null ||
+                    data.MaxRent == null || data.MaxRent.Price == null)
                 {
-                    $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+                    InitNormalPriceRangeSlider();    
                 }
-           }); 
+                else
+                { 
+                    $("#amount").text("$" + data.MinRent.Price + " - $" + data.MaxRent.Price);
+                    $("#PriceRangeSlider").slider(
+                    {
+                        range: true,
+                        min: data.MinRent.Price,
+                        max: data.MaxRent.Price,
+                        step: 100,
+                        values: [ data.MaxRent.Price / 2, Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) ],
+                        slide: function( event, ui )
+                        {
+                            $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+                        }
+                   }); 
+                }
+            }
+            catch(e)
+            {
+                InitNormalPriceRangeSlider();
+            }
+        },
+        error: function(res, err)
+        {
+            InitNormalPriceRangeSlider();
         }
     });
+}
+
+function InitNormalPriceRangeSlider()
+{
+    $("#PriceRangeSlider").slider(
+    {
+        range: true,
+        min: 400,
+        max: 3000,
+        step: 100,
+        values: [ 800, 1500 ],
+        slide: function( event, ui )
+        {
+            $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+        }
+   }); 
 }
 
 function InitDatePicker()
