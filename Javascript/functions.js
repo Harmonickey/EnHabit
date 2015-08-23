@@ -1163,6 +1163,22 @@ function LoadOwlCarousel(id)
     $("#modal-content-owl-carousel").html(listingSlideshows[id]);
     
     PopulateAndOpenModal(event, 'modal-content-owl-carousel');
+    
+    $("#common-modal .popup-image-gallery").owlCarousel({
+        autoPlay : 3000,
+        stopOnHover : true,
+        navigation: false,
+        paginationSpeed : 1000,
+        goToFirstSpeed : 2000,
+        singleItem : true,
+        lazyLoad : true,
+        autoHeight : true,
+        transitionStyle: "fade",
+        afterLazyLoad : function() {
+            position_modal_at_centre(); // position popup at the centre of the page 
+            ModalBackdropHeight($('#common-modal')); // fix backdrop height after all elements inside the popup are loaded
+        }
+    }); 
 }
 
 /*
