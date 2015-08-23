@@ -16,6 +16,7 @@ require 'bson'
 require 'moped'
 require 'mongoid'
 require 'tools'
+require 'rmagick'
 
 Moped::BSON = BSON
 
@@ -44,6 +45,27 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["University"] = university
     listingObj["Tags"] = tags
     listingObj["Pictures"] = pictures
+    if not pictures.nil? and pictures.length > 0
+        thumbnails = []
+        pictures.each do |filename|
+            thumbFileName = filename + "_thumbnail"
+            if filename.include? "."
+                parts = filename.split(".")
+                parts[-2] += "_thumbnail"
+                thumbFileName = parts.join(".")
+            end
+            
+            # scale down halfway and reduce quality to 60%
+            Magick::Image::read(filename)[0].scale(0.5).write(thumbFilename) do |f| 
+                f.quality = 0.6
+                f.interlace = Magick::PlaneInterlace
+            end
+            
+            thumbnails.push(thumbFileName)
+        end
+    
+        listingObj["Thumbnails"] = thumbnails
+    end
     
     #object to search with
     queryObj = Hash.new
@@ -62,18 +84,28 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
         # for pictures, we need to do something special
         # delete all the pictures on disk that aren't in the updated list
         mongoSession.with(safe: true) do |session|
-            document = session[:listings].find(queryObj).select(Pictures: 1).one
+            document = session[:listings].find(queryObj).select(Pictures: 1, Thumbnails: 1).one
             unless document["Pictures"].nil?
                 document["Pictures"].each do |pic|
                     filename = "#{@deploymentBase}/../images/enhabit/images/" + pic
                     if ((not pictures.nil? and not pictures.include? pic) or 
                         (pictures.nil? or pictures.count == 0))
                         File.delete(filename) if File.exist? filename
+                        
+                        # now delete the thumbnail associated with the picture
+                        thumb = pic + "_thumbnail"
+                        if pic.include? "."
+                            parts = pic.split(".")
+                            parts[-2] += "_thumbnail"
+                            thumb = parts.join(".")
+                        end
+                        thumbFilename = "#{@deploymentBase}/../images/enhabit/images/" + thumb
+                        File.delete(thumbFilename) if File.exist? thumbFilename
                     end
                 end
             end
         end
-      
+        
         mongoSession.with(safe: true) do |session|
             session[:listings].find(queryObj).update('$set' => listingObj)
         end

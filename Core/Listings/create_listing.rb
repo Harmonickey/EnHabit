@@ -16,6 +16,7 @@ require 'bson'
 require 'moped'
 require 'mongoid'
 require 'tools'
+require 'rmagick'
 
 Moped::BSON = BSON
 
@@ -44,6 +45,28 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["Tags"] = tags
     listingObj["Pictures"] = pictures
     
+    if not pictures.nil? and pictures.length > 0
+        thumbnails = []
+        pictures.each do |filename|
+            thumbFileName = filename + "_thumbnail"
+            if filename.include? "."
+                parts = filename.split(".")
+                parts[-2] += "_thumbnail"
+                thumbFileName = parts.join(".")
+            end
+            
+            # scale down halfway and reduce quality to 60%
+            Magick::Image::read(filename)[0].scale(0.5).write(thumbFilename) do |f|
+                f.quality = 0.6
+                f.interlace = Magick::PlaneInterlace
+            end
+            
+            thumbnails.push(thumbFileName)
+        end
+    
+        listingObj["Thumbnails"] = thumbnails
+    end
+    
     queryObj = Hash.new
     unless isAdmin
         if key == "UserId"
@@ -62,8 +85,10 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
             #restrict more than one listing to landlords
             if currListings.count > 0 and not userId.nil?
                 document["error"] = "Tenants can only have one listing at a time."
+
+                removalPics = (listingObj["Pictures"].nil? ? [] : listingObj["Pictures"]) + (listingObj["Thumbnails"].nil? ? [] : listingObj["Thumbnails"])
                 
-                RemoveUploaded_pics pictures
+                RemoveUploadedPics removalPics
             else
                 session[:listings].insert(listingObj)
                 
@@ -74,13 +99,15 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
                 # if we already had some listings, only grab the new one we just put in
                 retQueryObj["$and"].push({"_id" => {"$nin" => currListings.collect{|l| l["_id"]}}}) if currListings.count > 0
                 
-                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Tags: 1, Pictures: 1).one
+                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, Type: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Tags: 1, Pictures: 1, Thumbnails: 1).one
             end
         end
     rescue Moped::Errors::OperationFailure => e
         document["error"] = e
         
-        RemoveUploadedPics pictures
+        removalPics = (listingObj["Pictures"].nil? ? [] : listingObj["Pictures"]) + (listingObj["Thumbnails"].nil? ? [] : listingObj["Thumbnails"])
+                
+        RemoveUploadedPics removalPics
     end
     
 	mongoSession.disconnect
@@ -95,7 +122,7 @@ def RemoveUploadedPics(pictures)
     pictures.each do |pic|
         filename = "#{@deploymentBase}/../images/enhabit/images/" + pic 
         File.delete(filename) if File.exist? filename
-    end         
+    end  
 end
 
 def GetLandlordId(landlord)
