@@ -19,6 +19,70 @@ function initialise_document_ready_functions()
     
     // modify heights of .content-wrapper parents of elements with .max-height class set
     set_height_of_parent_content_wrappers();   
+    
+    // ------ On Opening Popups ------
+    $('#common-modal').on('shown.bs.modal', function()
+    {
+        // responsive videos inside popups
+        $('#common-modal .modal-body').fitVids();
+
+        // initialise popup image gallery
+        // - you can use the same functions below if you want to add a new Owl Carousel with different parameters (in this case call the carousel's unique ID instead)
+        // - documentation for Owl Carousel: http://www.owlgraphic.com/owlcarousel/#how-to
+        if ($('#common-modal .popup-image-gallery').length > 0)
+        {
+          // custom parameters for carousel (see Owl Carousel documentation for more info)
+          $("#common-modal .popup-image-gallery").owlCarousel({
+            autoPlay : 3000,
+            stopOnHover : true,
+            navigation: false,
+            paginationSpeed : 1000,
+            goToFirstSpeed : 2000,
+            singleItem : true,
+            lazyLoad : true,
+            autoHeight : true,
+            transitionStyle: "fade",
+            afterLazyLoad : function() {
+              position_modal_at_centre(); // position popup at the centre of the page 
+              modal_backdrop_height($('#common-modal')); // fix backdrop height after all elements inside the popup are loaded
+            }
+          }); 
+        }
+
+        // initialise popup alternate image gallery
+        if ($('#common-modal .popup-alt-image-gallery').length > 0)
+        {
+          $("#common-modal .popup-alt-image-gallery").owlCarousel({
+            autoPlay : false,
+            items : 5,
+            stopOnHover : true,
+            navigation: true,
+            paginationSpeed : 500,
+            goToFirstSpeed : 2000,
+            singleItem : false,
+            lazyLoad : true,
+            baseClass : 'hide-bullets',
+            autoHeight : false,
+            transitionStyle: "backSlide",
+            afterLazyLoad : function() {
+              position_modal_at_centre(); // position popup at the centre of the page 
+              modal_backdrop_height($('#common-modal')); // fix backdrop height after all elements inside the popup are loaded
+            }
+          }); 
+        }
+    });
+    
+    // ------ On Closing Popups ------
+    $("#common-modal").on('hide.bs.modal', function()
+    {
+        // Destroy Owl Carousel image gallery when modal/popup is closed (it will be re-initialised again when popup is re-opened)
+        if ($('#common-modal .popup-image-gallery').length > 0)
+        {
+          var carousel_initialised_data = $('#common-modal .popup-image-gallery, #common-modal .popup-alt-image-gallery').data('owlCarousel');
+          carousel_initialised_data.destroy();
+        }      
+    });
+    // ------ END: Owl Carousel ------ 
 
     /* 
      * ----------------------------------------------------------
