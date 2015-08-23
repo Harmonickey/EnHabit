@@ -445,6 +445,11 @@
     z-index: 1;
 }
 
+.msgGrowl-container.top-right span
+{
+    font-size: 13px;
+}
+
 #search-section
 {
     list-style: none;
