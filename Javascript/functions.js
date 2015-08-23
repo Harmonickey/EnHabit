@@ -971,7 +971,7 @@ function InsertIntoListingSlideshowObject(entry)
     var slideShowHTML = 
     "<h1>Sed scelerisque</h1>" +
     "<p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat.<br></p>" +
-    "<div id='owl-slider-'" + entry._id.$oid + " class='owl-carousel popup-image-gallery'>";
+    "<div id='owl-slider-" + entry._id.$oid + "' class='owl-carousel popup-image-gallery'>";
     for (var i = 0; i < entry.Pictures.length; i++)
     {
         slideShowHTML += 
