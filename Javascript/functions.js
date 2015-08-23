@@ -1152,7 +1152,7 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(AirConditioning));
     $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
     
-    $("#modal-content-popup-listing .owl-carousel-button").attr("onclick", "LoadOwlCarousel();");
+    $("#modal-content-popup-listing .owl-carousel-button").attr("onclick", "LoadOwlCarousel(" + id + ");");
     
     PopulateAndOpenModal(null, 'modal-content-popup-listing');
 }
@@ -1161,7 +1161,7 @@ function LoadOwlCarousel(id)
 {
     $("#modal-content-owl-carousel").html(listingSlideshows[id]);
     
-    populate_and_open_modal(event, 'modal-content-owl-carousel');
+    PopulateAndOpenModal(event, 'modal-content-owl-carousel');
 }
 
 /*
