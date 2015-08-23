@@ -634,14 +634,16 @@ function InitSlider()
                 }
                 else
                 { 
-                    $("#amount").text("$" + data.MinRent.Price + " - $" + data.MaxRent.Price);
+                    var valueMinStart = data.MaxRent.Price / 2;
+                    var valueMaxStart = Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300)
+                    $("#amount").text("$" + valueMinStart + " - $" + valueMaxStart);
                     $("#PriceRangeSlider").slider(
                     {
                         range: true,
                         min: data.MinRent.Price,
                         max: data.MaxRent.Price,
                         step: 100,
-                        values: [ data.MaxRent.Price / 2, Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) ],
+                        values: [ valueMinStart, valueMaxStart ],
                         slide: function( event, ui )
                         {
                             $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
