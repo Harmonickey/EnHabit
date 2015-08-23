@@ -951,6 +951,7 @@ function InsertMarkers(res)
     }
     
     map.fitBounds(markers.getBounds());
+    map.setZoom(map.getZoom() - 1);
 }
 
 function ShowTagsPopup(pageTags, university)
