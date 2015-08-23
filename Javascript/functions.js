@@ -967,7 +967,6 @@ function InsertMarkers(res)
 
 function InsertIntoListingSlideshowObject(entry)
 {
-    console.log(entry);
     var slideShowHTML = 
     "<h1>Sed scelerisque</h1>" +
     "<p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat.<br></p>" +
