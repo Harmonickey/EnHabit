@@ -257,8 +257,8 @@ if (!isset($_SESSION['CREATED'])) {
                         <p class='popup-tags'></p>
                         <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
                     </div> 
+                    <input class="owl-carousel-button btn btn-primary" type="button" class="btn btn-primary" value="View Larger"/>
                 </div>
-                <input class="owl-carousel-button" type="button" class="btn btn-primary" value="View Larger"/>
             </div>
             <!-- #modal-content-popup-listing -->
             <!-- Multi-Listing -->
