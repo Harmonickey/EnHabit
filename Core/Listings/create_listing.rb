@@ -55,9 +55,8 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
                 thumbFileName = parts.join(".")
             end
             
-            # scale down halfway and reduce quality to 60%
+            # scale down halfway and interlace the image
             Magick::Image::read(filename)[0].scale(0.5).write(thumbFilename) do |f|
-                f.quality = 0.6
                 f.interlace = Magick::PlaneInterlace
             end
             
