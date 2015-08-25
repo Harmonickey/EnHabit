@@ -610,6 +610,61 @@ function InitMainSidebar()
 
 function InitSlider()
 {
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "get_price_range",
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            $("#amount").html("");
+            try
+            {
+                var data = JSON.parse(res);
+                
+                if (data == null || 
+                    data.MinRent == null || data.MinRent.Price == null ||
+                    data.MaxRent == null || data.MaxRent.Price == null)
+                {
+                    InitNormalPriceRangeSlider();    
+                }
+                else
+                { 
+                    var valueMinStart = data.MaxRent.Price / 2;
+                    var valueMaxStart = Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300)
+                    $("#amount").text("$" + valueMinStart + " - $" + valueMaxStart);
+                    $("#PriceRangeSlider").slider(
+                    {
+                        range: true,
+                        min: data.MinRent.Price,
+                        max: data.MaxRent.Price,
+                        step: 100,
+                        values: [ valueMinStart, valueMaxStart ],
+                        slide: function( event, ui )
+                        {
+                            $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+                        }
+                   }); 
+                }
+            }
+            catch(e)
+            {
+                InitNormalPriceRangeSlider();
+            }
+        },
+        error: function(res, err)
+        {
+            InitNormalPriceRangeSlider();
+        }
+    });
+}
+
+function InitNormalPriceRangeSlider()
+{
     $("#PriceRangeSlider").slider(
     {
         range: true,
@@ -621,7 +676,7 @@ function InitSlider()
         {
             $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
         }
-    });
+   }); 
 }
 
 function InitDatePicker()
@@ -1619,7 +1674,7 @@ String.prototype.CapitalizeFirstLetter = function() {
 
 /********** STARTUP SCRIPTS *************/
 $(function ()
-{
+{   
     InitMainSidebar();
  
     LoadAllDefaultListings();
