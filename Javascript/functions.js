@@ -12,7 +12,7 @@ var defaultPicture = "404ImageNotFound.png";
 var entries = {};
 var multiPopup = {};
 var listingSlideshows = {};
-var pageTags = [];
+var pageTags = {};
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
@@ -854,7 +854,7 @@ function ResetListings()
     markers = new L.FeatureGroup();
     entries = {};
     multiPopup = {};
-    pageTags = [];
+    pageTags = {};
 }
 
 function InsertMarkers(res)
@@ -876,11 +876,16 @@ function InsertMarkers(res)
                 entries[d.Address].push(d);
             }
             
+            // get the tags while we're at it...
             $.each(d.Tags, function(index, tag)
             {
-                if (pageTags.indexOf(tag) == -1)
+                if (pageTags[tag] == null)
                 {
-                    pageTags.push(tag);
+                    pageTags[tag] = 1;
+                }
+                else
+                {
+                    pageTags[tag] += 1;
                 }
             });
         });
@@ -1002,22 +1007,33 @@ function InsertMarkers(res)
             }
         });
         
-        $.msgGrowl (
-        {
-            title: 'Tags Used',
-            type: 'info',
-            position: 'top-right',
-            text: 'Tags used with this search result: ',
-            sticky: true
-        });
-        
-        $.each(pageTags, function(index, pageTag)
-        {
-           $('.top-right .msgGrowl-content span').append("<br><b>" + pageTag + "<b>"); 
-        });
+        ShowTagsPopup(pageTags, data[0].University);
     }
     
     map.fitBounds(markers.getBounds());
+    map.setZoom(map.getZoom() - 1);
+}
+
+function ShowTagsPopup(pageTags, university)
+{
+    $.msgGrowl (
+    {
+        title: 'Top Tags at ' + university,
+        type: 'info',
+        position: 'top-right',
+        sticky: true
+    });
+    
+    // sort the keys by largest to smallest
+    var keysSorted = Object.keys(pageTags).sort(function(a,b) 
+    { 
+        return pageTags[b] - pageTags[a]
+    });
+    
+    for (var i = 0; i < keysSorted.length; i++)
+    {
+       $('.top-right .msgGrowl-content span').append("<br><b>" + keysSorted[i] + "<b>"); 
+    }
 }
 
 function InsertIntoListingSlideshowObject(entry)
