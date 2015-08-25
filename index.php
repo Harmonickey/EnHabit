@@ -30,6 +30,10 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!-- Owl Carousel Styles -->
+        <link rel="stylesheet" href="Libraries/Styles/owl.carousel.css">
+        <link rel="stylesheet" href="Libraries/Styles/owl.theme.css">
+        <link rel="stylesheet" href="Libraries/Styles/owl.transitions.css">
         <!-- Pickaday -->
         <link href="Libraries/Styles/pikaday.css" rel="stylesheet">
         <!-- MsgBoxes -->
@@ -242,7 +246,6 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                     </div>
                     <div class='information'> 
-                        <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
                         <p class='popup-bedrooms'></p>  
                         <p class='popup-bathrooms'></p> 
                         <p class='popup-price'></p> 
@@ -252,7 +255,9 @@ if (!isset($_SESSION['CREATED'])) {
                         <p class='popup-parking'></p>
                         <p class='popup-ac'></p>
                         <p class='popup-tags'></p>
+                        <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
                     </div> 
+                    <input class="owl-carousel-button btn btn-primary" type="button" class="btn btn-primary" value="View Larger"/>
                 </div>
             </div>
             <!-- #modal-content-popup-listing -->
@@ -261,6 +266,11 @@ if (!isset($_SESSION['CREATED'])) {
                 
             </div>
             <!-- #modal-content-popup-multilisting -->
+            <!-- Owl Carousel Popup -->
+            <div class="content-to-populate-in-modal" id="modal-content-owl-carousel">
+             
+            </div>
+            <!-- #modal-content-owl-carousel -->
             <!-- end: Left Sidebar -->    
         </div>
         <!-- #outer-container -->
@@ -295,6 +305,8 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
         <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
+        <!-- Owl Carousel Library -->
+        <script src="Libraries/Javascript/owl.carousel.min.js"></script>
         <!-- Javascript Leaflet Library -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <!-- Easing - for transitions and effects (with modals) -->

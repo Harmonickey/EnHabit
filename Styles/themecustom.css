@@ -706,3 +706,13 @@
     color: #ffffff;
     margin-top: 10px;
 }
+
+.modal-content .item-content .information 
+{
+    min-height: 200px;
+}
+
+.owl-carousel-button
+{
+    margin-top: 10px;
+}

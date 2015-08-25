@@ -19,6 +19,21 @@ function initialise_document_ready_functions()
     
     // modify heights of .content-wrapper parents of elements with .max-height class set
     set_height_of_parent_content_wrappers();   
+    
+    // ------ On Closing Popups ------
+    $("#common-modal").on('hide.bs.modal', function()
+    {
+        // Destroy Owl Carousel image gallery when modal/popup is closed (it will be re-initialised again when popup is re-opened)
+        if ($('#common-modal .popup-image-gallery').length > 0)
+        {
+          var carousel_initialised_data = $('#common-modal .popup-image-gallery, #common-modal .popup-alt-image-gallery').data('owlCarousel');
+          if (carousel_initialised_data !== undefined)
+          {
+            carousel_initialised_data.destroy();
+          }
+        }      
+    });
+    // ------ END: Owl Carousel ------ 
 
     /* 
      * ----------------------------------------------------------
