@@ -812,3 +812,11 @@
 {
     position: relative;
 }
+
+select {
+    -moz-appearance: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
