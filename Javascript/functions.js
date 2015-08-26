@@ -48,32 +48,38 @@ $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
     }
 );
 
-$('#map, #common-modal').on('click', '.popup .slider-arrow img', function() 
+SubscribeSlideshowArrows();
+
+function SubscribeSlideshowArrows()
 {
-    var $slideshow = $(this).closest('.slideshow');
-    var $newSlide;
-    
-    if ($(this).hasClass('slider-arrow-left')) 
+    $('#map, #common-modal, #details-view').on('click', '.slider-arrow img', function() 
     {
-        $newSlide = $slideshow.find('.image.active').prev();     
-        if ($newSlide.index() < 2) 
+        console.log("CLICKED");
+        var $slideshow = $(this).closest('.slideshow');
+        var $newSlide;
+        
+        if ($(this).hasClass('slider-arrow-left')) 
         {
-            $newSlide = $slideshow.find('.image').last();
-        }
-    } 
-    else if ($(this).hasClass('slider-arrow-right')) 
-    {
-        $newSlide = $slideshow.find('.image.active').next();
-        if ($newSlide.index() < 0) 
+            $newSlide = $slideshow.find('.image.active').prev();     
+            if ($newSlide.index() < 2) 
+            {
+                $newSlide = $slideshow.find('.image').last();
+            }
+        } 
+        else if ($(this).hasClass('slider-arrow-right')) 
         {
-            $newSlide = $slideshow.find('.image').first();
+            $newSlide = $slideshow.find('.image.active').next();
+            if ($newSlide.index() < 0) 
+            {
+                $newSlide = $slideshow.find('.image').first();
+            }
         }
-    }
-    
-    $slideshow.find('.active').removeClass('active').hide();
-    $newSlide.addClass('active').show();
-    return false;
-});
+        
+        $slideshow.find('.active').removeClass('active').hide();
+        $newSlide.addClass('active').show();
+        return false;
+    });
+}
 
 /************* THEME HELPER FUNCTIONS **************/
 /* 
@@ -980,7 +986,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "])\" />" + 
+                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
                                 "</div>" +
                             "</div>"];
                     }
@@ -995,7 +1001,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "])\" />" +
+                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" +
                                 "</div>" +
                             "</div>");
                     }
@@ -1011,6 +1017,7 @@ function InsertMarkers(res)
     }
     
     map.fitBounds(markers.getBounds());
+    map.setZoom(map.getZoom() - 1);
 }
 
 function InsertIntoListingSlideshowObject(entry)
@@ -1029,7 +1036,6 @@ function InsertIntoListingSlideshowObject(entry)
     slideShowHTML += "</div>";
     
     listingSlideshows[entry._id.$oid + ""] = slideShowHTML;
-
 }
 
 function ShowTagsPopup(pageTags, university)
@@ -1076,7 +1082,7 @@ function InsertIntoListView(data)
     {
         data.Thumbnails = ToStringFromList(data.Thumbnails);
     }
-    
+    console.log(data);
     $("#listings").append(
         "<div class='item-content listing'>" +
             "<img src='assets/images/theme_images/loader.gif' height='100' width='100' />" +
@@ -1086,7 +1092,7 @@ function InsertIntoListView(data)
                 "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                 "<p class='listing-price'>$" + data.Price + "/month</p>" +
                 "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "])\" />" +
+                "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "')\" />" +
             "</div>" +
         "</div>");
     
@@ -1110,8 +1116,10 @@ function InsertIntoListView(data)
     }
 }
 
-function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, Laundry, parking, AirConditioning, tags, images)
+function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, Laundry, parking, AirConditioning, tags, images, x, y)
 {
+    $("#details-view").fadeIn();
+    
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "http://images.lbkstudios.net/enhabit/images/";
@@ -1140,8 +1148,17 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     slideshowModalContent += slideshowContent +
     '</div>';
     
+    $("#details-view-slideshow-section").html(slideshowModalContent); 
+    
+    var height = $("#details-view-slideshow-section .slideshow").height();
+    $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
+    SubscribeSlideshowArrows();
+    var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 15);
+    L.marker([parseFloat(x), parseFloat(y)]).addTo(detailsMap);
+           
+    /*
     $("#modal-content-popup-listing h3").text(address + " " + (unit ? unit : ""));
-    $("#modal-content-popup-listing .slideshow-lander").html(slideshowModalContent);
     $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
     $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
     $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
@@ -1153,31 +1170,8 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
     
     $("#modal-content-popup-listing .owl-carousel-button").attr("onclick", "LoadOwlCarousel('" + id + "');");
-    
-    PopulateAndOpenModal(null, 'modal-content-popup-listing');
-}
-
-function LoadOwlCarousel(id)
-{
-    $("#modal-content-owl-carousel").html(listingSlideshows[id]);
-    
-    PopulateAndOpenModal(event, 'modal-content-owl-carousel');
-    
-    $("#common-modal .popup-image-gallery").owlCarousel({
-        autoPlay : 3000,
-        stopOnHover : true,
-        navigation: false,
-        paginationSpeed : 1000,
-        goToFirstSpeed : 2000,
-        singleItem : true,
-        lazyLoad : true,
-        autoHeight : true,
-        transitionStyle: "fade",
-        afterLazyLoad : function() {
-            position_modal_at_centre(); // position popup at the centre of the page 
-            ModalBackdropHeight($('#common-modal')); // fix backdrop height after all elements inside the popup are loaded
-        }
-    }); 
+    */
+    //PopulateAndOpenModal(null, 'modal-content-popup-listing');
 }
 
 /*
@@ -1499,6 +1493,21 @@ function CloseListingsList()
     });
 }
 
+function CloseDetailsView()
+{
+    $("#details-view").html(
+        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
+        "<div class='row'>" +
+            "<div id='details-view-listing-details' class='col-lg-6 col-md-6 col-sm-6'></div>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<div id='details-view-slideshow-section' class='row'></div>" +
+                "<div id='details-view-map-section' class='row'></div>" +
+            "</div>" +
+        "</div>");
+        
+    $("#details-view").hide();
+}
+
 function OpenExtrasView()
 {
     $("#extras_view").animate(
@@ -1714,4 +1723,8 @@ $(window).on('resize', function() {
         $("#listings_list").stop();
         OpenListingsList();
     }
+    
+    var height = $("#details-view-slideshow-section .slideshow").height();
+    $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
 });
