@@ -1494,6 +1494,21 @@ function CloseListingsList()
     });
 }
 
+function CloseDetailsView()
+{
+    $("#details-view").html(
+        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
+        "<div class='row'>" +
+            "<div id='details-view-listing-details' class='col-lg-6 col-md-6 col-sm-6'></div>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<div id='details-view-slideshow-section' class='row'></div>" +
+                "<div id='details-view-map-section' class='row'></div>" +
+            "</div>" +
+        "</div>");
+        
+    $("#details-view").hide();
+}
+
 function OpenExtrasView()
 {
     $("#extras_view").animate(

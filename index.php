@@ -268,7 +268,7 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- #modal-content-popup-multilisting -->
             <!-- Owl Carousel Popup -->
             <div class="content-to-populate-in-modal" id="modal-content-owl-carousel">
-             
+            
             </div>
             <!-- #modal-content-owl-carousel -->
             <!-- end: Left Sidebar -->    
@@ -357,6 +357,7 @@ if (!isset($_SESSION['CREATED'])) {
     </body>
     <!-- placeholder for details view -->
     <div id="details-view" style="display: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
         <div class="row">
             <!-- left section -->
             <div id="details-view-listing-details" class="col-lg-6 col-md-6 col-sm-6">
