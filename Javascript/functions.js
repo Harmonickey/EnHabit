@@ -54,7 +54,6 @@ function SubscribeSlideshowArrows()
 {
     $('#map, #common-modal, #details-view').on('click', '.slider-arrow img', function() 
     {
-        console.log("CLICKED");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -932,9 +931,13 @@ function InsertMarkers(res)
                                     '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
                 }
                 
+                entry[0].Tags = ToStringFromList(entry[0].Tags);
+                entry[0].Thumbnails = ToStringFromList(entry[0].Thumbnails);
+                
                 popupContent += slideshowContent +
                                 '</div>' +
-                            '</div>';
+                            '</div>' +
+                            "<input type='button' class='btn btn-info' style='width: 100%; margin-top: 10px;' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].Type + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + data.Tags + "], [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
                 
                 marker.bindPopup(popupContent, 
                 {
@@ -1017,7 +1020,6 @@ function InsertMarkers(res)
     }
     
     map.fitBounds(markers.getBounds());
-    map.setZoom(map.getZoom() - 1);
 }
 
 function ShowTagsPopup(pageTags, university)
@@ -1083,7 +1085,7 @@ function InsertIntoListView(data)
     {
         data.Thumbnails = ToStringFromList(data.Thumbnails);
     }
-    console.log(data);
+    
     $("#listings").append(
         "<div class='item-content listing'>" +
             "<img src='assets/images/theme_images/loader.gif' height='100' width='100' />" +
@@ -1155,7 +1157,7 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
     $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
     SubscribeSlideshowArrows();
-    var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 15);
+    var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
     L.marker([parseFloat(x), parseFloat(y)]).addTo(detailsMap);
            
     /*
