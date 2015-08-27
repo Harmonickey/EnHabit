@@ -1119,21 +1119,21 @@ function InsertIntoListView(data)
     }
 }
 
-function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, Laundry, parking, AirConditioning, tags, images, x, y)
+function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animals, Laundry, Parking, AirConditioning, Tags, Images, x, y, listingInfo)
 {
     $("#details-view").fadeIn();
     
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "http://images.lbkstudios.net/enhabit/images/";
-    if (!images || images.length === 0)
+    if (!Images || Images.length === 0)
     {
-        images = [];
-        images.push(defaultPicture);
+        Images = [];
+        Images.push(defaultPicture);
     }
-    for(var i = 0; i < images.length; i++) 
+    for(var i = 0; i < Images.length; i++) 
     {
-        var source = base + images[i];
+        var source = base + Images[i];
 
         slideshowContent += 
                             '<div class="image' + (i === 0 ? ' active' : '') + '">' +
@@ -1142,7 +1142,7 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     }
     
     var slideshowModalContent = '<div class="slideshow" style="position: relative;">';
-    if (images.length > 1)
+    if (Images.length > 1)
     {
         slideshowModalContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
         '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
@@ -1151,7 +1151,62 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     slideshowModalContent += slideshowContent +
     '</div>';
     
+    var detailsContent = 
+    "<div class='container-fluid text-center'>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<h2>" + Address + " " + (Unit ? Unit : "") + "</h2>" +
+            "</div>" + 
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<h2>$" + Price + "/Month</h2>" +
+            "</div>" + 
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<p>Type: " + Type.CapitalizeFirstLetter() + "</p>" +
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Bedrooms) + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Bedrooms: " + Bedrooms + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Bathrooms: " + Bathrooms + "</p>" +
+            "</div>" + 
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
+            "</div>" +
+            
+        "</div>" +
+        "<div class='row'>" +
+            //"<p>" + (listingInfo ? listingInfo : "") + "</p>" + 
+            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut quam ut diam consequat vehicula sit amet ac eros. Vestibulum gravida faucibus sapien, ut aliquet urna. Vestibulum varius ligula enim, vitae facilisis sapien euismod vitae. Aenean ac semper neque, euismod pharetra mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus accumsan iaculis pellentesque. Sed a elementum ante, ac aliquet sem.</p>" + 
+        "</div>" +
+    "</div>";
+    
     $("#details-view-slideshow-section").html(slideshowModalContent); 
+    
+    $("#details-view-listing-details").html(detailsContent);
+    
+    $('#details-view-listing-details .container-fluid').slimScroll({
+        height: '100%',
+        railVisible: true,
+        alwaysVisible: true,
+        size: '10px'
+    });
     
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
