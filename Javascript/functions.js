@@ -1577,7 +1577,9 @@ function CloseDetailsView()
             "</div>" +
         "</div>");
         
-    $("#details-view").hide();
+    $("#details-view").fadeOut();
+    
+    location.hash = "";
 }
 
 function OpenExtrasView()

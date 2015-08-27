@@ -755,6 +755,7 @@
 #details-view > .row
 {
     background-color: #3a3836;
+    border: 1px solid black;
 }
 
 #details-view > .row,
