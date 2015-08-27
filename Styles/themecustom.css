@@ -766,7 +766,11 @@
 #details-view-listing-details
 {
     height: 100%;
-    background-color: blue;
+}
+
+#details-view-listing-details h2
+{
+    margin: 0;
 }
 
 #details-view-slideshow-section,
