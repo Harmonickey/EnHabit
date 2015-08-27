@@ -268,7 +268,7 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- #modal-content-popup-multilisting -->
             <!-- Owl Carousel Popup -->
             <div class="content-to-populate-in-modal" id="modal-content-owl-carousel">
-             
+            
             </div>
             <!-- #modal-content-owl-carousel -->
             <!-- end: Left Sidebar -->    
@@ -294,7 +294,7 @@ if (!isset($_SESSION['CREATED'])) {
         
         <!-- placeholder for facebook objects -->
         <div id="fb-root" class="fb-reset"></div>
-         
+        
         <!-- Javascripts  =============================== -->
         
         <!-- Jquery, Jquery UI, and Bootstrap JS -->
@@ -355,4 +355,26 @@ if (!isset($_SESSION['CREATED'])) {
 
         </script>
     </body>
+    <!-- placeholder for details view -->
+    <div id="details-view" style="display: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
+        <div class="row">
+            <!-- left section -->
+            <div id="details-view-listing-details" class="col-lg-6 col-md-6 col-sm-6">
+            
+            </div>
+            <!-- right section -->
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <!-- top section -->
+                <div id="details-view-slideshow-section" class="row">
+                    
+                </div>
+                <!-- bottom section -->
+                <div id="details-view-map-section" class="row">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- -->
 </html>
