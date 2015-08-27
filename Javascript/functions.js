@@ -1138,6 +1138,8 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animal
 {
     $("#details-view").fadeIn();
     
+    location.hash = Id;
+    
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "http://images.lbkstudios.net/enhabit/images/";
@@ -1207,8 +1209,20 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animal
             
         "</div>" +
         "<div class='row'>" +
-            //"<p>" + (listingInfo ? listingInfo : "") + "</p>" + 
-            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut quam ut diam consequat vehicula sit amet ac eros. Vestibulum gravida faucibus sapien, ut aliquet urna. Vestibulum varius ligula enim, vitae facilisis sapien euismod vitae. Aenean ac semper neque, euismod pharetra mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus accumsan iaculis pellentesque. Sed a elementum ante, ac aliquet sem.</p>" + 
+            "<div class='col-lg-7 col-md-7 col-sm-7'>" +
+                "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut quam ut diam consequat vehicula sit amet ac eros. Vestibulum gravida faucibus sapien, ut aliquet urna. Vestibulum varius ligula enim, vitae facilisis sapien euismod vitae. Aenean ac semper neque, euismod pharetra mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus accumsan iaculis pellentesque. Sed a elementum ante, ac aliquet sem.</p>" + 
+            "</div>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+                "<div class='row'>" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' onclick='ShareListing(\"" + Id + "\");' />" +
+                "</div>" +
+                "<div class='row'>" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact Landlord' onclick='ContactLandlord(\"" + Id + "\"); />" +
+                "</div>" +
+                "<div class='row'>" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Apply for Listing' onclick='ApplyForListing(\"" + Id + "\"); />" +
+                "</div>" +
+            "</div>" +
         "</div>" +
     "</div>";
     
@@ -1229,22 +1243,6 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animal
     SubscribeSlideshowArrows();
     var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
     L.marker([parseFloat(x), parseFloat(y)]).addTo(detailsMap);
-           
-    /*
-    $("#modal-content-popup-listing h3").text(address + " " + (unit ? unit : ""));
-    $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
-    $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
-    $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
-    $("#modal-content-popup-listing .popup-type").text("Type: " + type.CapitalizeFirstLetter());
-    $("#modal-content-popup-listing .popup-animals").text("Animals? "+ BooleanToHumanReadable(animals));
-    $("#modal-content-popup-listing .popup-Laundry").text("In-Unit Laundry? " + BooleanToHumanReadable(Laundry));
-    $("#modal-content-popup-listing .popup-parking").text("Parking? " + BooleanToHumanReadable(parking));
-    $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(AirConditioning));
-    $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
-    
-    $("#modal-content-popup-listing .owl-carousel-button").attr("onclick", "LoadOwlCarousel('" + id + "');");
-    */
-    //PopulateAndOpenModal(null, 'modal-content-popup-listing');
 }
 
 /*

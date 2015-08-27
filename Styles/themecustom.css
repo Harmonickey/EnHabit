@@ -780,6 +780,13 @@
     margin: 0;
 }
 
+#details-view-listing-details .row input
+{
+    background-color: #5259e3;
+    border-color: #5259e3;
+    margin-top: 18px;
+}
+
 #details-view-slideshow-section,
 #details-view-map-section
 {
