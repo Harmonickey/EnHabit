@@ -41,7 +41,7 @@ def DeleteListings()
 end
 
 begin
-    puts DeleteListing(isAdmin, data["id"], id, key)
+    puts DeleteListings()
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

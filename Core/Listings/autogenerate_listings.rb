@@ -28,9 +28,11 @@ def CreateListings(amount)
     points = Array.new
     
     lineNum = 0
-    text = File.open("#{@deploymentBase}/assets/testing/points.csv").read
-    text.gsub!(/\r\n?/, "\n")
-    text.each_line do |line|
+    
+    filename = "#{@deploymentBase}/assets/testing/points.csv"
+
+    text = IO.readlines(filename)
+    text.each do |line|
         parts = line.split(",")
         lat = parts[1]
         lng = parts[3]
@@ -47,7 +49,7 @@ def CreateListings(amount)
         listingObj["Landlord"] = SecureRandom.uuid
         listingObj["LandlordId"] = SecureRandom.uuid
         listingObj["Price"] = 0
-        listingObj["Address"] = "a"
+        listingObj["Address"] = SecureRandom.uuid
         listingObj["Unit"] = "a"
         listingObj["Bedrooms"] = 1
         listingObj["Bathrooms"] = 1
@@ -58,38 +60,34 @@ def CreateListings(amount)
         listingObj["Type"] = "apartment"
         listingObj["Start"] = Date.strptime("09/20/2018", "%m/%d/%Y").mongoize
         listingObj["WorldCoordinates"] = {"x" => points[i]["lat"], "y" => points[i]["lng"]}
-        listingObj["University"] = "b"
+        listingObj["University"] = "Northwestern"
         listingObj["Tags"] = ["a", "b"]
         listingObj["Testing"] = true
+        listingObj["Pictures"] = []
+        listingObj["Thumbnails"] = []
        
         begin
             mongoSession.with(safe: true) do |session|
                 session[:listings].insert(listingObj)                   
             end
         rescue Moped::Errors::OperationFailure => e
-            document["error"] = e
+            
         end
     end
     
 	mongoSession.disconnect
-    return document
+    return "Okay"
 end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
-    result = CreateListing(data["amount"].to_i)
-
-    puts result.to_json
+    puts CreateListings(data["amount"].to_i)
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
         output.puts e.backtrace.inspect
     end
-    
-    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
-    pictures = data["Pictures"] unless data["Pictures"].nil?
-    RemoveUploadedPics pictures
     
     result = Hash.new
     result["error"] = e.inspect
