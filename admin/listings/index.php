@@ -314,6 +314,12 @@ $(function()
     GetAllUsersAndLandlords();
 
     InitSpecialFields();
+    
+    $("#amount_to_autogenerate").autoNumeric('init', 
+    { 
+        vMax: '4000',
+        lZero: 'deny'
+    });
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
