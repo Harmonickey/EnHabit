@@ -639,15 +639,18 @@ function InitSlider()
                 }
                 else
                 { 
-                    var valueMinStart = data.MaxRent.Price / 2;
-                    var valueMaxStart = Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300)
+                    // dividing by 100 and multiplying by 100 without floating point will truncate
+                    // and round to nearest 100
+                    var step = 5;
+                    var valueMinStart = Math.round((data.MaxRent.Price / 2) / step) * step;
+                    var valueMaxStart = Math.round(Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) / step) * step;
                     $("#amount").text("$" + valueMinStart + " - $" + valueMaxStart);
                     $("#PriceRangeSlider").slider(
                     {
                         range: true,
                         min: data.MinRent.Price,
                         max: data.MaxRent.Price,
-                        step: 100,
+                        step: step,
                         values: [ valueMinStart, valueMaxStart ],
                         slide: function( event, ui )
                         {
