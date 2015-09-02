@@ -5,6 +5,8 @@
 window.xs_screen_max = 767;
 window.sm_screen_max = 991;
 
+var intervalVal;
+
 var whichModal = "";
 
 var defaultPicture = "404ImageNotFound.png";
@@ -804,10 +806,8 @@ function SearchForListings()
                     throw new Error(res);
                 }
                 else
-                {
-                    InsertMarkers(res);
-                    
-                    map.fitBounds(markers.getBounds());
+                {                 
+                    intervalVal = setInterval(InsertMarkers, 60000, res);
                 }
             }
             catch (e)
@@ -944,7 +944,7 @@ function InsertMarkers(res)
                 
                 marker.bindPopup(popupContent, 
                 {
-                    closeButton: false,
+                    closeButton: true,
                     minWidth: 320
                 });
                 
@@ -967,7 +967,7 @@ function InsertMarkers(res)
                 
                 marker.bindPopup(popupContent, 
                 {
-                    closeButton: false,
+                    closeButton: true,
                     minWidth: 320
                 });
                 
@@ -979,7 +979,7 @@ function InsertMarkers(res)
                     listing.Tags = ToStringFromList(listing.Tags);
                     listing.Thumbnails = ToStringFromList(listing.Thumbnails);
                     
-                    var listingPic = (listing.Thumbnails !== "" ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
+                    var listingPic = (listing.Thumbnails.length !== 0 ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
 
                     if (multiPopup[listing.Address] === undefined)
                     {
@@ -1021,8 +1021,8 @@ function InsertMarkers(res)
         
         ShowTagsPopup(pageTags, data[0].University);
     }
-    
     map.fitBounds(markers.getBounds());
+    clearInterval(intervalVal);
 }
 
 function InsertIntoListingSlideshowObject(entry)

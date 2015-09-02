@@ -832,10 +832,28 @@
     position: relative;
 }
 
-select {
+select 
+{
     -moz-appearance: none;
 }
 
-select::-ms-expand {
+select::-ms-expand 
+{
     display: none;
+}
+
+.leaflet-container a.leaflet-popup-close-button 
+{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 4px 4px 0 0;
+    text-align: center;
+    width: 18px;
+    height: 14px;
+    font: 16px/14px Tahoma, Verdana, sans-serif;
+    color: #09DAAD;
+    text-decoration: none;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
 }
