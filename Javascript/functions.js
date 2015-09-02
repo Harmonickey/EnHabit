@@ -1127,7 +1127,7 @@ function InsertIntoListView(data)
     {
         downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Thumbnails[0];
     }
-    else if (typeof data.Thumbnails === "string" && data.Thumbnails !== "")
+    else if (typeof data.Thumbnails === "string" && data.Thumbnails !== "" || data.Thumbnails.length == 0)
     {
         downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Thumbnails.split(",")[0].replace(/'/g, "");
     }
