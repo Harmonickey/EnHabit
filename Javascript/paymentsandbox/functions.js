@@ -63,19 +63,27 @@ $(function() {
 
 function ProcessPayment()
 {
+    // if valid, then continue
+    // if (valid)
+      
     var data = {
         method: "credit_card",
-        card: "################",
-        month: "mm",
-        year: "yyyy",
-        firstName: "aoiwjepf",
-        lastName: "apoijsef",
-        addressLine1: "apwoiejfpae",
-        addressLine2: "apwoiejfpaowef",
-        city: "apowef",
-        state: "SS",
-        postal: "######"
+        card: $("#card_number").val().trim(),
+        month: $("#expiry_date").val().trim().split("/")[0],
+        year: "20" + $("#expiry_date").val().trim().split("/")[1],
+        firstName: $("#name_on_card").val().trim().split(" ")[0],
+        lastName: $("#name_on_card").val().trim().split(" ")[1],
+        addressLine1: $("#address1").val().trim(),
+        addressLine2: $("#address2").val().trim(),
+        city: $("#city").val().trim(),
+        state: $("#state").val().trim(),
+        postal: $("#postal").val().trim()
     };
+    
+    if ($("#name_on_card").split(" ").length > 2)
+    {
+        data.lastName = $("#name_on_card").split(" ")[2];
+    }
     
     $.msgGrowl ({ type: 'success', title: 'Success', text: "Test Success Message!", position: 'top-center'}); 
     /*
