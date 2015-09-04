@@ -192,9 +192,14 @@ form input:-ms-input-placeholder {
 form input:focus {
   outline: 1px solid #3388dd;
 }
-form input[type="button"] {
+form button {
   padding: 0;
   width: 100%;
+}
+
+form button,
+form button i {
+  font-size: 25px !important;
 }
 form #card_number {
   background-image: url(../../assets/images/theme_images/creditcardimages.png), url(../../assets/images/theme_images/creditcardimages.png);
@@ -414,4 +419,17 @@ footer .wrapper > p img {
   #content {
     width: 1060px;
   }
+}
+
+.vertical .row {
+    margin: 0;
+}
+
+.vertical .row div,
+.vertical .row div input {
+    padding: 0;
+}
+
+.vertical .row div input {
+    width: 99%;
 }
