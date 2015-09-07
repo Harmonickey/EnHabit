@@ -36,6 +36,8 @@ $(function()
 function ProcessPayment()
 {
     var data = {
+        amount: "0.01",
+        description: "testing",
         method: "credit_card",
         card: $("#cc-number").val().trim(),
         cvv: $("#cc-cvc").val().trim(),
