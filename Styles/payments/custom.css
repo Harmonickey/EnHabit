@@ -14,112 +14,10 @@ ul {
   padding-left: 0;
 }
 
-.demo {
-  height: 476px;
-  margin: 0 auto;
-  position: relative;
-  width: 327px;
-}
-.demo h3 {
-  background: url(../images/images.png) top no-repeat;
-  background-size: 120px 361px;
-  text-indent: -9999px;
-}
-.demo .numbers {
-  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  background-color: #fff;
-  border: 1px solid #bbc;
-  left: 80px;
-  margin-bottom: 28px;
-  padding: 14px 20px;
-  position: absolute;
-  top: 156px;
-  z-index: 10;
-}
-.demo .numbers p {
-  margin-bottom: 0;
-}
-.demo .numbers .list {
-  margin-bottom: 0;
-}
 #content {
   background-color: #fff;
   margin-bottom: 140px;
   padding: 0 20px;
-}
-#carbonads {
-  border: 1px solid #e5e5e5;
-  border-left-style: none;
-  border-right-style: none;
-  clear: both;
-  font-size: 13px;
-  line-height: 20px;
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 13px 0;
-  position: relative;
-  width: 300px;
-}
-#carbonads a {
-  color: #777;
-}
-#carbonads a:hover {
-  border-bottom: none;
-}
-.carbon-img {
-  float: left;
-  margin-right: 20px;
-}
-.carbon-img img {
-  display: block;
-}
-.carbon-text {
-  float: right;
-  width: 150px;
-}
-.carbon-poweredby {
-  color: #ccc !important;
-  font-size: 11px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
-#features {
-  border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 84px;
-  padding-bottom: 83px;
-}
-#features h3 {
-  line-height: 28px;
-  padding: 14px 0;
-}
-#open-source h3 {
-  background: url(../images/images-2.png) -1566px center no-repeat;
-  background-size: 1633px 56px;
-  padding-left: 88px;
-}
-#major-cards-recognised h3 {
-  background: url(../images/images-2.png) 0 center no-repeat;
-  background-size: 1633px 56px;
-  padding-left: 102px;
-}
-#always-free h3 {
-  background: url(../images/images-2.png) -782px center no-repeat;
-  background-size: 1633px 56px;
-  padding-left: 104px;
-}
-#manual {
-  margin: 0 auto;
-}
-#manual div {
-  margin-bottom: 112px;
-}
-#manual h3 {
-  font-size: 52px;
-  margin-bottom: 56px;
-  text-align: center;
 }
 form {
   -webkit-border-radius: 5px;
@@ -170,8 +68,8 @@ form input {
   display: block;
   font-size: 18px;
   height: 32px;
-  padding: 0 5px;
-  width: 275px;
+  padding: 0 5px 0 55px !important;
+  width: 225px !important;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
 }
@@ -205,7 +103,7 @@ form input:focus {
 
 
 
-form #card_number {
+form #cc-number {
   background-image: url(../../assets/images/theme_images/creditcardimages.png), url(../../assets/images/theme_images/creditcardimages.png);
   background-position: 2px -121px, 260px -61px;
   background-size: 120px 361px, 120px 361px;
@@ -213,34 +111,34 @@ form #card_number {
   padding-left: 54px;
   width: 225px;
 }
-form #card_number.visa {
+form #cc-number.visa {
   background-position: 2px -163px, 260px -61px;
 }
-form #card_number.visa_electron {
+form #cc-number.visa_electron {
   background-position: 2px -205px, 260px -61px;
 }
-form #card_number.mastercard {
+form #cc-number.mastercard {
   background-position: 2px -247px, 260px -61px;
 }
-form #card_number.maestro {
+form #cc-number.maestro {
   background-position: 2px -289px, 260px -61px;
 }
-form #card_number.discover {
+form #cc-number.discover {
   background-position: 2px -331px, 260px -61px;
 }
-form #card_number.valid.visa {
+form #cc-number.valid.visa {
   background-position: 2px -163px, 260px -87px;
 }
-form #card_number.valid.visa_electron {
+form #cc-number.valid.visa_electron {
   background-position: 2px -205px, 260px -87px;
 }
-form #card_number.valid.mastercard {
+form #cc-number.valid.mastercard {
   background-position: 2px -247px, 260px -87px;
 }
-form #card_number.valid.maestro {
+form #cc-number.valid.maestro {
   background-position: 2px -289px, 260px -87px;
 }
-form #card_number.valid.discover {
+form #cc-number.valid.discover {
   background-position: 2px -331px, 260px -87px;
 }
 .vertical {
@@ -430,12 +328,13 @@ footer .wrapper > p img {
 }
 
 .vertical .row div,
+.vertical .row input,
 .vertical .row div input {
-    padding: 0;
+    padding: 0 !important;
 }
 
 .vertical .row div input {
-    width: 99%;
+    width: 99% !important;
 }
 
 .has-error input {

@@ -33,9 +33,9 @@ include PayPal::SDK::REST
     :payment_method => @data["method"], #credit_card/debit_card
     :funding_instruments => [{
       :credit_card => {
-        :type => "visa",
+        :type => @data["type"],
         :number => @data["card"],
-        :expire_month => @data["month"], :expire_year => @data["year"],
+        :expire_month => @data["month"], :expire_year => "20" + @data["year"],
         :cvv2 => @data["cvv"],
         :first_name => @data["firstName"], :last_name => @data["lastName"],
         :billing_address => {
