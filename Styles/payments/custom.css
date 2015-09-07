@@ -192,15 +192,19 @@ form input:-ms-input-placeholder {
 form input:focus {
   outline: 1px solid #3388dd;
 }
-form button {
+.row button {
   padding: 0;
-  width: 100%;
+  width: 329px;
+  margin-top: 15px;
 }
 
-form button,
-form button i {
+.row button,
+.row button i {
   font-size: 25px !important;
 }
+
+
+
 form #card_number {
   background-image: url(../../assets/images/theme_images/creditcardimages.png), url(../../assets/images/theme_images/creditcardimages.png);
   background-position: 2px -121px, 260px -61px;
@@ -432,4 +436,16 @@ footer .wrapper > p img {
 
 .vertical .row div input {
     width: 99%;
+}
+
+.has-error input {
+  border-width: 2px;
+}
+
+.validation.text-danger:after {
+  content: 'Validation failed';
+}
+
+.validation.text-success:after {
+  content: 'Validation passed';
 }

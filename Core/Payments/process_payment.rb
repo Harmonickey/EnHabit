@@ -36,7 +36,7 @@ include PayPal::SDK::REST
         :type => "visa",
         :number => @data["card"],
         :expire_month => @data["month"], :expire_year => @data["year"],
-        :cvv2 => "684",
+        :cvv2 => @data["cvv"],
         :first_name => @data["firstName"], :last_name => @data["lastName"],
         :billing_address => {
           :line1 => @data["addressLine1"],
@@ -50,7 +50,5 @@ include PayPal::SDK::REST
     :description => @data["description"] }]})
     
 @payment[:payer][:funding_instruments][:billing_address][:line2] = @data["addressLine2"] if not @data["addressLine2"].nil?
-
-
 
 @payment.create
