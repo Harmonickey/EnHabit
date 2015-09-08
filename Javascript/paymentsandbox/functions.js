@@ -56,6 +56,7 @@ function ProcessPayment()
     $.msgGrowl ({ type: 'success', title: 'Success', text: "Test Success Message!", position: 'top-center'}); 
     
     $.ajax({
+       type: "POST",
        url: "/api.php",
        data: 
        {

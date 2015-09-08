@@ -26,7 +26,7 @@ include PayPal::SDK::REST
     :mode => :sandbox,  # Set :sandbox or :live
     :client_id     => "AWLNvp25Gv70ELGi8ssjeB6XCiikBPGT_-Y0Sxjk2RFY7Elc4lWidqPGDsRLJcrOTFWeLkxVqY5sb1dV",
     :client_secret => "EPwW3Clo9KQZgOeuWVgFY_q1jlKxpnAoFWMJDLxUUJ8nn3Z91XuQ6nN5AkBWy0JoGDxsLztc5AgdZoMI" )
-
+   
 @payment = Payment.new({
   :intent => "sale",
   :payer => {
@@ -34,12 +34,13 @@ include PayPal::SDK::REST
     :funding_instruments => [{
       :credit_card => {
         :type => @data["type"],
-        :number => @data["card"],
+        :number => @data["card"].delete(' '),
         :expire_month => @data["month"], :expire_year => "20" + @data["year"],
         :cvv2 => @data["cvv"],
         :first_name => @data["firstName"], :last_name => @data["lastName"],
         :billing_address => {
           :line1 => @data["addressLine1"],
+          :line2 => (@data["addressLine2"].nil? ? "" : @data["addressLine2"]),
           :city => @data["city"],
           :state => @data["state"],
           :postal_code => @data["postal"], :country_code => "US" }}}]},
@@ -49,8 +50,11 @@ include PayPal::SDK::REST
       :currency => "USD"},
     :description => @data["description"] }]})
     
-@payment[:payer][:funding_instruments][:billing_address][:line2] = @data["addressLine2"] if not @data["addressLine2"].nil?
 
 @result = @payment.create
+
+File.open("results.log", "a") do |output|
+    output.puts @result.inspect
+end
 
 

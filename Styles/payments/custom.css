@@ -348,3 +348,7 @@ footer .wrapper > p img {
 .validation.text-success:after {
   content: 'Validation passed';
 }
+
+.form-group {
+    margin-bottom: 5px;
+}
