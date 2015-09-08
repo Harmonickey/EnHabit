@@ -53,10 +53,8 @@ function ProcessPayment()
         postal: $("#postal").val().trim()
     };
     
-    console.log(data);
-    
     $.msgGrowl ({ type: 'success', title: 'Success', text: "Test Success Message!", position: 'top-center'}); 
-    /*
+    
     $.ajax({
        url: "/api.php",
        data: 
@@ -71,7 +69,6 @@ function ProcessPayment()
            
        }
     });
-    */
 }
 
 function IsValidSubmission()

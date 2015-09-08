@@ -51,4 +51,6 @@ include PayPal::SDK::REST
     
 @payment[:payer][:funding_instruments][:billing_address][:line2] = @data["addressLine2"] if not @data["addressLine2"].nil?
 
-@payment.create
+@result = @payment.create
+
+
