@@ -205,6 +205,13 @@
 .listing .information
 {
     height: 100px;
+    margin: 10px 10px 10px 0;
+    border-bottom: 1px solid gray;
+}
+
+.listing .information .btn
+{
+    border-color: #5259e3;
 }
 
 .listing img
@@ -219,6 +226,8 @@
     font-weight: bold;
     display: inline-block;
     margin-right: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 @media (min-width: 768px)
@@ -387,8 +396,8 @@
         padding: 14px 0 0 0;
     }
 
-.slider-left,
-.slider-right
+.popup .slider-left,
+.popup .slider-right
 {
     position: absolute;
     height: 242px;
@@ -396,20 +405,20 @@
     cursor: pointer;
 }
 
-.slider-left,
-.slider-left img
+.popup .slider-left,
+.popup .slider-left img
 {
     left: 0;
 }
 
-.slider-right,
-.slider-right img
+.popup .slider-right,
+.popup .slider-right img
 {
     right: 0;
 }
 
-.slider-left-arrow,
-.slider-right-arrow
+.popup .slider-left-arrow,
+.popup .slider-right-arrow
 {
     position: relative;
     top: 30%;
@@ -468,12 +477,8 @@
     font-weight: normal;
 }
 
-#listings .information input
-{
-    background: #5259e3;
-}
-
-.popup .btn
+#listings .information input,
+.leaflet-popup-content input
 {
     background: #5259e3;
 }
@@ -494,7 +499,8 @@
 }
 
 #search-section > li.menu-item > a:hover,
-#listings .information input:hover
+#listings .information input:hover,
+.leaflet-popup-content input:hover
 {
     background:#b55783;
 }
@@ -510,7 +516,8 @@
     margin-bottom: 15px;
 }
 
-#listings .close
+#listings .close,
+#details-view .close
 {
     position: absolute;
     top: 2px;
@@ -531,6 +538,12 @@
     z-index: 100;
 }
 
+#details-view .close
+{
+    top: 50px;
+    right: 50px;
+}
+
 #Filters input,
 #Filters select,
 #extras_view input,
@@ -542,7 +555,8 @@
     border: 1px solid #ffffff;
 }
 
-.popup h2
+.popup h2,
+.popup h3
 {
     text-shadow: none;
 }
@@ -552,17 +566,17 @@
     border: 2px grey solid;
 }
 
-.slideshow
+.popup .slideshow
 {
     position: relative;
 }
 
-.slider-arrow
+.popup .slider-arrow
 {
     height: 100%;
 }
 
-.slider-arrow img
+.popup .slider-arrow img
 {
     position: absolute;
     top: 34%;
@@ -736,4 +750,108 @@
     text-decoration: none;
     font-weight: bold;
     background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
+}
+
+#details-view
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    padding: 50px;
+    z-index: 2000;
+    top: 0;
+}
+
+#details-view .row
+{
+    margin: 0;
+}
+
+#details-view > .row
+{
+    background-color: #3a3836;
+    border: 1px solid black;
+}
+
+#details-view > .row,
+#details-view > .row > div
+{
+    height: 100%;
+}
+
+#details-view-listing-details,
+#details-view-slideshow-section,
+#details-view-map-section
+{
+    padding: 10px;
+}
+
+#details-view-listing-details
+{
+    height: 100%;
+}
+
+#details-view-listing-details h2
+{
+    margin: 0;
+}
+
+#details-view-listing-details .row input
+{
+    background-color: #5259e3;
+    border-color: #5259e3;
+    margin-top: 18px;
+}
+
+#details-view-slideshow-section,
+#details-view-map-section
+{
+    height: 50%;
+}
+
+#details-view .slideshow .slider-arrow
+{
+    position: absolute;
+}
+
+#details-view .slideshow .slider-left
+{
+    left: 0;
+}
+
+#details-view .slideshow .slider-right
+{
+    right: 0;
+}
+
+#details-view .slideshow
+{
+    position: static;
+    height: 100%;
+    overflow: hidden;
+}
+
+#details-view .slideshow .image
+{
+    height: 100%;
+    text-align: center;
+}
+
+#details-view .slideshow .slider-arrow img
+{
+    cursor: pointer;
+}
+
+#details-view .slideshow img
+{
+    position: relative;
+}
+
+select {
+    -moz-appearance: none;
+}
+
+select::-ms-expand {
+    display: none;
 }

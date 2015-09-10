@@ -50,32 +50,37 @@ $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
     }
 );
 
-$('#map, #common-modal').on('click', '.popup .slider-arrow img', function() 
+SubscribeSlideshowArrows();
+
+function SubscribeSlideshowArrows()
 {
-    var $slideshow = $(this).closest('.slideshow');
-    var $newSlide;
-    
-    if ($(this).hasClass('slider-arrow-left')) 
+    $('#map, #common-modal, #details-view').on('click', '.slider-arrow img', function() 
     {
-        $newSlide = $slideshow.find('.image.active').prev();     
-        if ($newSlide.index() < 2) 
+        var $slideshow = $(this).closest('.slideshow');
+        var $newSlide;
+        
+        if ($(this).hasClass('slider-arrow-left')) 
         {
-            $newSlide = $slideshow.find('.image').last();
-        }
-    } 
-    else if ($(this).hasClass('slider-arrow-right')) 
-    {
-        $newSlide = $slideshow.find('.image.active').next();
-        if ($newSlide.index() < 0) 
+            $newSlide = $slideshow.find('.image.active').prev();     
+            if ($newSlide.index() < 2) 
+            {
+                $newSlide = $slideshow.find('.image').last();
+            }
+        } 
+        else if ($(this).hasClass('slider-arrow-right')) 
         {
-            $newSlide = $slideshow.find('.image').first();
+            $newSlide = $slideshow.find('.image.active').next();
+            if ($newSlide.index() < 0) 
+            {
+                $newSlide = $slideshow.find('.image').first();
+            }
         }
-    }
-    
-    $slideshow.find('.active').removeClass('active').hide();
-    $newSlide.addClass('active').show();
-    return false;
-});
+        
+        $slideshow.find('.active').removeClass('active').hide();
+        $newSlide.addClass('active').show();
+        return false;
+    });
+}
 
 /************* THEME HELPER FUNCTIONS **************/
 /* 
@@ -801,11 +806,8 @@ function SearchForListings()
                     throw new Error(res);
                 }
                 else
-                {
-                    
+                {                  
                     intervalVal = setInterval(InsertMarkers, 60000, res);
-                    
-                    map.fitBounds(markers.getBounds());
                 }
             }
             catch (e)
@@ -932,9 +934,13 @@ function InsertMarkers(res)
                                     '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
                 }
                 
+                entry[0].Tags = ToStringFromList(entry[0].Tags);
+                entry[0].Thumbnails = ToStringFromList(entry[0].Thumbnails);
+                
                 popupContent += slideshowContent +
                                 '</div>' +
-                            '</div>';
+                            '</div>' +
+                            "<input type='button' class='btn btn-outline-inverse btn-sm' style='width: 100%; margin-top: 10px;' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].Type + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + data.Tags + "], [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
                 
                 marker.bindPopup(popupContent, 
                 {
@@ -986,7 +992,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "])\" />" + 
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
                                 "</div>" +
                             "</div>"];
                     }
@@ -1001,7 +1007,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "])\" />" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" +
                                 "</div>" +
                             "</div>");
                     }
@@ -1050,6 +1056,7 @@ function InsertIntoListingSlideshowObject(entry)
     "<h1>Sed scelerisque</h1>" +
     "<p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat.<br></p>" +
     "<div id='owl-slider-" + entry._id.$oid + "' class='owl-carousel popup-image-gallery'>";
+    
     for (var i = 0; i < entry.Pictures.length; i++)
     {
         slideShowHTML += 
@@ -1087,14 +1094,30 @@ function InsertIntoListView(data)
     
     $("#listings").append(
         "<div class='item-content listing'>" +
+            "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
             "<img src='assets/images/theme_images/loader.gif' height='100' width='100' />" +
             "<div class='information'>" +
-                "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
-                "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" + 
-                "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                "<p class='listing-price'>$" + data.Price + "/month</p>" +
-                "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
-                "<input type='button' class='btn btn-info' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "])\" />" +
+                "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                    "<div class='row'>" +
+                        "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
+                    "</div>" +
+                    "<div class='row'>" +
+                        "<p class='listing-price'>$" + data.Price + "/month</p>" +
+                    "</div>" +
+                "</div>" +
+                "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                    "<div class='row'>" +
+                        "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                            "<p class='listing-bedrooms'>" + data.Bedrooms + " Bedroom" + (data.Bedrooms == 1 ? "" : "s") + "</p>" +                
+                        "</div>" + 
+                        "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                            "<p class='listing-bathrooms'>" + data.Bathrooms + " Bathroom" + (data.Bathrooms == 1 ? "" : "s") + "</p><br>" + 
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+                "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "')\" />" +
+                "</div>" +
             "</div>" +
         "</div>");
     
@@ -1118,19 +1141,23 @@ function InsertIntoListView(data)
     }
 }
 
-function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animals, Laundry, parking, AirConditioning, tags, images)
+function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animals, Laundry, Parking, AirConditioning, Tags, Images, x, y, listingInfo)
 {
+    $("#details-view").fadeIn();
+    
+    location.hash = Id;
+    
     //load up the images into the modal...
     var slideshowContent = "";
     var base = "http://images.lbkstudios.net/enhabit/images/";
-    if (!images || images.length === 0)
+    if (!Images || Images.length === 0)
     {
-        images = [];
-        images.push(defaultPicture);
+        Images = [];
+        Images.push(defaultPicture);
     }
-    for(var i = 0; i < images.length; i++) 
+    for(var i = 0; i < Images.length; i++) 
     {
-        var source = base + images[i];
+        var source = base + Images[i];
 
         slideshowContent += 
                             '<div class="image' + (i === 0 ? ' active' : '') + '">' +
@@ -1139,7 +1166,7 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     }
     
     var slideshowModalContent = '<div class="slideshow" style="position: relative;">';
-    if (images.length > 1)
+    if (Images.length > 1)
     {
         slideshowModalContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
         '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
@@ -1148,44 +1175,81 @@ function OpenListing(id, address, unit, bedrooms, bathrooms, price, type, animal
     slideshowModalContent += slideshowContent +
     '</div>';
     
-    $("#modal-content-popup-listing h3").text(address + " " + (unit ? unit : ""));
-    $("#modal-content-popup-listing .slideshow-lander").html(slideshowModalContent);
-    $("#modal-content-popup-listing .popup-bedrooms").text("Bedrooms: " + bedrooms);
-    $("#modal-content-popup-listing .popup-bathrooms").text("Bathrooms: " + bathrooms);
-    $("#modal-content-popup-listing .popup-price").text("Rent: $" + price + "/month");
-    $("#modal-content-popup-listing .popup-type").text("Type: " + type.CapitalizeFirstLetter());
-    $("#modal-content-popup-listing .popup-animals").text("Animals? "+ BooleanToHumanReadable(animals));
-    $("#modal-content-popup-listing .popup-Laundry").text("In-Unit Laundry? " + BooleanToHumanReadable(Laundry));
-    $("#modal-content-popup-listing .popup-parking").text("Parking? " + BooleanToHumanReadable(parking));
-    $("#modal-content-popup-listing .popup-ac").text("AC? " + BooleanToHumanReadable(AirConditioning));
-    $("#modal-content-popup-listing .popup-tags").text("Tags: " + (!tags ? tags : tags.join(", ")));
+    var detailsContent = 
+    "<div class='container-fluid text-center'>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<h2>" + Address + " " + (Unit ? Unit : "") + "</h2>" +
+            "</div>" + 
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<h2>$" + Price + "/Month</h2>" +
+            "</div>" + 
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<p>Type: " + Type.CapitalizeFirstLetter() + "</p>" +
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Bedrooms) + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Bedrooms: " + Bedrooms + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Bathrooms: " + Bathrooms + "</p>" +
+            "</div>" + 
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
+            "</div>" +
+            
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-7 col-md-7 col-sm-7'>" +
+                "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut quam ut diam consequat vehicula sit amet ac eros. Vestibulum gravida faucibus sapien, ut aliquet urna. Vestibulum varius ligula enim, vitae facilisis sapien euismod vitae. Aenean ac semper neque, euismod pharetra mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus accumsan iaculis pellentesque. Sed a elementum ante, ac aliquet sem.</p>" + 
+            "</div>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+                "<div class='row'>" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' onclick='ShareListing(\"" + Id + "\");' />" +
+                "</div>" +
+                "<div class='row'>" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact Landlord' onclick='ContactLandlord(\"" + Id + "\"); />" +
+                "</div>" +
+                "<div class='row'>" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Apply for Listing' onclick='ApplyForListing(\"" + Id + "\"); />" +
+                "</div>" +
+            "</div>" +
+        "</div>" +
+    "</div>";
     
-    $("#modal-content-popup-listing .owl-carousel-button").attr("onclick", "LoadOwlCarousel('" + id + "');");
+    $("#details-view-slideshow-section").html(slideshowModalContent); 
     
-    PopulateAndOpenModal(null, 'modal-content-popup-listing');
-}
-
-function LoadOwlCarousel(id)
-{
-    $("#modal-content-owl-carousel").html(listingSlideshows[id]);
+    $("#details-view-listing-details").html(detailsContent);
     
-    PopulateAndOpenModal(event, 'modal-content-owl-carousel');
+    $('#details-view-listing-details .container-fluid').slimScroll({
+        height: '100%',
+        railVisible: true,
+        alwaysVisible: true,
+        size: '10px'
+    });
     
-    $("#common-modal .popup-image-gallery").owlCarousel({
-        autoPlay : 3000,
-        stopOnHover : true,
-        navigation: false,
-        paginationSpeed : 1000,
-        goToFirstSpeed : 2000,
-        singleItem : true,
-        lazyLoad : true,
-        autoHeight : true,
-        transitionStyle: "fade",
-        afterLazyLoad : function() {
-            position_modal_at_centre(); // position popup at the centre of the page 
-            ModalBackdropHeight($('#common-modal')); // fix backdrop height after all elements inside the popup are loaded
-        }
-    }); 
+    var height = $("#details-view-slideshow-section .slideshow").height();
+    $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
+    SubscribeSlideshowArrows();
+    var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
+    L.marker([parseFloat(x), parseFloat(y)]).addTo(detailsMap);
 }
 
 /*
@@ -1507,6 +1571,23 @@ function CloseListingsList()
     });
 }
 
+function CloseDetailsView()
+{
+    $("#details-view").html(
+        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
+        "<div class='row'>" +
+            "<div id='details-view-listing-details' class='col-lg-6 col-md-6 col-sm-6'></div>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<div id='details-view-slideshow-section' class='row'></div>" +
+                "<div id='details-view-map-section' class='row'></div>" +
+            "</div>" +
+        "</div>");
+        
+    $("#details-view").fadeOut();
+    
+    location.hash = "";
+}
+
 function OpenExtrasView()
 {
     $("#extras_view").animate(
@@ -1722,4 +1803,8 @@ $(window).on('resize', function() {
         $("#listings_list").stop();
         OpenListingsList();
     }
+    
+    var height = $("#details-view-slideshow-section .slideshow").height();
+    $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
 });
