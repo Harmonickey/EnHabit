@@ -1,0 +1,11 @@
+SANDBOX API CREDENTIALS
+Sandbox account    alex-facilitator@lbkstudios.net
+Sandbox endpoint   api.sandbox.paypal.com
+
+Email Addresses
+alex-facilitator@lbkstudios.net
+alex-buyer@lbkstudios.net
+
+Credential Pairs
+Client ID          AWLNvp25Gv70ELGi8ssjeB6XCiikBPGT_-Y0Sxjk2RFY7Elc4lWidqPGDsRLJcrOTFWeLkxVqY5sb1dV
+Secret             EPwW3Clo9KQZgOeuWVgFY_q1jlKxpnAoFWMJDLxUUJ8nn3Z91XuQ6nN5AkBWy0JoGDxsLztc5AgdZoMI
