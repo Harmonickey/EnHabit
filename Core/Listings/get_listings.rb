@@ -120,6 +120,12 @@ def setFilters
     else
         @landlordIdFilter[:LandlordId] = @landlordId
     end
+    
+    if @landlord.nil?
+        @landlordFilter = nil
+    else
+        @landlordFilter[:Landlord] = @landlord
+    end
 end
 
 def combineFiltersIntoQuery 
@@ -163,6 +169,9 @@ def combineFiltersIntoQuery
     if not @landlordIdFilter.nil?
         @mainFilter["$and"].push @landlordIdFilter
     end
+    if not @landlordFilter.nil?
+        @mainFilter["$and"].push @landlordFilter
+    end
     
     if @mainFilter["$and"].count == 0
         @mainFilter = {}
@@ -186,6 +195,7 @@ begin
         @start = data["Start"] if not data["Start"].nil? and not data["Start"].empty?
         @university = data["University"] if not data["University"].nil? and not data["University"].empty?
         @tags = data["Tags"] if not data["Tags"].nil? and not data["Tags"].length == 0    
+        @landlord = data["Landlord"] if not data["Landlord"].nil? and not data["Landlord"].empty?
     end
     
     @isAdmin = ARGV[3].to_b unless ARGV[3].empty?
@@ -216,6 +226,7 @@ begin
     @mainFilter = {}
     @userIdFilter = {}
     @landlordIdFilter = {}
+    @landlordFilter = {}
 
     setFilters
     combineFiltersIntoQuery
@@ -239,6 +250,7 @@ begin
                 account = mongoSession[:accounts].find({@key => doc[@key]}).select(Username: 1).one
                 
                 doc["Username"] = account["Username"] unless account["Username"].nil?
+                
                 
                 doc.delete("UserId")
                 doc.delete("LandlordId")

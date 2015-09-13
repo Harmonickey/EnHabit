@@ -113,6 +113,12 @@
 							<span>Payments</span>
 						</a>	    				
 					</li>
+                    <li>
+						<a href="../renters">
+							<i class="fa fa-users"></i>
+							<span>Renters</span>
+						</a>	    				
+					</li>
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->
@@ -311,7 +317,7 @@ $(function()
     CreateDropzone("create", "#createListingModal form");
 
     GetAllListings();
-    GetAllUsersAndLandlords();
+    GetAllUsersAndLandlords(false);
 
     InitSpecialFields();
     

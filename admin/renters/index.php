@@ -1,7 +1,5 @@
 <?php
 
-    include_once("analytics.php");
-
     session_start();
     
     if (!isset($_SESSION["admin"]))
@@ -25,31 +23,31 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Admin | Home</title>
+    <title>Admin | Renters</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">   
-
-    <!-- favicon -->
-    <link rel="icon" type="image/jpg" href="../favicon.png">    
+    <meta name="apple-mobile-web-app-capable" content="yes">    
     
-    <link href="../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
-    <link href="../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
+    <!-- favicon -->
+    <link rel="icon" type="image/jpg" href="../../favicon.png">
+    
+    <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-    <link href="../Libraries/Styles/font-awesome.min.css" rel="stylesheet">        
+    <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
     
-    <link href="../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
     <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
     <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
     
-    <link href="../Libraries/Styles/base-admin-3.css" rel="stylesheet">
-    <link href="../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/base-admin-3.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
     
-    <link href="../Libraries/Styles/dashboard.css" rel="stylesheet">   
+    <link href="../../Libraries/Styles/dashboard.css" rel="stylesheet"> 
 
-    <link href="../Styles/admin/custom.css" rel="stylesheet">
+    <link href="../../Styles/admin/custom.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -57,6 +55,7 @@
     <![endif]-->
 
   </head>
+
 <body>
 
 <nav class="navbar navbar-inverse" role="navigation">
@@ -75,7 +74,7 @@
                 <li class="dropdown">						
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php if(isset($_SESSION["admin"])) { echo $_SESSION["admin"]; } ?>
+                        <?php if (isset($_SESSION["admin"])) { echo $_SESSION["admin"]; } ?>
                         <b class="caret"></b>
                     </a>			
                     <ul class="dropdown-menu">
@@ -86,142 +85,128 @@
         </div><!-- /.navbar-collapse -->
     </div> <!-- /.container -->
 </nav>
-    
+   
 <div class="subnavbar">
 	<div class="subnavbar-inner">	
 		<div class="container">			
 			<a href="javascript:;" class="subnav-toggle" data-toggle="collapse" data-target=".subnav-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <i class="fa fa-bars"></i>
+		      <span class="sr-only">Toggle navigation</span>
+		      <i class="fa fa-bars"></i>
 		    </a>
 			<div class="collapse subnav-collapse">
 				<ul class="mainnav">				
-					<li class="active">
-						<a href="./">
+					<li>
+						<a href="../">
 							<i class="fa fa-home"></i>
 							<span>Home</span>
 						</a>	    				
 					</li>                   
                     <li>
-						<a href="./users">
+						<a href="../users">
 							<i class="fa fa-user"></i>
 							<span>Users</span>
 						</a>	    				
-					</li>                   
+					</li>                    
                     <li>
-						<a href="./listings">
+						<a href="../listings">
 							<i class="fa fa-copy"></i>
 							<span>Listings</span>
 						</a>	    				
-					</li>
+					</li>                   
                     <li>
-						<a href="./payments">
+						<a href="../payments">
 							<i class="fa fa-usd"></i>
 							<span>Payments</span>
 						</a>	    				
 					</li>
-                    <li>
-						<a href="../renters">
+                    <li class="active">
+						<a href="./">
 							<i class="fa fa-users"></i>
 							<span>Renters</span>
 						</a>	    				
 					</li>
 				</ul>
 			</div> <!-- /.subnav-collapse -->
-		</div> <!-- /container -->
+		</div> <!-- /container -->	
 	</div> <!-- /subnavbar-inner -->
 </div> <!-- /subnavbar -->
     
 <div class="main">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-xs-12">
-                <div class="widget stacked">
-                    <div class="widget-header">
-                        <i class="fa fa-star"></i>
-                        <h3>Site Analytics</h3>
-                    </div> <!-- /widget-header -->
-                    <div class="widget-content">
-                        <div class="stats">
-                            <div class="stat">
-                                <span id="site-visits" class="stat-value"></span>									
-                                Site Visits
-                            </div> <!-- /stat -->
-                            <div class="stat">
-                                <span id="unique-visits" class="stat-value"></span>									
-                                Unique Visits
-                            </div> <!-- /stat -->
-                            <div class="stat">
-                                <span id="new-visits" class="stat-value"></span>									
-                                New Visits
-                            </div> <!-- /stat -->
-                        </div> <!-- /stats -->
-                        <div class="stats">
-                            <div class="stat stat-time">									
-                                <span id="page-download-time" class="stat-value"></span>
-                                Average Page Download Time
-                            </div> <!-- /substat -->					
-                            <div class="stat stat-time">									
-                                <span id="average-time-on-site" class="stat-value"></span>
-                                Average Time on Site
-                            </div> <!-- /substat -->
-                        </div> <!-- /substats -->
-                    </div> <!-- /widget-content -->
-                </div> <!-- /widget -->	
-            </div>
-		</div> <!-- /row -->
+      <div class="row">
+      	<div class="col-md-12">
+      		<div class="widget stacked">
+      			<div class="widget-header">
+					<h3>Renters</h3>
+				</div> <!-- /widget-header -->
+				<div class="widget-content row">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <i class='fa fa-spinner fa-pulse'></i>
+                        <label for="users" style="display: none;">Users</label>
+                        <select id="users" class="form-control" style="display: none;"></select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <i class='fa fa-spinner fa-pulse' /></i>
+                        <label for="landlords" style="display: none;">Landlords</label>
+                        <select id="landlords" class="form-control" onChange="GetListingsByLandlord(this);"style="display: none;"></select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <i class='fa fa-spinner fa-pulse' style="display: none;"></i>
+                        <label for="listings" style="display: none;">Listings</label>
+                        <select id="listings" class="form-control" style="display: none;"></select>
+                    </div>    
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <button id="addRenter" class="btn btn-primary" style="display: none;" onclick="AddRenter();">Add Renter</button>
+                    </div>
+				</div> <!-- /widget-content -->
+                <div class="widget-content renters">
+                    <!-- all the renters go here -->
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        
+                    </div>
+                </div>
+			</div> <!-- /widget -->					
+	    </div> <!-- /col-md-12 -->     	
+      </div> <!-- /row -->
     </div> <!-- /container -->
-</div> <!-- /main -->  
-<div class="footer">		
-	<div class="container">		
-		<div class="row">			
+</div> <!-- /main -->
+   
+<div class="footer">
+	<div class="container">
+		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
 				&copy; Enhabit LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
 			</div> <!-- /span6 -->
 			<div id="footer-terms" class="col-md-6">
 				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
-			</div> <!-- /.span6 -->		
-		</div> <!-- /row -->		
-	</div> <!-- /container -->	
+			</div> <!-- /.span6 -->
+		</div> <!-- /row -->
+	</div> <!-- /container -->
 </div> <!-- /footer -->
-
-
-
     
 
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="../Libraries/Javascript/jquery-1.9.1.min.js"></script>
-<script src="../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
-<script src="../Libraries/Javascript/bootstrap.min.js"></script>
-
-<script src="../Libraries/Javascript/jquery.flot.js"></script>
-<script src="../Libraries/Javascript/jquery.flot.pie.js"></script>
-<script src="../Libraries/Javascript/jquery.flot.resize.js"></script>
+<script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
+<script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
-<script src="../Javascript/admin/functions.js"></script>
+<script src="../../Javascript/admin/functions.js"></script>
 
-<!--<script src="./js/charts/area.js"></script>
-<script src="./js/charts/donut.js"></script>-->
+<script type="text/javascript">
 
-<script>
+var userList = [];
+var landlordList = [];
 
 $(function() 
 {
-    <?php
-        $analytics = getService();
-        $profile = getFirstProfileId($analytics);;
-        $results = getSiteStats($analytics, $profile);
-        echo "var analytics = JSON.parse('";
-        echo printResults($results);
-        echo "');";
-    ?>
+    GetAllUsersAndLandlords(true);
     
-    DisplayAnalytics(analytics);
+    GetAllRenters();
 });
 
 </script>
