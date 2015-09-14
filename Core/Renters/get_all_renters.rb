@@ -19,20 +19,26 @@ begin
     
     #grab listing associated data
     mongoSession.with(safe: true) do |session|
-        documents = session[:renters].find().select(_id: 1, RenterId: 1, Rent: 1, Address: 1, Unit: 1).to_a
-    end
-    
-    #grab user associated data
-    mongoSession.with(safe: true) do |session|
-        documents.each do |doc|
-            userData = session[:renters].find({:RenterId => doc["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
+        #get all renters
+        documents = session[:renters].find().select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1, HasPaidRent: 1).to_a
         
+        #loop through all renters and get associated information for the user and landlord
+        documents.each do |doc|
+            userData = session[:accounts].find({:UserId => doc["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
+            
             doc["FirstName"] = userData["FirstName"]
             doc["LastName"] = userData["LastName"]
             doc["Email"] = userData["Email"]
             doc["PhoneNumber"] = userData["PhoneNumber"]
-            doc.delete("RenterId") #we don't need to expose this to the front end
-        end
+            
+            landlordData = session[:accounts].find({:LandlordId => doc["LandlordId"]}).select(Email: 1).one
+            
+            doc["LandlordEmail"] = landlordData["Email"]
+            
+            #we don't need to expose these to the front end
+            doc.delete("LandlordId") 
+            doc.delete("RenterId")
+        end 
     end
     
     mongoSession.disconnect

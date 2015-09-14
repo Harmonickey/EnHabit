@@ -181,14 +181,15 @@ function GetListingsByLandlord(obj)
             $("#addRenter").hide();
             $("#listings").hide();
             $("#listings").siblings("label").hide();
-            
+            $("#listings").siblings("p").hide();
             $("#listings").siblings("i").show();
         },
         data: 
         {
             command: "get_listings",
             data: {
-                Landlord: name
+                Landlord: name,
+                IsRented: false
             },
             endpoint: "Listings"
         },
@@ -221,6 +222,10 @@ function GetListingsByLandlord(obj)
                         $("#listings").siblings("label").show();
                         $("#addRenter").show();
                     }
+                }
+                else
+                {
+                    $("#listings").siblings("p").show();
                 }
             }
             catch(e)
@@ -364,10 +369,95 @@ function GetAllRenters()
         error: function(res, err)
         {
             $("#accordion").html("<p>" + res +  "</p>");
-        },
-        complete: function()
+        }
+    });
+}
+
+function OpenPaymentModal(uid)
+{
+    $("#createPaymentModal").modal('show');
+    
+    $("#MakePaymentButton").attr("onclick", "MakePayment('" + uid + "')");
+}
+
+function MakePayment(uid)
+{
+    var rent = $(uid + " .rent").text().replace("$", "");
+    var description = "Payment from Admin Portal";
+    var landlordEmail = $(uid + " .landlordEmail").text();
+    
+    // call from my custom payment library
+    ProcessPayment(uid, rent, description, landlordEmail);
+}
+
+function DeleteRenter(id)
+{
+    //check if the user really wants to do so
+    $.msgbox("Are you sure that you want to delete this renter?", 
+    {
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
         {
-            $("#accordion").html("<p>No Renters Found</p>");
+            $.ajax(
+            {
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
+                {
+                    $("#" + id + " button").prop("disabled", true);
+                    $($("#" + id + " button")[1]).text("Deleting...");
+                },
+                data:
+                {
+                    command: "delete_renter",
+                    data: 
+                    { 
+                        id: id 
+                    },
+                    endpoint: "Renters"
+                },
+                success: function(res)
+                {
+                    try
+                    {
+                        if (Contains(res, "Okay"))
+                        {
+                            // remove the row that we just selected
+                            $("#" + id).parent().remove();
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Renter Deleted Successfully!", position: 'top-center'});
+                            if ($("#accordion").text() == "")
+                            {
+                                $("#accordion").text("No Renters Found");
+                            }
+                        }
+                        else
+                        {
+                            throw new Error("Problem Deleting Renter");
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                        $("#" + id + " button").prop("disabled", false);
+                        $($("#" + id + " button")[1]).text("Delete Renter");
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $("#" + id + " button").prop("disabled", false);
+                    $($("#" + id + " button")[1]).text("Delete Renter");
+                }
+            });
         }
     });
 }
@@ -1726,7 +1816,7 @@ function CreateAccordionUsersView(uid, data)
             "</div>";
 }
 
-function CreateAccordionUsersView(uid, data)
+function CreateAccordionRentersView(uid, data)
 {           
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
@@ -1734,7 +1824,8 @@ function CreateAccordionUsersView(uid, data)
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + uid + "' aria-expanded='false' aria-controls='" + uid + "'>" +
                             "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
                             "<label>Address: " + data.Address + (data.Unit ? " " + data.Unit : "") + "</label>" +
-                            "<label>Rent: " + data.Rent + "</label>" +
+                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Has Paid: " + data.HasPaidRent + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
@@ -1742,27 +1833,30 @@ function CreateAccordionUsersView(uid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Name</label><p>" + data.FirstName + " " + data.LastName + "</p>" + 
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Address</label><p>" + data.Address + (data.Unit ? " " + data.Unit : "") + "</p>" + 
+                                "<label>Address</label><p class='address'>" + data.Address + (data.Unit ? " " + data.Unit : "") + "</p>" + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Last Name</label><p>" + data.Rent + "</p>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Email Address</label><p>" + data.Email + "</p>" +
+                                "<label>Email Address</label><p class='email'>" + data.Email + "</p>" +
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Phone Number</label><p>" + data.PhoneNumber + "</p>" +
+                                "<label>Phone Number</label><p class='phonenumber'>" + data.PhoneNumber + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" +
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='MakePayment(\"" + uid + "\");'>PayRent</button>" + 
-                                "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>DeleteRenter</button>" +
+                                "<button class='btn btn-primary' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                                "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>Delete Renter</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +

@@ -126,6 +126,12 @@ def setFilters
     else
         @landlordFilter[:Landlord] = @landlord
     end
+    
+    if @isRented.nil?
+        @isRentedFilter = nil
+    else
+        @isRentedFilter[:IsRented] = @isRented
+    end
 end
 
 def combineFiltersIntoQuery 
@@ -172,6 +178,9 @@ def combineFiltersIntoQuery
     if not @landlordFilter.nil?
         @mainFilter["$and"].push @landlordFilter
     end
+    if not @isRentedFilter.nil?
+        @mainFilter["$and"].push @isRentedFilter
+    end
     
     if @mainFilter["$and"].count == 0
         @mainFilter = {}
@@ -196,6 +205,7 @@ begin
         @university = data["University"] if not data["University"].nil? and not data["University"].empty?
         @tags = data["Tags"] if not data["Tags"].nil? and not data["Tags"].length == 0    
         @landlord = data["Landlord"] if not data["Landlord"].nil? and not data["Landlord"].empty?
+        @isRented = data["IsRented"] if not data["IsRented"].nil? and not data["IsRented"].empty?
     end
     
     @isAdmin = ARGV[3].to_b unless ARGV[3].empty?
@@ -227,6 +237,7 @@ begin
     @userIdFilter = {}
     @landlordIdFilter = {}
     @landlordFilter = {}
+    @isRentedFilter = {}
 
     setFilters
     combineFiltersIntoQuery
@@ -238,7 +249,7 @@ begin
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongoSession.use("enhabit")# this is our current database
     
-    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1, Thumbnails: 1).to_a
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1, Thumbnails: 1, IsRented: 1).to_a
     
     mongoSession.disconnect
 

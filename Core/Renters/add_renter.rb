@@ -17,7 +17,7 @@ require 'bson'
 
 Moped::BSON = BSON
 
-def InsertRenter(userId, landlordId, address, unit, rent)
+def InsertRenter(userId, landlordId, address, unit, rent, listingId)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -37,11 +37,11 @@ def InsertRenter(userId, landlordId, address, unit, rent)
     #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongoSession.with(safe: true) do |session|
-            session[:renters].insert(usrObj)
+            session[:renters].insert(renterObj)
         end
         
         queryObj = Hash.new
-        queryObj["RenterId"] = usrObj["RenterId"]
+        queryObj["RenterId"] = renterObj["RenterId"]
         
         #grab listing associated data
         mongoSession.with(safe: true) do |session|
@@ -50,8 +50,8 @@ def InsertRenter(userId, landlordId, address, unit, rent)
         
         #grab user associated data
         mongoSession.with(safe: true) do |session|
-            userData = session[:renters].find({:RenterId => document["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
-        
+            userData = session[:accounts].find({:UserId => document["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
+
             document["FirstName"] = userData["FirstName"]
             document["LastName"] = userData["LastName"]
             document["Email"] = userData["Email"]
@@ -59,7 +59,10 @@ def InsertRenter(userId, landlordId, address, unit, rent)
             document.delete("UserId") #we don't need to expose this to the front end
         end
         
+        queryObj = Hash.new
+        queryObj["_id"] = Moped::BSON::ObjectId.from_string(listingId.to_s)
         
+        session[:listings].find(queryObj).update('$set' => {:IsRented => true})
         
     rescue Moped::Errors::OperationFailure => e
         document["Error"] = e
@@ -100,7 +103,7 @@ def GetLandlordId(landlord)
 
     begin
         queryObj = Hash.new
-        queryObj["Landlord"] = landlord
+        queryObj["Username"] = landlord
         
         account = Array.new
         mongoSession.with(safe: true) do |session|
@@ -146,13 +149,13 @@ begin
     data = JSON.parse(ARGV[0].delete('\\'))
     
     renterId = GetRenterId(data["Renter"])
-    throw Exception("No RenterId") if renterId.nil?
+    raise "No RenterId" if renterId.nil?
     landlordId = GetLandlordId(data["Landlord"])
-    throw Exception("No LandlordId") if landlordId.nil?
+    raise "No LandlordId" if landlordId.nil?
     listingData = GetListingData(data["ListingId"])
-    throw Exception("No Listing Data") if listingData.nil?
+    raise "No Listing Data" if listingData.nil?
     
-    puts InsertRenter(renterId, landlordId, listingData[:Address], listingData[:Unit], listingData[:Rent])
+    puts InsertRenter(renterId, landlordId, listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
 rescue Exception => e
     puts e.inspect
 end
