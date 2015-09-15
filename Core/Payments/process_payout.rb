@@ -51,7 +51,7 @@ include PayPal::SDK::REST
 
 begin
   @payout_batch = @payout.create
-  logger.info "Created Payout with [#{@payout_batch.batch_header.payout_batch_id}]"
+  puts "Created Payout with [#{@payout_batch.batch_header.payout_batch_id}]"
 rescue ResourceNotFound => err
-  logger.error @payout.error.inspect
+  puts @payout.error.inspect
 end
