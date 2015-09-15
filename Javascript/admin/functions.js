@@ -377,17 +377,25 @@ function OpenPaymentModal(uid)
 {
     $("#createPaymentModal").modal('show');
     
-    $("#MakePaymentButton").attr("onclick", "MakePayment('" + uid + "')");
+    $("#pay-now").attr("onclick", "MakePayment('" + uid + "')");
 }
 
 function MakePayment(uid)
 {
-    var rent = $(uid + " .rent").text().replace("$", "");
+    var rent = $("#" + uid + " .rent").text().replace("$", "");
     var description = "Payment from Admin Portal";
-    var landlordEmail = $(uid + " .landlordEmail").text();
+    var landlordEmail = $("#" + uid + " .landlordEmail").text();
+    
+    console.log(rent);
+    console.log(description);
+    console.log(landlordEmail);
+    console.log("next");
     
     // call from my custom payment library
-    ProcessPayment(uid, rent, description, landlordEmail);
+    if (IsValidSubmission())
+    {
+        ProcessPayment(uid, rent, description, landlordEmail);
+    }
 }
 
 function DeleteRenter(id)
@@ -1866,15 +1874,45 @@ function CreateAccordionRentersView(uid, data)
 
 function CreateAccordionPaymentsView(oid, data)
 {           
+
+/*
+[{"_id":{"$oid":"55f75f616382f6b01600cf33"},"Rent":"550","Month":"September","FirstName":"alex","LastName":"ayerdi","Email":"aayerdi@u.northwestern.edu","PhoneNumber":"269-267-3752","LandlordName":"Northshore Apartments","LandlordEmail":"eric@northshoreapt.com"}]
+*/
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Month: " + data.Month + "</label>" +
+                            "<label>Landlord: " + data.LandlordName + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
-                    "<div class='panel-body'>" +                       
+                    "<div class='panel-body'>" +   
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Month</label><p class='address'>" + data.Month + "</p>" + 
+                            "</div>" +                           
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Email Address</label><p class='email'>" + data.Email + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Phone Number</label><p class='phonenumber'>" + data.PhoneNumber + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" +
+                            "</div>" +
+                        "</div>" + 
                     "</div>" +
                 "</div>" +
             "</div>";

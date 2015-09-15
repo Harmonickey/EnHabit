@@ -177,7 +177,7 @@
 
 $(function() 
 {
-    getAllTransactions();
+    GetAllTransactions();
 });
 
 </script>

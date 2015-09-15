@@ -26,7 +26,8 @@ include PayPal::SDK::REST
     :client_secret => "EPwW3Clo9KQZgOeuWVgFY_q1jlKxpnAoFWMJDLxUUJ8nn3Z91XuQ6nN5AkBWy0JoGDxsLztc5AgdZoMI" )
 
 @month = @data["Month"]
-    
+#@rent = @data["Rent"]
+@rent = 0.01 #just for now
 @payout = Payout.new(
   {
     :sender_batch_header => {
@@ -37,7 +38,7 @@ include PayPal::SDK::REST
       {
         :recipient_type => 'EMAIL',
         :amount => {
-          :value => @data["Rent"],
+          :value => @rent,
           :currency => 'USD'
         },
         :note => "Payment for #{@month}'s Rent",

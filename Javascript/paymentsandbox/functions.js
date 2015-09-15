@@ -15,17 +15,6 @@ $(function()
         this.parent('.form-group').toggleClass('has-error', erred);
         return this;
     };
-
-    $('#pay-now').on("click", function(e) 
-    {
-        e.preventDefault(); // don't allow form submission default behavior
-
-        // check if there are any errors
-        if (IsValidSubmission())
-        {
-            ProcessPayment();
-        }
-    });
   
     $("#cc-number").keyup(function() {
         if ($.payment.validateCardNumber($(this).val()))
@@ -39,7 +28,7 @@ $(function()
 
 function ProcessPayment(uid, rent, description, landlordEmail)
 {
-    var paymentMonth = $("#payment-month").val();
+    var paymentMonth = $("#paymentMonth").val();
     
     var data = {
         amount: rent,
@@ -60,6 +49,7 @@ function ProcessPayment(uid, rent, description, landlordEmail)
     };
     
     $.msgGrowl ({ type: 'success', title: 'Success', text: "Test Success Message!", position: 'top-center'}); 
+    $("#createPaymentModal").modal('hide');
     
     $.ajax({
        type: "POST",
@@ -82,7 +72,7 @@ function ProcessPayoutToLandlord(uid, rent, landlordEmail, paymentMonth, descrip
 {
     var data = {
         Rent: rent,
-        LandlordEmail: "AAyerdi@u.northwestern.edu",
+        Email: "AAyerdi@u.northwestern.edu",
         Description: description,
         Month: paymentMonth
     };
@@ -113,7 +103,7 @@ function UpdateRenter(uid)
        url: "/api.php",
        data: 
        {
-           endpoint: "Payments",
+           endpoint: "Renters",
            command: "update_renter_to_paid",
            data: 
            {

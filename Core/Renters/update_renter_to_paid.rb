@@ -23,13 +23,15 @@ def UpdateRenterToPaid(renterId)
     mongoSession.use("enhabit") # this is our current database
 
     renterObj = Hash.new
-    renterObj["RenterId"] = renterId
+    renterObj["_id"] = Moped::BSON::ObjectId.from_string(renterId)
  
     retVal = nil
  
     begin
         mongoSession.with(safe: true) do |session|
-            session[:renters].find(renterObj).update('$set' => {:HasPaidRent => true})
+            renterData = session[:renters].find(renterObj).select(RenterId: 1).one      
+        
+            session[:renters].find({:RenterId => renterData["RenterId"]}).update('$set' => {:HasPaidRent => true})
         end
         
         retVal = "Okay"

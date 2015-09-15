@@ -228,13 +228,13 @@
                                 <div class="row">
                                     <div class="form-group col-lg-12 col-md-12 col-sm-12">
                                         <label for="address">Address</label>
-                                        <input class="form-control" type="text" name="address1" id="address1">
+                                        <input class="form-control text-center" type="text" name="address1" id="address1">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-lg-5 col-md-5 col-sm-5">       
                                         <label for="address">Apt/Suite #</label>
-                                        <input class="form-control" type="text" name="address2" id="address2">
+                                        <input class="form-control text-center" type="text" name="address2" id="address2">
                                     </div>
                                     <div class="form-group col-lg-5 col-md-5 col-sm-5" style="float: right; margin-right: 2px;"> 
                                         <label for="address">City</label>
@@ -261,8 +261,8 @@
                                 </div>
                                 <div class="row">                                           
                                     <div class="form-group col-lg-12 col-md-12 col-sm-12">   
-                                        <label for="payment-month">Payment Month</label>
-                                        <select class="form-control text-center" type="text" name="state" id="payment-month">
+                                        <label for="paymentMonth">Payment Month</label>
+                                        <select class="form-control text-center" type="text" name="state" id="paymentMonth">
                                             <option value="January">January</option>
                                             <option value="February">February</option>
                                             <option value="March">March</option>

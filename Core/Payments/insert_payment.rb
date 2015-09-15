@@ -15,8 +15,6 @@ require 'json'
 require 'moped'
 require 'bson'
 
-Moped::BSON = BSON
-
 def InsertPayment(userId, landlordId, rent, month)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
@@ -30,19 +28,21 @@ def InsertPayment(userId, landlordId, rent, month)
     renterObj["Rent"] = rent
     renterObj["Month"] = month
  
-    document = Hash.new
+    retVal = ""
  
     #Username has a unique constraint attached, so we want to catch the raised error just in case
     begin
         mongoSession.with(safe: true) do |session|
             session[:payments].insert(renterObj)
         end       
+        
+        retVal = "Okay"
     rescue Moped::Errors::OperationFailure => e
-        document["Error"] = e
+        retVal = e
     end
     
 	mongoSession.disconnect
-    return document.to_json
+    return retVal
 end
 
 def GetLandlordIdFromEmail(landlordEmail)
@@ -76,7 +76,7 @@ begin
     landlordId = GetLandlordIdFromEmail(data["LandlordEmail"])
     raise "No LandlordId" if landlordId.nil?
     rent = data["Rent"]
-    raise "No Rent" if Rent.nil?
+    raise "No Rent" if rent.nil?
     month = data["Month"]
     raise "No Month" if month.nil?
     
