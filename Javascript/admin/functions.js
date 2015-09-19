@@ -20,7 +20,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function GetAllUsersAndLandlords()
+function GetAllUsersAndLandlords(isRenterPage)
 {
     $.ajax(
     {
@@ -43,33 +43,56 @@ function GetAllUsersAndLandlords()
                     {
                         if (data[i].IsLandlord)
                         {
-                            landlordList.push(data[i].Username)
+                            landlordList.push(data[i].Username);
+                            if (isRenterPage)
+                            {
+                                $("#landlords").append("<option value='" + data[i].Username + "'>" + data[i].Username + "</option>");
+                            }
                         }
                         else
                         {
                             userList.push(data[i].Username);
+                            if (isRenterPage)
+                            {
+                                $("#users").append("<option value='" + data[i].Username + "'>" + data[i].Username + "</option>");
+                            }
                         }
                     }
                     
-                    $($("#createListingModal .ui-widget input")[0]).autocomplete(
+                    if (!isRenterPage)
                     {
-                        source: function(request, response) 
+                        $($("#createListingModal .ui-widget input")[0]).autocomplete(
                         {
-                            var results = $.ui.autocomplete.filter(landlordList, request.term);
+                            source: function(request, response) 
+                            {
+                                var results = $.ui.autocomplete.filter(landlordList, request.term);
 
-                            response(results.slice(0, 5)); // limit to 5 results at a time
-                        } 
-                    });
-                    
-                    $($("#createListingModal .ui-widget input")[1]).autocomplete(
+                                response(results.slice(0, 5)); // limit to 5 results at a time
+                            } 
+                        });
+                        
+                        $($("#createListingModal .ui-widget input")[1]).autocomplete(
+                        {
+                            source: function(request, response) 
+                            {
+                                var results = $.ui.autocomplete.filter(userList, request.term);
+
+                                response(results.slice(0, 5)); // limit to 5 results at a time
+                            }
+                        });
+                    }
+                    else
                     {
-                        source: function(request, response) 
-                        {
-                            var results = $.ui.autocomplete.filter(userList, request.term);
-
-                            response(results.slice(0, 5)); // limit to 5 results at a time
-                        }
-                    });
+                        $("#users").siblings("i").hide();
+                        $("#landlords").siblings("i").hide();
+                        
+                        $("#users").show();
+                        $("#users").siblings("label").show();
+                        $("#landlords").show();
+                        $("#landlords").siblings("label").show();
+                        
+                        GetListingsByLandlord({"value": $("#landlords").val()});
+                    }
                 }
             }
             catch(e)
@@ -93,7 +116,7 @@ function GetAllUsers()
         beforeSend: function()
         {
             //spinner on accordion area
-            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />");
         },
         data: 
         {
@@ -141,6 +164,308 @@ function GetAllUsers()
         error: function(res, err)
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
+}
+
+function GetListingsByLandlord(obj)
+{
+    var name = obj.value;
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $("#addRenter").hide();
+            $("#listings").hide();
+            $("#listings").siblings("label").hide();
+            $("#listings").siblings("p").hide();
+            $("#listings").siblings("i").show();
+        },
+        data: 
+        {
+            command: "get_listings",
+            data: {
+                Landlord: name,
+                IsRented: false
+            },
+            endpoint: "Listings"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Matching Entries"))
+                {
+                    $("#listings").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            var address = data[i].Address + (data[i].Unit ? " " + data[i].Unit : "");
+                            
+                            $("#listings").append("<option value='" + oid + "'>" + address + "</option>");
+                        }
+                        
+                        $("#listings").show();
+                        $("#listings").siblings("label").show();
+                        $("#addRenter").show();
+                    }
+                }
+                else
+                {
+                    $("#listings").siblings("p").show();
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        },
+        complete: function() 
+        {
+            $("#listings").siblings("i").hide();
+        }
+    });
+}
+
+function AddRenter()
+{
+    var renter = $("#users").val();
+    var landlord = $("#landlords").val();
+    var listingId = $("#listings").val();
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $("#addRenter").prop("disabled", true);
+            $("#addRenter").text("Adding...");
+        },
+        data: 
+        {
+            command: "add_renter",
+            data: {
+                Renter: renter,
+                Landlord: landlord,
+                ListingId: listingId
+            },
+            endpoint: "Renters"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Could not add renter");
+                }
+                else
+                {
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        if ($("#accordion").text() == "No Renters Found")
+                        {
+                            $("#accordion").html("");
+                        }
+                        
+                        var oid = data._id.$oid;
+                            
+                        $("#accordion").append(CreateAccordionRentersView(oid, data));
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        },
+        complete: function() 
+        {
+            $("#addRenter").prop("disabled", false);
+            $("#addRenter").text("Add Renter");
+        }
+    });
+}
+
+function GetAllRenters()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data:
+        {
+            command: "get_all_renters",
+            endpoint: "Renters"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res || Contains(res, "No Renters Found"))
+                {
+                    throw new Error("No Renters Found");
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                        $(".actions a").show();
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionRentersView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $("#accordion").html("<p>" + e.message + "</p>");
+            }
+        },
+        error: function(res, err)
+        {
+            $("#accordion").html("<p>" + res +  "</p>");
+        }
+    });
+}
+
+function OpenPaymentModal(uid)
+{
+    $("#createPaymentModal").modal('show');
+    
+    $("#pay-now").attr("onclick", "MakePayment('" + uid + "')");
+}
+
+function MakePayment(uid)
+{
+    var rent = $("#" + uid + " .rent").text().replace("$", "");
+    var description = "Payment from Admin Portal";
+    var landlordEmail = $("#" + uid + " .landlordEmail").text();
+    
+    console.log(rent);
+    console.log(description);
+    console.log(landlordEmail);
+    console.log("next");
+    
+    // call from my custom payment library
+    if (IsValidSubmission())
+    {
+        ProcessPayment(uid, rent, description, landlordEmail);
+    }
+}
+
+function DeleteRenter(id)
+{
+    //check if the user really wants to do so
+    $.msgbox("Are you sure that you want to delete this renter?", 
+    {
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
+                {
+                    $("#" + id + " button").prop("disabled", true);
+                    $($("#" + id + " button")[1]).text("Deleting...");
+                },
+                data:
+                {
+                    command: "delete_renter",
+                    data: 
+                    { 
+                        id: id 
+                    },
+                    endpoint: "Renters"
+                },
+                success: function(res)
+                {
+                    try
+                    {
+                        if (Contains(res, "Okay"))
+                        {
+                            // remove the row that we just selected
+                            $("#" + id).parent().remove();
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Renter Deleted Successfully!", position: 'top-center'});
+                            if ($("#accordion").text() == "")
+                            {
+                                $("#accordion").text("No Renters Found");
+                            }
+                        }
+                        else
+                        {
+                            throw new Error("Problem Deleting Renter");
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                        $("#" + id + " button").prop("disabled", false);
+                        $($("#" + id + " button")[1]).text("Delete Renter");
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $("#" + id + " button").prop("disabled", false);
+                    $($("#" + id + " button")[1]).text("Delete Renter");
+                }
+            });
         }
     });
 }
@@ -1499,17 +1824,95 @@ function CreateAccordionUsersView(uid, data)
             "</div>";
 }
 
+function CreateAccordionRentersView(uid, data)
+{           
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + uid + "' aria-expanded='false' aria-controls='" + uid + "'>" +
+                            "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label>Address: " + data.Address + (data.Unit ? " " + data.Unit : "") + "</label>" +
+                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Has Paid: " + data.HasPaidRent + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + uid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + uid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Address</label><p class='address'>" + data.Address + (data.Unit ? " " + data.Unit : "") + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Email Address</label><p class='email'>" + data.Email + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Phone Number</label><p class='phonenumber'>" + data.PhoneNumber + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" +
+                            "</div>" +
+                        "</div>" + 
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                                "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>Delete Renter</button>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
 function CreateAccordionPaymentsView(oid, data)
 {           
+
+/*
+[{"_id":{"$oid":"55f75f616382f6b01600cf33"},"Rent":"550","Month":"September","FirstName":"alex","LastName":"ayerdi","Email":"aayerdi@u.northwestern.edu","PhoneNumber":"269-267-3752","LandlordName":"Northshore Apartments","LandlordEmail":"eric@northshoreapt.com"}]
+*/
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Month: " + data.Month + "</label>" +
+                            "<label>Landlord: " + data.LandlordName + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
-                    "<div class='panel-body'>" +                       
+                    "<div class='panel-body'>" +   
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Month</label><p class='address'>" + data.Month + "</p>" + 
+                            "</div>" +                           
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Email Address</label><p class='email'>" + data.Email + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Phone Number</label><p class='phonenumber'>" + data.PhoneNumber + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" +
+                            "</div>" +
+                        "</div>" + 
                     "</div>" +
                 "</div>" +
             "</div>";

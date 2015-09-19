@@ -42,6 +42,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
+    listingObj["IsRented"] = false
     listingObj["Tags"] = tags
     listingObj["Pictures"] = pictures
     
