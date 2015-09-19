@@ -119,6 +119,12 @@
 							<span>Payments</span>
 						</a>	    				
 					</li>
+                    <li>
+						<a href="../renters">
+							<i class="fa fa-users"></i>
+							<span>Renters</span>
+						</a>	    				
+					</li>
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->	
@@ -158,10 +164,6 @@
 	</div> <!-- /container -->
 </div> <!-- /footer -->
     
-
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
@@ -175,7 +177,7 @@
 
 $(function() 
 {
-    getAllTransactions();
+    GetAllTransactions();
 });
 
 </script>

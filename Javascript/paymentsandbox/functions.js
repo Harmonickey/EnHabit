@@ -1,3 +1,5 @@
+/********** INITIALIZATION FUNCTIONS ************/
+
 // We are using the Luhn algorithm to validate credit cards.
 // Library help by Stripe Jquery Credit Card library
 $(function() 
@@ -13,17 +15,6 @@ $(function()
         this.parent('.form-group').toggleClass('has-error', erred);
         return this;
     };
-
-    $('#pay-now').on("click", function(e) 
-    {
-        e.preventDefault(); // don't allow form submission default behavior
-
-        // check if there are any errors
-        if (IsValidSubmission())
-        {
-            ProcessPayment();
-        }
-    });
   
     $("#cc-number").keyup(function() {
         if ($.payment.validateCardNumber($(this).val()))
@@ -33,11 +24,15 @@ $(function()
     });
 });
 
-function ProcessPayment()
+/****** PAYPAL FUNCTIONS *******/
+
+function ProcessPayment(uid, rent, description, landlordEmail)
 {
+    var paymentMonth = $("#paymentMonth").val();
+    
     var data = {
-        amount: "0.01",
-        description: "testing",
+        amount: rent,
+        description: description,
         method: "credit_card",
         card: $("#cc-number").val().trim(),
         cvv: $("#cc-cvc").val().trim(),
@@ -54,6 +49,7 @@ function ProcessPayment()
     };
     
     $.msgGrowl ({ type: 'success', title: 'Success', text: "Test Success Message!", position: 'top-center'}); 
+    $("#createPaymentModal").modal('hide');
     
     $.ajax({
        type: "POST",
@@ -65,12 +61,87 @@ function ProcessPayment()
            data: data 
        },
        success: function(res) {
-           
-           console.log(res);
-           
+           ProcessPayoutToLandlord(uid, rent, landlordEmail, paymentMonth, description);
        }
     });
 }
+
+/************* DATABASE FUNCTIONS ***************/
+
+function ProcessPayoutToLandlord(uid, rent, landlordEmail, paymentMonth, description)
+{
+    var data = {
+        Rent: rent,
+        Email: "AAyerdi@u.northwestern.edu",
+        Description: description,
+        Month: paymentMonth
+    };
+    
+    $.ajax({
+       type: "POST",
+       url: "/api.php",
+       data: 
+       {
+           endpoint: "Payments",
+           command: "process_payout",
+           data: data 
+       },
+       success: function(res) {
+           
+           // Now the data needs to be inserted into the database and the
+           // flag on the renter's document needs to be set to HasPaidRent = true          
+           UpdateRenter(uid);
+           InsertPayment(uid, landlordEmail, rent, paymentMonth);
+       }
+    });
+}
+
+function UpdateRenter(uid)
+{
+    $.ajax({
+       type: "POST",
+       url: "/api.php",
+       data: 
+       {
+           endpoint: "Renters",
+           command: "update_renter_to_paid",
+           data: 
+           {
+                RenterId: uid
+           }
+       },
+       success: function(res) {
+           // nothing should really happen here at this point really, it's all backend work
+       }
+    });
+}
+
+function InsertPayment(uid, landlordEmail, rent, paymentMonth)
+{
+    var data = {
+      RenterId: uid,
+      LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
+      Rent: rent, 
+      Month: paymentMonth
+    };
+    
+    $.ajax({
+       type: "POST",
+       url: "/api.php",
+       data: 
+       {
+           endpoint: "Payments",
+           command: "insert_payment",
+           data: data 
+       },
+       success: function(res) {
+           // nothing should really happen here at this point really, it's all backend work
+       }
+    });
+}
+
+
+/********* UTILITY FUNCTIONS ******************/
 
 function IsValidSubmission()
 {

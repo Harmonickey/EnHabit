@@ -806,7 +806,7 @@ function SearchForListings()
                     throw new Error(res);
                 }
                 else
-                {                 
+                {
                     intervalVal = setInterval(InsertMarkers, 60000, res);
                 }
             }
@@ -1021,6 +1021,7 @@ function InsertMarkers(res)
         
         ShowTagsPopup(pageTags, data[0].University);
     }
+    
     map.fitBounds(markers.getBounds());
     clearInterval(intervalVal);
 }

@@ -113,6 +113,12 @@
 							<span>Payments</span>
 						</a>	    				
 					</li>
+                    <li>
+						<a href="../renters">
+							<i class="fa fa-users"></i>
+							<span>Renters</span>
+						</a>	    				
+					</li>
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->
@@ -270,11 +276,7 @@
         </div>
     </div>
 </div>
-    
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui.min.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
@@ -311,7 +313,7 @@ $(function()
     CreateDropzone("create", "#createListingModal form");
 
     GetAllListings();
-    GetAllUsersAndLandlords();
+    GetAllUsersAndLandlords(false);
 
     InitSpecialFields();
     

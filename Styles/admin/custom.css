@@ -176,3 +176,13 @@ textarea
 {
     margin-bottom: 10px;
 }
+
+.widget-content.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#addRenter {
+    position: relative;
+    top: 27px;
+}
