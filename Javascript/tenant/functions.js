@@ -359,7 +359,7 @@ function UpdateListing(id)
 {
     var inputs = $("#" + id + " input").not(":eq(7)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Landlord", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "IsRented", "Landlord", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -1194,6 +1194,11 @@ function CreateAccordionView(oid, data)
                                 "<label>Type</label><input type='checkbox' " + (data.Type == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" + 
+                        "<div class='row'>" +
+                            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+                                "<label>Is Rented</label><input type='checkbox' " + (data.IsRented ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" + 
+                        "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord && data.Landlord !== "-" ? data.Landlord : "") + "' />" +
