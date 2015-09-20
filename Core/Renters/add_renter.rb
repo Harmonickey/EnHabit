@@ -97,29 +97,6 @@ def GetRenterId(user)
     end
 end
 
-def GetLandlordId(landlord)
-    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
-    mongoSession.use("enhabit") # this is our current database
-
-    begin
-        queryObj = Hash.new
-        queryObj["Username"] = landlord
-        
-        account = Array.new
-        mongoSession.with(safe: true) do |session|
-            account = session[:accounts].find(queryObj).to_a
-        end
-        
-        if account.count == 0
-            return nil
-        else
-            return account[0]["LandlordId"]
-        end
-    rescue Moped::Errors::OperationFailure => e
-        return nil
-    end
-end
-
 def GetListingData(listingId)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -128,17 +105,18 @@ def GetListingData(listingId)
         queryObj = Hash.new
         queryObj["_id"] = Moped::BSON::ObjectId.from_string(listingId.to_s)
         
-        account = Array.new
+        listing = Array.new
         mongoSession.with(safe: true) do |session|
-            account = session[:listings].find(queryObj).to_a
+            listing = session[:listings].find(queryObj).to_a
         end
         
-        if account.count == 0
+        if listing.count == 0
             return nil
         else
-            return { :Rent => account[0]["Price"], 
-                     :Address => account[0]["Address"], 
-                     :Unit => account[0]["Unit"] }
+            return { :Rent => listing[0]["Price"], 
+                     :Address => listing[0]["Address"], 
+                     :Unit => listing[0]["Unit"],
+                     :LandlordId => listing[0]["LandlordId"]}
         end
     rescue Moped::Errors::OperationFailure => e
         return nil
@@ -150,12 +128,10 @@ begin
     
     renterId = GetRenterId(data["Renter"])
     raise "No RenterId" if renterId.nil?
-    landlordId = GetLandlordId(data["Landlord"])
-    raise "No LandlordId" if landlordId.nil?
     listingData = GetListingData(data["ListingId"])
     raise "No Listing Data" if listingData.nil?
     
-    puts InsertRenter(renterId, landlordId, listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
+    puts InsertRenter(renterId, listingData[:LandlordId], listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
 rescue Exception => e
     puts e.inspect
 end

@@ -20,6 +20,66 @@ $(document).on("keypress", function(e)
     }
 });
 
+function GetAllApplicants()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_all_applicants",
+            endpoint: "Applicants"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res || Contains(res, "No Applicants Found"))
+                {
+                    throw new Error("No Applicants Found");
+                    $("#accordion").html("<p>No Applicants</p>");
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionApplicantsView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $(".actions a").show();
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $(".actions a").show();
+        }
+    });
+}
+
 function GetAllListings()
 {
     $.ajax(
@@ -1138,6 +1198,43 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreateAccordionApplicantsView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label>Address: " + data.Address + " " + (data.Unit ? data.Unit : " ") + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +   
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Address:</label><p class='address'>" + data.Address + " " + (data.Unit ? data.Unit : " ") + "</p>" +
+                            "</div>" +                         
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Random Data:</label><p>" + " " + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Random Data:</label><p>" + " " + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Random Data:</label><p>" + " " + "</p>" +
+                            "</div>" +
+                        "</div>" + 
                     "</div>" +
                 "</div>" +
             "</div>";
