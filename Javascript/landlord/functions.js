@@ -69,13 +69,11 @@ function GetAllApplicants()
             catch(e)
             {
                 $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                $(".actions a").show();
             }    
         },
         error: function(res, err)
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-            $(".actions a").show();
         }
     });
 }
@@ -1226,15 +1224,18 @@ function CreateAccordionApplicantsView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Random Data:</label><p>" + " " + "</p>" +
+                                "<label>Job Title: </label><p>" + data.JobTitle + "</p>" +
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Random Data:</label><p>" + " " + "</p>" +
-                            "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Random Data:</label><p>" + " " + "</p>" +
+                                "<label>Salary: $</label><p>" + data.Salary + "</p>" +
                             "</div>" +
                         "</div>" + 
+                        "<div class='row' style='margin-top: 10px;'>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary' onclick='AcceptApplicant(\"" + oid + "\");'>Accept</button>" + 
+                                "<button class='btn btn-danger' onclick='RemoveApplicant(\"" + oid + "\");'>Remove</button>" +
+                            "</div>" +
+                        "</div>" +
                     "</div>" +
                 "</div>" +
             "</div>";
