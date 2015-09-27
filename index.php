@@ -392,6 +392,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <input type="text" class="form-control salary" />
             </div>
         </div>
+        <input type="button" class="btn btn-outline-inverse btn-sm" value="Apply" />
     </div>
     <!-- end application view-->
 </html>

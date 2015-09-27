@@ -1392,10 +1392,14 @@ function LoginFacebookUser(userID, accessToken)
 function ApplyForListing(listingId)
 {
     $("#application-view").fadeIn();
+    $("#application-view input").attr("onclick", "Apply('" + listinId +"');")
 }
 
-function Apply(listingId, jobTitle, salary)
+function Apply(listingId)
 {
+    var jobTitle = $(".jobTitle").val().trim();
+    var salary = $(".salary").val().trim();
+    
     var data = 
     {
         ListingId: listingId,
@@ -1406,19 +1410,24 @@ function Apply(listingId, jobTitle, salary)
     $.ajax(
     {
         type: "POST",
-        url: "logout.php",
-        data: data,
+        url: "api.php",
+        data:
+        {
+            command: "add_applicant",
+            data: data,
+            endpoint: "Applicants"
+        },
         success: function(res)
         {
             try
             {
-                if (Contains(res, "Successfully"))
+                if (Contains(res, "Okay"))
                 {
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Application Sent!", position: 'top-center'});
                 }
                 else
                 {
-                    throw new Error("Problem Logging Out");
+                    throw new Error("Problem Sending Application");
                 }
             }
             catch(e)

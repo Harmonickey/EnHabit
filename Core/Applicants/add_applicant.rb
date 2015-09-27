@@ -75,7 +75,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
-    userId = ARGV[1] if not ARGV[0].nil?
+    userId = ARGV[1] if not ARGV[1].nil?
     key = ARGV[2]
     isAdmin = ARGV[3].to_b
     
