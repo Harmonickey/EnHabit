@@ -376,5 +376,22 @@ if (!isset($_SESSION['CREATED'])) {
             </div>
         </div>
     </div>
-    <!-- -->
+    <!-- end details view -->
+    <!-- placeholder for details view -->
+    <div id="application-view" style="display: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseApplicationView();">×</button>
+        <div class="row">
+            <div class="col-sm-5 col-md-5 col-lg-5">
+                <label>Job Title</label>
+                <input type="text" class="form-control jobTitle" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5 col-md-5 col-lg-5">
+                <label>Salary</label>
+                <input type="text" class="form-control salary" />
+            </div>
+        </div>
+    </div>
+    <!-- end application view-->
 </html>

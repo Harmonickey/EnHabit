@@ -1221,10 +1221,10 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animal
                     "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' onclick='ShareListing(\"" + Id + "\");' />" +
                 "</div>" +
                 "<div class='row'>" +
-                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact Landlord' onclick='ContactLandlord(\"" + Id + "\"); />" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact Landlord' onclick='ContactLandlord(\"" + Id + "\");' />" +
                 "</div>" +
                 "<div class='row'>" +
-                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Apply for Listing' onclick='ApplyForListing(\"" + Id + "\"); />" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Apply for Listing' onclick='ApplyForListing(\"" + Id + "\");' />" +
                 "</div>" +
             "</div>" +
         "</div>" +
@@ -1385,6 +1385,50 @@ function LoginFacebookUser(userID, accessToken)
             
             $("#DeleteAccount_header").siblings("label").remove();
             $("#DeleteAccount_header").siblings("input.password").remove();
+        }
+    });
+}
+
+function ApplyForListing(listingId)
+{
+    $("#application-view").fadeIn();
+}
+
+function Apply(listingId, jobTitle, salary)
+{
+    var data = 
+    {
+        ListingId: listingId,
+        JobTitle: jobTitle,
+        Salary: salary
+    };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "logout.php",
+        data: data,
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Successfully"))
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Application Sent!", position: 'top-center'});
+                }
+                else
+                {
+                    throw new Error("Problem Logging Out");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
         }
     });
 }
