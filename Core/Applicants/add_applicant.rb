@@ -14,6 +14,7 @@ $: << "#{deploymentBase}/Libraries"
 require 'json'
 require 'moped'
 require 'bson'
+require 'tools'
 
 Moped::BSON = BSON
 

@@ -451,6 +451,11 @@
 
 .msgGrowl-container
 {
+    z-index: 5000;
+}
+
+.msgGrowl-container.top-right
+{
     z-index: 1;
 }
 
@@ -872,4 +877,11 @@ select::-ms-expand
     text-decoration: none;
     font-weight: bold;
     background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
+}
+
+.apply-btn
+{
+    background-color: #5259e3;
+    border-color: #5259e3;
+    margin-top: 18px;
 }

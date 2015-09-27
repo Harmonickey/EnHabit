@@ -1391,14 +1391,28 @@ function LoginFacebookUser(userID, accessToken)
 
 function ApplyForListing(listingId)
 {
-    $("#application-view").fadeIn();
-    $("#application-view input").attr("onclick", "Apply('" + listinId +"');")
+    if ($("#login").text() == "Log Out")
+    {
+        PopulateAndOpenModal(null, 'modal-content-application');
+        $("#common-modal").css("z-index", "4000");
+        $("#common-modal .apply-btn").attr("onclick", "Apply('" + listingId +"');");
+    }
+    else
+    {
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+    }
 }
 
 function Apply(listingId)
 {
-    var jobTitle = $(".jobTitle").val().trim();
-    var salary = $(".salary").val().trim();
+    var jobTitle = $("#common-modal .jobTitle").val().trim();
+    var salary = $("#common-modal .salary").val().trim();
+    
+    if (!jobTitle || !salary)
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: "Salary and Job Title Required", position: 'top-center'});
+        return;
+    }
     
     var data = 
     {
@@ -1438,6 +1452,10 @@ function Apply(listingId)
         error: function(res, err)
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#common-modal").modal('hide');
         }
     });
 }
