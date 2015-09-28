@@ -164,7 +164,7 @@ def GetApplicantData(applicantId)
             return nil
         else
             applicantData = applicantData.merge({ :Address => listing[0]["Address"], 
-                                                  :Unit => (listing[0]["Unit"].nil? nil : listing[0]["Unit"]), 
+                                                  :Unit => listing[0]["Unit"], 
                                                   :Rent => listing[0]["Price"] })
                                   
             return nil if applicantData[:Address].nil? || applicantData[:Rent].nil?
