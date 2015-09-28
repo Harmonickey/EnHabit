@@ -14,6 +14,7 @@ $: << "#{deploymentBase}/Libraries"
 require 'json'
 require 'moped'
 require 'bson'
+require 'tools'
 
 Moped::BSON = BSON
 
@@ -73,7 +74,7 @@ def InsertRenter(userId, landlordId, address, unit, rent, listingId)
 end
 
 #since usernames are unique I can find the id by their username
-def GetRenterId(user)
+def GetUserId(user)
     
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -123,15 +124,78 @@ def GetListingData(listingId)
     end
 end
 
+# this needs to return
+# Address, Unit, Rent
+def GetApplicantData(applicantId)
+
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
+
+    applicantData = Hash.new
+    
+    begin
+        queryObj = Hash.new
+        queryObj["_id"] = Moped::BSON::ObjectId.from_string(applicantId.to_s)
+        
+        # get the applicant stuff
+        applicant = Array.new
+        mongoSession.with(safe: true) do |session|
+            applicant = session[:applicant].find(queryObj).to_a
+        end
+        
+        if applicant.count == 0
+            return nil
+        else
+            applicantData = { :ListingId => applicant[0]["ListingId"], 
+                              :LandlordId => applicant[0]["LandlordId"], 
+                              :UserId => applicant[0]["UserId"] }
+                              
+            return nil if applicantData[:ListingId].nil? || applicantData[:LandlordId].nil? || applicantData[:UserId].nil?
+        end
+        
+        queryObj = Hash.new
+        queryObj["_id"] = Moped::BSON::ObjectId.from_string(applicantData["ListingId"].to_s)
+        
+        mongoSession.with(safe: true) do |session|
+            listing = session[:listings].find(queryObj).to_a
+        end
+        
+        if listing.count == 0
+            return nil
+        else
+            applicantData = applicantData.merge({ :Address => listing[0]["Address"], 
+                                                  :Unit => (listing[0]["Unit"].nil? nil : listing[0]["Unit"]), 
+                                                  :Rent => listing[0]["Price"] })
+                                  
+            return nil if applicantData[:Address].nil? || applicantData[:Rent].nil?
+        end
+        
+    rescue Moped::Errors::OperationFailure => e
+        return nil
+    end
+
+    return applicantData
+end
+
 begin
-    data = JSON.parse(ARGV[0].delete('\\'))
+    data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
-    renterId = GetRenterId(data["Renter"])
-    raise "No RenterId" if renterId.nil?
-    listingData = GetListingData(data["ListingId"])
-    raise "No Listing Data" if listingData.nil?
+    isAdmin = ARGV[3].to_b
     
-    puts InsertRenter(renterId, listingData[:LandlordId], listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
+    if isAdmin #admins have a different entry point to be able to add renters
+        userId = GetUserId(data["Renter"])
+        raise "No UserId" if userId.nil?
+        listingData = GetListingData(data["ListingId"])
+        raise "No Listing Data" if listingData.nil?
+    
+        puts InsertRenter(userId, listingData[:LandlordId], listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
+    else #landlord endpoint only has access to the applicant object id
+        applicantData = GetApplicantData(data["ApplicantId"])
+        
+        raise "No Applicant Data" if applicantData.nil?
+        
+        puts InsertRenter(applicantData[:UserId], applicantData[:LandlordId], applicantData[:Address], applicantData[:Unit], applicantData[:Rent], applicantData[:ListingId])
+    end
 rescue Exception => e
     puts e.inspect
 end

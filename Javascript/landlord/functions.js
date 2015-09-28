@@ -43,7 +43,6 @@ function GetAllApplicants()
                 if (!res || Contains(res, "No Applicants Found"))
                 {
                     throw new Error("No Applicants Found");
-                    $("#accordion").html("<p>No Applicants</p>");
                 }
                 else
                 {
@@ -69,11 +68,13 @@ function GetAllApplicants()
             catch(e)
             {
                 $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $("#accordion").html("<p>No Applicants</p>");
             }    
         },
         error: function(res, err)
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $("#accordion").html("<p>No Applicants</p>");
         }
     });
 }
@@ -844,6 +845,93 @@ function DeleteAccount()
     });
 }
 
+function AcceptApplicant(applicantId)
+{
+    // this should first move the data from the applicant table to the renter's table
+    // then call RemoveApplicant()
+    
+    var data = { ApplicantId: applicantId };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "api.php",
+        data:
+        {
+            command: "add_renter",
+            data: data,
+            endpoint: "Renters"
+        }
+        success: function(res)
+        {
+            try
+            {
+                if (res && res["Error"] == null)
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Accepted Applicant", position: 'top-center'});
+                    //RemoveApplicant(oid, true);
+                }
+                else
+                {
+                    throw new Error("Could Not Accept Applicant");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
+    
+}
+
+function RemoveApplicant(applicantId, isAccepting)
+{
+    var data = { id: applicantId };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "api.php",
+        data:
+        {
+            command: "delete_applicant",
+            data: data,
+            endpoint: "Applicants"
+        }
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Okay"))
+                {
+                    $("#" + oid).remove();
+                    if (!isAccepting)
+                    {
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Removed Applicant", position: 'top-center'});
+                    }
+                }
+                else
+                {
+                    throw new Error("Problem Removing Applicant");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
+}
+
 /**********************
 
 UTILITY FUNCTIONS
@@ -1207,7 +1295,7 @@ function CreateAccordionApplicantsView(oid, data)
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
-                            "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label class='text-capitalize'>Name: " + data.FirstName + " " + data.LastName + "</label>" +
                             "<label>Address: " + data.Address + " " + (data.Unit ? data.Unit : " ") + "</label>" +
                         "</a>" +
                     "</h4>" +
@@ -1224,16 +1312,16 @@ function CreateAccordionApplicantsView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Job Title: </label><p>" + data.JobTitle + "</p>" +
+                                "<label>Job Title:</label><p>" + data.JobTitle + "</p>" +
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Salary: $</label><p>" + data.Salary + "</p>" +
+                                "<label>Salary:</label><p>$" + data.Salary + "</p>" +
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;'>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary' onclick='AcceptApplicant(\"" + oid + "\");'>Accept</button>" + 
-                                "<button class='btn btn-danger' onclick='RemoveApplicant(\"" + oid + "\");'>Remove</button>" +
+                                "<button class='btn btn-danger' onclick='RemoveApplicant(\"" + oid + "\", false);'>Remove</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +

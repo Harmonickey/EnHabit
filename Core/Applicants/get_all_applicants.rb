@@ -5,9 +5,16 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deploymentBase}/Libraries"
+
 require 'json'
 require 'bson'
 require 'moped'
+require 'tools'
 
 Moped::BSON = BSON
 
