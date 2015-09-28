@@ -43,12 +43,12 @@ def ApplicantExists(id)
     return retVal
 end
 
-def DeleteApplicant(id, key)
+def DeleteApplicant(id)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
     queryObj = Hash.new
-    queryObj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
+    queryObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
     
     retMsg = ""
     

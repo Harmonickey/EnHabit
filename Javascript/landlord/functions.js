@@ -869,7 +869,7 @@ function AcceptApplicant(applicantId)
                 if (res && res["Error"] == null)
                 {
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Accepted Applicant", position: 'top-center'});
-                    //RemoveApplicant(oid, true);
+                    RemoveApplicant(oid, true);
                 }
                 else
                 {
