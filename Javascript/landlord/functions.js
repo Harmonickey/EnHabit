@@ -1384,7 +1384,7 @@ function CreateAccordionApplicantsView(oid, data)
             "</div>";
 }
 
-function CreateAccordionRentersView(oid, data)
+function CreateAccordionRentersView(uid, data)
 {
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
