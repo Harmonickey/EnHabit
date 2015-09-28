@@ -20,6 +20,63 @@ $(document).on("keypress", function(e)
     }
 });
 
+function GetAllRenters()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_all_renters",
+            endpoint: "Renters"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res || Contains(res, "No Applicants Found"))
+                {
+                    throw new Error("No Renters");
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionRentersView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $("#accordion").html("<p>" + e.message + "</p>");
+            }    
+        },
+        error: function(res, err)
+        {
+            $("#accordion").html("<p>No Renters</p>");
+        }
+    });
+}
+
 function GetAllApplicants()
 {
     $.ajax(
@@ -42,7 +99,7 @@ function GetAllApplicants()
             {
                 if (!res || Contains(res, "No Applicants Found"))
                 {
-                    throw new Error("No Applicants Found");
+                    throw new Error("No Applicants");
                 }
                 else
                 {
@@ -67,13 +124,11 @@ function GetAllApplicants()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
-                $("#accordion").html("<p>No Applicants</p>");
+                $("#accordion").html("<p>" + e.message + "</p>");
             }    
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
             $("#accordion").html("<p>No Applicants</p>");
         }
     });

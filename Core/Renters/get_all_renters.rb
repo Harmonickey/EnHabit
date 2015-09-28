@@ -5,11 +5,24 @@ ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_P
 
 $: << "/home2/lbkstud1/ruby/gems"
 
+absPath = Dir.pwd
+base = absPath.split("/").index("public_html")
+deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
+
+$: << "#{deploymentBase}/Libraries"
+
 require 'json'
 require 'bson'
 require 'moped'
+require 'tools'
 
 Moped::BSON = BSON
+
+data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
+    
+landlordId = ARGV[1] if not ARGV[0].nil?
+key = ARGV[2]
+isAdmin = ARGV[3].to_b
 
 begin
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
@@ -17,10 +30,13 @@ begin
 
     documents = Array.new
     
+    queryObj = Hash.new
+    queryObj[:LandlordId] = landlordId if not isAdmin
+    
     #grab listing associated data
     mongoSession.with(safe: true) do |session|
         #get all renters
-        documents = session[:renters].find().select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1, HasPaidRent: 1).to_a
+        documents = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1, HasPaidRent: 1).to_a
         
         #loop through all renters and get associated information for the user and landlord
         documents.each do |doc|
