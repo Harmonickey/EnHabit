@@ -861,7 +861,7 @@ function AcceptApplicant(applicantId)
             command: "add_renter",
             data: data,
             endpoint: "Renters"
-        }
+        },
         success: function(res)
         {
             try
@@ -902,7 +902,7 @@ function RemoveApplicant(applicantId, isAccepting)
             command: "delete_applicant",
             data: data,
             endpoint: "Applicants"
-        }
+        },
         success: function(res)
         {
             try
