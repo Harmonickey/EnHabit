@@ -855,7 +855,7 @@ function AcceptApplicant(applicantId)
     $.ajax(
     {
         type: "POST",
-        url: "api.php",
+        url: "/api.php",
         data:
         {
             command: "add_renter",
@@ -896,7 +896,7 @@ function RemoveApplicant(applicantId, isAccepting)
     $.ajax(
     {
         type: "POST",
-        url: "api.php",
+        url: "/api.php",
         data:
         {
             command: "delete_applicant",
