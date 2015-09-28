@@ -869,7 +869,7 @@ function AcceptApplicant(applicantId)
                 if (res && res["Error"] == null)
                 {
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Accepted Applicant", position: 'top-center'});
-                    RemoveApplicant(oid, true);
+                    RemoveApplicant(applicantId, true);
                 }
                 else
                 {
@@ -909,7 +909,7 @@ function RemoveApplicant(applicantId, isAccepting)
             {
                 if (Contains(res, "Okay"))
                 {
-                    $("#" + oid).remove();
+                    $("#" + applicantId).remove();
                     if (!isAccepting)
                     {
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Removed Applicant", position: 'top-center'});
