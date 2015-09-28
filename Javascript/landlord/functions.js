@@ -1421,12 +1421,6 @@ function CreateAccordionRentersView(uid, data)
                                 "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" +
                             "</div>" +
                         "</div>" + 
-                        "<div class='row' style='margin-top: 10px;' >" +
-                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
-                                "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>Delete Renter</button>" +
-                            "</div>" +
-                        "</div>" +
                     "</div>" +
                 "</div>" +
             "</div>";
