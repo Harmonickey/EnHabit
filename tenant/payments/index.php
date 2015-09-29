@@ -139,8 +139,8 @@
       <div class="row">
       	<div class="col-md-12">
       		<div class="widget stacked">
-      			<div class="widget-header actions">
-					<h3>Registered Listing</h3>
+      			<div class="widget-header">
+					Payment Status
                 </div> <!-- /widget-header -->
 				<div class="widget-content">
                     <div class="row" id="payment">
