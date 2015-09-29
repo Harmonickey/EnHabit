@@ -1309,13 +1309,13 @@ function CreatePaymentView(oid, data)
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Unit</label><input type='text' class='form-control' value='" + (data.Unit ? data.Unit : "") + "' /> " + 
+                                "<label>Unit</label><p>" + (data.Unit ? data.Unit : "") + "</p>" + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Rent/Month</label><input type='text' class='form-control' value='" + data.Rent + "' />" + 
+                                "<label>Rent/Month</label><p>" + data.Rent + "</p>" + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Has Paid Rent</label><input type='text' class='form-control' value='" + data.HasPaidRent + "' />" +
+                                "<label>Has Paid Rent</label><p>" + data.HasPaidRent + "</p>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
