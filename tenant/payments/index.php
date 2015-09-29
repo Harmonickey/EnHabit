@@ -140,7 +140,7 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header">
-					Payment Status
+					<h3>Payment Status</h3>
                 </div> <!-- /widget-header -->
 				<div class="widget-content">
                     <div class="row" id="payment">
@@ -278,9 +278,10 @@
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
-<script src="../../Javascript/paymentsandbox/functions.js"></script>
-
 <script src="../../Javascript/tenant/functions.js"></script>
+
+<script src="../../Libraries/Javascript/jquery.payment.js"></script>
+<script src="../../Javascript/paymentsandbox/functions.js"></script>
 
 <script>
 
