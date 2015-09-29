@@ -141,12 +141,9 @@
       		<div class="widget stacked">
       			<div class="widget-header actions">
 					<h3>Registered Listing</h3>
-                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px; display: none;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
-				</div> <!-- /widget-header -->
-				<div class="widget-content listings">
-                    <label>Click the listing(s) below to update and see more details</label>
-					<!-- all the listings go here -->
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                </div> <!-- /widget-header -->
+				<div class="widget-content">
+                    <div class="row" id="payment">
                         
                     </div>
 				</div> <!-- /widget-content -->
@@ -168,104 +165,106 @@
 		</div> <!-- /row -->
 	</div> <!-- /container -->
 </div> <!-- /footer -->
-
-<div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    
+<div id="createPaymentModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Create New Listing</h4>
+                <h4 class="modal-title">Create New Payment</h4>
             </div>
             <div class="modal-body">
-                <!-- Put all the fields to create a listing here -->
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Rent/Month</label><input type='text' class='form-control' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Start Date</label><input type='text' class='form-control' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Bedrooms</label>
-                        <select id="bedrooms-filter" class="form-control">
-                            <option value="studio">Studio</option>
-                            <option value="1" selected>1</option>
-                            <option value="2">2</option>
-                            <option value="3">3+</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Bathrooms</label>
-                        <select id="bathrooms-filter" class="form-control">
-                            <option value="1" selected>1</option>
-                            <option value="2">2</option>
-                            <option value="3">3+</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="modal-switch animals-content">
-                            <label>Animals</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch laundry-content">
-                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch parking-content">
-                            <label>Parking</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch airConditioning-content">
-                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch type-content">
-                            <label>Type</label><input type='checkbox' data-size='mini' />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
-                        <label>Landlord</label><input type='text' class='form-control' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Images (Will Upload Upon Submit)</label>
-                        <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
-                    </div>
-                </div>
-                <!-- Lat, Long, Address Hidden fields -->
-                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="CreateListing()">Create Listing</button>
-                    </div>
+                <!-- Put all the fields to create a payment here -->
+                <div class="row payment-details">
+                    <form novalidate autocomplete="on" method="POST">
+                        <h4>Payment details</h4>
+                        <ul>
+                            <li>
+                                <div class="form-group">
+                                    <label for="cc-number" class="control-label">Card Number</label>
+                                    <input id="cc-number" type="tel" class="form-control cc-number" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" required>
+                                    <small class="help">We support Visa, Visa Electron, Mastercard, American Express, Diners Club, Discover, Union Pay, JCB, Maestro, Forbrugs Foreningen, and Dankort</small>
+                                </div>
+                            </li>
+
+                            <li class="vertical">
+                                <div class="row">
+                                    <div class="form-group col-lg-5 col-md-5 col-sm-5"> 
+                                        <label for="cc-exp" class="control-label">Card Expiration</label>
+                                        <input id="cc-exp" type="tel" class="form-control text-center cc-exp" autocomplete="cc-exp" placeholder="•• / ••" required>
+                                    </div>
+                                    <div class="form-group col-lg-5 col-md-5 col-sm-5" style="float: right; margin-right: 2px;"> 
+                                        <label for="cc-cvc" class="control-label">Card CVC Code</label>
+                                        <input id="cc-cvc" type="tel" class="form-control text-center cc-cvc" autocomplete="off" placeholder="•••" required>
+                                    </div>
+                                </div>
+                            </li>
+                            
+                            <li class="vertical">
+                                <div class="row">
+                                    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                                        <label for="address">Address</label>
+                                        <input class="form-control text-center" type="text" name="address1" id="address1">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-5 col-md-5 col-sm-5">       
+                                        <label for="address">Apt/Suite #</label>
+                                        <input class="form-control text-center" type="text" name="address2" id="address2">
+                                    </div>
+                                    <div class="form-group col-lg-5 col-md-5 col-sm-5" style="float: right; margin-right: 2px;"> 
+                                        <label for="address">City</label>
+                                        <input class="form-control text-center" type="text" name="city" id="city">
+                                    </div>
+                                </div>
+                                <div class="row">                                           
+                                    <div class="form-group col-lg-5 col-md-5 col-sm-5">   
+                                        <label for="state">State</label>
+                                        <input class="form-control text-center" type="text" name="state" id="state">
+                                    </div>
+                                    <div class="form-group col-lg-5 col-md-5 col-sm-5" style="float: right; margin-right: 2px;">   
+                                        <label for="address">Zip Code</label>
+                                        <input class="form-control text-center" type="text" name="postal" id="postal" maxlength="5" placeholder="#####">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="vertical">
+                                <div class="form-group row">
+                                    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                                        <label for="name_on_card">Name on card</label>
+                                        <input class="form-control text-center" type="text" name="name_on_card" id="name_on_card" style="width: ">
+                                    </div>
+                                </div>
+                                <div class="row">                                           
+                                    <div class="form-group col-lg-12 col-md-12 col-sm-12">   
+                                        <label for="paymentMonth">Payment Month</label>
+                                        <select class="form-control text-center" type="text" name="state" id="paymentMonth">
+                                            <option value="January">January</option>
+                                            <option value="February">February</option>
+                                            <option value="March">March</option>
+                                            <option value="April">April</option>
+                                            <option value="May">May</option>
+                                            <option value="June">June</option>
+                                            <option value="July">July</option>
+                                            <option value="August">August</option>
+                                            <option value="September">September</option>
+                                            <option value="October">October</option>
+                                            <option value="November">November</option>
+                                            <option value="December">December</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+                    <div class="text-center" style="width: 100%">
+                        <button id="pay-now" class="btn btn-info" style="font-size: 25px;"><i class="fa fa-cc-paypal fa-2" style="margin-right: 10px;"></i>Pay Now</button>
+                    </div>                      
                 </div>
             </div>
         </div>
     </div>
 </div>
-    
 
 <!-- Le javascript
 ================================================== -->
@@ -274,40 +273,20 @@
 <script src="../../Libraries/Javascript/jquery-ui.min.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
-<script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
-<script src="../../Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
 
-<!-- jquery geocomplete api -->
-<script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
-<!-- helper for numeric text boxes -->
-<script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
 <!-- helper for notifications -->
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
-<!-- helper for datepicker -->
-<script src="../../Libraries/Javascript/pikaday.js"></script>
-<script src="../../Libraries/Javascript/pikaday.jquery.js"></script>
-<!-- helper for file upload -->
-<script src="../../Libraries/Javascript/dropzone.js"></script>
+
+<script src="../../Javascript/paymentsandbox/functions.js"></script>
 
 <script src="../../Javascript/tenant/functions.js"></script>
 
 <script>
-Dropzone.autoDiscover = false;
-
-var pictures = {}; // object of arrays for update-listing
-var dropzones = {};
-var addedFiles = {};
-var landlordList = [];
 
 $(function() 
 {  
-    CreateDropzone("create", "#createListingModal form");
-
-    GetAllListings();
-    GetAllLandlords();
-
-    InitSpecialFields();
+    GetRenter();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

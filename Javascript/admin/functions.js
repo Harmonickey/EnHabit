@@ -386,11 +386,6 @@ function MakePayment(uid)
     var description = "Payment from Admin Portal";
     var landlordEmail = $("#" + uid + " .landlordEmail").text();
     
-    console.log(rent);
-    console.log(description);
-    console.log(landlordEmail);
-    console.log("next");
-    
     // call from my custom payment library
     if (IsValidSubmission())
     {
