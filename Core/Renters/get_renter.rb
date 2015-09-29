@@ -28,7 +28,7 @@ begin
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongoSession.use("enhabit")# this is our current database
 
-    documents = Array.new
+    document = Hash.new
     
     queryObj = Hash.new
     queryObj[:RenterId] = userId
