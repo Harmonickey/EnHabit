@@ -143,7 +143,7 @@
 					<h3>Payment Status</h3>
                 </div> <!-- /widget-header -->
 				<div class="widget-content">
-                    <div class="row" id="payment">
+                    <div class="row" id="payment" style="margin: 0;">
                         
                     </div>
 				</div> <!-- /widget-content -->
