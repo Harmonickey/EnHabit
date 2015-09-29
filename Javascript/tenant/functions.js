@@ -1313,9 +1313,6 @@ function CreatePaymentView(oid, data)
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Rent/Month</label><p>$" + data.Rent + "</p>" + 
-                            "</div>" +
-                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Has Paid Rent</label><p>" + data.HasPaidRent + "</p>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +

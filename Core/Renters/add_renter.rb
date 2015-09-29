@@ -31,7 +31,6 @@ def InsertRenter(userId, landlordId, address, unit, rent, listingId)
     renterObj["Address"] = address
     renterObj["Unit"] = unit
     renterObj["Rent"] = rent
-    renterObj["HasPaidRent"] = false
  
     document = Hash.new
  

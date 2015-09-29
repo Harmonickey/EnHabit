@@ -36,7 +36,7 @@ begin
     #grab listing associated data
     mongoSession.with(safe: true) do |session|
         #get all renters
-        document = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1, HasPaidRent: 1).one
+        document = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1).one
 
         landlordData = session[:accounts].find({:LandlordId => document["LandlordId"]}).select(Email: 1).one
         

@@ -1828,7 +1828,6 @@ function CreateAccordionRentersView(uid, data)
                             "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
                             "<label>Address: " + data.Address + (data.Unit ? " " + data.Unit : "") + "</label>" +
                             "<label>Rent: $" + data.Rent + "</label>" +
-                            "<label>Has Paid: " + data.HasPaidRent + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
