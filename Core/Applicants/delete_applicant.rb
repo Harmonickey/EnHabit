@@ -19,7 +19,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def RenterExists(id)
+def ApplicantExists(id)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -32,7 +32,7 @@ def RenterExists(id)
     
     begin
         mongoSession.with(safe: true) do |session|
-            documents = session[:renters].find(queryObj).to_a
+            documents = session[:applicants].find(queryObj).to_a
         end
         
         retVal = true if documents.count > 0
@@ -43,7 +43,7 @@ def RenterExists(id)
     return retVal
 end
 
-def DeleteRenter(id)
+def DeleteApplicant(id)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -55,7 +55,7 @@ def DeleteRenter(id)
     begin
         #delete the user
         mongoSession.with(safe: true) do |session|
-            session[:renters].find(queryObj).remove
+            session[:applicants].find(queryObj).remove
         end
        
         retMsg = "Okay"
@@ -74,8 +74,8 @@ begin
     # we can only delete other users if we're an admin
     id = data["id"] if not data["id"].nil? and not data["id"].empty?
     
-    if RenterExists(id)
-        puts DeleteRenter(id)
+    if ApplicantExists(id)
+        puts DeleteApplicant(id)
     else
         puts "Incorrect Password"
     end

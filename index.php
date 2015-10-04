@@ -231,6 +231,30 @@ if (!isset($_SESSION['CREATED'])) {
                 <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
             </div>
             <!-- #modal-content-register-success -->
+            <!-- Application -->
+            <div class="content-to-populate-in-modal" id="modal-content-application">
+                <!-- placeholder for details view -->
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <label>Job Title</label>
+                        <input type="text" class="form-control jobTitle" />
+                    </div>
+                </div>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <label>Salary</label>
+                        <input type="text" class="form-control salary" />
+                    </div>
+                </div>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <input type="button" class="btn btn-outline-inverse btn-sm apply-btn" value="Apply" style="width: 75px; margin-top: 10px;"/>
+                    </div>
+                </div>
+                <!-- end application view-->
+            </div>
+            <!-- End Application -->
             <!-- Log out confirmation -->
             <div class="content-to-populate-in-modal" id="modal-content-logout">
                 <h1>Logged out successfully!</h1>
@@ -376,5 +400,5 @@ if (!isset($_SESSION['CREATED'])) {
             </div>
         </div>
     </div>
-    <!-- -->
+    <!-- end details view -->
 </html>

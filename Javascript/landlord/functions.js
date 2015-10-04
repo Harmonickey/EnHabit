@@ -20,6 +20,120 @@ $(document).on("keypress", function(e)
     }
 });
 
+function GetAllRenters()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_all_renters",
+            endpoint: "Renters"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res || Contains(res, "No Applicants Found"))
+                {
+                    throw new Error("No Renters");
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionRentersView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $("#accordion").html("<p>" + e.message + "</p>");
+            }    
+        },
+        error: function(res, err)
+        {
+            $("#accordion").html("<p>No Renters</p>");
+        }
+    });
+}
+
+function GetAllApplicants()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_all_applicants",
+            endpoint: "Applicants"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res || Contains(res, "No Applicants Found"))
+                {
+                    throw new Error("No Applicants");
+                }
+                else
+                {
+                    $("#accordion").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionApplicantsView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $("#accordion").html("<p>" + e.message + "</p>");
+            }    
+        },
+        error: function(res, err)
+        {
+            $("#accordion").html("<p>No Applicants</p>");
+        }
+    });
+}
+
 function GetAllListings()
 {
     $.ajax(
@@ -786,6 +900,93 @@ function DeleteAccount()
     });
 }
 
+function AcceptApplicant(applicantId)
+{
+    // this should first move the data from the applicant table to the renter's table
+    // then call RemoveApplicant()
+    
+    var data = { ApplicantId: applicantId };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "add_renter",
+            data: data,
+            endpoint: "Renters"
+        },
+        success: function(res)
+        {
+            try
+            {
+                if (res && res["Error"] == null)
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Accepted Applicant", position: 'top-center'});
+                    RemoveApplicant(applicantId, true);
+                }
+                else
+                {
+                    throw new Error("Could Not Accept Applicant");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
+    
+}
+
+function RemoveApplicant(applicantId, isAccepting)
+{
+    var data = { id: applicantId };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "delete_applicant",
+            data: data,
+            endpoint: "Applicants"
+        },
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Okay"))
+                {
+                    $("#" + applicantId).remove();
+                    if (!isAccepting)
+                    {
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Removed Applicant", position: 'top-center'});
+                    }
+                }
+                else
+                {
+                    throw new Error("Problem Removing Applicant");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        }
+    });
+}
+
 /**********************
 
 UTILITY FUNCTIONS
@@ -1138,6 +1339,88 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreateAccordionApplicantsView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label class='text-capitalize'>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label>Address: " + data.Address + " " + (data.Unit ? data.Unit : " ") + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +   
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Address:</label><p class='address'>" + data.Address + " " + (data.Unit ? data.Unit : " ") + "</p>" +
+                            "</div>" +                         
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Job Title:</label><p>" + data.JobTitle + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Salary:</label><p>$" + data.Salary + "</p>" +
+                            "</div>" +
+                        "</div>" + 
+                        "<div class='row' style='margin-top: 10px;'>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary' onclick='AcceptApplicant(\"" + oid + "\");'>Accept</button>" + 
+                                "<button class='btn btn-danger' onclick='RemoveApplicant(\"" + oid + "\", false);'>Remove</button>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreateAccordionRentersView(uid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + uid + "' aria-expanded='false' aria-controls='" + uid + "'>" +
+                            "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
+                            "<label>Address: " + data.Address + (data.Unit ? " " + data.Unit : "") + "</label>" +
+                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Has Paid: " + data.HasPaidRent + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + uid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + uid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Name</label><p class='firstname'>" + data.FirstName + " " + data.LastName + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Address</label><p class='address'>" + data.Address + (data.Unit ? " " + data.Unit : "") + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Email Address</label><p class='email'>" + data.Email + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Phone Number</label><p class='phonenumber'>" + data.PhoneNumber + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" +
+                            "</div>" +
+                        "</div>" + 
                     "</div>" +
                 "</div>" +
             "</div>";

@@ -20,6 +20,62 @@ $(document).on("keypress", function(e)
     }
 });
 
+function GetRenter()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            //spinner on accordion area
+            $("#accordion").html("<i class='fa fa-spinner fa-pulse' />")
+        },
+        data: 
+        {
+            command: "get_renter",
+            endpoint: "Renters"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res || Contains(res, "No Payment"))
+                {
+                    throw new Error("No Payment");              
+                }
+                else
+                {
+                    $("#payment").html("");
+                    
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        var oid = data._id.$oid;
+                            
+                        $("#payment").append(CreatePaymentView(oid, data));
+                    }                       
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $("#payment").html("<p>" + e.message + "</p>");
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $("#payment").html("<p>No Payment</p>");
+        }
+    });
+}
+
 function GetAllListings()
 {
     $.ajax(
@@ -864,6 +920,26 @@ function DeleteAccount()
     });
 }
 
+function OpenPaymentModal(uid)
+{
+    $("#createPaymentModal").modal('show');
+    
+    $("#pay-now").attr("onclick", "MakePayment('" + uid + "')");
+}
+
+function MakePayment(uid)
+{
+    var rent = $("#" + uid + " .rent").text().replace("$", "");
+    var description = "Payment from Admin Portal";
+    var landlordEmail = $("#" + uid + " .landlordEmail").text();
+    
+    // call from my custom payment library
+    if (IsValidSubmission())
+    {
+        ProcessPayment(uid, rent, description, landlordEmail);
+    }
+}
+
 /**********************
 
 UTILITY FUNCTIONS
@@ -1218,6 +1294,34 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
                     "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+/* Rent, HasPaidRent, Address,  */
+function CreatePaymentView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Address</label><p>" + data.Address + "'</p> " + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Unit</label><p>" + (data.Unit ? data.Unit : "") + "</p>" + 
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Rent/Month</label><p>$" + data.Rent + "</p>" + 
+                            "</div>" + 
+                        "</div>" +
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary' onclick='OpenPaymentModal(\"" + oid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                  "</div>" +
                 "</div>" +
             "</div>";
 }

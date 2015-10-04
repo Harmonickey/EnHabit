@@ -20,7 +20,7 @@ Moped::BSON = BSON
 
 data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
-landlordId = ARGV[1] if not ARGV[0].nil?
+userId = ARGV[1] if not ARGV[0].nil?
 key = ARGV[2]
 isAdmin = ARGV[3].to_b
 
@@ -28,40 +28,30 @@ begin
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongoSession.use("enhabit")# this is our current database
 
-    documents = Array.new
+    document = Hash.new
     
     queryObj = Hash.new
-    queryObj[:LandlordId] = landlordId if not isAdmin
+    queryObj[:RenterId] = userId
     
     #grab listing associated data
     mongoSession.with(safe: true) do |session|
         #get all renters
-        documents = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1).to_a
+        document = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1).one
+
+        landlordData = session[:accounts].find({:LandlordId => document["LandlordId"]}).select(Email: 1).one
         
-        #loop through all renters and get associated information for the user and landlord
-        documents.each do |doc|
-            userData = session[:accounts].find({:UserId => doc["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
-            
-            doc["FirstName"] = userData["FirstName"]
-            doc["LastName"] = userData["LastName"]
-            doc["Email"] = userData["Email"]
-            doc["PhoneNumber"] = userData["PhoneNumber"]
-            
-            landlordData = session[:accounts].find({:LandlordId => doc["LandlordId"]}).select(Email: 1).one
-            
-            doc["LandlordEmail"] = landlordData["Email"]
-            
-            #we don't need to expose these to the front end
-            doc.delete("LandlordId") 
-            doc.delete("RenterId")
-        end 
+        document["LandlordEmail"] = landlordData["Email"]
+        
+        #we don't need to expose these to the front end
+        document.delete("LandlordId") 
+        document.delete("RenterId")
     end
     
     mongoSession.disconnect
-    if documents.count == 0
-        puts "No Renters Found"
+    if document.nil?
+        puts "No Payment"
     else
-        puts documents.to_json
+        puts document.to_json
     end
 rescue Exception => e
     File.open("error.log", "a") do |output|

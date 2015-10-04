@@ -35,31 +35,32 @@ begin
     
     #grab listing associated data
     mongoSession.with(safe: true) do |session|
-        #get all renters
-        documents = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1).to_a
+        #get all applicants associated to landlord
+        documents = session[:applicants].find(queryObj).select(_id: 1, UserId: 1, ListingId: 1, Salary: 1, JobTitle: 1).to_a
         
         #loop through all renters and get associated information for the user and landlord
         documents.each do |doc|
-            userData = session[:accounts].find({:UserId => doc["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
+            userData = session[:accounts].find({:UserId => doc["UserId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
             
             doc["FirstName"] = userData["FirstName"]
             doc["LastName"] = userData["LastName"]
             doc["Email"] = userData["Email"]
             doc["PhoneNumber"] = userData["PhoneNumber"]
             
-            landlordData = session[:accounts].find({:LandlordId => doc["LandlordId"]}).select(Email: 1).one
+            listingData = session[:listings].find({"_id" => Moped::BSON::ObjectId.from_string(doc["ListingId"])}).select(Address: 1, Unit: 1).one
             
-            doc["LandlordEmail"] = landlordData["Email"]
+            doc["Address"] = listingData["Address"]
+            doc["Unit"] = listingData["Unit"]
             
             #we don't need to expose these to the front end
-            doc.delete("LandlordId") 
-            doc.delete("RenterId")
+            doc.delete("UserId") 
+            doc.delete("ListingId")
         end 
     end
     
     mongoSession.disconnect
     if documents.count == 0
-        puts "No Renters Found"
+        puts "No Applicants Found"
     else
         puts documents.to_json
     end

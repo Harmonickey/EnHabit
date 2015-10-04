@@ -76,7 +76,7 @@ function debug_string($data)
 function no_user_filter()
 {   
     $http_ref = $_SERVER['HTTP_REFERER'];
-    
+       
     if ($http_ref === "http://dev.lbkstudios.net/")
     {
         return TRUE;

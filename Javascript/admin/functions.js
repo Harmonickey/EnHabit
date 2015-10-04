@@ -386,11 +386,6 @@ function MakePayment(uid)
     var description = "Payment from Admin Portal";
     var landlordEmail = $("#" + uid + " .landlordEmail").text();
     
-    console.log(rent);
-    console.log(description);
-    console.log(landlordEmail);
-    console.log("next");
-    
     // call from my custom payment library
     if (IsValidSubmission())
     {
@@ -1833,7 +1828,6 @@ function CreateAccordionRentersView(uid, data)
                             "<label>Name: " + data.FirstName + " " + data.LastName + "</label>" +
                             "<label>Address: " + data.Address + (data.Unit ? " " + data.Unit : "") + "</label>" +
                             "<label>Rent: $" + data.Rent + "</label>" +
-                            "<label>Has Paid: " + data.HasPaidRent + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +

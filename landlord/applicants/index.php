@@ -86,7 +86,7 @@
 						
 			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="fa fa-user"></i> 
-				<?php echo $_SESSION["landlord"]; ?>
+				<?php if (isset($_SESSION["landlord"])) { echo $_SESSION["landlord"]; }?>
 				<b class="caret"></b>
 			</a>
 			
@@ -196,7 +196,7 @@
 
 $(function() 
 {
-    
+    GetAllApplicants();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

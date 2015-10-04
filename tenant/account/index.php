@@ -117,6 +117,12 @@
 							<span>Listings</span>
 						</a>	    				
 					</li>
+                    <li>
+						<a href="../payments">
+							<i class="fa fa-usd"></i>
+							<span>Payments</span>
+						</a>	    				
+					</li>
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->

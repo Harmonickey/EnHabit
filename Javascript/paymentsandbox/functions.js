@@ -48,7 +48,7 @@ function ProcessPayment(uid, rent, description, landlordEmail)
         postal: $("#postal").val().trim()
     };
     
-    $.msgGrowl ({ type: 'success', title: 'Success', text: "Test Success Message!", position: 'top-center'}); 
+    $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Sent!", position: 'top-center'}); 
     $("#createPaymentModal").modal('hide');
     
     $.ajax({

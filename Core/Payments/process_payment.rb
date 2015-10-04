@@ -46,7 +46,7 @@ include PayPal::SDK::REST
           :postal_code => @data["postal"], :country_code => "US" }}}]},
   :transactions => [{
     :amount => {
-      :total => @data["amount"],
+      :total => 0.01,
       :currency => "USD"},
     :description => @data["description"] }]})
     
