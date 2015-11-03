@@ -157,12 +157,12 @@ function GetAllListings()
                 if (!res)
                 {
                     throw new Error("No Listings Found");
-                    $("#accordion").html("<p>No Listings</p>");
+                    $("#accordion").html("<p>No Listings Yet</p>");
                     $(".actions a").show();
                 }
                 else if (Contains(res, "No Matching Entries"))
                 {
-                    $("#accordion").html("<p>No Listings</p>");
+                    $("#accordion").html("<p>No Listings Yet</p>");
                     $(".actions a").show();
                 }
                 else
@@ -382,7 +382,7 @@ function DeleteListing(id)
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                             if ($("#accordion").text() == "")
                             {
-                                $("#accordion").text("No Listings");
+                                $("#accordion").text("No Listings Yet");
                             }
                         }
                         else
@@ -532,7 +532,7 @@ function ProcessListing()
                         }
                         else
                         {
-                            if ($("#accordion").text() == "No Listings")
+                            if ($("#accordion").text() == "No Listings Yet")
                             {
                                 $("#accordion").html("");
                             }

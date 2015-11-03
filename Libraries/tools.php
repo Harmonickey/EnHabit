@@ -34,7 +34,11 @@ function set_session($result, $data)
         if (strpos($result, "Tenant") === 5)
         {
             $_SESSION["tenant"] = json_decode(str_replace("\\", "", $data))->{"Username"};
-            $id = end(explode(":", $result));
+            $arr = explode(":", $result);
+            $end = end($arr);
+            $id = array_shift(array_values(explode(",", $end)));
+            $hasRental = end($end);
+            $_SESSION["hasRental"] = $hasRental;
             $_SESSION["userId"] = trim($id);
         }
         else if (strpos($result, "Landlord") === 5)

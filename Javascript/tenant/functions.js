@@ -218,7 +218,7 @@ function GetAllLandlords()
     });
 }
 
-function getAccount()
+function GetAccount()
 {
     $.ajax(
     {
@@ -537,7 +537,7 @@ function ProcessListing()
                         }
                         else
                         {
-                            if ($("#accordion").text() == "No Listings")
+                            if ($("#accordion").text() == "No Listings Yet")
                             {
                                 $("#accordion").html("");
                             }

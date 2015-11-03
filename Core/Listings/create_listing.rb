@@ -57,7 +57,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
             end
             
             # scale down halfway and interlace the image
-            Magick::Image::read(filename)[0].scale(0.5).write(thumbFilename) do |f|
+            Magick::Image::read("#{@deploymentBase}/../images/enhabit/images/" + filename)[0].scale(0.5).write("#{@deploymentBase}/../images/enhabit/images/" + thumbFileName) do |f|
                 f.interlace = Magick::PlaneInterlace
             end
             

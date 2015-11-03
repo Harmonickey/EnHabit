@@ -12,12 +12,15 @@ deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will referenc
 $: << "#{deploymentBase}/Libraries"
 
 require 'json'
-require 'moped'
 require 'bson'
+require 'moped'
+require 'mongoid'
 require 'PasswordHash'
 
 @isLandlord = false
 @isAdmin = false
+
+Moped::BSON = BSON
 
 def UserExists(user, pass)
 
@@ -42,17 +45,38 @@ def UserExists(user, pass)
     end
 end
 
+def HasRental(id)
+  mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
+
+    renters = mongoSession[:renters]
+	
+    queryObj = Hash.new
+    queryObj["RenterId"] = id
+    
+    documents = renters.find(queryObj).to_a
+    mongoSession.disconnect
+    if documents.count == 0
+        return 'false'
+    else
+        # if you have a landlord ID then they're obviously a landlord
+        return 'true'
+    end
+end
+
 begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
 	
     result = UserExists(data["Username"], data["Password"])
+    
+    hasRental = HasRental(result["id"])
     
     if result["exists"]
         retMsg = "Okay"
         retMsg += ":Landlord" if @isLandlord
         retMsg += ":Tenant" if not @isLandlord
         retMsg += ":Admin" if @isAdmin
-        retMsg += ":" + result["id"]
+        retMsg += ":" + result["id"] + "," + hasRental
         puts retMsg
     else
         puts "Incorrect Username/Password"
