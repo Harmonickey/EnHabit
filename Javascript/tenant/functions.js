@@ -463,7 +463,7 @@ function CreateListing()
 {   
     var inputs = $("#createListingModal input, #createListingModal select").not(":eq(13)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "Landlord", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
