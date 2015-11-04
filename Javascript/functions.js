@@ -886,17 +886,20 @@ function InsertMarkers(res)
             }
             
             // get the tags while we're at it...
-            $.each(d.Tags, function(index, tag)
+            if (d.Tags != null)
             {
-                if (pageTags[tag] == null)
+                $.each(d.Tags, function(index, tag)
                 {
-                    pageTags[tag] = 1;
-                }
-                else
-                {
-                    pageTags[tag] += 1;
-                }
-            });
+                    if (pageTags[tag] == null)
+                    {
+                        pageTags[tag] = 1;
+                    }
+                    else
+                    {
+                        pageTags[tag] += 1;
+                    }
+                });
+            }
         });
         
         $.each(entries, function(address, entry) 
@@ -935,7 +938,10 @@ function InsertMarkers(res)
                                     '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
                 }
                 
-                entry[0].Tags = ToStringFromList(entry[0].Tags);
+                if (entry[0].Tags != null)
+                {
+                    entry[0].Tags = ToStringFromList(entry[0].Tags);
+                }
                 entry[0].Thumbnails = ToStringFromList(entry[0].Thumbnails);
                 
                 popupContent += slideshowContent +
