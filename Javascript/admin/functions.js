@@ -741,7 +741,7 @@ function UpdateAccount(uid)
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
-    checkboxes.not(":last").bootstrapSwitch({onText: "Yes", offText: "No"});
+    checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
     $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
     $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
