@@ -76,7 +76,7 @@ begin
     isActive = data["IsActive"].to_b if not data["IsActive"].nil? and not data["IsActive"].empty?
     isAdminData = data["IsAdmin"].to_b if not data["IsAdmin"].nil? and not data["IsAdmin"].empty?
     
-    id = ARGV[1] unless ARGV[1].empty?
+    id = ARGV[1].split(",")[0] unless ARGV[1].empty?
     key = ARGV[2] unless ARGV[2].empty?
     isAdmin = ARGV[3].to_b unless ARGV[3].empty?
     

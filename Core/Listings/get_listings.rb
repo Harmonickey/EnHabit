@@ -222,8 +222,8 @@ begin
     @isAdmin = ARGV[3].to_b unless ARGV[3].empty?
     
     unless @isAdmin
-        @userId = ARGV[1] unless ARGV[1].empty?
-        @landlordId = ARGV[1] unless ARGV[1].empty?
+        @userId = ARGV[1].split(",")[0] unless ARGV[1].empty?
+        @landlordId = ARGV[1].split(",")[0] unless ARGV[1].empty?
         @key = ARGV[2] unless ARGV[2].empty?
 
         if @key == "UserId"

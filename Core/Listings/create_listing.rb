@@ -177,8 +177,8 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
-    id = ARGV[1] if not ARGV[0].nil?
-    key = ARGV[2]
+    id = ARGV[1].split(",")[0] if not ARGV[0].nil?
+    key = ARGV[2] if not ARGV[2].nil?
     isAdmin = ARGV[3].to_b
     
     landlord = data["Landlord"]
