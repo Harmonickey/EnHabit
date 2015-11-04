@@ -837,7 +837,8 @@ function CreateQuery()
     query.Bedrooms = SelectToQueryField($("#Bedrooms-filter").val());
     query.Bathrooms = SelectToQueryField($("#Bathrooms-filter").val());
     query.Start = $.datepicker.formatDate('mm/dd/yy', new Date($("#datepicker-inline").val()));
-    query.Type = $("#Type-filter").val();
+    query.LeaseType = $("#LeaseType-filter").val();
+    query.BuildingType = $("#BuildingType-filter").val();
     query.Laundry = SelectToQueryField($("#Laundry-filter").val());
     query.Parking = SelectToQueryField($("#Parking-filter").val());
     query.AirConditioning = SelectToQueryField($("#AirConditioning-filter").val());
@@ -940,7 +941,7 @@ function InsertMarkers(res)
                 popupContent += slideshowContent +
                                 '</div>' +
                             '</div>' +
-                            "<input type='button' class='btn btn-outline-inverse btn-sm' style='width: 100%; margin-top: 10px;' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].Type + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + data.Tags + "], [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
+                            "<input type='button' class='btn btn-outline-inverse btn-sm' style='width: 100%; margin-top: 10px;' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + data.Tags + "], [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
                 
                 marker.bindPopup(popupContent, 
                 {
@@ -991,8 +992,9 @@ function InsertMarkers(res)
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
+                                    "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<pp class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
                                 "</div>" +
                             "</div>"];
                     }
@@ -1006,8 +1008,9 @@ function InsertMarkers(res)
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-type'>" + listing.Type.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.Type + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" +
+                                    "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" +
                                 "</div>" +
                             "</div>");
                     }
@@ -1091,7 +1094,8 @@ function InsertIntoListView(data)
     
     $("#listings").append(
         "<div class='item-content listing'>" +
-            "<p class='listing-type'>" + data.Type.CapitalizeFirstLetter() + "</p><br>" +
+            "<p class='listing-leaseType'>" + data.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+            "<p class='listing-buildingType'>" + data.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
             "<img src='assets/images/theme_images/loader.gif' height='100' width='100' />" +
             "<div class='information'>" +
                 "<div class='col-lg-3 col-md-3 col-sm-3'>" +
@@ -1113,7 +1117,7 @@ function InsertIntoListView(data)
                     "</div>" +
                 "</div>" +
                 "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.Type + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "')\" />" +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "')\" />" +
                 "</div>" +
             "</div>" +
         "</div>");
@@ -1138,7 +1142,7 @@ function InsertIntoListView(data)
     }
 }
 
-function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animals, Laundry, Parking, AirConditioning, Tags, Images, x, y, listingInfo)
+function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Animals, Laundry, Parking, AirConditioning, Tags, Images, x, y, listingInfo)
 {
     $("#details-view").fadeIn();
     
@@ -1185,8 +1189,11 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, Type, Animal
             "</div>" + 
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<p>Type: " + Type.CapitalizeFirstLetter() + "</p>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<p>LeaseType: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
+            "</div>" +
+            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                "<p>BuildingType: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
         "<div class='row'>" +

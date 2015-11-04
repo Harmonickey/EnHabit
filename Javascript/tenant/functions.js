@@ -277,7 +277,8 @@ function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":last").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
 function SetGeocompleteTextBox(rowId)
@@ -415,14 +416,15 @@ function UpdateListing(id)
 {
     var inputs = $("#" + id + " input").not(":eq(7)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "Type", "IsRented", "Landlord", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsRented", "Landlord", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
     
     data.id = id;
     data.University = "Northwestern";
-    data.Type = (data.Type == true ? "apartment" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -466,7 +468,8 @@ function CreateListing()
     var error = BuildError(data);
     
     data.University = "Northwestern";
-    data.Type = (data.Type == true ? "apartment" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -967,8 +970,9 @@ function InitSpecialFields()
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $("#createListingModal .type-content input").bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
-        
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    
     $(listingModal[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
@@ -1080,7 +1084,7 @@ function BuildData(inputs, elements)
     for (var i = 0; i < elements.length; i++)
     {
         if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
-         || elements[i] == "AirConditioning" || elements[i] == "Type")
+         || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -1266,8 +1270,11 @@ function CreateAccordionView(oid, data)
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>AC</label><input type='checkbox' " + (data.HasAirConditioning ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Type</label><input type='checkbox' " + (data.Type == "apartment" ? "checked" : "") + " data-size='mini' />" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>LeaseType</label><input type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>BuildingType</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" + 
                         "<div class='row'>" +

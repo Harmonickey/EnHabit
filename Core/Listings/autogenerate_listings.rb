@@ -57,7 +57,8 @@ def CreateListings(amount)
         listingObj["HasLaundry"] = true
         listingObj["HasParking"] = true
         listingObj["HasAirConditioning"] = true
-        listingObj["Type"] = "apartment"
+        listingObj["LeaseType"] = "rental"
+        listingObj["BuildingType"] = "apartment"
         listingObj["Start"] = Date.strptime("09/20/2018", "%m/%d/%Y").mongoize
         listingObj["WorldCoordinates"] = {"x" => points[i]["lat"], "y" => points[i]["lng"]}
         listingObj["University"] = "Northwestern"

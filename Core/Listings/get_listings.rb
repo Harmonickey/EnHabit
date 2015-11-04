@@ -82,11 +82,18 @@ def setFilters
         @hasAirConditioningFilter[:HasAirConiditioning][:$eq] = @hasAirConditioning
     end
     
-    if @type.nil? 
-        @typeFilter = nil
+    if @leaseType.nil? 
+        @leaseTypeFilter = nil
     else
-        @typeFilter[:Type] = {}
-        @typeFilter[:Type][:$eq] = @type
+        @leaseTypeFilter[:LeaseType] = {}
+        @leaseTypeFilter[:LeaseType][:$eq] = @leaseType
+    end
+    
+    if @buildingType.nil? 
+        @buildingTypeFilter = nil
+    else
+        @buildingTypeFilter[:BuildingType] = {}
+        @buildingTypeFilter[:BuildingType][:$eq] = @buildingType
     end
     
     if @start.nil? 
@@ -157,8 +164,11 @@ def combineFiltersIntoQuery
     if not @hasAnimalsFilter.nil? 
         @mainFilter["$and"].push @hasAnimalsFilter
     end
-    if not @typeFilter.nil? 
-        @mainFilter["$and"].push @typeFilter
+    if not @leaseTypeFilter.nil? 
+        @mainFilter["$and"].push @leaseTypeFilter
+    end
+    if not @buildingTypeFilter.nil? 
+        @mainFilter["$and"].push @buildingTypeFilter
     end
     if not @startFilter.nil? 
         @mainFilter["$and"].push @startFilter
@@ -200,7 +210,8 @@ begin
         @hasParking = data["Parking"].to_b if not data["Parking"].nil? and not data["Parking"] == "both"
         @hasAnimals = data["Animals"].to_b if not data["Animals"].nil? and not data["Animals"] == "both"
         @hasAirConditioning = data["AirConditioning"].to_b if not data["AirConditioning"].nil? and not data["AirConditioning"] == "both"
-        @type = data["Type"] if not data["Type"].nil? and not data["Type"] == "both"
+        @leaseType = data["LeaseType"] if not data["LeaseType"].nil? and not data["LeaseType"] == "both"
+        @buildingType = data["BuildingType"] if not data["BuildingType"].nil? and not data["BuildingType"] == "both"
         @start = data["Start"] if not data["Start"].nil? and not data["Start"].empty?
         @university = data["University"] if not data["University"].nil? and not data["University"].empty?
         @tags = data["Tags"] if not data["Tags"].nil? and not data["Tags"].length == 0    
@@ -229,7 +240,8 @@ begin
     @hasParkingFilter = {}
     @hasAnimalsFilter = {}
     @hasAirConditioningFilter = {}
-    @typeFilter = {}
+    @leaseTypeFilter = {}
+    @buildingTypeFilter = {}
     @startFilter = {}
     @universityFilter = {}
     @tagFilter = {}
@@ -249,7 +261,7 @@ begin
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongoSession.use("enhabit")# this is our current database
     
-    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, Type: 1, Tags: 1, Pictures: 1, Thumbnails: 1, IsRented: 1).to_a
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Tags: 1, Pictures: 1, Thumbnails: 1, IsRented: 1).to_a
     
     mongoSession.disconnect
 

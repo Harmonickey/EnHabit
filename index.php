@@ -183,12 +183,22 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                     </div>
                     <div class="item-content type-content">
-                        <label>Apartment or Sublet</label>
+                        <label>Rental or Sublet</label>
                         <div class="styled-select">
-                            <select id="Type-filter" class="form-control">
+                            <select id="leaseType-filter" class="form-control">
+                                <option value="both">Both</option>
+                                <option value="rental">Rental</option>
+                                <option value="sublet">Sublet</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item-content type-content">
+                        <label>Apartment or House</label>
+                        <div class="styled-select">
+                            <select id="buildingType-filter" class="form-control">
                                 <option value="both">Both</option>
                                 <option value="apartment">Apartment</option>
-                                <option value="sublet">Sublet</option>
+                                <option value="house">House</option>
                             </select>
                         </div>
                     </div>
@@ -273,7 +283,8 @@ if (!isset($_SESSION['CREATED'])) {
                         <p class='popup-bedrooms'></p>  
                         <p class='popup-bathrooms'></p> 
                         <p class='popup-price'></p> 
-                        <p class='popup-type'></p>
+                        <p class='popup-leaseType'></p>
+                        <p class='popup-buildingType'></p>
                         <p class='popup-animals'></p>
                         <p class='popup-laundry'></p>
                         <p class='popup-parking'></p>
