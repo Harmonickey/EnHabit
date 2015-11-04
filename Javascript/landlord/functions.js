@@ -213,7 +213,7 @@ function GetAllListings()
     });
 }
 
-function getAccount()
+function GetAccount()
 {
     $.ajax(
     {
