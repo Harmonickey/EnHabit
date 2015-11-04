@@ -983,7 +983,10 @@ function InsertMarkers(res)
                 // now that we have a pin, we need to fill in our section of the hash
                 $.each(entry, function(index, listing)
                 {
-                    listing.Tags = ToStringFromList(listing.Tags);
+                    if (listing.Tags != null)
+                    {
+                        listing.Tags = ToStringFromList(listing.Tags);
+                    }
                     listing.Thumbnails = ToStringFromList(listing.Thumbnails);
                     
                     var listingPic = (listing.Thumbnails.length !== 0 ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
@@ -1089,7 +1092,7 @@ function LoadMultipleListings(address)
 
 function InsertIntoListView(data)
 {
-    if (typeof data.Tags === "object")
+    if (data.Tags != null && typeof data.Tags === "object")
     {
         data.Tags = ToStringFromList(data.Tags);
     }
