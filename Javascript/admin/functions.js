@@ -1739,7 +1739,7 @@ function CreateAccordionView(oid, data)
                                 "<label>AC</label><input type='checkbox' " + (data.HasAirConditioning ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
-                        "<div class='row'>" + 
+                        "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
