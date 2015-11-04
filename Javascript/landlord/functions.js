@@ -1320,18 +1320,18 @@ function CreateAccordionView(oid, data)
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>AC</label><input type='checkbox' " + (data.HasAirConditioning ? "checked" : "") + " data-size='mini' />" +
-                            "</div>" + 
-                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>LeaseType</label><input type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
-                            "</div>" +
-                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>BuildingType</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
                                 "<label>Is Rented</label><input type='checkbox' " + (data.IsRented ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
