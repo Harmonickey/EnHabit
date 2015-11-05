@@ -1036,7 +1036,7 @@ function InsertMarkers(res)
     
     map.fitBounds(markers.getBounds());
     clearInterval(intervalVal);
-    map.setZoom(map.getZoom() - 1);
+    window.setTimeout(function() {map.setZoom(map.getZoom() - 1); }, 2000);
 }
 
 function InsertIntoListingSlideshowObject(entry)
