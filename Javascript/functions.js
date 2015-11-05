@@ -644,7 +644,7 @@ function InitSlider()
                     // dividing by 100 and multiplying by 100 without floating point will truncate
                     // and round to nearest 100
                     var step = 5;
-                    var valueMinStart = Math.round((data.MaxRent.Price / 2) / step) * step;
+                    var valueMinStart = Math.max(Math.round((data.MaxRent.Price / 2) / step) * step, (data.MinRent.Price / step) * step);
                     var valueMaxStart = Math.round(Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) / step) * step;
                     $("#amount").text("$" + valueMinStart + " - $" + valueMaxStart);
                     $("#PriceRangeSlider").slider(
