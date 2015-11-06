@@ -1231,7 +1231,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-7 col-md-7 col-sm-7'>" +
-                "<p>" + Notes + "</p>" + 
+                "<p>" + (Notes != "undefined" ? Notes : "") + "</p>" + 
             "</div>" +
             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
                 "<div class='row'>" +
