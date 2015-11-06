@@ -795,7 +795,7 @@ function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input").not(":eq(10)");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -1050,7 +1050,7 @@ function CreateListing()
 {
     var inputs = $("#createListingModal input, #createListingModal select").not(":eq(15)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "User", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Landlord", "User", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -1521,7 +1521,7 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes")
         {
             data[elements[i]] = $(inputs[i]).val();
         }
@@ -1749,6 +1749,11 @@ function CreateAccordionView(oid, data)
                         "</div>" + 
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label>Notes</label><textarea rows='4' cols='50' class='form-control' >" + data.Notes + "</textarea>" +
+                            "</div>" + 
+                        "</div>" +
+                        "<div class='row'>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label>Images (Will Upload Upon Submit)</label>" +
                                 "<form action='http://images.lbkstudios.net/enhabit/upload_file.php' data-pic-id='" + oid + "' class='dropzone'></form>" +
                             "</div>" + 
@@ -1878,10 +1883,6 @@ function CreateAccordionRentersView(uid, data)
 
 function CreateAccordionPaymentsView(oid, data)
 {           
-
-/*
-[{"_id":{"$oid":"55f75f616382f6b01600cf33"},"Rent":"550","Month":"September","FirstName":"alex","LastName":"ayerdi","Email":"aayerdi@u.northwestern.edu","PhoneNumber":"269-267-3752","LandlordName":"Northshore Apartments","LandlordEmail":"eric@northshoreapt.com"}]
-*/
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
