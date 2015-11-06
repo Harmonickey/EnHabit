@@ -1200,10 +1200,10 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<p>LeaseType: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
+                "<p>Lease Type: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<p>BuildingType: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
+                "<p>Building Type: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
         "<div class='row'>" +
