@@ -20,7 +20,7 @@ require 'rmagick'
 
 Moped::BSON = BSON
 
-def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, start, latitude, longitude, university, tags, pictures)
+def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, type, notes, start, latitude, longitude, university, tags, pictures)
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])
     mongoSession.use("enhabit")
 
@@ -40,6 +40,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["HasParking"] = parking.to_b
     listingObj["HasAirConditioning"] = airConditioning.to_b
     listingObj["Type"] = type
+    listingObj["Notes"] = notes
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
@@ -186,7 +187,7 @@ begin
         end
     end
     
-    puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["Type"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Tags"], data["Pictures"])
+    puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["Type"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Tags"], data["Pictures"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
