@@ -1048,9 +1048,9 @@ function CreateAccount()
 
 function CreateListing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(15)");
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea").not(":eq(15)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Landlord", "User", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "User", "Tags", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -1693,10 +1693,10 @@ function CreateAccordionView(oid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>User</label><input type='text' class='form-control' value='" + data.Username + "' /> " + 
+                                "<label>User</label><input type='text' class='form-control' value='" + (data.Username ? data.Username : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Landlord</label><input type='text' class='form-control' value='" + data.Landlord + "' /> " + 
+                                "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 

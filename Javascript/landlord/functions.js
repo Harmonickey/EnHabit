@@ -413,7 +413,7 @@ function UpdateListing(oid)
 {
     var inputs = $("#" + id + " input, #" + id + " textarea").not(":eq(7)");
    
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsRented", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "LeaseType", "BuildingType",  "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -457,9 +457,9 @@ function UpdateListing(oid)
 
 function CreateListing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select").not(":eq(12)");
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea").not(":eq(12)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Tags", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Tags", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
