@@ -1031,7 +1031,7 @@ function InsertMarkers(res)
             }
         });
         
-        ShowTagsPopup(pageTags, data[0].University);
+        ShowUsedTags(pageTags, data[0].University);
     }
     
     map.fitBounds(markers.getBounds());
@@ -1057,26 +1057,23 @@ function InsertIntoListingSlideshowObject(entry)
     listingSlideshows[entry._id.$oid + ""] = slideShowHTML;
 }
 
-function ShowTagsPopup(pageTags, university)
+function ShowUsedTags(pageTags, university)
 {
-    $.msgGrowl (
-    {
-        title: 'Top Tags at ' + university,
-        type: 'info',
-        position: 'top-right',
-        sticky: true
-    });
-    
     // sort the keys by largest to smallest
     var keysSorted = Object.keys(pageTags).sort(function(a,b) 
     { 
         return pageTags[b] - pageTags[a]
     });
     
+    var tagsList = [];
     for (var i = 0; i < keysSorted.length; i++)
     {
-       $('.top-right .msgGrowl-content span').append("<br><b>" + keysSorted[i] + "<b>"); 
+       tagsList.push(keysSorted[i]); 
     }
+    
+    var usedTags = tagsList.join(", ");
+    
+    $("#tags-list").text("(i.e. " + usedTags + ")");
 }
 
 function LoadMultipleListings(address)

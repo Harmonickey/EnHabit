@@ -203,7 +203,7 @@ if (!isset($_SESSION['CREATED'])) {
                         </div>
                     </div>
                     <div class="item-content tags-content">
-                        <label>Tags (i.e. north campus)</label>
+                        <label>Tags <span id="tags-list"></span></label>
                         <input id="Tags-filter" type="text" value="" data-role="tagsinput" />
                     </div>
                 </div>
