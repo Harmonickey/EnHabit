@@ -197,6 +197,11 @@
     margin-top: 50px;
 }
 
+#listings .listing 
+{
+    height: auto;
+}
+
 .modal-body .listing
 {
     margin-top: 0px;
