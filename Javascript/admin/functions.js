@@ -793,7 +793,7 @@ function SetDatePickerTextBox(rowId)
 
 function UpdateListing(oid)
 {
-    var inputs = $("#" + oid + " input").not(":eq(10)");
+    var inputs = $("#" + id + " input, #" + id + " textarea").not(":eq(10)");
     
     var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     

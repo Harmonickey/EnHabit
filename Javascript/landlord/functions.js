@@ -411,7 +411,7 @@ function DeleteListing(id)
 
 function UpdateListing(oid)
 {
-    var inputs = $("#" + oid + " input").not(":eq(7)");
+    var inputs = $("#" + id + " input, #" + id + " textarea").not(":eq(7)");
    
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "IsRented", "Latitude", "Longitude", "SelectedAddress"]);
     
