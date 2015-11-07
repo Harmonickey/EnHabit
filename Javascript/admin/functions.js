@@ -1264,8 +1264,8 @@ function Login()
                 command: "login",
                 data: 
                 {
-                    "username": username, 
-                    "password": password
+                    "Username": username, 
+                    "Password": password
                 },
                 user: username,
                 endpoint: "Accounts"
