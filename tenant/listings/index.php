@@ -76,7 +76,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
+            <a class="logo" href="/"><img src='assets/images/theme_images/logo_white.png' height="50"/></a>
             <a class="navbar-brand" href="./"> Tenant Portal</a>
         </div>
 

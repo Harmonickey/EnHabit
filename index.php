@@ -54,15 +54,43 @@ if (!isset($_SESSION['CREATED'])) {
         <![endif]-->
     </head>
     <body>
+        <nav class="navbar navbar-inverse" style="border-bottom: none;" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="logo" href="/"><img src='../../assets/images/theme_images/enhabit logo.png' height="58"/></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">                                  
+                            <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i> 
+                                Account
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="portal-function"><a style="cursor: pointer; display: none;" href="../account">Your Portal</a></li>                              
+                                <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
+                                    <a id="login" style="cursor: pointer;">Log In</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div> <!-- /.container -->
+        </nav>
+    
         <div id="map"></div>
         <!-- Outer Container -->
         <div id="outer-container">
             <!-- Left Sidebar -->
             <section id="left-sidebar">
-                <div class="logo">
-                    <a href="#intro" class="link-scroll"><img src="assets/images/theme_images/logo_white.png" alt="Enhabit" style="width: 100%;"></a>
-                </div>
-                <!-- .logo -->
                 <!-- Menu Icon for smaller viewports -->
                 <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
                 <div id="Filters">
@@ -139,9 +167,6 @@ if (!isset($_SESSION['CREATED'])) {
                     <ul id="action-menu">
                         <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                             <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
-                        </li>
-                        <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
-                            <a id="login" class="btn btn-outline-inverse btn-sm">Log In</a>
                         </li>
                     </ul>
                 </div>

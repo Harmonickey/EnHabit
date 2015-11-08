@@ -17,6 +17,11 @@
     position: relative;
 }
 
+#left-sidebar
+{
+    padding-top: 55px;
+}
+
 #Filters
 {
     color: white;
@@ -50,6 +55,7 @@
 {
     color: white;
     cursor: default;
+    top: 51px;
 }
 
 #extras,
@@ -889,4 +895,15 @@ select::-ms-expand
     background-color: #5259e3;
     border-color: #5259e3;
     margin-top: 18px;
+}
+
+.navbar.navbar-inverse 
+{
+    z-index: 2;
+    background-image: none;
+}
+
+.logo img 
+{
+    position: absolute;
 }
