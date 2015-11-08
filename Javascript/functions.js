@@ -24,7 +24,8 @@ var background_settings = {
 }
 
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
-var map = L.mapbox.map('map', 'mapbox.streets').setView([42.057, -87.680], 15);
+var map = L.mapbox.map('map', 'mapbox.streets', {zoomControl: false}).setView([42.057, -87.680], 15);
+map.zoomControl = false;
 var markers = new L.FeatureGroup();
 //map.on('draw:created', getPointsWithinPolygon);
 
@@ -1526,7 +1527,7 @@ function ShowLoginFeatures(hideMainModal)
         HideMainModal();
     }
     
-    $("#portal-function").show();
+    $("#portal-function > a").show();
 }
 
 function HideMainModal()
