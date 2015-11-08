@@ -1235,7 +1235,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
                     "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' onclick='ShareListing(\"" + Id + "\");' />" +
                 "</div>" +
                 "<div class='row'>" +
-                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact Landlord' onclick='ContactLandlord(\"" + Id + "\");' />" +
+                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact Landlord' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
                 "</div>" +
                 "<div class='row'>" +
                     "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Apply for Listing' onclick='ApplyForListing(\"" + Id + "\");' />" +
@@ -1724,6 +1724,81 @@ function SetDefaultButtonOnEnter(modal)
         if (code == 13)
         {
             $(".modal-body ." + modal + "-btn").click();
+        }
+    });
+}
+
+function CreateEmailMessage(listingId)
+{
+    if ($("#login").text() == "Log Out")
+    {
+        PopulateAndOpenModal(null, 'modal-content-email');
+        $("#common-modal").css("z-index", "4000");
+        $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
+    }
+    else
+    {
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+    }
+}
+
+function SendEmail(listingId)
+{   
+    var data =
+    {
+        Message: $("#common-modal .email-message").val(),
+        ListingId: listingId
+    };
+
+    if (data.Message == null || data.Message == "")
+    {
+        SetError("SendEmail", "Please Include Message");
+        return;
+    }
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "send_email",
+            data: data,
+            endpoint: "Accounts"
+        },
+        beforeSend: function()
+        {
+            $("#common-modal .email-btn").prop("disabled", true);
+            $("#common-modal .email-btn").val("Sending...");
+        },
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Okay"))
+                {
+                    PopulateAndOpenModal(null, 'modal-content-email-success');
+                }
+                else
+                {
+                    throw new Error(res);
+                }
+            }
+            catch(e)
+            {
+                SetError("SendEmail", e.message);
+            }
+        },
+        error: function(res, err)
+        {
+            SetError("SendEmail", res + " " + err);
+        },
+        complete: function()
+        {
+            $("#common-modal .email-btn").prop("disabled", true);
+            $("#common-modal .email-btn").val("Sending...");
+            
+            SetDefaultButtonOnEnter("");
         }
     });
 }
