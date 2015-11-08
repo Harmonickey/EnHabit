@@ -1231,12 +1231,12 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
                 "<p>" + (Notes != "undefined" ? Notes : "") + "</p>" + 
             "</div>" +
             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
-                "<div class='row'>" +
-                    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' onclick='ShareListing(\"" + Id + "\");' />" +
-                "</div>" +
+                //"<div class='row'>" +
+                //    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' //onclick='ShareListing(\"" + Id + "\");' />" +
+                //"</div>" +
                 //"<div class='row'>" +
                 //    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact //Landlord' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
-                "</div>" +
+                //"</div>" +
                 "<div class='row'>" +
                     "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Apply for Listing' onclick='ApplyForListing(\"" + Id + "\");' />" +
                 "</div>" +
