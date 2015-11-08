@@ -16,7 +16,7 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     // if we're running commands off of the front page, we don't want to filter
     // on user or landlord in the back end
     $no_user_filter = no_user_filter();
-    if ($no_user_filter && $_POST["command"] != "add_applicant")
+    if ($no_user_filter && $_POST["command"] != "add_applicant" && $_POST["command"] != "send_email")
     {
         $id = NULL;
         $key = NULL;
