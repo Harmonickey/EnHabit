@@ -265,6 +265,25 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- end application view-->
             </div>
             <!-- End Application -->
+            <!-- Email -->
+            <div class="content-to-populate-in-modal" id="modal-content-email">
+                <!-- placeholder for details view -->
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <label>Message</label>
+                        <input type="text" class="form-control email-message" />
+                    </div>
+                </div>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <input type="button" class="btn btn-outline-inverse btn-sm email-btn" value="Send Email" style="width: 75px; margin-top: 10px;"/>
+                    </div>
+                </div>
+                <p class="SendEmail-error alert alert-danger" style="display: none;"></p>
+                <!-- end application view-->
+            </div>
+            <!-- End Email -->
             <!-- Log out confirmation -->
             <div class="content-to-populate-in-modal" id="modal-content-logout">
                 <h1>Logged out successfully!</h1>
