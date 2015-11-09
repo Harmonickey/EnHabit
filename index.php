@@ -75,7 +75,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function"><a style="cursor: pointer; display: none;" href="../account">Your Portal</a></li>                              
+                                <li id="portal-function"><a style="cursor: pointer; display: none;" href="/portal.php">Your Portal</a></li>                              
                                 <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
                                     <a id="login" style="cursor: pointer;">Log In</a>
                                 </li>
