@@ -66,7 +66,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-cog"></i>
             </button>
-            <a class="navbar-brand" href="./">Enhabit Admin</a>
+            <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="58"/></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">

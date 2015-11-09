@@ -76,8 +76,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="logo" href="/"><img src='../../assets/images/theme_images/logo_white.png' height="50"/></a>
-            <a class="navbar-brand" href="./"> Landlord Portal</a>
+            <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="58"/></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -92,7 +91,6 @@
                     </a>
                 
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" href="../account">Account</a></li>
                         <li><a style="cursor: pointer;" onclick="Logout()">Logout</a></li>
                     </ul>
                 </li>
