@@ -77,7 +77,6 @@
                 <i class="fa fa-bars"></i>
             </button>
             <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="58"/></a>
-            <a class="navbar-brand" href="./"> Tenant Portal</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
