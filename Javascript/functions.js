@@ -1087,6 +1087,8 @@ function LoadMultipleListings(address)
     });
     
     PopulateAndOpenModal(null, 'modal-content-popup-multilisting');
+    
+    position_modal_at_centre();
 }
 
 function InsertIntoListView(data)
