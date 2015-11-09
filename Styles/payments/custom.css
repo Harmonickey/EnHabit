@@ -348,4 +348,9 @@
     z-index: 2;
     background-image: none;
     border-bottom: none;
+    background-color: #222 !important;
+}
+
+.logo {
+    position: absolute;
 }
