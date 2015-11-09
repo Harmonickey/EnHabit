@@ -76,23 +76,20 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="logo" href="/"><img src='assets/images/theme_images/logo_white.png' height="50"/></a>
+            <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="58"/></a>
             <a class="navbar-brand" href="./"> Tenant Portal</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                            
+                <li class="dropdown">    
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
                         <?php if (isset($_SESSION["tenant"])) { echo $_SESSION["tenant"]; } ?>
                         <b class="caret"></b>
-                    </a>
-                
+                    </a>                
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" href="../account">Account</a></li>
                         <li><a style="cursor: pointer;" onclick="Logout()">Logout</a></li>
                     </ul>
                 </li>

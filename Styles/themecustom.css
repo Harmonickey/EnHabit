@@ -901,6 +901,7 @@ select::-ms-expand
 {
     z-index: 2;
     background-image: none;
+    border-bottom: none;
 }
 
 .logo img 

@@ -170,3 +170,10 @@ textarea
 {
     margin-left: 20px;
 }
+
+.navbar.navbar-inverse 
+{
+    z-index: 2;
+    background-image: none;
+    border-bottom: none;
+}
