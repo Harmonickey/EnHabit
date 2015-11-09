@@ -554,7 +554,7 @@ function position_modal_at_centre()
         // align in the middle ONLY if the modal content height is less than the window height
         if (viewport().width > window.sm_screen_max && check_if_modal_content_fits_inside_the_page == true)
         {
-            var top_margin_to_align_modal_at_middle_of_page = (viewport().height - modal_height) / 2;
+            var top_margin_to_align_modal_at_middle_of_page = (viewport().height - modal_height) / 2 + 100;
             modal_content_container.animate({
                 marginTop: top_margin_to_align_modal_at_middle_of_page + "px",
                 marginBottom: "20px"
