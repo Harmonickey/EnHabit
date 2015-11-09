@@ -435,7 +435,7 @@ if (!isset($_SESSION['CREATED'])) {
         </script>
     </body>
     <!-- placeholder for details view -->
-    <div id="details-view" style="display: none;">
+    <div id="details-view" style="display: none; margin-top: 15px;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
         <div class="row">
             <!-- left section -->
