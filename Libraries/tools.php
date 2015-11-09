@@ -81,7 +81,9 @@ function no_user_filter()
 {   
     $http_ref = $_SERVER['HTTP_REFERER'];
        
-    if ($http_ref === "http://dev.lbkstudios.net/")
+    if ($http_ref === "http://dev.lbkstudios.net/" || 
+        $http_ref === "http://test.lbkstudios.net/" ||
+        $http_ref === "http://enhabit.lbkstudios.net/")
     {
         return TRUE;
     }
