@@ -90,94 +90,93 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Outer Container -->
         <div id="outer-container">
             <!-- Left Sidebar -->
-            <section id="left-sidebar">
-                <!-- Menu Icon for smaller viewports -->
-                <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
-                <div id="Filters">
-                    <div id="price-label" class="row">
-                        <span>Price Range</span>
-                        <span id="amount"></span>
-                    </div>
-                    <div id="price-slider" class="row">
-                        <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
-                    </div>
-                    <div id="datepicker-row" class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4">
-                            <label>Available</label>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8">
-                            <input id="datepicker-inline" type="text" class="form-control" value="MM/DD/YYYY"/>
-                        </div>
-                    </div>
-                    <div class="double-item-content">
-                        <div class="item-content">
-                            <label>Bedrooms</label>
-                            <div class="styled-select">
-                                <select id="Bedrooms-filter" class="form-control">
-                                    <option value="studio">Studio</option>
-                                    <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3+</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="item-content">                        
-                            <label>Bathrooms</label>
-                            <div class="styled-select"> 
-                                <select id="Bathrooms-filter" class="form-control">
-                                    <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3+</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="double-item-content">
-                        <div class="item-content parking-content">
-                            <label>Parking</label>
-                            <div class="styled-select">
-                                <select id="Parking-filter" class="form-control">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="item-content animals-content">
-                            <label>Animals</label>
-                            <div class="styled-select">
-                                <select id="Animals-filter" class="form-control">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                    <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="double-item-content">
-                        <div class="item-content list-view-button">
-                            <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
-                        </div>
-                        <div class="item-content extra-filter-button">
-                            <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
-                        </div>
-                    </div>
-                    <ul id="action-menu">
-                        <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
-                            <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
-                        </li>
-                    </ul>
+            <section id="left-sidebar"></section>
+            <!-- Menu Icon for smaller viewports -->
+            <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
+            <div id="Filters">
+                <div id="price-label" class="row">
+                    <span>Price Range</span>
+                    <span id="amount"></span>
                 </div>
-                <!-- #main-menu -->
-                <!-- Footer -->
-                <section id="footer">
-                    <!-- copyright text -->
-                    <div class="footer-text-line">&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
-                </section>
-                <!-- end: Footer -->
+                <div id="price-slider" class="row">
+                    <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
+                </div>
+                <div id="datepicker-row" class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <label>Available</label>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <input id="datepicker-inline" type="text" class="form-control" value="MM/DD/YYYY"/>
+                    </div>
+                </div>
+                <div class="double-item-content">
+                    <div class="item-content">
+                        <label>Bedrooms</label>
+                        <div class="styled-select">
+                            <select id="Bedrooms-filter" class="form-control">
+                                <option value="studio">Studio</option>
+                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item-content">                        
+                        <label>Bathrooms</label>
+                        <div class="styled-select"> 
+                            <select id="Bathrooms-filter" class="form-control">
+                                <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="double-item-content">
+                    <div class="item-content parking-content">
+                        <label>Parking</label>
+                        <div class="styled-select">
+                            <select id="Parking-filter" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item-content animals-content">
+                        <label>Animals</label>
+                        <div class="styled-select">
+                            <select id="Animals-filter" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                                <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="double-item-content">
+                    <div class="item-content list-view-button">
+                        <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
+                    </div>
+                    <div class="item-content extra-filter-button">
+                        <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
+                    </div>
+                </div>
+                <ul id="action-menu">
+                    <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
+                        <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- #main-menu -->
+            <!-- Footer -->
+            <section id="footer">
+                <!-- copyright text -->
+                <div class="footer-text-line">&copy; Enhabit LLC. <br>Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a></div>
             </section>
+            <!-- end: Footer -->
             <div id="listings_list">
                 <div id="listings">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseListingsList();">×</button>
