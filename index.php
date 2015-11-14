@@ -90,6 +90,7 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Outer Container -->
         <div id="outer-container">
             <!-- Left Sidebar -->
+            <section id="blurred"></section>
             <section id="left-sidebar"></section>
             <!-- Menu Icon for smaller viewports -->
             <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
