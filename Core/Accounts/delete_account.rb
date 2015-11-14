@@ -1,9 +1,4 @@
-#!/usr/bin/ruby
-
-ENV["GEM_HOME"] = "/home2/lbkstud1/ruby/gems" if ENV["GEM_HOME"].nil?
-ENV["GEM_PATH"] = "/home2/lbkstud1/ruby/gems:/lib/ruby/gems/1.9.3" if ENV["GEM_PATH"].nil?
-
-$: << "/home2/lbkstud1/ruby/gems"
+#!/usr/local/bin/ruby^M
 
 absPath = Dir.pwd
 base = absPath.split("/").index("public_html")
