@@ -83,7 +83,11 @@ function no_user_filter()
        
     if ($http_ref === "http://dev.lbkstudios.net/" || 
         $http_ref === "http://test.lbkstudios.net/" ||
-        $http_ref === "http://enhabit.lbkstudios.net/")
+        $http_ref === "http://enhabit.lbkstudios.net/" ||
+        $http_ref === "http://www.enhabitlife.com" ||
+        $http_ref === "https://www.enhabitlife.com" ||
+        $http_ref === "http://enhabitlife.com/" ||
+        $http_ref === "https://enhabitlife.com/")
     {
         return TRUE;
     }
