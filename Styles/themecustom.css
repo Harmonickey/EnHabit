@@ -46,6 +46,7 @@
     -webkit-filter: blur(10px);
     filter: url('/media/blur.svg#blur');
     filter: blur(10px);
+    background-color: rgba(255,255,255, 0.4);
 }
 
 #listings input,
