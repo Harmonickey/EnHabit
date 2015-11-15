@@ -20,13 +20,32 @@
 #left-sidebar
 {
     padding-top: 55px;
+    background-color: rgba(255,255,255,0.55);
+    -webkit-box-shadow: 2px 2px 11px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 11px -2px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 11px -2px rgba(0,0,0,0.75);
 }
 
 #Filters
 {
     color: white;
-    padding: 0 5px 0 5px;
+    padding: 80px 5px 0 5px;
     display: inline-block;
+    position: absolute;
+    z-index: 100;
+    width: 250px;
+    color: #333;
+    text-align: center; /* centers the search button */
+}
+
+#blurred
+{
+    width: 250px;
+    height: 100%;
+    position: absolute;
+    -webkit-filter: blur(10px);
+    filter: url('/media/blur.svg#blur');
+    filter: blur(10px);
 }
 
 #listings input,
@@ -628,6 +647,9 @@
 #PriceRangeSlider
 {
     font-size: 5px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #PriceRangeSlider .ui-slider-handle
@@ -701,6 +723,13 @@
     clear: left;
     display: inline-block !important;
     width: 100% !important;
+}
+
+#search-function a
+{
+    border: none;
+    background-color: green;
+    width: 100%;
 }
 
 #action-menu li a
@@ -902,9 +931,24 @@ select::-ms-expand
     z-index: 2;
     background-image: none;
     border-bottom: none;
+    background-color: black;
+}
+
+.navbar .container
+{
+    padding-left: 0;
+    margin-left: 0;
+    position: absolute;
+    width: 100%;
 }
 
 .logo img 
 {
     position: absolute;
 }
+
+.outer-container
+{
+    position: absolute;
+}
+    
