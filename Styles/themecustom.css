@@ -932,6 +932,8 @@ select::-ms-expand
     background-image: none;
     border-bottom: none;
     background-color: black;
+    position: absolute;
+    width: 100%;
 }
 
 .navbar .container
