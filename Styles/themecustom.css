@@ -715,6 +715,7 @@
     width: 85%;
     margin: 0 auto;
     margin-top: 20px;
+    padding: 0;
 }
 
 #search-function
@@ -959,7 +960,7 @@ select::-ms-expand
     margin-top: 50px;
 }
     
-.leaflet-bottom.leaflet-right 
+.logo.leaflet-bottom.leaflet-right 
 {
     bottom: 10px;
 }

@@ -1953,7 +1953,7 @@ $(function ()
         size: '10px'
     });
     
-    $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right"); 
+    $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo"); 
 });
 
 $(window).on('resize', function() {
