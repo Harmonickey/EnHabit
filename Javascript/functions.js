@@ -1519,17 +1519,14 @@ function RemoveLoginFeatures()
 }
 
 function ShowLoginFeatures(hideMainModal)
-{
-    $("#login").text("Log Out");
-    $("#login-function").attr("onclick", "LogoutUser()");
-    $("#login-function").show();
-    
+{   
+    $(".login-btn").hide();
+    $(".account-dropdown").show();
+
     if (hideMainModal === true)
     {
         HideMainModal();
     }
-    
-    $("#portal-function > a").show();
 }
 
 function HideMainModal()

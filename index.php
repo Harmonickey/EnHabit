@@ -68,7 +68,10 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">                                  
+                        <a class="login-btn btn btn-default" style="display: block;">
+                            Log In
+                        </a>
+                        <li class="account-dropdown dropdown" style="display: none;">      
                             <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-user"></i> 
                                 Account
@@ -76,8 +79,8 @@ if (!isset($_SESSION['CREATED'])) {
                             </a>
                             <ul class="dropdown-menu">
                                 <li id="portal-function"><a style="cursor: pointer; display: none;" href="/portal.php">Your Portal</a></li>                              
-                                <li id="login-function" class="menu-item scroll" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
-                                    <a id="login" style="cursor: pointer;">Log In</a>
+                                <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
+                                    <a id="login" style="cursor: pointer;">Log Out</a>
                                 </li>
                             </ul>
                         </li>
