@@ -960,7 +960,7 @@ select::-ms-expand
     margin-top: 50px;
 }
     
-.logo.leaflet-bottom.leaflet-right 
+.leaflet-bottom.leaflet-right.mblogo
 {
     bottom: 10px;
 }
