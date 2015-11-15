@@ -947,7 +947,7 @@ select::-ms-expand
     position: absolute;
 }
 
-.outer-container
+#outer-container
 {
     position: absolute;
 }
