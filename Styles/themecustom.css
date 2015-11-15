@@ -76,6 +76,10 @@
     color: white;
     cursor: default;
     top: 51px;
+    position: fixed;
+    z-index: 1;
+    width: 0px;
+    overflow: hidden;
 }
 
 #extras_view
@@ -85,6 +89,7 @@
     -webkit-box-shadow: 2px 2px 11px -2px rgba(0,0,0,0.75);
     -moz-box-shadow: 2px 2px 11px -2px rgba(0,0,0,0.75);
     box-shadow: 2px 2px 11px -2px rgba(0,0,0,0.75);
+    min-height: 272px;
 }
 
 #extras,
@@ -399,21 +404,6 @@
 .leaflet-popup-tip
 {
     display: none;  /* for now I dunno what is wrong with it, so just make it disappear with this... */
-}
-
-#listings_list,
-#extras_view 
-{
-    position: fixed;
-    z-index: 1;
-    width: 0px;
-    overflow: hidden;
-}
-
-#extras_view
-{
-    min-height: 272px;
-    background: rgba(0,0,0,0.79);
 }
 
 #listings_list
