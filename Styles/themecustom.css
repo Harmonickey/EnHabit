@@ -935,8 +935,8 @@ select::-ms-expand
 
 .apply-btn
 {
-    background-color: #5259e3;
-    border-color: #5259e3;
+    background-color: green;
+    border-color: green;
     margin-top: 18px;
 }
 
