@@ -1952,6 +1952,8 @@ $(function ()
         alwaysVisible: true,
         size: '10px'
     });
+    
+    $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right"); 
 });
 
 $(window).on('resize', function() {

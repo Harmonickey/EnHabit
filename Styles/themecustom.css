@@ -953,4 +953,13 @@ select::-ms-expand
 {
     position: absolute;
 }
+
+.leaflet-top.leaflet-right 
+{
+    margin-top: 50px;
+}
     
+.leaflet-bottom.leaflet-right 
+{
+    bottom: 10px;
+}
