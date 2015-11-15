@@ -942,7 +942,6 @@ select::-ms-expand
     padding-left: 0;
     margin-left: 0;
     position: absolute;
-    width: 100%;
 }
 
 .logo img 
@@ -963,4 +962,9 @@ select::-ms-expand
 .logo.leaflet-bottom.leaflet-right 
 {
     bottom: 10px;
+}
+
+.login-btn
+{
+    padding-top: 12px;
 }
