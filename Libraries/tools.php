@@ -87,7 +87,8 @@ function no_user_filter()
         $http_ref === "http://www.enhabitlife.com" ||
         $http_ref === "https://www.enhabitlife.com" ||
         $http_ref === "http://enhabitlife.com/" ||
-        $http_ref === "https://enhabitlife.com/")
+        $http_ref === "https://enhabitlife.com/" ||
+        $http_ref === "http://dev.enhabitlife.com/")
     {
         return TRUE;
     }
