@@ -42,7 +42,7 @@
     
     <link href="../../Libraries/Styles/pikaday.css" rel="stylesheet">
     
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="../../Libraries/Styles/font-awesome.min.css" rel="stylesheet">
     
     <link href="../../Libraries/Styles/jquery-ui.min.css" rel="stylesheet">
@@ -260,7 +260,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Images (Will Upload Upon Submit)</label>
-                        <form action="http://images.lbkstudios.net/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
+                        <form action="/images/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
                     </div>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
@@ -281,7 +281,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui.min.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-tagsinput.min.js"></script>

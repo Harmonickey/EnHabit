@@ -910,7 +910,7 @@ function InsertMarkers(res)
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 
                 var slideshowContent = "";
-                var base = "http://images.lbkstudios.net/enhabit/images/";
+                var base = "/images/enhabit/images/";
                 var images = entry[0].Thumbnails;
                 if (!images || images.length === 0)
                 {
@@ -996,7 +996,7 @@ function InsertMarkers(res)
                     {
                         multiPopup[listing.Address] = [
                             "<div class='item-content listing'>" +
-                                "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
+                                "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -1012,7 +1012,7 @@ function InsertMarkers(res)
                     {
                         multiPopup[listing.Address].push(
                             "<div class='item-content listing'>" +
-                                "<img src='http://images.lbkstudios.net/enhabit/images/" + listingPic + "' height='100' width='100' />" +
+                                "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -1050,7 +1050,7 @@ function InsertIntoListingSlideshowObject(entry)
     {
         slideShowHTML += 
         "<div>" +
-            "<img class='lazyOwl' data-src='http://images.lbkstudios.net/enhabit/images/" + entry.Pictures[i] + "'>" +
+            "<img class='lazyOwl' data-src='/images/enhabit/images/" + entry.Pictures[i] + "'>" +
         "</div>";
     }
     slideShowHTML += "</div>";
@@ -1140,15 +1140,15 @@ function InsertIntoListView(data)
     };
     if (typeof data.Thumbnails === "object" && data.Thumbnails.length > 0)
     {
-        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Thumbnails[0];
+        downloadingImage.src = '/images/enhabit/images/' + data.Thumbnails[0];
     }
     else if (typeof data.Thumbnails === "string" && data.Thumbnails !== "" || data.Thumbnails.length == 0)
     {
-        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + data.Thumbnails.split(",")[0].replace(/'/g, "");
+        downloadingImage.src = '/images/enhabit/images/' + data.Thumbnails.split(",")[0].replace(/'/g, "");
     }
     else
     {
-        downloadingImage.src = 'http://images.lbkstudios.net/enhabit/images/' + defaultPicture;
+        downloadingImage.src = '/images/enhabit/images/' + defaultPicture;
     }
 }
 
@@ -1160,7 +1160,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     
     //load up the images into the modal...
     var slideshowContent = "";
-    var base = "http://images.lbkstudios.net/enhabit/images/";
+    var base = "/images/enhabit/images/";
     if (!Images || Images.length === 0)
     {
         Images = [];
