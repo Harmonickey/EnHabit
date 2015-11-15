@@ -29,7 +29,7 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Tags -->
         <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- Owl Carousel Styles -->
         <link rel="stylesheet" href="Libraries/Styles/owl.carousel.css">
         <link rel="stylesheet" href="Libraries/Styles/owl.theme.css">
@@ -39,10 +39,10 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- MsgBoxes -->
         <link href="Libraries/Styles/msgGrowl.css" rel="stylesheet">
         <!-- leaflet styles -->
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <!-- map box styles -->
-        <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
-        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+        <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+        <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
         <!-- styles for this template -->
         <link href="Styles/main.css" rel="stylesheet">
         <!-- place your extra custom styles in this file -->
@@ -380,9 +380,9 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Javascripts  =============================== -->
         
         <!-- Jquery, Jquery UI, and Bootstrap JS -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
         <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
@@ -390,15 +390,15 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- Owl Carousel Library -->
         <script src="Libraries/Javascript/owl.carousel.min.js"></script>
         <!-- Javascript Leaflet Library -->
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <!-- Easing - for transitions and effects (with modals) -->
         <script src="Libraries/Javascript/jquery.easing.1.3.js"></script>
         <!-- MapBox API from CDN -->
-        <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
         <!-- MapBox Plugin - Leaflet PIP: Polygon Points Interpretation - Example: https://www.mapbox.com/mapbox.js/example/v1.0.0/point-in-polygon/ -->
-        <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.1.0/leaflet-pip.min.js'></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.1.0/leaflet-pip.min.js'></script>
         <!-- MapBox Plugin - Leaflet Draw: Polygon Selection - Example: https://www.mapbox.com/mapbox.js/example/v1.0.0/leaflet-draw -->
-        <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
         <!-- jquery geocomplete api -->
         <script src="Libraries/Javascript/jquery.geocomplete.min.js"></script>
         <!-- detect mobile browsers (helps with menu side-bar) -->
