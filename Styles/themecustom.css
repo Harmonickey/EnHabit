@@ -516,7 +516,7 @@
 #listings .information input,
 .leaflet-popup-content input
 {
-    background: #5259e3;
+    background: green;
 }
 
 #search-section > li.menu-item
@@ -757,6 +757,12 @@
     margin: 0 auto;
 }
 
+.list-view-button input:hover,
+.extra-filter-button input:hover
+{
+    background: #222;
+}
+
 #extras .laundry-content
 {
     font-size: 17px;
@@ -954,6 +960,7 @@ select::-ms-expand
 #outer-container
 {
     position: absolute;
+    width: 0;
 }
 
 .leaflet-top.leaflet-right 
