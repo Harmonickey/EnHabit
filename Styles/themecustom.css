@@ -243,6 +243,11 @@
     height: auto;
 }
 
+.item-content.listing
+{
+    height: 125px;
+}
+
 .modal-body .listing
 {
     margin-top: 0px;
@@ -782,7 +787,7 @@
 
 .modal-content .item-content .information 
 {
-    min-height: 200px;
+    height: 100%;
 }
 
 .owl-carousel-button
