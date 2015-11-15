@@ -967,4 +967,5 @@ select::-ms-expand
 .login-btn
 {
     padding-top: 12px;
+    cursor: pointer;
 }

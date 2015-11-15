@@ -68,7 +68,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <a class="login-btn" style="display: block;">
+                        <a class="login-btn" style="display: block;" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
                             Log In
                         </a>
                         <li class="account-dropdown dropdown" style="display: none;">      
