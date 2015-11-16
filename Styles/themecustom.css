@@ -416,7 +416,7 @@
 {
     height: 100%;
     background: rgba(48, 47, 45, 1.0);
-    z-index: 2;
+    z-index: 1000;
 }
 
 @media (min-width: 992px)

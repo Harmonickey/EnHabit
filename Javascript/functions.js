@@ -1950,6 +1950,8 @@ $(function ()
         size: '10px'
     });
     
+    $("#listings_list").height($("#listings_list").height() - $(".navbar").outerHeight());
+    
     $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo"); 
 });
 
