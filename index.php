@@ -110,7 +110,7 @@ if (!isset($_SESSION['CREATED'])) {
                         <label>Available</label>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8">
-                        <input id="datepicker-inline" type="text" class="form-control" value="MM/DD/YYYY"/>
+                        <input id="datepicker-inline" type="button" class="form-control" value="MM/DD/YYYY"/>
                     </div>
                 </div>
                 <div class="double-item-content">
