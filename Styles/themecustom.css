@@ -740,6 +740,11 @@
     width: 100%;
 }
 
+#search-function a:hover
+{
+    background-color: darkgreen;
+}
+
 #action-menu li a
 {
     font-size: 18px;
