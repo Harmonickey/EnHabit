@@ -58,11 +58,7 @@ if (!isset($_SESSION['CREATED'])) {
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <i class="fa fa-bars"></i>
-                    </button>
-                    <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="58"/></a>
+                    <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
