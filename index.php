@@ -67,8 +67,18 @@ if (!isset($_SESSION['CREATED'])) {
                         <a class="navbar-login-btn" style="display: block;" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
                             Log In
                         </a>
-                        <li class="account-dropdown dropdown" style="display: none;">      
-                            <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <li class="account-nav">
+                            <a href="javascript:void()">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li class="account-nav">
+                            <a href="javascript:void()">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li class="account-nav dropdown" style="display: none;">      
+                            <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-user"></i> 
                                 Account
                                 <b class="caret"></b>
@@ -80,6 +90,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 </li>
                             </ul>
                         </li>
+                        
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div> <!-- /.container -->

@@ -520,14 +520,14 @@
 
 #listings .information input,
 .leaflet-popup-content input,
-.listing.information input
+.listing .information input
 {
     background: green;
 }
 
 #listings .information input:hover,
 .leaflet-popup-content input:hover,
-.listing.information input:hover
+.listing .information input:hover
 {
     background: darkgreen;
 }

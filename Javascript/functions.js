@@ -1515,13 +1515,14 @@ function LogoutUser()
 
 function RemoveLoginFeatures()
 {
-    $("#portal-function").hide();
+    $(".navbar-login-btn").show();
+    $(".account-nav").hide();
 }
 
 function ShowLoginFeatures(hideMainModal)
 {   
-    $(".login-btn").hide();
-    $(".account-dropdown").show();
+    $(".navbar-login-btn").hide();
+    $(".account-nav").show();
 
     if (hideMainModal === true)
     {
