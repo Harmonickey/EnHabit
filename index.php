@@ -276,8 +276,8 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- #modal-content-register -->
             <!-- Register -->
             <div class="content-to-populate-in-modal" id="modal-content-register-success">
-                <h1>Account Creation Success!</h1>
-                <p> You now have an account with Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment!</p>
+                <h3>Account Created!</h3>
+                <p>Welcome to Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
             </div>
             <!-- #modal-content-register-success -->
             <!-- Application -->
