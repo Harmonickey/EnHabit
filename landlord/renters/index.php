@@ -159,14 +159,11 @@
 	<div class="container">
 		<div class="row">
 			<div id="footer-copyright" class="col-md-6">
-				&copy; Enhabit LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
-			</div> <!-- /span6 -->
-			<div id="footer-terms" class="col-md-6">
-				Theme by <a href="http://jumpstartui.com" target="_blank">Jumpstart UI</a>
-			</div> <!-- /.span6 -->
-		</div> <!-- /row -->
-	</div> <!-- /container -->
-</div> <!-- /footer -->
+				&copy; Hyperion Group LLC & LbKStudios LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- Le javascript
 ================================================== -->
