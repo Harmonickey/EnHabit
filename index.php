@@ -64,7 +64,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <a class="login-btn" style="display: block;" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
+                        <a class="navbar-login-btn" style="display: block;" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
                             Log In
                         </a>
                         <li class="account-dropdown dropdown" style="display: none;">      
@@ -74,7 +74,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function"><a style="cursor: pointer;" href="/portal.php">Your Portal</a></li>                              
+                                <li id="portal-function"><a style="cursor: pointer;" href="/portal.php">My Account</a></li>                              
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
                                     <a id="login" style="cursor: pointer;">Log Out</a>
                                 </li>

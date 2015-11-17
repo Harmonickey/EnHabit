@@ -591,7 +591,7 @@
 #extras_view select,
 .bootstrap-tagsinput
 {
-    background-color: #3a3836;
+    background-color: black;
     border-radius: 0px;
     border: 1px solid #ffffff;
 }
@@ -707,7 +707,7 @@
 
 .styled-select select option
 {
-    background-color: #3a3836;
+    background-color: black;
 }
 
 .styled-select {
@@ -983,8 +983,18 @@ select::-ms-expand
     bottom: 10px;
 }
 
-.login-btn
+.navbar-login-btn
 {
     padding-top: 12px;
     cursor: pointer;
+}
+
+.navbar-nav.navbar-right
+{
+    margin-top: -2px;
+}
+
+.navbar-inverse .navbar-nav > li > a
+{
+    color: white;
 }
