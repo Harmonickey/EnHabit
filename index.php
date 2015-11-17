@@ -67,6 +67,8 @@ if (!isset($_SESSION['CREATED'])) {
                         <a class="navbar-login-btn" style="display: block;" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
                             Log In
                         </a>
+                        <!--I'm commenting this section out because it goes nowhere right now
+                        
                         <li class="account-nav">
                             <a href="javascript:void()">
                                 Contact Us
@@ -77,6 +79,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 About
                             </a>
                         </li>
+                        -->
                         <li class="account-nav dropdown" style="display: none;">      
                             <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-user"></i> 
@@ -84,7 +87,8 @@ if (!isset($_SESSION['CREATED'])) {
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function"><a style="cursor: pointer;" href="/portal.php">My Account</a></li>                              
+                                <li id="portal-function"><a style="cursor: pointer;" href="/AccountPortal.php">My Account</a></li>
+                                <li id="portal-function"><a style="cursor: pointer;" href="/ListingsPortal.php">My Listings</a></li>
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
                                     <a id="login" style="cursor: pointer;">Log Out</a>
                                 </li>
