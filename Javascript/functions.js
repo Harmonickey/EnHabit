@@ -1003,7 +1003,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
                                     "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<pp class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
                                     "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
                                 "</div>" +
                             "</div>"];

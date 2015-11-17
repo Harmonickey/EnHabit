@@ -262,7 +262,7 @@
 
 .listing .information .btn
 {
-    border-color: green;
+    border: none;
 }
 
 .listing img
@@ -519,9 +519,17 @@
 }
 
 #listings .information input,
-.leaflet-popup-content input
+.leaflet-popup-content input,
+.listing.information input
 {
     background: green;
+}
+
+#listings .information input:hover,
+.leaflet-popup-content input:hover,
+.listing.information input:hover
+{
+    background: darkgreen;
 }
 
 #search-section > li.menu-item
@@ -713,7 +721,7 @@
 .styled-select {
    overflow: hidden;
    width: 80%;
-   background: url(../Libraries/Styles/images/new_arrow.png) no-repeat right #3a3836;
+   background: url(../Libraries/Styles/images/new_arrow.png) no-repeat right black;
    margin: 0 auto;
 }
 
@@ -945,6 +953,11 @@ select::-ms-expand
     margin-top: 18px;
 }
 
+.navbar
+{
+    border-radius: 0;
+}
+
 .navbar.navbar-inverse 
 {
     z-index: 2;
@@ -960,6 +973,7 @@ select::-ms-expand
     padding-left: 0;
     margin-left: 0;
     position: absolute;
+    width: 100%;
 }
 
 .logo img 
