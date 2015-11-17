@@ -74,7 +74,7 @@ if (!isset($_SESSION['CREATED'])) {
                         </li>
                         <li class="account-nav">
                             <a href="javascript:void()">
-                                Contact Us
+                                About
                             </a>
                         </li>
                         <li class="account-nav dropdown" style="display: none;">      

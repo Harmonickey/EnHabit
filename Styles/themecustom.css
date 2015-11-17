@@ -973,7 +973,7 @@ select::-ms-expand
     padding-left: 0;
     margin-left: 0;
     position: absolute;
-    width: 100%;
+    width: 98%;
 }
 
 .logo img 
@@ -1012,3 +1012,9 @@ select::-ms-expand
 {
     color: white;
 }
+
+ .navbar-inverse .navbar-nav > li > a:hover,
+ .navbar-inverse .navbar-nav > .open > a:hover
+ {
+    color: #777;
+ }
