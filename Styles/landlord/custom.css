@@ -8,6 +8,11 @@ Assigned to:	You
 
 -------------------------------------------------------------------*/
 
+html, body
+{
+    height: 100%;
+}
+
 textarea
 {
     resize:none;
@@ -168,7 +173,7 @@ textarea
     z-index: 2;
     background-image: none;
     border-bottom: none;
-    background-color: #black !important;
+    background-color: black !important;
 }
 
 .logo {

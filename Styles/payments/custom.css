@@ -1,3 +1,8 @@
+html, body
+{
+    height: 100%;
+}
+
 .payment-details ol,
 .payment-details ul {
   list-style: none;
@@ -348,7 +353,7 @@
     z-index: 2;
     background-image: none;
     border-bottom: none;
-    background-color: #black !important;
+    background-color: black !important;
 }
 
 .logo {
