@@ -115,7 +115,7 @@
                     <li class="active">
 						<a href="./">
 							<i class="fa fa-th-list"></i>
-							<span>Listings</span>
+							<span>Listing</span>
 						</a>	    				
 					</li>
                     <?php

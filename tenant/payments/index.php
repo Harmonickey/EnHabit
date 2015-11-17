@@ -116,7 +116,7 @@
                     <li>
 						<a href="../listings">
 							<i class="fa fa-th-list"></i>
-							<span>Listings</span>
+							<span>Listing</span>
 						</a>	    				
 					</li>
                     <li class="active">
