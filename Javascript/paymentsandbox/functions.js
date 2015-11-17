@@ -3,7 +3,7 @@
 // We are using the Luhn algorithm to validate credit cards.
 // Library help by Stripe Jquery Credit Card library
 $(function() 
-{
+{   
     // setup formatting for certain text boxes
     $('[data-numeric]').payment('restrictNumeric');
     $('.cc-number').payment('formatCardNumber');

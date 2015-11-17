@@ -960,7 +960,7 @@ select::-ms-expand
 
 .navbar.navbar-inverse 
 {
-    z-index: 2;
+    z-index: 1000;
     background-image: none;
     border-bottom: none;
     background-color: black;

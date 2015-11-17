@@ -11,6 +11,12 @@ var numUploaded = 0;
 var numAdded = 0;
 var pendingUpdateData = null;
 
+$(function() {
+   var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
+   
+   $(".main").css("min-height", height + "px");
+});
+
 $(document).on("keypress", function(e)
 {
     var code = e.keyCode || e.which;
