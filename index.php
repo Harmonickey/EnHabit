@@ -325,7 +325,7 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- End Email -->
             <!-- Log out confirmation -->
             <div class="content-to-populate-in-modal" id="modal-content-logout">
-                <h1>Logged out successfully!</h1>
+                <h3>You are now logged out.</h3>
             </div>
             <!-- #modal-content-logout -->
             <!-- Pop Up Listing Modal -->
