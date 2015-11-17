@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby^M
+#!/usr/local/bin/ruby
 
 
 absPath = Dir.pwd
@@ -31,7 +31,7 @@ def DeleteListing(isAdmin, listingId, userId, key)
             if documents[0][key] == userId or isAdmin
                 listing = session[:listings].find(listingObj).select(Pictures: 1).one
                 listing["Pictures"].each do |pic|
-                    filename = "#{@deploymentBase}/../images/enhabit/images/" + pic
+                    filename = "#{@deploymentBase}/images/enhabit/images/" + pic
                     File.delete(filename) if File.exist? filename
                 end
                 session[:listings].find(listingObj).remove

@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby^M
+#!/usr/local/bin/ruby
 
 absPath = Dir.pwd
 base = absPath.split("/").index("public_html")

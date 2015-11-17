@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby^M
+#!/usr/local/bin/ruby
 
 
 require 'moped'

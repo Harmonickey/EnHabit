@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby^M
+#!/usr/local/bin/ruby
 
 
 absPath = Dir.pwd
@@ -54,7 +54,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
             end
             
             # scale down halfway and interlace the image
-            Magick::Image::read("#{@deploymentBase}/../images/enhabit/images/" + filename)[0].scale(0.5).write("#{@deploymentBase}/../images/enhabit/images/" + thumbFileName) do |f| 
+            Magick::Image::read("#{@deploymentBase}/images/enhabit/images/" + filename)[0].scale(0.5).write("#{@deploymentBase}/images/enhabit/images/" + thumbFileName) do |f| 
                 f.interlace = Magick::PlaneInterlace
             end
             
@@ -84,7 +84,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
             document = session[:listings].find(queryObj).select(Pictures: 1, Thumbnails: 1).one
             unless document["Pictures"].nil?
                 document["Pictures"].each do |pic|
-                    filename = "#{@deploymentBase}/../images/enhabit/images/" + pic
+                    filename = "#{@deploymentBase}/images/enhabit/images/" + pic
                     if ((not pictures.nil? and not pictures.include? pic) or 
                         (pictures.nil? or pictures.count == 0))
                         File.delete(filename) if File.exist? filename
@@ -96,7 +96,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
                             parts[-2] += "_thumbnail"
                             thumb = parts.join(".")
                         end
-                        thumbFilename = "#{@deploymentBase}/../images/enhabit/images/" + thumb
+                        thumbFilename = "#{@deploymentBase}/images/enhabit/images/" + thumb
                         File.delete(thumbFilename) if File.exist? thumbFilename
                     end
                 end

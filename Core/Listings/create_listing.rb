@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby^M
+#!/usr/local/bin/ruby
 
 
 absPath = Dir.pwd
@@ -55,7 +55,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
             end
             
             # scale down halfway and interlace the image
-            Magick::Image::read("#{@deploymentBase}/../images/enhabit/images/" + filename)[0].scale(0.5).write("#{@deploymentBase}/../images/enhabit/images/" + thumbFileName) do |f|
+            Magick::Image::read("#{@deploymentBase}/images/enhabit/images/" + filename)[0].scale(0.5).write("#{@deploymentBase}/images/enhabit/images/" + thumbFileName) do |f|
                 f.interlace = Magick::PlaneInterlace
             end
             
@@ -118,7 +118,7 @@ def RemoveUploadedPics(pictures)
 
     # delete all these pictures because we failed a query
     pictures.each do |pic|
-        filename = "#{@deploymentBase}/../images/enhabit/images/" + pic 
+        filename = "#{@deploymentBase}/images/enhabit/images/" + pic 
         File.delete(filename) if File.exist? filename
     end  
 end
