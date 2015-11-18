@@ -44,7 +44,6 @@
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
     <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
-    <a class="navbar-brand" href="./"> Admin Portal</a>
   </div>
 </div> <!-- /.container -->
 </nav>
