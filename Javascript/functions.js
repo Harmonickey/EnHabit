@@ -1035,8 +1035,9 @@ function InsertMarkers(res)
         ShowUsedTags(pageTags, data[0].University);
     }
     
-    map.fitBounds(markers.getBounds());
-    map.setZoom(map.getZoom() - 1); 
+    //map.fitBounds(markers.getBounds());
+    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 0] });
+    //map.setZoom(map.getZoom() - 1); 
     clearInterval(intervalVal);
 }
 
