@@ -1766,7 +1766,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
                                 "<button class='btn btn-danger' onclick='DeleteListing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
@@ -1831,7 +1831,7 @@ function CreateAccordionUsersView(uid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='UpdateAccount(\"" + uid + "\");'>Update</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='UpdateAccount(\"" + uid + "\");'>Update</button>" + 
                                 "<button class='btn btn-danger' onclick='DeleteAccount(\"" + uid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
@@ -1878,7 +1878,7 @@ function CreateAccordionRentersView(uid, data)
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
                                 "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>Delete Renter</button>" +
                             "</div>" +
                         "</div>" +

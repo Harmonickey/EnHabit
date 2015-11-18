@@ -158,7 +158,7 @@
                         <select id="listings" class="form-control" style="display: none;"></select>
                     </div>    
                     <div class="col-lg-3 col-md-3 col-sm-3">
-                        <button id="addRenter" class="btn btn-primary" style="display: none;" onclick="AddRenter();">Add Renter</button>
+                        <button id="addRenter" class="btn btn-primary btn-success" style="display: none;" onclick="AddRenter();">Add Renter</button>
                     </div>
 				</div> <!-- /widget-content -->
                 

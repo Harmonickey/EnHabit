@@ -64,7 +64,7 @@
 				</div> <!-- /password -->
 			</div> <!-- /login-fields -->
 			<div class="login-actions">
-				<button class="login-action btn btn-primary" onclick="Login()">Sign In</button>
+				<button class="login-action btn btn-primary btn-success" onclick="Login()">Sign In</button>
 			</div> <!-- .actions -->
             <p class="login-error alert alert-danger" style="display: none;"></p>
 	</div> <!-- /content -->

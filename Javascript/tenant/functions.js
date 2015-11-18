@@ -1306,7 +1306,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
                                 "<button class='btn btn-danger' onclick='DeleteListing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
@@ -1335,7 +1335,7 @@ function CreatePaymentView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='OpenPaymentModal(\"" + oid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='OpenPaymentModal(\"" + oid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
                             "</div>" +
                         "</div>" +
                     "</div>" +

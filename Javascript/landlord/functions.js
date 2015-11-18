@@ -1352,7 +1352,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='UpdateListing(\"" + oid + "\");'>Update</button>" + 
                                 "<button class='btn btn-danger' onclick='DeleteListing(\"" + oid + "\");'>Delete</button>" +
                             "</div>" +
                         "</div>" +
@@ -1393,7 +1393,7 @@ function CreateAccordionApplicantsView(oid, data)
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;'>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary' onclick='AcceptApplicant(\"" + oid + "\");'>Accept</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='AcceptApplicant(\"" + oid + "\");'>Accept</button>" + 
                                 "<button class='btn btn-danger' onclick='RemoveApplicant(\"" + oid + "\", false);'>Remove</button>" +
                             "</div>" +
                         "</div>" +
