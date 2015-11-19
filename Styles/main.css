@@ -1578,7 +1578,7 @@ h6 {
     transition: all 0.4s;
     border:none !important;
     outline:none !important;
-    z-index: 2001;
+    z-index: 2000;
 }
 
 .modal-backdrop {
