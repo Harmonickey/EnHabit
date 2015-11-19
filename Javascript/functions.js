@@ -1415,7 +1415,7 @@ function AdjustZIndex()
 function ApplyForListing(listingId)
 {
     $("#common-modal").css("z-index", "4000");
-    $("#common-modal .modal-backdrop").attr("onclick", "AdjustZIndex()");
+    $("#common-modal .modal-backdrop").on("click", AdjustZIndex);
     if ($(".navbar-login-btn").css("display") == "block")
     {
         LoadModal(event, 'modal-content-login', 'login', 'Log In');
@@ -1740,7 +1740,7 @@ function SetDefaultButtonOnEnter(modal)
 function CreateEmailMessage(listingId)
 {
     $("#common-modal").css("z-index", "4000");
-    $("#common-modal .modal-backdrop").attr("onclick", "AdjustZIndex()");
+    $("#common-modal .modal-backdrop").on("click", AdjustZIndex);
     if ($(".navbar-login-btn").css("display") == "block")
     {
         LoadModal(event, 'modal-content-login', 'login', 'Log In');
