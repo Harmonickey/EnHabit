@@ -1738,6 +1738,7 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
+    $("#common-modal").css("z-index", "4000");
     if ($(".navbar-login-btn").css("display") == "block")
     {
         LoadModal(event, 'modal-content-login', 'login', 'Log In');
