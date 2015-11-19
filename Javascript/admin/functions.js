@@ -1593,9 +1593,12 @@ function BuildError(fields)
     {
         errorArr.push("Valid Email");
     }
-    if (fields.PhoneNumber === "" || (fields.PhoneNumber !== undefined && !IsValidPhoneNumber(fields.PhoneNumber)))
+    if (fields.PhoneNumber !== "" && fields.PhoneNumber !== undefined)
     {
-        errorArr.push("Valid Phone Number");
+        if (!IsValidPhoneNumber(fields.PhoneNumber))
+        {
+            errorArr.push("Valid Phone Number");
+        }
     }
     if (fields.Start === "")
     {

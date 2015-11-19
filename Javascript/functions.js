@@ -1892,9 +1892,12 @@ function BuildError(fields)
     {
         error += "Valid Email<br>";
     }
-    if (fields.PhoneNumber === "" || (fields.PhoneNumber !== undefined && !IsValidPhoneNumber(fields.PhoneNumber)))
+    if (fields.PhoneNumber !== "" && fields.PhoneNumber !== undefined)
     {
-        error += "Valid Phone Number<br>";
+        if (!IsValidPhoneNumber(fields.PhoneNumber))
+        {
+            error += "Valid Phone Number<br>";
+        }
     }
     
     return error;
