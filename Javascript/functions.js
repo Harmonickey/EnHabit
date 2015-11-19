@@ -1409,15 +1409,15 @@ function LoginFacebookUser(userID, accessToken)
 
 function ApplyForListing(listingId)
 {
-    if ($("#login").text() == "Log Out")
+    if ($(".navbar-login-btn").css("display") == "block")
+    {
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+    }
+    else
     {
         PopulateAndOpenModal(null, 'modal-content-application');
         $("#common-modal").css("z-index", "4000");
         $("#common-modal .apply-btn").attr("onclick", "Apply('" + listingId +"');");
-    }
-    else
-    {
-        LoadModal(event, 'modal-content-login', 'login', 'Log In');
     }
 }
 
