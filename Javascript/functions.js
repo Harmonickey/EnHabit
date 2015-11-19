@@ -1407,8 +1407,14 @@ function LoginFacebookUser(userID, accessToken)
     });
 }
 
+function AdjustZIndex()
+{
+    $("#common-modal").css("z-index", "2000");
+}
+
 function ApplyForListing(listingId)
 {
+    $("#common-modal").css("z-index", "4000");
     if ($(".navbar-login-btn").css("display") == "block")
     {
         LoadModal(event, 'modal-content-login', 'login', 'Log In');
@@ -1473,6 +1479,7 @@ function Apply(listingId)
         complete: function()
         {
             $("#common-modal").modal('hide');
+            $("#common-modal").css("z-index", "2000");
         }
     });
 }

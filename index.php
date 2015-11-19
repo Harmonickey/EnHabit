@@ -374,7 +374,7 @@ if (!isset($_SESSION['CREATED'])) {
         <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" style="margin-top: 100px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button onclick="AdjustZIndex();" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <div class="modal-body clearfix">
                     </div>
                     <!-- .modal-body -->
