@@ -1416,7 +1416,6 @@ function ApplyForListing(listingId)
     else
     {
         PopulateAndOpenModal(null, 'modal-content-application');
-        $("#common-modal").css("z-index", "4000");
         $("#common-modal .apply-btn").attr("onclick", "Apply('" + listingId +"');");
     }
 }
@@ -1732,15 +1731,14 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
-    if ($("#login").text() == "Log Out")
+    if ($(".navbar-login-btn").css("display") == "block")
     {
-        PopulateAndOpenModal(null, 'modal-content-email');
-        $("#common-modal").css("z-index", "4000");
-        $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
     }
     else
     {
-        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+        PopulateAndOpenModal(null, 'modal-content-email');
+        $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
     }
 }
 
