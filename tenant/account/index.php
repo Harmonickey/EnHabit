@@ -164,7 +164,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 required">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
                             <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" />
                         </div>
                     </div>
