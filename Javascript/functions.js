@@ -1594,6 +1594,8 @@ function CreateAccount()
                         LoginUser(false);
                         
                         PopulateAndOpenModal(null, 'modal-content-register-success');
+                        
+                        $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
                     }
                     else
                     {
