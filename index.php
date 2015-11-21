@@ -43,6 +43,7 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- map box styles -->
         <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <!-- styles for this template -->
         <link href="Styles/main.css" rel="stylesheet">
         <!-- place your extra custom styles in this file -->
