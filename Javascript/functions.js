@@ -1622,16 +1622,15 @@ function CreateAccount()
 }
 
 function LoadModal(event, which, enterDefault, btnText)
-{
+{ 
     PopulateAndOpenModal(event, which); 
     ResetModal(enterDefault, btnText, true); 
-    SetDefaultButtonOnEnter(enterDefault);
+    SetDefaultButtonOnEnter(enterDefault); 
     //also try to reset the modal backdrop height 
     //      because it's different for each modal
     
-    ModalBackdropHeight($('#common-modal.modal'));
-    $(".leaflet-map-pane").css("transform", "translate3d(146px, -110px, 0px)");
-}
+    ModalBackdropHeight($('#common-modal.modal')); 
+} 
 
 function OpenListingsList()
 {

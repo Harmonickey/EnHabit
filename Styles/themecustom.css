@@ -826,13 +826,14 @@
 
 #details-view
 {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     background: transparent;
     padding: 50px;
     z-index: 2000;
     top: 0;
+    overflow: hidden;
 }
 
 #details-view .row
