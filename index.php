@@ -82,16 +82,15 @@ if (!isset($_SESSION['CREATED'])) {
                         </li>
                         -->
                         <li class="account-nav dropdown" style="display: none;">      
-                            <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-user"></i> 
+                            <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown"> 
                                 Account
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function"><i class="fa fa-user"></i><a style="cursor: pointer;" href="/AccountPortal.php">My Account</a></li>
-                                <li id="portal-function"><i class="fa fa-home"></i><a style="cursor: pointer;" href="/ListingsPortal.php">My Listings</a></li>
+                                <li id="portal-function"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                                <li id="portal-function"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
-                                    <i class="fa fa-sign-out"></i><a id="login" style="cursor: pointer;">Log Out</a>
+                                    <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                                 </li>
                             </ul>
                         </li>
