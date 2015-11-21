@@ -87,10 +87,10 @@ if (!isset($_SESSION['CREATED'])) {
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function"><a style="cursor: pointer;" href="/AccountPortal.php">My Account</a></li>
-                                <li id="portal-function"><a style="cursor: pointer;" href="/ListingsPortal.php">My Listings</a></li>
+                                <li id="portal-function"><i class="fa fa-user"></i><a style="cursor: pointer;" href="/AccountPortal.php">My Account</a></li>
+                                <li id="portal-function"><i class="fa fa-home"></i><a style="cursor: pointer;" href="/ListingsPortal.php">My Listings</a></li>
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
-                                    <a id="login" style="cursor: pointer;">Log Out</a>
+                                    <i class="fa fa-sign-out"></i><a id="login" style="cursor: pointer;">Log Out</a>
                                 </li>
                             </ul>
                         </li>
