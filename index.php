@@ -66,7 +66,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <a class="navbar-login-btn" style="display: block;" onclick="LoadModal(event, 'modal-content-login', 'login', 'Log In');">
-                            <i class="fa fa-sign-in"></i>Log In
+                            <i class="fa fa-sign-in" style="margin-right: 5px;"></i>Log In
                         </a>
                         <!--I'm commenting this section out because it goes nowhere right now
                         
