@@ -497,7 +497,14 @@ function CreateListing()
             $("#create-listing-button").prop("disabled", true);
             
             // async call, caught in dropzone.success event handler below
-            dropzones["create"].processQueue();
+            if (numAdded == 0)
+            {
+                ProcessListing();
+            }
+            else
+            {
+                dropzones["create"].processQueue();
+            }
         }
     }
     catch(e)
@@ -1007,7 +1014,7 @@ function CreateDropzone(key, element, existingPics)
     var myDropzone = dropzones[key];
     
     myDropzone.on("success", function(file)
-    {
+    {   
         if (numUploaded == numAdded - 1)
         {
             numUploaded = 0;
