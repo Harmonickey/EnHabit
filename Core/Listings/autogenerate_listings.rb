@@ -58,9 +58,9 @@ def CreateListings(amount)
         listingObj["Start"] = Date.strptime("09/20/2018", "%m/%d/%Y").mongoize
         listingObj["WorldCoordinates"] = {"x" => points[i]["lat"], "y" => points[i]["lng"]}
         listingObj["University"] = "Northwestern"
-        listingObj["Tags"] = ["a", "b"]
         listingObj["Testing"] = true
         listingObj["Pictures"] = []
+        listingObj["IsActive"] = true
         listingObj["Thumbnails"] = []
        
         begin

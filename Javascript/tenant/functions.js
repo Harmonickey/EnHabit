@@ -282,8 +282,8 @@ function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true});
-    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
 function SetGeocompleteTextBox(rowId)
@@ -1261,7 +1261,7 @@ function CreateAccordionView(oid, data)
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" +
                         "</div>" +
-                        "<div class='row'>" +
+                        "<div class='row' style='margin-top: 10px'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Animals</label><input type='checkbox' " + (data.HasAnimals ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
@@ -1284,6 +1284,14 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row'>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini' disabled/>" +
+                            "</div>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                (data.IsActive ? "<label>To Activate your Listing You Must Include Images!</label>" : "") + 
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 

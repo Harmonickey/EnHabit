@@ -26,8 +26,6 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
-        <!-- Tags -->
-        <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- Owl Carousel Styles -->
@@ -241,10 +239,6 @@ if (!isset($_SESSION['CREATED'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="item-content tags-content">
-                        <label>Tags <span id="tags-list"></span></label>
-                        <input id="Tags-filter" type="text" value="" data-role="tagsinput" />
-                    </div>
                 </div>
             </div>
             <!-- #left-sidebar -->
@@ -347,7 +341,6 @@ if (!isset($_SESSION['CREATED'])) {
                         <p class='popup-laundry'></p>
                         <p class='popup-parking'></p>
                         <p class='popup-ac'></p>
-                        <p class='popup-tags'></p>
                         <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
                     </div> 
                     <input class="owl-carousel-button btn btn-primary" type="button" class="btn btn-primary" value="View Larger"/>
@@ -396,7 +389,6 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
-        <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
         <!-- Owl Carousel Library -->
         <script src="Libraries/Javascript/owl.carousel.min.js"></script>
