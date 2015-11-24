@@ -14,7 +14,7 @@ begin
     documents = Array.new
     
     mongoSession.with(safe: true) do |session|
-        documents = session[:accounts].find().select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1, IsActive: 1, IsAdmin: 1, IsVerified: 1, IsLandlord: 1).to_a
+        documents = session[:accounts].find().select(_id: 1, Username: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1, IsActive: 1, IsAdmin: 1, IsVerified: 1, IsLandlord: 1, FacebookId: 1).to_a
     end
     mongoSession.disconnect
 

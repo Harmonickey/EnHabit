@@ -25,13 +25,13 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
     usrObj["Email"] = email
     usrObj["PhoneNumber"] = phoneNumber
     usrObj["Password"] = PasswordHash.createHash(newPassword) unless newPassword.nil?
-    usrObj["IsLandlord"] = isLandlord
-    usrObj["IsVerified"] = isVerified
-    usrObj["IsActive"] = isActive
-    usrObj["IsAdmin"] = isAdminData
+    usrObj["IsAdmin"] = (isAdminData.nil? ? false : isAdminData)
+    usrObj["IsActive"] = (isActive.nil? ? true : isActive)
+    usrObj["IsVerified"] = (isVerified.nil? ? true : isVerified)
+    usrObj["IsLandlord"] = (isLandlord.nil? ? false : isLandlord)
     
     queryObj = Hash.new
-    queryObj["Username"] = username
+    queryObj["Username"] = username if isAdmin
     queryObj[key] = userId unless isAdmin
     
     retMsg = ""
@@ -45,6 +45,11 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
             # on an existing account
             if (account[0]["LandlordId"].nil? and isLandlord)
                 usrObj["LandlordId"] = SecureRandom.uuid
+                
+                landlordObj = Hash.new
+                landlordObj["Landlord"] = usrObj["Username"]
+                
+                session[:listings].find(landlordObj).update_all('$set' => {"LandlordId" => usrObj["LandlordId"]})
             end
             
             session[:accounts].find(queryObj).update('$set' => usrObj)
@@ -54,8 +59,6 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Email_1"
             retMsg = "That email is already registered with another user!"
-        elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
-            retMsg = "That phone number is already registered with another user!" 
         end
     end
     

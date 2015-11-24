@@ -38,7 +38,6 @@
     <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="../../Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
     
     <link href="../../Libraries/Styles/pikaday.css" rel="stylesheet">
     
@@ -81,17 +80,20 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                            
-                    <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-user"></i> 
-                        <?php if (isset($_SESSION["landlord"])) { echo $_SESSION["landlord"]; }?>
+            <ul class="nav navbar-nav navbar-right">                       
+                <li class="account-nav dropdown" style="">      
+                    <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown"> 
+                        Account
                         <b class="caret"></b>
                     </a>
-                
                     <ul class="dropdown-menu">
-                        <li><a style="cursor: pointer;" onclick="Logout()">Logout</a></li>
+                        <li class="landlord-nav"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                        <li class="landlord-nav"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
+                        <li class="landlord-nav"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                        <li class="landlord-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>My Renters</a></li>                    
+                        <li id="login-function" class="menu-item scroll" onclick="Logout()">
+                            <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -148,7 +150,7 @@
                     <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
-                    <label>Click the listing(s) below to update and see more details</label>
+                    <label class="listings-message" style="display: none;">Click the listing(s) below to update and see more details</label>
 					<!-- all the listings go here -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         
@@ -244,12 +246,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' /> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Notes</label><textarea rows='4' cols='50' class='form-control'></textarea>
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -279,7 +276,6 @@
 <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
-<script src="../../Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
 
 <!-- jquery geocomplete api -->
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
@@ -308,6 +304,7 @@ $(function()
     CreateDropzone("create", "#createListingModal form");
 
     GetAllListings();
+    GetAccount(true);
 
     InitSpecialFields();
 });

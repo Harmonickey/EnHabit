@@ -97,13 +97,6 @@ def setFilters
         @startFilter[:Start] = {}
         @startFilter[:Start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
     end
-
-    if @tags.nil? 
-        @tagFilter = nil
-    else 
-        @tagFilter[:Tags] = {}
-        @tagFilter[:Tags][:$in] = @tags # $in matches on either of the elements
-    end
     
     if @university.nil?
         @universityFilter = nil
@@ -133,6 +126,12 @@ def setFilters
         @isRentedFilter = nil
     else
         @isRentedFilter[:IsRented] = @isRented
+    end
+    
+    if @isActive.nil?
+        @isActiveFilter = nil
+    else
+        @isActiveFilter[:IsActive] = @isActive
     end
 end
 
@@ -186,7 +185,9 @@ def combineFiltersIntoQuery
     if not @isRentedFilter.nil?
         @mainFilter["$and"].push @isRentedFilter
     end
-    
+    if not @isActiveFilter.nil?
+        @mainFilter["$and"].push @isActiveFilter
+    end
     if @mainFilter["$and"].count == 0
         @mainFilter = {}
     end
@@ -209,9 +210,9 @@ begin
         @buildingType = data["BuildingType"] if not data["BuildingType"].nil? and not data["BuildingType"] == "both"
         @start = data["Start"] if not data["Start"].nil? and not data["Start"].empty?
         @university = data["University"] if not data["University"].nil? and not data["University"].empty?
-        @tags = data["Tags"] if not data["Tags"].nil? and not data["Tags"].length == 0    
         @landlord = data["Landlord"] if not data["Landlord"].nil? and not data["Landlord"].empty?
         @isRented = data["IsRented"] if not data["IsRented"].nil? and not data["IsRented"].empty?
+        @isActive = true
     end
     
     @isAdmin = ARGV[3].to_b unless ARGV[3].empty?
@@ -245,6 +246,7 @@ begin
     @landlordIdFilter = {}
     @landlordFilter = {}
     @isRentedFilter = {}
+    @isActiveFilter = {}
 
     setFilters
     combineFiltersIntoQuery
@@ -256,7 +258,7 @@ begin
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongoSession.use("enhabit")# this is our current database
     
-    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Tags: 1, Pictures: 1, Thumbnails: 1, IsRented: 1).to_a
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
     
     mongoSession.disconnect
 
@@ -268,7 +270,6 @@ begin
                 account = mongoSession[:accounts].find({@key => doc[@key]}).select(Username: 1).one
                 
                 doc["Username"] = account["Username"] unless account["Username"].nil?
-                
                 
                 doc.delete("UserId")
                 doc.delete("LandlordId")

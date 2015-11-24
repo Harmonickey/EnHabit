@@ -76,7 +76,7 @@ function GetRenter()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             $("#payment").html("<p>No Payment</p>");
         }
     });
@@ -106,11 +106,13 @@ function GetAllListings()
                 {
                     throw new Error("No Listings Found");
                     $("#accordion").html("<p>No Listing Yet</p>");
+                    $(".listings-message").hide();
                     $(".actions a").show();                      
                 }
                 else if (Contains(res, "No Matching Entries"))
                 {
                     $("#accordion").html("<p>No Listing Yet</p>");
+                    $(".listings-message").hide();
                     $(".actions a").show();
                 }
                 else
@@ -123,6 +125,7 @@ function GetAllListings()
                     {
                         throw new Error(res);
                         $(".actions a").show();
+                        $(".listings-message").hide();
                     }
                     else
                     {
@@ -140,14 +143,15 @@ function GetAllListings()
                             SetTextBoxWithAutoNumeric(oid);
                             SetDatePickerTextBox(oid);
                             SetBootstrapSwitches(oid);
-                            SetTextBoxWithTags(oid);
                             
                             addedFiles[oid] = false;
+                            $(".listings-message").show();
                         }
                         
                         if (data.length == 0)
                         {
                             $(".actions a").show();
+                            $(".listings-message").hide();
                         }
                     }                       
                 }
@@ -159,7 +163,7 @@ function GetAllListings()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
@@ -219,12 +223,12 @@ function GetAllLandlords()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
 
-function GetAccount()
+function GetAccount(isListingPage)
 {
     $.ajax(
     {
@@ -259,7 +263,14 @@ function GetAccount()
                     }
                     else
                     {
-                        FillAccountInfo(data);
+                        if (isListingPage)
+                        {
+                            HandleCreateListingButton(data);
+                        }
+                        else
+                        {
+                            FillAccountInfo(data);
+                        }
                     }
                 }
             }
@@ -270,7 +281,7 @@ function GetAccount()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         },
         complete: function()
         {
@@ -279,12 +290,22 @@ function GetAccount()
     });
 }
 
+function HandleCreateListingButton(data)
+{
+    if (Contains(data.Username, "Facebook"))
+    {
+        $("#create-listing-button").remove(); // create listing button
+        $("#createListingModal").remove(); // create listing modal
+        $("#create-listing-warning").show();
+    }
+}
+
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
-    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    $(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
 function SetGeocompleteTextBox(rowId)
@@ -294,8 +315,9 @@ function SetGeocompleteTextBox(rowId)
     
     $(row[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $(hidden[0]).val(result.geometry.location.A);
-            $(hidden[1]).val(result.geometry.location.F);
+            var keys = Object.keys(result.geometry.location);
+            $(hidden[0]).val(result.geometry.location[keys[0]]);
+            $(hidden[1]).val(result.geometry.location[keys[1]]);
             $(hidden[2]).val($(row[0]).val());
         });
 }
@@ -311,11 +333,6 @@ function SetTextBoxWithAutoNumeric(rowId)
         wEmpty: 'sign',
         lZero: 'deny'
     });
-}
-
-function SetTextBoxWithTags(rowId)
-{
-   $("#" + rowId + " input[data-role='tagsinput']").tagsinput();
 }
 
 function SetDatePickerTextBox(rowId)
@@ -345,7 +362,11 @@ function FillAccountInfo(data)
     }
     $(inputs[2]).val(data["FirstName"]);
     $(inputs[3]).val(data["LastName"]);
-    $(inputs[4]).val(data["PhoneNumber"]);
+    
+    if (Contains(data["PhoneNumber"], "-"))
+    {
+        $(inputs[4]).val(data["PhoneNumber"]);
+    }
 }
 
 function DeleteListing(id)
@@ -409,7 +430,7 @@ function DeleteListing(id)
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                     $("#" + id + " button").prop("disabled", false);
                     $($("#" + id + " button")[1]).text("Delete");
                 }
@@ -420,9 +441,9 @@ function DeleteListing(id)
 
 function UpdateListing(id)
 {
-    var inputs = $("#" + id + " input, #" + id + " textarea").not(":eq(7)");
+    var inputs = $("#" + id + " input, #" + id + " textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsRented", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "LeaseType", "BuildingType", "IsActive", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -467,9 +488,9 @@ function UpdateListing(id)
 
 function CreateListing()
 {   
-    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea").not(":eq(13)");
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Tags", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -570,14 +591,14 @@ function ProcessListing()
                             SetGeocompleteTextBox(oid);
                             SetTextBoxWithAutoNumeric(oid);
                             SetDatePickerTextBox(oid);
-                            SetBootstrapSwitches(oid); 
-                            SetTextBoxWithTags(oid)
+                            SetBootstrapSwitches(oid);
                             
                             $("#createListingModal").modal('hide');
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                             
                             $(".actions a").hide();
+                            $(".listings-message").show();
                             
                             numUploaded = 0;
                             
@@ -592,7 +613,7 @@ function ProcessListing()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -660,7 +681,7 @@ function ProcessListing()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -737,7 +758,7 @@ function Login()
                 {
                     try
                     {
-                        throw new Error(res + " " + err);
+                        throw new Error(res);
                     }
                     catch(e)
                     {
@@ -795,7 +816,7 @@ function Logout()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             }
         });
     }
@@ -858,7 +879,7 @@ function UpdateAccount()
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                 },
                 complete: function()
                 {
@@ -888,7 +909,7 @@ function DeleteAccount()
         ]
     }, function(password) {
         
-        var data = {"password": password};
+        var data = {"Password": password};
         
         $.ajax(
         {
@@ -925,7 +946,7 @@ function DeleteAccount()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -983,8 +1004,10 @@ function InitSpecialFields()
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
-    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[1]).prop("checked", true);
     
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -999,8 +1022,6 @@ function InitSpecialFields()
         minDate: new Date(), 
         setDefaultDate: new Date()
     });
-          
-    $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
 function CreateDropzone(key, element, existingPics)
@@ -1019,11 +1040,13 @@ function CreateDropzone(key, element, existingPics)
         {
             numUploaded = 0;
             numAdded = 0;
+            $(".dz-progress").remove();
             ProcessListing(); 
         }
         else
         {
             numUploaded++;
+            $(".dz-progress").remove();
         }
     });
     
@@ -1097,7 +1120,7 @@ function BuildData(inputs, elements)
     for (var i = 0; i < elements.length; i++)
     {
         if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
-         || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType")
+         || elements[i] == "AirConditioning" || elements[i] == "IsRented" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -1111,11 +1134,7 @@ function BuildData(inputs, elements)
         }
         else
         {
-            if ($(inputs[i]).data("role") == "tagsinput")
-            {
-                data[elements[i]] = $(inputs[i]).tagsinput("items");
-            }
-            else if ($(inputs[i]).attr("placeholder") !== "")
+            if ($(inputs[i]).attr("placeholder") !== "")
             {
                 data[elements[i]] = $(inputs[i]).val().trim();
             }
@@ -1263,17 +1282,14 @@ function CreateAccordionView(oid, data)
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
-                            "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Tags (Optional)</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
-                            "</div>" + 
+                            "</div>" +
                         "</div>" +
-                        "<div class='row'>" +
+                        "<div class='row' style='margin-top: 10px'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Animals</label><input type='checkbox' " + (data.HasAnimals ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
@@ -1298,6 +1314,14 @@ function CreateAccordionView(oid, data)
                                 "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
+                        "<div class='row' style='margin-top: 10px'>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.IsActive ? "" : "disabled") + "/>" +
+                            "</div>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label style='color: red'>To Activate your Listing You Must Include Images!</label>" : "")) + 
+                            "</div>" +
+                        "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord && data.Landlord !== "-" ? data.Landlord : "") + "' />" +
@@ -1305,7 +1329,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Notes</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 

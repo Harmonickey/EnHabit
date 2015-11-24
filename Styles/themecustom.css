@@ -133,18 +133,12 @@
 	margin: 0 auto;
 }
 
-#Tags-filter
-{
-    padding: 0;
-}
-
 .price-content
 {
 	text-align: center;
 }
 
-.date-content,
-.tags-content
+.date-content
 {
     margin-top: 5px;
 }
@@ -175,11 +169,6 @@
     width: 100%;
 }
 
-#Tags-filter
-{
-    width: 45%;
-}
-
 .type-content .bootstrap-switch
 {
     float: left;
@@ -192,23 +181,6 @@
     text-align: center;
     margin: 0 auto;
     border-radius: 0px;
-}
-
-.tags-content .bootstrap-tagsinput
-{
-    width: 100%;
-    min-height: 55px;
-    height: auto;
-}
-
-.bootstrap-tagsinput
-{
-	height: 55px;
-}
-
-.bootstrap-tagsinput input
-{
-    width: auto !important;
 }
 
 #left-sidebar,
@@ -234,7 +206,6 @@
 {
     display: block;
     width: 100%;
-    height: 100px;
     margin-top: 50px;
 }
 
@@ -245,7 +216,7 @@
 
 .item-content.listing
 {
-    height: 125px;
+    min-height: 125px;
 }
 
 .modal-body .listing
@@ -294,6 +265,7 @@
 
 .Username, 
 .Password,
+.Confirm,
 .FirstName, 
 .LastName,
 .Email, 
@@ -347,7 +319,6 @@
     z-index: 1041 !important;
 }
 
-.leaflet-popup .popup,
 .listing .popup
 {
     text-align:center;
@@ -382,6 +353,11 @@
     width:100%;
 }
 
+.leaflet-popup .popup .slideshow img
+{
+    border-radius: 20px;
+}
+
 .leaflet-popup .popup .slideshow .caption,
 .listing .popup .slideshow .caption
 {
@@ -414,9 +390,12 @@
 
 #listings_list
 {
+    position: fixed;
     height: 100%;
     background: rgba(48, 47, 45, 1.0);
-    z-index: 1000;
+    z-index: 2000;
+    top: 15px;
+    overflow: hidden;
 }
 
 @media (min-width: 992px)
@@ -519,17 +498,25 @@
 }
 
 #listings .information input,
-.leaflet-popup-content input,
 .listing .information input
 {
     background: green;
 }
 
 #listings .information input:hover,
-.leaflet-popup-content input:hover,
 .listing .information input:hover
 {
     background: darkgreen;
+}
+
+.popup-details-btn {
+    position: absolute;
+    width: 100px;
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    bottom: 37px;
+    left: 114px;
 }
 
 #search-section > li.menu-item
@@ -548,10 +535,24 @@
 }
 
 #search-section > li.menu-item > a:hover,
-#listings .information input:hover,
-.leaflet-popup-content input:hover
+#listings .information input:hover
 {
     background: darkgreen;
+}
+
+.leaflet-popup-content {
+    padding: 0 !important;
+    text-align: center;
+}
+
+.popup-details-button {
+    position: absolute;    
+    width: 100px; 
+    border-radius: 6px; 
+    border: 2px white solid; 
+    background: transparent; 
+    bottom: 37px; 
+    left: 114px;
 }
 
 #common-modal .listing .information p
@@ -563,6 +564,20 @@
 #common-modal .listing
 {
     margin-bottom: 15px;
+}
+
+#common-modal .listing .multi-more-details
+{
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    margin-bottom: 5px;
+}
+
+#common-modal .listing .multi-more-details:hover
+{
+    background: white;
+    color: black;
 }
 
 #listings .close,
@@ -589,15 +604,14 @@
 
 #details-view .close
 {
-    top: 50px;
-    right: 50px;
+    top: 55px;
+    right: 55px;
 }
 
 #Filters input,
 #Filters select,
 #extras_view input,
-#extras_view select,
-.bootstrap-tagsinput
+#extras_view select
 {
     background-color: black;
     border-radius: 0px;
@@ -607,12 +621,49 @@
 .popup h2,
 .popup h3
 {
-    text-shadow: none;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    text-align: left;
+}
+
+.popup h2 {
+    float: left;
+}
+
+.popup .multi-showall {
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    margin-bottom: 5px;
+}
+
+.popup .multi-showall:hover {
+    background: white;
+    color: black;
+}
+
+.popup .multi-h2 {
+    float: none;
+    width: 100%;
+    text-align: center;
+}
+
+.popup .multi-p {
+    color: white;
+}
+
+.popup h3 {
+    float: right;
+    font-size: 1.7em;
 }
 
 .leaflet-popup-content-wrapper
 {
-    border: 2px grey solid;
+    background-color: black;
+    -webkit-box-shadow: 10px 10px 26px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 26px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 26px 0px rgba(0,0,0,0.75);
+    border-radius: 20px;
 }
 
 .popup .slideshow
@@ -786,18 +837,6 @@
     font-size: 17px;
 }
 
-#extras_view .bootstrap-tagsinput
-{
-    font-size: 13px;
-}
-
-#extras_view .bootstrap-tagsinput input
-{
-    border: none;
-    color: #ffffff;
-    margin-top: 10px;
-}
-
 .modal-content .item-content .information 
 {
     height: 100%;
@@ -808,22 +847,6 @@
     margin-top: 10px;
 }
 
-.leaflet-container a.leaflet-popup-close-button 
-{
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    padding: 4px 4px 0 0;
-    text-align: center;
-    width: 18px;
-    height: 14px;
-    font: 16px/14px Tahoma, Verdana, sans-serif;
-    color: #09DAAD;
-    text-decoration: none;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
-}
-
 #details-view
 {
     position: fixed;
@@ -832,7 +855,7 @@
     background: transparent;
     padding: 50px;
     z-index: 2000;
-    top: 0;
+    top: 15px;
     overflow: hidden;
 }
 
@@ -841,28 +864,26 @@
     margin: 0;
 }
 
-#details-view > .row
-{
-    background-color: #3a3836;
-    border: 1px solid black;
-}
-
-#details-view > .row,
-#details-view > .row > div
-{
-    height: 100%;
-}
-
-#details-view-listing-details,
-#details-view-slideshow-section,
-#details-view-map-section
+#details-view-listing-details
 {
     padding: 10px;
 }
 
-#details-view-listing-details
+#details-view-listing-details .row p
 {
-    height: 100%;
+    margin: 0;
+}
+
+#details-items
+{
+    height: 50%;
+    position: absolute;
+    background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(35,36,39,0.85) 50%, rgba(69,72,77,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0045484d',GradientType=0 );
+    top: 50px;
+    border-radius: 30px;
 }
 
 #details-view-listing-details h2
@@ -877,10 +898,56 @@
     margin-top: 18px;
 }
 
-#details-view-slideshow-section,
-#details-view-map-section
+#details-view-slideshow-section
 {
-    height: 50%;
+    padding: 0;
+}
+
+#details-view-slideshow-section,
+#details-view-slideshow-section .slideshow
+{
+    border-radius: 30px;
+}
+
+#details-view-slideshow-section img
+{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+}
+
+#details-view-slideshow-section .slider-arrow
+{
+    z-index: 1;
+}
+
+#details-view-slideshow-section
+{
+    height: 100%;
+}
+
+#details-view .details-listing-action-btn 
+{
+    background: transparent;
+    border: 2px green solid;
+    color: green;
+    border-radius: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 150px;
+    margin-top: 20px;
+    transition: all 0.4s;
+}
+
+#details-view .details-listing-action-btn:hover
+{
+    color: black;
+    background: darkgreen;
+}
+
+#details-view-actions
+{
+    margin-top: 120px;
 }
 
 #details-view .slideshow .slider-arrow
@@ -934,24 +1001,32 @@ select::-ms-expand
 .leaflet-container a.leaflet-popup-close-button 
 {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 6px;
+    right: 10px;
     padding: 4px 4px 0 0;
     text-align: center;
     width: 18px;
     height: 14px;
     font: 16px/14px Tahoma, Verdana, sans-serif;
-    color: #09DAAD;
+    color: #fff;
     text-decoration: none;
     font-weight: bold;
     background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
 }
 
-.apply-btn
+.apply-btn,
+.email-btn
 {
-    background-color: green;
-    border-color: green;
-    margin-top: 18px;
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    margin-bottom: 5px;
+}
+
+.apply-btn:hover,
+.email-btn:hover {
+    background: white;
+    color: black;
 }
 
 .navbar

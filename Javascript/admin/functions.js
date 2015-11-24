@@ -86,6 +86,8 @@ function GetAllUsersAndLandlords(isRenterPage)
                                 response(results.slice(0, 5)); // limit to 5 results at a time
                             }
                         });
+                        
+                        SetUserAndLandlordFields();
                     }
                     else
                     {
@@ -108,9 +110,15 @@ function GetAllUsersAndLandlords(isRenterPage)
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
+}
+
+function SortByUsername(a, b){
+  var aName = a.Username.toLowerCase();
+  var bName = b.Username.toLowerCase(); 
+  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 }
 
 function GetAllUsers()
@@ -149,6 +157,8 @@ function GetAllUsers()
                     $("#accordion").html("");
             
                     var data = JSON.parse(res);
+                     
+                    data = data.sort(SortByUsername);
                     
                     for (var i = 0; i < data.length; i++)
                     {
@@ -169,7 +179,7 @@ function GetAllUsers()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
@@ -241,7 +251,7 @@ function GetListingsByLandlord(obj)
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         },
         complete: function() 
         {
@@ -311,7 +321,7 @@ function AddRenter()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         },
         complete: function() 
         {
@@ -462,7 +472,7 @@ function DeleteRenter(id)
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                     $("#" + id + " button").prop("disabled", false);
                     $($("#" + id + " button")[1]).text("Delete Renter");
                 }
@@ -529,7 +539,6 @@ function GetAllListings()
                             SetTextBoxWithAutoNumeric(oid);
                             SetDatePickerTextBox(oid);
                             SetBootstrapSwitches(oid);
-                            SetTextBoxWithTags(oid);
                             
                             addedFiles[oid] = false;
                         }
@@ -544,8 +553,12 @@ function GetAllListings()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             $(".actions a").show();
+        },
+        complete: function() 
+        {
+            GetAllUsersAndLandlords(false);
         }
     });
 }
@@ -606,7 +619,7 @@ function GetAllTransactions()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             $(".actions a").show();
         }
     });
@@ -744,12 +757,44 @@ function UpdateAccount(uid)
     }
 }
 
+function SetUserAndLandlordFields()
+{
+    var users = $("#accordion .users");
+    var landlords = $("#accordion .landlords");
+    
+    $.each(users, function(index, user) 
+    {
+        $(user).autocomplete(
+        {
+            source: function(request, response) 
+            {
+                var results = $.ui.autocomplete.filter(userList, request.term);
+
+                response(results.slice(0, 5)); // limit to 5 results at a time
+            } 
+        });
+    });
+    
+    $.each(landlords, function(index, landlord) 
+    {
+        $(landlord).autocomplete(
+        {
+            source: function(request, response) 
+            {
+                var results = $.ui.autocomplete.filter(landlordList, request.term);
+
+                response(results.slice(0, 5)); // limit to 5 results at a time
+            }
+        });
+    });
+}
+
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
-    checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
-    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    checkboxes.not(":eq(4), :eq(5)").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
 function SetBootstrapSwitchesForUsers(rowId)
@@ -764,8 +809,9 @@ function SetGeocompleteTextBox(rowId)
     
     $(row[2]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $(hidden[0]).val(result.geometry.location.A);
-            $(hidden[1]).val(result.geometry.location.F);
+            var keys = Object.keys(result.geometry.location);
+            $(hidden[0]).val(result.geometry.location[keys[0]]);
+            $(hidden[1]).val(result.geometry.location[keys[1]]);
             $(hidden[2]).val($(row[2]).val());
         });
 }
@@ -783,11 +829,6 @@ function SetTextBoxWithAutoNumeric(rowId)
     });
 }
 
-function SetTextBoxWithTags(rowId)
-{
-   $("#" + rowId + " input[data-role='tagsinput']").tagsinput();
-}
-
 function SetDatePickerTextBox(rowId)
 {
     $($("#" + rowId + " input[type='text']")[5]).pikaday(
@@ -799,9 +840,9 @@ function SetDatePickerTextBox(rowId)
 
 function UpdateListing(oid)
 {
-    var inputs = $("#" + oid + " input, #" + oid + " textarea").not(":eq(10)");
+    var inputs = $("#" + oid + " input, #" + oid + " textarea");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -844,58 +885,62 @@ function UpdateListing(oid)
 
 function DeleteAccount(uid)
 {
-    $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", {
-        type    : "prompt",
-        inputs  : [
-          {type: "password", label: "Password:", required: true}
-        ],
-        buttons : [
-          {type: "submit", value: "OK"},
-          {type: "cancel", value: "Cancel"}
-        ]
-    }, function(password) {
-        
-        var data = {"password": password, "id": uid};
-        
-        $.ajax(
+    $.msgbox("Are you sure that you want to delete this user?", 
+    {
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            var data = { "id": uid };
+            
+            $.ajax(
             {
-                $("#" + uid + " button").prop("disabled", true);
-                $($("#" + uid + " button")[1]).text("Deleting...");
-            },
-            data:
-            {
-                command: "delete_account",
-                endpoint: "Accounts",
-                data: data
-            },
-            success: function(res)
-            {
-                if (Contains(res, "Okay"))
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    // remove the row that we just selected
-                    $("#" + uid).parent().remove();
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
-                }
-                else
+                    $("#" + uid + " button").prop("disabled", true);
+                    $($("#" + uid + " button")[1]).text("Deleting...");
+                },
+                data:
+                {
+                    command: "delete_account",
+                    endpoint: "Accounts",
+                    data: data
+                },
+                success: function(res)
+                {
+                    if (Contains(res, "Okay"))
+                    {
+                        // remove the row that we just selected
+                        $("#" + uid).parent().remove();
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
+                    }
+                    else
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + uid + " button").prop("disabled", false);
+                    $($("#" + uid + " button")[1]).text("Delete");
                 }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
-            },
-            complete: function()
-            {
-                $("#" + uid + " button").prop("disabled", false);
-                $($("#" + uid + " button")[1]).text("Delete");
-            }
-        });
-    });  
+            });
+        }  
+    });
 }
 
 function DeleteListing(id)
@@ -961,7 +1006,7 @@ function DeleteListing(id)
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                     $("#" + id + " button").prop("disabled", false);
                     $($("#" + id + " button")[1]).text("Delete");
                 }
@@ -1054,9 +1099,9 @@ function CreateAccount()
 
 function CreateListing()
 {
-    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea").not(":eq(15)");
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "User", "Tags", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "User", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -1153,14 +1198,11 @@ function ProcessListing()
                             SetGeocompleteTextBox(oid);
                             SetTextBoxWithAutoNumeric(oid);
                             SetDatePickerTextBox(oid);
-                            SetBootstrapSwitches(oid); 
-                            SetTextBoxWithTags(oid)
+                            SetBootstrapSwitches(oid);
                             
                             $("#createListingModal").modal('hide');
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
-                            
-                            $(".actions a").hide();
                             
                             numUploaded[oid] = 0;
                             
@@ -1175,7 +1217,7 @@ function ProcessListing()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -1240,7 +1282,7 @@ function ProcessListing()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -1314,7 +1356,7 @@ function Login()
             error: function(res, err)
             {
                 $(".login-error").show();
-                $(".login-error").text(res + " " + err);
+                $(".login-error").text(res);
                 $(".login-action").text("Sign In");
                 $(".login-action").prop("disabled", false);
             }
@@ -1355,7 +1397,7 @@ function Logout()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
@@ -1405,8 +1447,10 @@ function InitSpecialFields()
         });
     
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
-    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet"});
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[1]).prop("checked", true);
     
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -1421,8 +1465,6 @@ function InitSpecialFields()
         minDate: new Date(),
         setDefaultDate: new Date()
     });
-         
-    $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
 function InitSpecialFieldsUser()
@@ -1447,11 +1489,13 @@ function CreateDropzone(key, element, existingPics)
         {
             numUploaded[oid] = 0;
             numAdded[oid] = 0;
+            $(".dz-progress").remove();
             ProcessListing(); 
         }
         else
         {
             numUploaded[oid]++;
+            $(".dz-progress").remove();
         }
     });
     
@@ -1526,10 +1570,7 @@ function BuildData(inputs, elements)
     
     for (var i = 0; i < elements.length; i++)
     {
-        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
-         || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType"
-         || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" 
-         || elements[i] == "IsLandlord")
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -1543,11 +1584,7 @@ function BuildData(inputs, elements)
         }
         else
         {
-            if ($(inputs[i]).data("role") == "tagsinput")
-            {
-                data[elements[i]] = $(inputs[i]).tagsinput("items");
-            }
-            else if ($(inputs[i]).attr("placeholder") !== "")
+            if ($(inputs[i]).attr("placeholder") !== "")
             {
                 data[elements[i]] = $(inputs[i]).val().trim();
             }
@@ -1708,10 +1745,10 @@ function CreateAccordionView(oid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>User</label><input type='text' class='form-control' value='" + (data.Username ? data.Username : "") + "' /> " + 
+                                "<label>User</label><input type='text' class='form-control users' value='" + (data.Username ? data.Username : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
+                                "<label>Landlord</label><input type='text' class='form-control landlords' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
@@ -1730,17 +1767,14 @@ function CreateAccordionView(oid, data)
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
-                            "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Tags (Optional)</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
-                            "</div>" + 
+                            "</div>" +
                         "</div>" +
-                        "<div class='row'>" +
+                        "<div class='row' style='margin-top: 10px'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Animals</label><input type='checkbox' " + (data.HasAnimals ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
@@ -1762,9 +1796,17 @@ function CreateAccordionView(oid, data)
                                 "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" + 
+                        "<div class='row' style='margin-top: 10px'>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.IsActive ? "" : "disabled") + "/>" +
+                            "</div>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label style='color: red'>To Activate This Listing You Must Include Images!</label>" : "")) + 
+                            "</div>" +
+                        "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Notes</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 
@@ -1791,9 +1833,10 @@ function CreateAccordionUsersView(uid, data)
                 "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + uid + "' aria-expanded='false' aria-controls='" + uid + "'>" +
-                            "<label>Username: " + data.Username + "</label>" + 
-                            "<label>First Name: " + data.FirstName + "</label>" + 
-                            "<label>Last Name: " + data.LastName + "</label>" +
+                            "<label style='color: red;" + (Contains(data.Username, "Facebook") ? "" : "display: none;") + "'>" + (Contains(data.Username, "Facebook") ? "(Needs Update) (Facebook Id - " + data.FacebookId + ")" : "") + "</label>" +  
+                            "<label>Username: " + (Contains(data.Username, "Facebook") ? "" : data.Username) + "</label>" + 
+                            "<label>First Name: " + (data.FirstName == null ? "" : data.FirstName) + "</label>" + 
+                            "<label>Last Name: " + (data.LastName == null ? "" : data.LastName) + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
@@ -1801,18 +1844,18 @@ function CreateAccordionUsersView(uid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Username</label><input type='text' class='form-control' value='" + data.Username + "' /> " + 
+                                "<label>Username</label><input type='text' class='form-control' value='" + (Contains(data.Username, "Facebook") ? "" : data.Username) + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>First Name</label><input type='text' class='form-control' value='" + data.FirstName + "' />" + 
+                                "<label>First Name</label><input type='text' class='form-control' value='" + (data.FirstName == null ? "" : data.FirstName) + "' />" + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Last Name</label><input type='text' class='form-control' value='" + data.LastName + "' />" +
+                                "<label>Last Name</label><input type='text' class='form-control' value='" + (data.LastName == null ? "" : data.LastName) + "' />" +
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Phone Number</label><input type='text' class='form-control' value='" + data.PhoneNumber + "' />" +
+                                "<label>Phone Number</label><input type='text' class='form-control' value='" + (Contains(data.PhoneNumber, "-") ? data.PhoneNumber : "") + "' />" +
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Password</label><input type='password' class='form-control' />" +
@@ -1823,7 +1866,7 @@ function CreateAccordionUsersView(uid, data)
                         "</div>" + 
                         "<div class='row'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Email Address</label><input type='text' class='form-control' value='" + data.Email + "' />" +
+                                "<label>Email Address</label><input type='text' class='form-control' value='" + (Contains(data.Email, "@") ? data.Email : "") + "' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Active</label><br><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini' />" + 
@@ -1841,7 +1884,7 @@ function CreateAccordionUsersView(uid, data)
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary btn-success' onclick='UpdateAccount(\"" + uid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='DeleteAccount(\"" + uid + "\");'>Delete</button>" +
+                                (data.IsAdmin ? "" : "<button class='btn btn-danger' onclick='DeleteAccount(\"" + uid + "\");'>Delete</button>") +
                             "</div>" +
                         "</div>" +
                     "</div>" +
@@ -1966,6 +2009,7 @@ function AutoGenerateListings()
                 if (Contains(res, "Okay"))
                 {
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Listings Generated!", position: 'top-center'});
+                    location.reload();
                 }
                 else
                 {
@@ -2010,6 +2054,7 @@ function DeleteAutoGeneratedListings()
                 if (Contains(res, "Okay"))
                 {
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Listings Deleted Successfully!", position: 'top-center'});
+                    location.reload();
                 }
                 else
                 {

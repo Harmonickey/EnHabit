@@ -14,7 +14,6 @@ var defaultPicture = "404ImageNotFound.png";
 var entries = {};
 var multiPopup = {};
 var listingSlideshows = {};
-var pageTags = {};
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
@@ -27,6 +26,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjM
 var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
 var markers = new L.FeatureGroup();
+
 //map.on('draw:created', getPointsWithinPolygon);
 
 /******** EVENT HANDLERS ***********/
@@ -515,6 +515,9 @@ function PopulateAndOpenModal(event, modal_content_id, section_in_modal, add_cla
     // end: if modal and content container exists
     if (event != null && event.returnValue != null)
         event.preventDefault ? event.preventDefault() : event.returnValue = false;
+    
+    $("#common-modal.modal input:first").focus();
+   
     return false;
 }
 
@@ -789,8 +792,8 @@ function SearchForListings()
         url: "/api.php",
         beforeSend: function()
         {
-            $($("#search-section a")[0]).prop("disabled", true);
-            $($("#search-section a")[0]).val("Searching...");
+            $("#search-function").prop("disabled", true);
+            $("#search").text("Searching...");
         },
         data: 
         {
@@ -804,26 +807,26 @@ function SearchForListings()
             {
                 if (Contains(res, "No Matching Entries"))
                 {
-                    throw new Error(res);
+                    throw new Error("No Matching Entries");
                 }
                 else
                 {
-                    intervalVal = setInterval(InsertMarkers, 60000, res);
+                    InsertMarkers(res);
                 }
             }
             catch (e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
+                $.msgGrowl ({ type: 'warning', title: 'Result', text: "No Matching Entries", position: 'top-center'}); 
             }
         },
         error: function(res, err) 
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'}); 
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'}); 
         },
         complete: function()
         {
-            $($("#search-section a")[0]).prop("disabled", false);
-            $($("#search-section a")[0]).val("Search");
+            $("#search-function").prop("disabled", false);
+            $("#search").text("Search");
         }
     });
 }
@@ -844,7 +847,6 @@ function CreateQuery()
     query.Parking = SelectToQueryField($("#Parking-filter").val());
     query.AirConditioning = SelectToQueryField($("#AirConditioning-filter").val());
     query.Animals = SelectToQueryField($("#Animals-filter").val());
-    query.Tags = $("#Tags-filter").tagsinput('items');
     query.University = "Northwestern"; // will be set by text box later
     
     return query;
@@ -857,14 +859,11 @@ function ResetListings()
         map.removeLayer(marker);
     });
     
-    // close the tags-used popup
-    $(".msgGrowl-close").click();
     $("#listings").html("<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseListingsList();'>×</button>")
     
     markers = new L.FeatureGroup();
     entries = {};
     multiPopup = {};
-    pageTags = {};
 }
 
 function InsertMarkers(res)
@@ -885,32 +884,21 @@ function InsertMarkers(res)
             {
                 entries[d.Address].push(d);
             }
-            
-            // get the tags while we're at it...
-            if (d.Tags != null)
-            {
-                $.each(d.Tags, function(index, tag)
-                {
-                    if (pageTags[tag] == null)
-                    {
-                        pageTags[tag] = 1;
-                    }
-                    else
-                    {
-                        pageTags[tag] += 1;
-                    }
-                });
-            }
         });
         
         $.each(entries, function(address, entry) 
         {
-            if (entry.length == 1)
+            if (entry.length == 1) // single listing
             {
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                marker.setIcon(L.mapbox.marker.icon({
+                    'marker-color': '#000',
+                    'marker-size': 'medium',
+                    'marker-symbol': 'building'
+                }));
                 
                 var slideshowContent = "";
-                var base = "/images/enhabit/images/";
+                var base = (entry[0].Testing ? "" : "/images/enhabit/images/");
                 var images = entry[0].Thumbnails;
                 if (!images || images.length === 0)
                 {
@@ -929,8 +917,10 @@ function InsertMarkers(res)
                 
                 var popupContent =  
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
-                                '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
-                                '<h3>$' + entry[0].Price + '/month</h2>' +
+                                '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
+                                    '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
+                                    '<h3>$' + entry[0].Price + '</h3>' +
+                                '</div>' +
                                 '<div class="slideshow">';
                                 
                 if (images.length > 1)
@@ -939,16 +929,12 @@ function InsertMarkers(res)
                                     '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
                 }
                 
-                if (entry[0].Tags != null)
-                {
-                    entry[0].Tags = ToStringFromList(entry[0].Tags);
-                }
                 entry[0].Thumbnails = ToStringFromList(entry[0].Thumbnails);
                 
                 popupContent += slideshowContent +
                                 '</div>' +
                             '</div>' +
-                            "<input type='button' class='btn btn-outline-inverse btn-sm' style='width: 100%; margin-top: 10px;' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + data.Tags + "], [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
                 
                 marker.bindPopup(popupContent, 
                 {
@@ -962,15 +948,20 @@ function InsertMarkers(res)
                 
                 InsertIntoListingSlideshowObject(entry[0]);
             }
-            else if (entry.length > 1)
+            else if (entry.length > 1) // multi listings
             {   
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                marker.setIcon(L.mapbox.marker.icon({
+                    'marker-color': '#000',
+                    'marker-size': 'medium',
+                    'marker-symbol': 'building'
+                }));
                 
                 var popupContent =  
                             '<div class="popup">' +
-                                '<h2>' + entry[0].Address + '</h2>' +
-                                '<p>Multiple listings available.</p>' +
-                                '<input type="button" class="btn btn-outline-inverse btn-sm" value="Show All" onclick="LoadMultipleListings(\'' + entry[0].Address + '\')">' +
+                                '<h2 class="multi-h2">' + entry[0].Address + '</h2>' +
+                                '<p class="multi-p">Multiple listings available.</p>' +
+                                '<input type="button" class="btn btn-outline-inverse btn-sm multi-showall" value="Show All" onclick="LoadMultipleListings(\'' + entry[0].Address + '\')">' +
                             '</div>';
                 
                 marker.bindPopup(popupContent, 
@@ -984,45 +975,31 @@ function InsertMarkers(res)
                 // now that we have a pin, we need to fill in our section of the hash
                 $.each(entry, function(index, listing)
                 {
-                    if (listing.Tags != null)
-                    {
-                        listing.Tags = ToStringFromList(listing.Tags);
-                    }
                     listing.Thumbnails = ToStringFromList(listing.Thumbnails);
                     
                     var listingPic = (listing.Thumbnails.length !== 0 ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
 
-                    if (multiPopup[listing.Address] === undefined)
-                    {
-                        multiPopup[listing.Address] = [
-                            "<div class='item-content listing'>" +
-                                "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
-                                "<div class='information'>" +
-                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
+                    var base = (listing.Testing ? "" : "/images/enhabit/images/");
+                    
+                    var listingHtml = "<div class='item-content listing'>" +
+                                "<img src='" + base + listingPic + "' height='100' width='100' />" +
+                                "<div class='information text-left'>" +
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
+                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
                                 "</div>" +
-                            "</div>"];
+                            "</div>";
+                    
+                    if (multiPopup[listing.Address] === undefined)
+                    {
+                        multiPopup[listing.Address] = [listingHtml];
                     }
                     else
                     {
-                        multiPopup[listing.Address].push(
-                            "<div class='item-content listing'>" +
-                                "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
-                                "<div class='information'>" +
-                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
-                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
-                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType + "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Tags + "], [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" +
-                                "</div>" +
-                            "</div>");
+                        multiPopup[listing.Address].push(listingHtml);
                     }
                     
                     InsertIntoListView(listing);
@@ -1031,8 +1008,6 @@ function InsertMarkers(res)
                 });
             }
         });
-        
-        ShowUsedTags(pageTags, data[0].University);
     }
     
     //map.fitBounds(markers.getBounds());
@@ -1044,38 +1019,19 @@ function InsertMarkers(res)
 function InsertIntoListingSlideshowObject(entry)
 {
     var slideShowHTML = 
-    "<h1>Sed scelerisque</h1>" +
-    "<p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat.<br></p>" +
+    "" +
     "<div id='owl-slider-" + entry._id.$oid + "' class='owl-carousel popup-image-gallery'>";
+    var base = (entry.Testing ? "" : "/images/enhabit/images/");
     for (var i = 0; i < entry.Pictures.length; i++)
     {
         slideShowHTML += 
         "<div>" +
-            "<img class='lazyOwl' data-src='/images/enhabit/images/" + entry.Pictures[i] + "'>" +
+            "<img class='lazyOwl' data-src='" + base + entry.Pictures[i] + "'>" +
         "</div>";
     }
     slideShowHTML += "</div>";
     
     listingSlideshows[entry._id.$oid + ""] = slideShowHTML;
-}
-
-function ShowUsedTags(pageTags, university)
-{
-    // sort the keys by largest to smallest
-    var keysSorted = Object.keys(pageTags).sort(function(a,b) 
-    { 
-        return pageTags[b] - pageTags[a]
-    });
-    
-    var tagsList = [];
-    for (var i = 0; i < keysSorted.length; i++)
-    {
-       tagsList.push(keysSorted[i]); 
-    }
-    
-    var usedTags = tagsList.join(", ");
-    
-    $("#tags-list").text("(i.e. " + usedTags + ")");
 }
 
 function LoadMultipleListings(address)
@@ -1094,10 +1050,6 @@ function LoadMultipleListings(address)
 
 function InsertIntoListView(data)
 {
-    if (data.Tags != null && typeof data.Tags === "object")
-    {
-        data.Tags = ToStringFromList(data.Tags);
-    }
     if (typeof data.Thumbnails === "object")
     {
         data.Thumbnails = ToStringFromList(data.Thumbnails);
@@ -1128,40 +1080,41 @@ function InsertIntoListView(data)
                     "</div>" +
                 "</div>" +
                 "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Tags + "], [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "')\" />" +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
                 "</div>" +
             "</div>" +
         "</div>");
     
     var image = $("#listings .item-content img").last()[0];
     var downloadingImage = new Image();
+    var base = (data.Testing ? "" : '/images/enhabit/images/');
     downloadingImage.onload = function()
     {
         image.src = this.src;   
     };
     if (typeof data.Thumbnails === "object" && data.Thumbnails.length > 0)
     {
-        downloadingImage.src = '/images/enhabit/images/' + data.Thumbnails[0];
+        downloadingImage.src = base + data.Thumbnails[0];
     }
     else if (typeof data.Thumbnails === "string" && data.Thumbnails !== "" || data.Thumbnails.length == 0)
     {
-        downloadingImage.src = '/images/enhabit/images/' + data.Thumbnails.split(",")[0].replace(/'/g, "");
+        downloadingImage.src = base + data.Thumbnails.split(",")[0].replace(/'/g, "");
     }
     else
     {
-        downloadingImage.src = '/images/enhabit/images/' + defaultPicture;
+        downloadingImage.src = base + defaultPicture;
     }
 }
 
-function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Tags, Images, x, y, listingInfo)
+function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
 {
     $("#details-view").fadeIn();
     
-    location.hash = Id;
+    //location.hash = Id;
     
     //load up the images into the modal...
     var slideshowContent = "";
-    var base = "/images/enhabit/images/";
+    var base = (Testing == 'true' ? "" : "/images/enhabit/images/");
     if (!Images || Images.length === 0)
     {
         Images = [];
@@ -1188,7 +1141,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     '</div>';
     
     var detailsContent = 
-    "<div class='container-fluid text-center'>" +
+    "<div class='container-fluid' style='padding-left: 40px;'>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
                 "<h2>" + Address + " " + (Unit ? Unit : "") + "</h2>" +
@@ -1199,52 +1152,55 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
                 "<h2>$" + Price + "/Month</h2>" +
             "</div>" + 
         "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+        "<div class='row' style='margin-top: 25px;'>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Bedrooms: " + Bedrooms + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                 "<p>Lease Type: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Bathrooms: " + Bathrooms + "</p>" +
+            "</div>" + 
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                 "<p>Building Type: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Bedrooms) + "</p>" + 
-            "</div>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                "<p>Bedrooms: " + Bedrooms + "</p>" + 
-            "</div>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                "<p>Bathrooms: " + Bathrooms + "</p>" +
-            "</div>" + 
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+        "<div class='row'>" + 
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                 "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
             "</div>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
-            "</div>" +
-            
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
+            "</div>" +        
         "</div>" +
         "<div class='row'>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
+            "</div>" + 
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Laundry) + "</p>" + 
+            "</div>" +
+        "</div>" +
+        "<div class='row' style='margin-top: 50px;'>" +
             "<div class='col-lg-7 col-md-7 col-sm-7'>" +
                 "<p>" + (Notes != "undefined" ? Notes : "") + "</p>" + 
             "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
-                //"<div class='row'>" +
-                //    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' //onclick='ShareListing(\"" + Id + "\");' />" +
-                //"</div>" +
-                //"<div class='row'>" +
-                //    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact //Landlord' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
-                //"</div>" +
-                "<div class='row'>" +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='Apply for This Listing' onclick='ApplyForListing(\"" + Id + "\");' />" +
-                "</div>" +
-            "</div>" +
+        "</div>" +
+    "</div>";
+    
+    var actionsContent =
+    "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+        "<div class='row'>" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='ApplyForListing(\"" + Id + "\");' />" +
+        "</div>" +
+        "<div class='row'>" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
+        "</div>" +
+        "<div class='row'>" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
     
@@ -1252,19 +1208,24 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     
     $("#details-view-listing-details").html(detailsContent);
     
+    $("#details-view-actions").html(actionsContent);
+    /*
     $('#details-view-listing-details .container-fluid').slimScroll({
         height: '100%',
         railVisible: true,
         alwaysVisible: true,
         size: '10px'
     });
-    
+    */
+    var width = $("#details-view").width();
+    $("#details-items").width(width);
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
-    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
+    //SubscribeSlideshowArrows();
+    //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
+    //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
+    
     SubscribeSlideshowArrows();
-    var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
-    L.marker([parseFloat(x), parseFloat(y)]).addTo(detailsMap);
 }
 
 /*
@@ -1289,6 +1250,8 @@ function LoginUser(hideMainModal)
     
     var data = BuildData(["Username", "Password"]);
 
+    data.Confirm = data.Password; // just to get around the password thing...
+    
     var error = BuildError(data);
     
     if (error != "Please Include<br>")
@@ -1318,16 +1281,7 @@ function LoginUser(hideMainModal)
                 {
                     if (Contains(res, "Okay"))
                     {
-                        ShowLoginFeatures(hideMainModal);
-                        
-                        if (Contains(res, "Landlord"))
-                        {
-                            $("#portal-function a").attr("href", "/landlord/listings");
-                        }
-                        else if (!Contains(res, "Tenant"))
-                        {
-                            throw new Error("Problem Logging In");
-                        }
+                        ShowLoginFeatures(hideMainModal, res);
                     }
                     else
                     {
@@ -1336,12 +1290,12 @@ function LoginUser(hideMainModal)
                 }
                 catch(e)
                 {
-                    SetError('login', e.message);
+                    SetError('login', "Incorrect User/Password Combination.");
                 }
             },
             error: function(res, err)
             {
-                SetError('login', res + " " + err);
+                SetError('login', res);
             },
             complete: function()
             {
@@ -1377,25 +1331,21 @@ function LoginFacebookUser(userID, accessToken)
             {
                 if (Contains(res, "Okay"))
                 {
-                    ShowLoginFeatures(true);
-                }
-                else if (!res)
-                {
-                    throw new Error("Error Logging In"); 
+                    ShowLoginFeatures(true, res);
                 }
                 else
                 {
-                    throw new Error(res);
+                    throw new Error("Problem Logging In");
                 }
             }
             catch(e)
             {
-                SetError('login', e.message);
+                SetError('login', "Problem Logging In");
             }
         },
         error: function(res, err)
         {
-            SetError('login', res + " " + err);
+            SetError('login', res);
         },
         complete: function()
         {
@@ -1470,12 +1420,12 @@ function Apply(listingId)
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Sending Application", position: 'top-center'});
             }
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         },
         complete: function()
         {
@@ -1508,17 +1458,14 @@ function LogoutUser()
             }
             catch(e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'top-center'});
             }
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
-    
-    $("#login").text("Log In");
-    $("#login-function").attr("onclick", "LoadModal(event, 'modal-content-login', 'login', 'Log In');");
 }
 
 function RemoveLoginFeatures()
@@ -1527,10 +1474,24 @@ function RemoveLoginFeatures()
     $(".account-nav").hide();
 }
 
-function ShowLoginFeatures(hideMainModal)
+function ShowLoginFeatures(hideMainModal, userType)
 {   
     $(".navbar-login-btn").hide();
+    $(".account-nav .dropdown-menu li").not("#login-function").hide(); // reset menu
     $(".account-nav").show();
+    
+    if (Contains(userType, "Admin"))
+    {
+        $(".admin-nav").show();
+    }
+    if (Contains(userType, "Landlord"))
+    {
+        $(".landlord-nav").show();
+    }
+    if (Contains(userType, "Tenant"))
+    {
+        $(".tenant-nav").show();
+    }
 
     if (hideMainModal === true)
     {
@@ -1560,8 +1521,7 @@ function DisableModalSubmit(modal)
 
 function CreateAccount()
 {
-    var data = BuildData(["Username", "Password", "FirstName", "LastName",
-                                    "Email", "PhoneNumber"]);
+    var data = BuildData(["Username", "Password", "Confirm", "FirstName", "LastName", "Email", "PhoneNumber"]);
                                     
     var error = BuildError(data);
     
@@ -1609,7 +1569,7 @@ function CreateAccount()
             },
             error: function(res, err)
             {
-                SetError("CreateAccount", res + " " + err);
+                SetError("CreateAccount", res);
             },
             complete: function()
             {
@@ -1668,17 +1628,17 @@ function CloseDetailsView()
 {
     $("#details-view").html(
         "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
-        "<div class='row'>" +
-            "<div id='details-view-listing-details' class='col-lg-6 col-md-6 col-sm-6'></div>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<div id='details-view-slideshow-section' class='row'></div>" +
-                "<div id='details-view-map-section' class='row'></div>" +
-            "</div>" +
+        "<div id='details-view-slideshow-section' class='row'></div>" + 
+        "<div id='details-items' class='row'>" +
+            "<div id='details-view-listing-details' class='col-lg-8 col-md-8 col-sm-8'></div>" +
+            "<div id='details-view-actions' class='col-lg-4 col-md-4 col-sm-4'></div>" +
         "</div>");
         
     $("#details-view").fadeOut();
     
-    location.hash = "";
+    //location.hash = "";
+    
+    SubscribeSlideshowArrows();
 }
 
 function OpenExtrasView()
@@ -1793,17 +1753,17 @@ function SendEmail(listingId)
                 }
                 else
                 {
-                    throw new Error(res);
+                    throw new Error("Problem Sending Email");
                 }
             }
             catch(e)
             {
-                SetError("SendEmail", e.message);
+                SetError("SendEmail", "Problem Sending Email");
             }
         },
         error: function(res, err)
         {
-            SetError("SendEmail", res + " " + err);
+            SetError("SendEmail", res);
         },
         complete: function()
         {
@@ -1878,9 +1838,12 @@ function BuildError(fields)
     {
         error += "Username<br>";
     }
-    if (fields.Password === "")
+    if (fields.Password !== "" || fields.Confirm !== "")
     {
-        error += "Password<br>";
+        if (fields.Password !== fields.Confirm)
+        {
+            error += "Matching Password and Confirmation<br>";
+        }
     }
     if (fields.FirstName === "")
     {
@@ -1982,5 +1945,4 @@ $(window).on('resize', function() {
     
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
-    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
 });

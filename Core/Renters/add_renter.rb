@@ -27,6 +27,7 @@ def InsertRenter(userId, landlordId, address, unit, rent, listingId)
     renterObj["Address"] = address
     renterObj["Unit"] = unit
     renterObj["Rent"] = rent
+    renterObj["HasPaidRent"] = false #default to false for now
  
     document = Hash.new
  
@@ -53,13 +54,13 @@ def InsertRenter(userId, landlordId, address, unit, rent, listingId)
             document["Email"] = userData["Email"]
             document["PhoneNumber"] = userData["PhoneNumber"]
             document.delete("UserId") #we don't need to expose this to the front end
+            
+            listingObj = Hash.new
+            listingObj["_id"] = Moped::BSON::ObjectId.from_string(listingId.to_s)
+            
+            session[:listings].find(listingObj).update('$set' => {:IsRented => true})
+            session[:listings].find(listingObj).update('$set' => {:IsActive => false})
         end
-        
-        queryObj = Hash.new
-        queryObj["_id"] = Moped::BSON::ObjectId.from_string(listingId.to_s)
-        
-        session[:listings].find(queryObj).update('$set' => {:IsRented => true})
-        
     rescue Moped::Errors::OperationFailure => e
         document["Error"] = e
     end
@@ -135,7 +136,7 @@ def GetApplicantData(applicantId)
         # get the applicant stuff
         applicant = Array.new
         mongoSession.with(safe: true) do |session|
-            applicant = session[:applicant].find(queryObj).to_a
+            applicant = session[:applicants].find(queryObj).to_a
         end
         
         if applicant.count == 0
@@ -147,11 +148,12 @@ def GetApplicantData(applicantId)
                               
             return nil if applicantData[:ListingId].nil? || applicantData[:LandlordId].nil? || applicantData[:UserId].nil?
         end
-        
-        queryObj = Hash.new
-        queryObj["_id"] = Moped::BSON::ObjectId.from_string(applicantData["ListingId"].to_s)
-        
-        mongoSession.with(safe: true) do |session|
+
+        listing = Array.new
+        mongoSession.with(safe: true) do |session|       
+            queryObj = Hash.new
+            queryObj["_id"] = Moped::BSON::ObjectId.from_string(applicantData[:ListingId].to_s)
+            
             listing = session[:listings].find(queryObj).to_a
         end
         
@@ -161,14 +163,14 @@ def GetApplicantData(applicantId)
             applicantData = applicantData.merge({ :Address => listing[0]["Address"], 
                                                   :Unit => listing[0]["Unit"], 
                                                   :Rent => listing[0]["Price"] })
-                                  
+                                
             return nil if applicantData[:Address].nil? || applicantData[:Rent].nil?
         end
         
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
-
+ 
     return applicantData
 end
 

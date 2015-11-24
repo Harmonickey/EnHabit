@@ -65,7 +65,7 @@ begin
 	
     result = UserExists(data["Username"], data["Password"])
     
-    puts "User Does Not Exist" if result == false
+    puts "Incorrect Username/Password" if result == false
     
     hasRental = HasRental(result["id"])
     

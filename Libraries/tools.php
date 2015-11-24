@@ -37,7 +37,7 @@ function set_session($result, $data)
             $arr = explode(":", $result);
             $end = end($arr);
             $id = array_shift(array_values(explode(",", $end)));
-            $hasRental = end($end);
+            $hasRental = end(array_values(explode(",", $end)));
             $_SESSION["hasRental"] = $hasRental;
             $_SESSION["userId"] = trim($id);
         }
@@ -81,10 +81,7 @@ function no_user_filter()
 {   
     $http_ref = $_SERVER['HTTP_REFERER'];
        
-    if ($http_ref === "http://dev.lbkstudios.net/" || 
-        $http_ref === "http://test.lbkstudios.net/" ||
-        $http_ref === "http://enhabit.lbkstudios.net/" ||
-        $http_ref === "http://www.enhabitlife.com" ||
+    if ($http_ref === "http://www.enhabitlife.com" ||
         $http_ref === "https://www.enhabitlife.com" ||
         $http_ref === "http://enhabitlife.com/" ||
         $http_ref === "https://enhabitlife.com/" ||

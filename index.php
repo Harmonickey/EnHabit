@@ -26,8 +26,6 @@ if (!isset($_SESSION['CREATED'])) {
         <link href="Libraries/Styles/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <link href="Libraries/Styles/bootstrap-theme.min.css" rel="stylesheet">
-        <!-- Tags -->
-        <link href="Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
         <!-- Jquery UI theme -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <!-- Owl Carousel Styles -->
@@ -87,8 +85,23 @@ if (!isset($_SESSION['CREATED'])) {
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
-                                <li id="portal-function"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/AnalyticsPortal.php"><i class="fa fa-bar-chart" style="margin-right: 5px;"></i>Analytics</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/UsersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Users</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>Listings</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <?php
+                                if ($_SESSION["hasRental"] == true)
+                                {
+                                    echo "<li class='tenant-nav' style='display: none;'><a style='cursor: pointer;' href='/ListingsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>";
+                                }
+                                ?>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>My Renters</a></li>
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
                                     <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                                 </li>
@@ -172,9 +185,9 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                 </div>
                 <div class="double-item-content">
-                    <div class="item-content list-view-button">
+                    <!--<div class="item-content list-view-button">
                         <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
-                    </div>
+                    </div>-->
                     <div class="item-content extra-filter-button">
                         <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
                     </div>
@@ -241,16 +254,12 @@ if (!isset($_SESSION['CREATED'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="item-content tags-content">
-                        <label>Tags <span id="tags-list"></span></label>
-                        <input id="Tags-filter" type="text" value="" data-role="tagsinput" />
-                    </div>
                 </div>
             </div>
             <!-- #left-sidebar -->
             <!-- Login -->
             <div class="content-to-populate-in-modal" id="modal-content-login">
-                <h1>Log In</h1>
+                <h1 style="margin-top: 0;">Log In</h1>
                 <label>Username: </label><input type="textbox" class="form-control Username" />
                 <label>Password: </label><input type="password" class="form-control Password" />
                 <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="LoginUser(true);" style="margin-top: 15px;"/>
@@ -266,6 +275,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <h1>Create New Account</h1>
                 <label>Username: </label><input type="text" class="form-control Username" />
                 <label>Password: </label><input type="password" class="form-control Password" />
+                <label>Confirm Password: </label><input type="password" class="form-control Confirm" />
                 <label>First Name: </label><input type="text" class="form-control FirstName" />
                 <label>Last Name: </label><input type="text" class="form-control LastName" />
                 <label>Email: </label><input type="text" class="form-control Email" />
@@ -277,7 +287,7 @@ if (!isset($_SESSION['CREATED'])) {
             <!-- Register -->
             <div class="content-to-populate-in-modal" id="modal-content-register-success">
                 <h3>Account Created!</h3>
-                <p>Welcome to Enhabit! You can set up our service with your bank to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
+                <p>Welcome to Enhabit! You can set up our service with your credit or debit card to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
             </div>
             <!-- #modal-content-register-success -->
             <!-- Application -->
@@ -311,12 +321,12 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
                         <label>Message</label>
-                        <input type="text" class="form-control email-message" />
+                        <textarea rows='10' class="form-control email-message">I would like to meet up with you to view this listing!</textarea>
                     </div>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
-                        <input type="button" class="btn btn-outline-inverse btn-sm email-btn" value="Send Email" style="width: 75px; margin-top: 10px;"/>
+                        <input type="button" class="btn btn-outline-inverse btn-sm email-btn" value="Send Email" style="width: 100px; margin-top: 10px;"/>
                     </div>
                 </div>
                 <p class="SendEmail-error alert alert-danger" style="display: none;"></p>
@@ -347,7 +357,6 @@ if (!isset($_SESSION['CREATED'])) {
                         <p class='popup-laundry'></p>
                         <p class='popup-parking'></p>
                         <p class='popup-ac'></p>
-                        <p class='popup-tags'></p>
                         <input type="button"class="btn btn-info" onclick="" value="Contact Landlord" />
                     </div> 
                     <input class="owl-carousel-button btn btn-primary" type="button" class="btn btn-primary" value="View Larger"/>
@@ -396,7 +405,6 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
-        <script src="Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
         
         <!-- Owl Carousel Library -->
         <script src="Libraries/Javascript/owl.carousel.min.js"></script>
@@ -427,9 +435,33 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
-            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']))
+            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']) || isset($_SESSION['admin']))
             {
-                echo "<script type='text/javascript'>ShowLoginFeatures(); </script>\n";
+                $res = "";
+                if (isset($_SESSION['tenant']))
+                {
+                    if (isset($_SESSION['admin']))
+                    {
+                        $res = "Admin";
+                    }
+                    else
+                    {
+                        $res = "Tenant";
+                    }
+                }
+                else if (isset($_SESSION['landlord']))
+                {
+                    if (isset($_SESSION['admin']))
+                    {
+                        $res = "Admin";
+                    }
+                    else
+                    {
+                        $res = "Landlord";
+                    }
+                }
+                
+                echo "<script type='text/javascript'>ShowLoginFeatures(false,'" . $res . "'); </script>\n";
             }
             else
             {
@@ -447,27 +479,32 @@ if (!isset($_SESSION['CREATED'])) {
           ga('send', 'pageview');
 
         </script>
-    </body>
-    <!-- placeholder for details view -->
-    <div id="details-view" style="display: none; margin-top: 15px;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
-        <div class="row">
-            <!-- left section -->
-            <div id="details-view-listing-details" class="col-lg-6 col-md-6 col-sm-6">
-            
+        <!-- placeholder for details view -->
+        <div id="details-view" style="display: none;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
+            <!-- top section -->
+            <div id="details-view-slideshow-section" class="row">
+                
             </div>
-            <!-- right section -->
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <!-- top section -->
-                <div id="details-view-slideshow-section" class="row">
-                    
-                </div>
-                <!-- bottom section -->
-                <div id="details-view-map-section" class="row">
+            <div id="details-items" class="row">
+                <!-- left section -->
+                <div id="details-view-listing-details" class="col-lg-8 col-md-8 col-sm-8">
                 
                 </div>
+                <div id="details-view-actions" class="col-lg-4 col-md-4 col-sm-4">
+                
+                </div>
+                <!-- right section -->
+                <!--
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    
+                    bottom section
+                    <div id="details-view-map-section" class="row">
+                    
+                    </div>
+                </div>-->
             </div>
         </div>
-    </div>
-    <!-- end details view -->
+        <!-- end details view -->
+    </body>
 </html>

@@ -47,14 +47,20 @@ def InsertUser(isAdmin, isActive, isVerified, isLandlord, user, pass, firstName,
         
         mongoSession.with(safe: true) do |session|
             document = session[:accounts].find(queryObj).select(_id: 1, Username: 1, Password: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1, IsAdmin: 1, IsActive: 1, IsVerified: 1, IsLandlord: 1).one
+            
+            if isLandlord
+                landlordObj = Hash.new
+                landlordObj["Landlord"] = usrObj["Username"]
+                
+                session[:listings].find(landlordObj).update_all('$set' => {"LandlordId" => usrObj["LandlordId"]})
+            end
+            
         end
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Username_1"
             document["error"] = "That username already exists!"
         elsif e.message.include? "enhabit.accounts.$Email_1"
             document["error"] = "That email is already registered with another user!"
-        elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
-            document["error"] = "That phone number is already registered with another user!"
         end
     end
     

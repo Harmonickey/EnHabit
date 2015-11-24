@@ -54,7 +54,33 @@ else if (isset($_POST["command"]))
     
         set_session($result, $data);
     
-        echo $result;
+        // we don't want to expose UserIds or LandlordIds, or UserIds that belong to Admins
+        if (strpos($result, "Landlord") === 5)
+        {
+            if (strpos($result, "Admin") === 14)
+            {
+                echo "Okay:Admin";
+            }
+            else
+            {
+                echo "Okay:Landlord";
+            }
+        }
+        else if (strpos($result, "Tenant") === 5 || strpos($result, "Created") === 5 )
+        {
+            if (strpos($result, "Admin") === 12)
+            {
+                echo "Okay:Admin";
+            }
+            else
+            {
+                echo "Okay:Tenant";
+            }
+        }
+        else 
+        {
+            echo $result;
+        }
     }
 }
 ?>
