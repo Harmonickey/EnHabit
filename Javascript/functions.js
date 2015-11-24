@@ -1609,7 +1609,7 @@ function CreateAccount()
             },
             error: function(res, err)
             {
-                SetError("CreateAccount", res + " " + err);
+                SetError("CreateAccount", res);
             },
             complete: function()
             {
