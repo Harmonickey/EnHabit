@@ -414,7 +414,7 @@ function DeleteListing(id)
 
 function UpdateListing(id)
 {
-    var inputs = $("#" + id + " input, #" + id + " textarea").not(":eq(7)");
+    var inputs = $("#" + id + " input, #" + id + " textarea");
     
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsRented", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
@@ -461,7 +461,7 @@ function UpdateListing(id)
 
 function CreateListing()
 {   
-    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea").not(":eq(13)");
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
@@ -1010,11 +1010,13 @@ function CreateDropzone(key, element, existingPics)
         {
             numUploaded = 0;
             numAdded = 0;
+            $(".dz-progress").remove();
             ProcessListing(); 
         }
         else
         {
             numUploaded++;
+            $(".dz-progress").remove();
         }
     });
     
