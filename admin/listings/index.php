@@ -124,7 +124,7 @@
 	</div> <!-- /subnavbar-inner -->
 </div> <!-- /subnavbar -->
     
-<div class="main">
+<div class="mainActions">
     <div class="container">
         <label>Amount to Generate</label><input id="amount_to_autogenerate" type="text" class="form-control" value="2000" style="width: auto; margin-left: 10px;"/>
         <button id="autogenerate" style="margin-bottom: 5px;" class="btn btn-warning" onclick='AutoGenerateListings()'><i style="margin-left: 0; margin-right: 4px;" class="fa fa-list-alt"></i>Autogenerate Listings</button>
