@@ -491,8 +491,14 @@ function CreateListing()
             $("#create-listing-button").text("Creating...");
             $("#create-listing-button").prop("disabled", true);
             
-            // async call, caught in dropzone.success event handler below
-            dropzones["create"].processQueue();
+            if (numAdded == 0)
+            {
+                ProcessListing();
+            }
+            else
+            {
+                dropzones["create"].processQueue();
+            }
         }
     }
     catch(e)
