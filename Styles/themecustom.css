@@ -133,18 +133,12 @@
 	margin: 0 auto;
 }
 
-#Tags-filter
-{
-    padding: 0;
-}
-
 .price-content
 {
 	text-align: center;
 }
 
-.date-content,
-.tags-content
+.date-content
 {
     margin-top: 5px;
 }
@@ -175,11 +169,6 @@
     width: 100%;
 }
 
-#Tags-filter
-{
-    width: 45%;
-}
-
 .type-content .bootstrap-switch
 {
     float: left;
@@ -192,23 +181,6 @@
     text-align: center;
     margin: 0 auto;
     border-radius: 0px;
-}
-
-.tags-content .bootstrap-tagsinput
-{
-    width: 100%;
-    min-height: 55px;
-    height: auto;
-}
-
-.bootstrap-tagsinput
-{
-	height: 55px;
-}
-
-.bootstrap-tagsinput input
-{
-    width: auto !important;
 }
 
 #left-sidebar,
@@ -596,8 +568,7 @@
 #Filters input,
 #Filters select,
 #extras_view input,
-#extras_view select,
-.bootstrap-tagsinput
+#extras_view select
 {
     background-color: black;
     border-radius: 0px;
@@ -784,18 +755,6 @@
 #extras .laundry-content
 {
     font-size: 17px;
-}
-
-#extras_view .bootstrap-tagsinput
-{
-    font-size: 13px;
-}
-
-#extras_view .bootstrap-tagsinput input
-{
-    border: none;
-    color: #ffffff;
-    margin-top: 10px;
 }
 
 .modal-content .item-content .information 

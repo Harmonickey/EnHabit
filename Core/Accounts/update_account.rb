@@ -25,13 +25,13 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
     usrObj["Email"] = email
     usrObj["PhoneNumber"] = phoneNumber
     usrObj["Password"] = PasswordHash.createHash(newPassword) unless newPassword.nil?
-    usrObj["IsLandlord"] = isLandlord
-    usrObj["IsVerified"] = isVerified
-    usrObj["IsActive"] = isActive
-    usrObj["IsAdmin"] = isAdminData
+    usrObj["IsAdmin"] = (isAdmin.nil? ? false : isAdmin)
+    usrObj["IsActive"] = (isActive.nil? ? true : isActive)
+    usrObj["IsVerified"] = (isVerified.nil? ? true : isVerified)
+    usrObj["IsLandlord"] = (isLandlord.nil? ? false : isLandlord)
     
     queryObj = Hash.new
-    queryObj["Username"] = username
+    queryObj["Username"] = username if isAdmin
     queryObj[key] = userId unless isAdmin
     
     retMsg = ""
@@ -54,8 +54,6 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Email_1"
             retMsg = "That email is already registered with another user!"
-        elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
-            retMsg = "That phone number is already registered with another user!" 
         end
     end
     

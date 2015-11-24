@@ -53,8 +53,6 @@ def InsertUser(isAdmin, isActive, isVerified, isLandlord, user, pass, firstName,
             document["error"] = "That username already exists!"
         elsif e.message.include? "enhabit.accounts.$Email_1"
             document["error"] = "That email is already registered with another user!"
-        elsif e.message.include? "enhabit.accounts.$PhoneNumber_1"
-            document["error"] = "That phone number is already registered with another user!"
         end
     end
     

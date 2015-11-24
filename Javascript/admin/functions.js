@@ -849,7 +849,7 @@ function DeleteAccount(uid)
         ]
     }, function(password) {
         
-        var data = {"password": password, "id": uid};
+        var data = {"Password": password, "id": uid};
         
         $.ajax(
         {

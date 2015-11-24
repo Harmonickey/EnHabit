@@ -881,7 +881,7 @@ function DeleteAccount()
         ]
     }, function(password) {
         
-        var data = {"password": password};
+        var data = {"Password": password};
         
         $.ajax(
         {
