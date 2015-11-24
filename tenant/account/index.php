@@ -82,7 +82,7 @@
                 <li class="dropdown">                           
                     <a id="title_username" href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php if (isset($_SESSION["tenant"])) { echo $_SESSION["tenant"]; } ?>
+                        Account
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">

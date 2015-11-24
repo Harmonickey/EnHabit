@@ -42,6 +42,11 @@ textarea
     width: 24%;
 }
 
+.type-content 
+{
+    width: 35%;
+}
+
 .modal-switch label,
 .modal-switch .bootstrap-switch
 {

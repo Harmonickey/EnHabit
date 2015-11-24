@@ -84,7 +84,7 @@
                 <li class="dropdown">    
                     <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php if (isset($_SESSION["tenant"])) { echo $_SESSION["tenant"]; } ?>
+                        Account
                         <b class="caret"></b>
                     </a>                
                     <ul class="dropdown-menu">
@@ -245,7 +245,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Notes</label><textarea rows='4' cols='50' class='form-control'></textarea>
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
                 </div>
                 <div class="row">

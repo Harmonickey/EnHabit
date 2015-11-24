@@ -84,7 +84,7 @@
                             
                     <a id="title_username" href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> 
-                        <?php if (isset($_SESSION["landlord"])) { echo $_SESSION["landlord"]; } ?>
+                        Account
                         <b class="caret"></b>
                     </a>
                 

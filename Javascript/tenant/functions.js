@@ -1301,7 +1301,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Notes</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 
