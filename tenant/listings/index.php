@@ -38,7 +38,6 @@
     <link href="../../Libraries/Styles/bootstrap.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../../Libraries/Styles/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="../../Libraries/Styles/bootstrap-tagsinput.css" rel="stylesheet">
     
     <link href="../../Libraries/Styles/pikaday.css" rel="stylesheet">
     
@@ -246,11 +245,6 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Tags (ex. north campus, lakeview campus, south quad, near downtown)</label><input type='text' data-role='tagsinput' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Notes</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
                 </div>
@@ -281,7 +275,6 @@
 <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
-<script src="../../Libraries/Javascript/bootstrap-tagsinput.min.js"></script>
 
 <!-- jquery geocomplete api -->
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>

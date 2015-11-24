@@ -76,7 +76,7 @@ function GetRenter()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             $("#payment").html("<p>No Payment</p>");
         }
     });
@@ -140,7 +140,6 @@ function GetAllListings()
                             SetTextBoxWithAutoNumeric(oid);
                             SetDatePickerTextBox(oid);
                             SetBootstrapSwitches(oid);
-                            SetTextBoxWithTags(oid);
                             
                             addedFiles[oid] = false;
                         }
@@ -159,7 +158,7 @@ function GetAllListings()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
@@ -219,7 +218,7 @@ function GetAllLandlords()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
@@ -270,7 +269,7 @@ function GetAccount()
         },
         error: function(res, err)
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         },
         complete: function()
         {
@@ -283,8 +282,8 @@ function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
     checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
-    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true});
+    $(checkboxes[checkboxes.length - 1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true});
 }
 
 function SetGeocompleteTextBox(rowId)
@@ -311,11 +310,6 @@ function SetTextBoxWithAutoNumeric(rowId)
         wEmpty: 'sign',
         lZero: 'deny'
     });
-}
-
-function SetTextBoxWithTags(rowId)
-{
-   $("#" + rowId + " input[data-role='tagsinput']").tagsinput();
 }
 
 function SetDatePickerTextBox(rowId)
@@ -409,7 +403,7 @@ function DeleteListing(id)
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                     $("#" + id + " button").prop("disabled", false);
                     $($("#" + id + " button")[1]).text("Delete");
                 }
@@ -422,7 +416,7 @@ function UpdateListing(id)
 {
     var inputs = $("#" + id + " input, #" + id + " textarea").not(":eq(7)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Tags", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsRented", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsRented", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -469,7 +463,7 @@ function CreateListing()
 {   
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea").not(":eq(13)");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Tags", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -570,8 +564,7 @@ function ProcessListing()
                             SetGeocompleteTextBox(oid);
                             SetTextBoxWithAutoNumeric(oid);
                             SetDatePickerTextBox(oid);
-                            SetBootstrapSwitches(oid); 
-                            SetTextBoxWithTags(oid)
+                            SetBootstrapSwitches(oid);
                             
                             $("#createListingModal").modal('hide');
                             
@@ -592,7 +585,7 @@ function ProcessListing()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -660,7 +653,7 @@ function ProcessListing()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -737,7 +730,7 @@ function Login()
                 {
                     try
                     {
-                        throw new Error(res + " " + err);
+                        throw new Error(res);
                     }
                     catch(e)
                     {
@@ -795,7 +788,7 @@ function Logout()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             }
         });
     }
@@ -858,7 +851,7 @@ function UpdateAccount()
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                 },
                 complete: function()
                 {
@@ -925,7 +918,7 @@ function DeleteAccount()
             },
             error: function(res, err)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             },
             complete: function()
             {
@@ -999,8 +992,6 @@ function InitSpecialFields()
         minDate: new Date(), 
         setDefaultDate: new Date()
     });
-          
-    $("#createListingModal .bootstrap-tagsinput").addClass("form-control");
 }
 
 function CreateDropzone(key, element, existingPics)
@@ -1111,11 +1102,7 @@ function BuildData(inputs, elements)
         }
         else
         {
-            if ($(inputs[i]).data("role") == "tagsinput")
-            {
-                data[elements[i]] = $(inputs[i]).tagsinput("items");
-            }
-            else if ($(inputs[i]).attr("placeholder") !== "")
+            if ($(inputs[i]).attr("placeholder") !== "")
             {
                 data[elements[i]] = $(inputs[i]).val().trim();
             }
@@ -1268,10 +1255,7 @@ function CreateAccordionView(oid, data)
                             "</div>" + 
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
-                            "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Tags (Optional)</label><input type='text' class='form-control' value='" + (data.Tags ? data.Tags.join(",") : "") + "' data-role='tagsinput' />" + 
-                            "</div>" + 
+                            "</div>" +
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
