@@ -1286,12 +1286,12 @@ function CreateAccordionView(oid, data)
                                 "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
-                        "<div class='row'>" + 
+                        "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini' disabled/>" +
+                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.IsActive ? "" : "disabled") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                (data.IsActive ? "<label>To Activate your Listing You Must Include Images!</label>" : "") + 
+                                (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label>To Activate your Listing You Must Include Images!</label>" : "")) + 
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
