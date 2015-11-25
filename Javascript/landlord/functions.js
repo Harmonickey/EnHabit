@@ -1301,10 +1301,10 @@ function CreateAccordionView(oid, data)
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" + 
                         "</div>" +
