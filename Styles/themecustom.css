@@ -791,7 +791,7 @@
     background: transparent;
     padding: 50px;
     z-index: 2000;
-    top: 0;
+    top: 15px;
     overflow: hidden;
 }
 
