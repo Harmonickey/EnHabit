@@ -1092,7 +1092,7 @@ function BuildData(inputs, elements)
     for (var i = 0; i < elements.length; i++)
     {
         if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
-         || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType")
+         || elements[i] == "AirConditioning" || elements[i] == "IsRented" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
