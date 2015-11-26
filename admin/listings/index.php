@@ -327,7 +327,10 @@ $(function()
     $("#amount_to_autogenerate").autoNumeric('init', 
     { 
         vMax: '4000',
-        lZero: 'deny'
+        vMin: '0',
+        lZero: 'deny',
+        aSep: '',
+        mDec: 0
     });
 });
 
