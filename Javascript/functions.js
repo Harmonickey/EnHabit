@@ -915,8 +915,10 @@ function InsertMarkers(res)
                 
                 var popupContent =  
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
-                                '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
-                                '<h3>$' + entry[0].Price + '/month</h2>' +
+                                '<div style="position: absolute;">' +
+                                    '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
+                                    '<h3>$' + entry[0].Price + '</h3>' +
+                                '</div>' +
                                 '<div class="slideshow">';
                                 
                 if (images.length > 1)
@@ -930,7 +932,7 @@ function InsertMarkers(res)
                 popupContent += slideshowContent +
                                 '</div>' +
                             '</div>' +
-                            "<input type='button' class='btn btn-outline-inverse btn-sm' style='width: 100%; margin-top: 10px;' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "')\" />";
                 
                 marker.bindPopup(popupContent, 
                 {

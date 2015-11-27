@@ -319,7 +319,6 @@
     z-index: 1041 !important;
 }
 
-.leaflet-popup .popup,
 .listing .popup
 {
     text-align:center;
@@ -352,6 +351,11 @@
 .listing .popup .slideshow img
 {
     width:100%;
+}
+
+.leaflet-popup .popup .slideshow img
+{
+    border-radius: 20px;
 }
 
 .leaflet-popup .popup .slideshow .caption,
@@ -527,6 +531,21 @@
 .leaflet-popup-content input:hover
 {
     background: darkgreen;
+}
+
+.leaflet-popup-content {
+    padding: 0;
+    text-align: center;
+}
+
+.popup-details-button {
+    position: absolute;    
+    width: 100px; 
+    border-radius: 6px; 
+    border: 2px white solid; 
+    background: transparent; 
+    bottom: 37px; 
+    left: 114px;
 }
 
 #common-modal .listing .information p
@@ -775,22 +794,6 @@
     margin-top: 10px;
 }
 
-.leaflet-container a.leaflet-popup-close-button 
-{
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    padding: 4px 4px 0 0;
-    text-align: center;
-    width: 18px;
-    height: 14px;
-    font: 16px/14px Tahoma, Verdana, sans-serif;
-    color: #09DAAD;
-    text-decoration: none;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
-}
-
 #details-view
 {
     position: fixed;
@@ -901,8 +904,8 @@ select::-ms-expand
 .leaflet-container a.leaflet-popup-close-button 
 {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 6px;
+    right: 10px;
     padding: 4px 4px 0 0;
     text-align: center;
     width: 18px;
