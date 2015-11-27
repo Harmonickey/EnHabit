@@ -504,7 +504,6 @@
 }
 
 #listings .information input:hover,
-.leaflet-popup-content input:hover,
 .listing .information input:hover
 {
     background: darkgreen;
@@ -536,8 +535,7 @@
 }
 
 #search-section > li.menu-item > a:hover,
-#listings .information input:hover,
-.leaflet-popup-content input:hover
+#listings .information input:hover
 {
     background: darkgreen;
 }

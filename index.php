@@ -439,27 +439,27 @@ if (!isset($_SESSION['CREATED'])) {
           ga('send', 'pageview');
 
         </script>
-    </body>
-    <!-- placeholder for details view -->
-    <div id="details-view" style="display: none;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
-        <div class="row">
-            <!-- left section -->
-            <div id="details-view-listing-details" class="col-lg-6 col-md-6 col-sm-6">
-            
-            </div>
-            <!-- right section -->
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <!-- top section -->
-                <div id="details-view-slideshow-section" class="row">
-                    
-                </div>
-                <!-- bottom section -->
-                <div id="details-view-map-section" class="row">
+        <!-- placeholder for details view -->
+        <div id="details-view" style="display: none;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
+            <div class="row">
+                <!-- left section -->
+                <div id="details-view-listing-details" class="col-lg-6 col-md-6 col-sm-6">
                 
+                </div>
+                <!-- right section -->
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <!-- top section -->
+                    <div id="details-view-slideshow-section" class="row">
+                        
+                    </div>
+                    <!-- bottom section -->
+                    <div id="details-view-map-section" class="row">
+                    
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- end details view -->
+        <!-- end details view -->
+    </body>
 </html>

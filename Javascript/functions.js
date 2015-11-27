@@ -33,6 +33,7 @@ var enhabitIcon = L.icon({
     popupAnchor:  [0, -35] // point from which the popup should open relative to the iconAnchor
 });
 var markers = new L.FeatureGroup();
+
 //map.on('draw:created', getPointsWithinPolygon);
 
 /******** EVENT HANDLERS ***********/
@@ -975,10 +976,7 @@ function InsertMarkers(res)
                     
                     var listingPic = (listing.Thumbnails.length !== 0 ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
 
-                    if (multiPopup[listing.Address] === undefined)
-                    {
-                        multiPopup[listing.Address] = [
-                            "<div class='item-content listing'>" +
+                    var listingHtml = "<div class='item-content listing'>" +
                                 "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
                                 "<div class='information'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
@@ -989,23 +987,15 @@ function InsertMarkers(res)
                                     "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
                                     "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
                                 "</div>" +
-                            "</div>"];
+                            "</div>";
+                    
+                    if (multiPopup[listing.Address] === undefined)
+                    {
+                        multiPopup[listing.Address] = [listingHtml];
                     }
                     else
                     {
-                        multiPopup[listing.Address].push(
-                            "<div class='item-content listing'>" +
-                                "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
-                                "<div class='information'>" +
-                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
-                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
-                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType + "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" +
-                                "</div>" +
-                            "</div>");
+                        multiPopup[listing.Address].push(listingHtml);
                     }
                     
                     InsertIntoListView(listing);
@@ -1115,7 +1105,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
 {
     $("#details-view").fadeIn();
     
-    location.hash = Id;
+    //location.hash = Id;
     
     //load up the images into the modal...
     var slideshowContent = "";
