@@ -539,6 +539,8 @@ function GetAllListings()
                             SetBootstrapSwitches(oid);
                             
                             addedFiles[oid] = false;
+                            
+                            SetUserAndLandlordFields(oid);
                         }
                     }
                 }
@@ -749,6 +751,31 @@ function UpdateAccount(uid)
             $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
         }
     }
+}
+
+function SetUserAndLandlordFields(rowId)
+{
+    // set users
+    $($("#" + rowId + " input")[0]).autocomplete(
+    {
+        source: function(request, response) 
+        {
+            var results = $.ui.autocomplete.filter(userList, request.term);
+
+            response(results.slice(0, 5)); // limit to 5 results at a time
+        } 
+    });
+    
+    // set landlords
+    $("#" + rowId + " input")[1]).autocomplete(
+    {
+        source: function(request, response) 
+        {
+            var results = $.ui.autocomplete.filter(landlordList, request.term);
+
+            response(results.slice(0, 5)); // limit to 5 results at a time
+        }
+    });
 }
 
 function SetBootstrapSwitches(rowId)
