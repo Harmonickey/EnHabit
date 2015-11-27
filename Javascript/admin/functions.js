@@ -541,8 +541,6 @@ function GetAllListings()
                             SetBootstrapSwitches(oid);
                             
                             addedFiles[oid] = false;
-                            
-                            GetAllUsersAndLandlords(false);
                         }
                     }
                 }
@@ -557,6 +555,10 @@ function GetAllListings()
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             $(".actions a").show();
+        },
+        complete: function() 
+        {
+            GetAllUsersAndLandlords(false);
         }
     });
 }
@@ -760,7 +762,8 @@ function SetUserAndLandlordFields()
     var users = $("#accordion .users");
     var landlords = $("#accordion .landlords");
     
-    $.each(users, function(index, user) {
+    $.each(users, function(index, user) 
+    {
         $(user).autocomplete(
         {
             source: function(request, response) 
@@ -772,7 +775,8 @@ function SetUserAndLandlordFields()
         });
     });
     
-    $.each(landlords, function(index, landlord) {
+    $.each(landlords, function(index, landlord) 
+    {
         $(landlord).autocomplete(
         {
             source: function(request, response) 
