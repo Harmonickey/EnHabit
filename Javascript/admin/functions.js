@@ -767,7 +767,7 @@ function SetUserAndLandlordFields(rowId)
     });
     
     // set landlords
-    $("#" + rowId + " input")[1]).autocomplete(
+    $($("#" + rowId + " input")[1]).autocomplete(
     {
         source: function(request, response) 
         {
