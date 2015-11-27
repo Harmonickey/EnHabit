@@ -158,6 +158,8 @@ function GetAllUsers()
             
                     var data = JSON.parse(res);
                     
+                    console.log("here");
+                    
                     data = data.sort(SortByUsername);
                     
                     for (var i = 0; i < data.length; i++)
