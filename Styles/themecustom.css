@@ -543,7 +543,7 @@
 }
 
 .leaflet-popup-content {
-    padding: 0;
+    padding: 0 !important;
     text-align: center;
 }
 
@@ -611,6 +611,14 @@
 {
     color: white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.popup h2 {
+    float: left;
+}
+.popup h3 {
+    float: right;
+    font-size: 1.7em;
 }
 
 .leaflet-popup-content-wrapper

@@ -915,8 +915,8 @@ function InsertMarkers(res)
                 
                 var popupContent =  
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
-                                '<div style="position: absolute;">' +
-                                    '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? entry[0].Unit : "") + '</h2>' +
+                                '<div style="position: absolute; top: 5%; left: 5%; z-index: 1">' +
+                                    '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
                                     '<h3>$' + entry[0].Price + '</h3>' +
                                 '</div>' +
                                 '<div class="slideshow">';
