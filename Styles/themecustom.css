@@ -498,7 +498,6 @@
 }
 
 #listings .information input,
-.leaflet-popup-content input,
 .listing .information input
 {
     background: green;
@@ -509,6 +508,16 @@
 .listing .information input:hover
 {
     background: darkgreen;
+}
+
+.popup-details-btn {
+    position: absolute;
+    width: 100px;
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    bottom: 37px;
+    left: 114px;
 }
 
 #search-section > li.menu-item
