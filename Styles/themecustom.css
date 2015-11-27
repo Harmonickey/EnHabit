@@ -591,11 +591,7 @@
     -webkit-box-shadow: 10px 10px 26px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 26px 0px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 26px 0px rgba(0,0,0,0.75);
-}
-
-.leaflet-container a.leaflet-popup-close-button
-{
-    color: white;
+    border-radius: 20px;
 }
 
 .popup .slideshow
@@ -782,8 +778,8 @@
 .leaflet-container a.leaflet-popup-close-button 
 {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 6px;
+    right: 10px;
     padding: 4px 4px 0 0;
     text-align: center;
     width: 18px;
