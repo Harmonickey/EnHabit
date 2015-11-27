@@ -25,6 +25,13 @@ var background_settings = {
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
 var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
+var enhabitIcon = L.icon({
+    iconUrl: '/assets/images/theme_images/pin.png',
+
+    iconSize:     [25, 41], // size of the icon
+    iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, 12] // point from which the popup should open relative to the iconAnchor
+});
 var markers = new L.FeatureGroup();
 //map.on('draw:created', getPointsWithinPolygon);
 
@@ -886,7 +893,7 @@ function InsertMarkers(res)
         {
             if (entry.length == 1)
             {
-                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y], {icon: enhabitIcon}).addTo(map);
                 
                 var slideshowContent = "";
                 var base = "/images/enhabit/images/";
@@ -939,7 +946,7 @@ function InsertMarkers(res)
             }
             else if (entry.length > 1)
             {   
-                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y], {icon: enhabitIcon}).addTo(map);
                 
                 var popupContent =  
                             '<div class="popup">' +
@@ -1210,7 +1217,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
     SubscribeSlideshowArrows();
     var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
-    L.marker([parseFloat(x), parseFloat(y)]).addTo(detailsMap);
+    L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
 }
 
 /*
