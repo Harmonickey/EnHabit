@@ -87,7 +87,7 @@ function GetAllUsersAndLandlords(isRenterPage)
                             }
                         });
                         
-                        SetUserAndLandlordFields(oid);
+                        SetUserAndLandlordFields();
                     }
                     else
                     {
@@ -755,28 +755,33 @@ function UpdateAccount(uid)
     }
 }
 
-function SetUserAndLandlordFields(rowId)
+function SetUserAndLandlordFields()
 {
-    // set users
-    $($("#" + rowId + " input")[0]).autocomplete(
-    {
-        source: function(request, response) 
+    var users = $("#accordion .users");
+    var landlords = $("#accordion .landlords");
+    
+    $.each(users, function(user) {
+        $(user).autocomplete(
         {
-            var results = $.ui.autocomplete.filter(userList, request.term);
+            source: function(request, response) 
+            {
+                var results = $.ui.autocomplete.filter(userList, request.term);
 
-            response(results.slice(0, 5)); // limit to 5 results at a time
-        } 
+                response(results.slice(0, 5)); // limit to 5 results at a time
+            } 
+        });
     });
     
-    // set landlords
-    $($("#" + rowId + " input")[1]).autocomplete(
-    {
-        source: function(request, response) 
+    $.each(landlords, function(landlord) {
+        $(landlord).autocomplete(
         {
-            var results = $.ui.autocomplete.filter(landlordList, request.term);
+            source: function(request, response) 
+            {
+                var results = $.ui.autocomplete.filter(landlordList, request.term);
 
-            response(results.slice(0, 5)); // limit to 5 results at a time
-        }
+                response(results.slice(0, 5)); // limit to 5 results at a time
+            }
+        });
     });
 }
 
@@ -1733,10 +1738,10 @@ function CreateAccordionView(oid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>User</label><input type='text' class='form-control' value='" + (data.Username ? data.Username : "") + "' /> " + 
+                                "<label>User</label><input type='text' class='form-control users' value='" + (data.Username ? data.Username : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
+                                "<label>Landlord</label><input type='text' class='form-control landlords' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
