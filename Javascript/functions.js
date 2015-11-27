@@ -521,6 +521,9 @@ function PopulateAndOpenModal(event, modal_content_id, section_in_modal, add_cla
     // end: if modal and content container exists
     if (event != null && event.returnValue != null)
         event.preventDefault ? event.preventDefault() : event.returnValue = false;
+    
+    $("#common-modal.modal input:first").focus();
+   
     return false;
 }
 
@@ -915,7 +918,7 @@ function InsertMarkers(res)
                 
                 var popupContent =  
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
-                                '<div style="position: absolute; top: 5%; left: 5%; z-index: 1">' +
+                                '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
                                     '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
                                     '<h3>$' + entry[0].Price + '</h3>' +
                                 '</div>' +

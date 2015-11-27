@@ -754,7 +754,7 @@ function UpdateAccount(uid)
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
-    checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
+    checkboxes.not(":eq(4), :eq(5)").bootstrapSwitch({onText: "Yes", offText: "No"});
     $(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
     $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
@@ -1726,10 +1726,10 @@ function CreateAccordionView(oid, data)
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
                             "</div>" + 
-                            "<div class='col-lg-1 col-md-1 col-sm-1'>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
                             "</div>" +
                         "</div>" +
@@ -1756,11 +1756,11 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px'>" + 
-                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini' disabled/>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.IsActive ? "" : "disabled") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                (data.IsActive ? "<label>To Activate your Listing You Must Include Images!</label>" : "") + 
+                                (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label style='color: red'>To Activate This Listing You Must Include Images!</label>" : "")) + 
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
