@@ -29,7 +29,7 @@ var enhabitIcon = L.icon({
     iconUrl: '/assets/images/theme_images/pin.png',
 
     iconSize:     [25, 36.65], // size of the icon
-    iconAnchor:   [12, 35], // point of the icon which will correspond to marker's location
+    iconAnchor:   [12, 36.65], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -35] // point from which the popup should open relative to the iconAnchor
 });
 var markers = new L.FeatureGroup();
