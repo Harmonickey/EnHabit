@@ -116,7 +116,6 @@ function GetAllUsersAndLandlords(isRenterPage)
 }
 
 function SortByUsername(a, b){
-    console.log("here");
   var aName = a.Username.toLowerCase();
   var bName = b.Username.toLowerCase(); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
@@ -761,7 +760,7 @@ function SetUserAndLandlordFields()
     var users = $("#accordion .users");
     var landlords = $("#accordion .landlords");
     
-    $.each(users, function(user) {
+    $.each(users, function(index, user) {
         $(user).autocomplete(
         {
             source: function(request, response) 
@@ -773,7 +772,7 @@ function SetUserAndLandlordFields()
         });
     });
     
-    $.each(landlords, function(landlord) {
+    $.each(landlords, function(index, landlord) {
         $(landlord).autocomplete(
         {
             source: function(request, response) 
