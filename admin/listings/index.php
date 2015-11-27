@@ -320,7 +320,6 @@ $(function()
     CreateDropzone("create", "#createListingModal form");
 
     GetAllListings();
-    GetAllUsersAndLandlords(false);
 
     InitSpecialFields();
     

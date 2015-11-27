@@ -86,6 +86,8 @@ function GetAllUsersAndLandlords(isRenterPage)
                                 response(results.slice(0, 5)); // limit to 5 results at a time
                             }
                         });
+                        
+                        SetUserAndLandlordFields(oid);
                     }
                     else
                     {
@@ -540,7 +542,7 @@ function GetAllListings()
                             
                             addedFiles[oid] = false;
                             
-                            SetUserAndLandlordFields(oid);
+                            GetAllUsersAndLandlords(false);
                         }
                     }
                 }
