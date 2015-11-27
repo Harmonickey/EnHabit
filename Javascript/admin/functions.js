@@ -116,6 +116,7 @@ function GetAllUsersAndLandlords(isRenterPage)
 }
 
 function SortByUsername(a, b){
+    console.log("here");
   var aName = a.Username.toLowerCase();
   var bName = b.Username.toLowerCase(); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
@@ -157,9 +158,7 @@ function GetAllUsers()
                     $("#accordion").html("");
             
                     var data = JSON.parse(res);
-                    
-                    console.log("here");
-                    
+                     
                     data = data.sort(SortByUsername);
                     
                     for (var i = 0; i < data.length; i++)
