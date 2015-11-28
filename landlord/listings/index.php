@@ -301,6 +301,7 @@ $(function()
     CreateDropzone("create", "#createListingModal form");
 
     GetAllListings();
+    GetAccount(true);
 
     InitSpecialFields();
 });

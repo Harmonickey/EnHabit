@@ -59,9 +59,9 @@ def CreateListings(amount)
         listingObj["WorldCoordinates"] = {"x" => points[i]["lat"], "y" => points[i]["lng"]}
         listingObj["University"] = "Northwestern"
         listingObj["Testing"] = true
-        listingObj["Pictures"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/cats/"]
+        listingObj["Pictures"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/sports/"]
         listingObj["IsActive"] = true
-        listingObj["Thumbnails"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/cats/"]
+        listingObj["Thumbnails"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/sports/"]
        
         begin
             mongoSession.with(safe: true) do |session|

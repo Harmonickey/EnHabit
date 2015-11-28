@@ -218,7 +218,7 @@ function GetAllListings()
     });
 }
 
-function GetAccount()
+function GetAccount(isListingPage)
 {
     $.ajax(
     {
@@ -253,7 +253,14 @@ function GetAccount()
                     }
                     else
                     {
-                        FillAccountInfo(data);
+                        if (isListingPage)
+                        {
+                            HandleCreateListingButton(data);
+                        }
+                        else
+                        {
+                            FillAccountInfo(data);
+                        }
                     }
                 }
             }
@@ -317,6 +324,16 @@ function SetDatePickerTextBox(rowId)
     });
 }
 
+function HandleCreateListingButton(data)
+{
+    if (Contains(data.Username, "Facebook"))
+    {
+        $("#create-listing-button").remove(); // create listing button
+        $("#createListingModal").remove(); // create listing modal
+        $("#create-listing-warning").show();
+    }
+}
+
 function FillAccountInfo(data)
 {
     var inputs = $(".account input");
@@ -335,7 +352,11 @@ function FillAccountInfo(data)
     }
     $(inputs[2]).val(data["FirstName"]);
     $(inputs[3]).val(data["LastName"]);
-    $(inputs[4]).val(data["PhoneNumber"]);
+    
+    if (Contains(data["PhoneNumber"], "-")
+    {
+        $(inputs[4]).val(data["PhoneNumber"]);
+    }
 }
 
 function DeleteListing(id)

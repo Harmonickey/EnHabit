@@ -25,7 +25,7 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
     usrObj["Email"] = email
     usrObj["PhoneNumber"] = phoneNumber
     usrObj["Password"] = PasswordHash.createHash(newPassword) unless newPassword.nil?
-    usrObj["IsAdmin"] = (isAdmin.nil? ? false : isAdmin)
+    usrObj["IsAdmin"] = (isAdminData.nil? ? false : isAdminData)
     usrObj["IsActive"] = (isActive.nil? ? true : isActive)
     usrObj["IsVerified"] = (isVerified.nil? ? true : isVerified)
     usrObj["IsLandlord"] = (isLandlord.nil? ? false : isLandlord)

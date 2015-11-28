@@ -357,7 +357,11 @@ function FillAccountInfo(data)
     }
     $(inputs[2]).val(data["FirstName"]);
     $(inputs[3]).val(data["LastName"]);
-    $(inputs[4]).val(data["PhoneNumber"]);
+    
+    if (Contains(data["PhoneNumber"], "-")
+    {
+        $(inputs[4]).val(data["PhoneNumber"]);
+    }
 }
 
 function DeleteListing(id)

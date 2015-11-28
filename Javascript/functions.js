@@ -897,10 +897,10 @@ function InsertMarkers(res)
         {
             if (entry.length == 1)
             {
-                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y], {icon: enhabitIcon}).addTo(map);
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 
                 var slideshowContent = "";
-                var base = (entries.Testing ? "" : "/images/enhabit/images/");
+                var base = (entry[0].Testing ? "" : "/images/enhabit/images/");
                 var images = entry[0].Thumbnails;
                 if (!images || images.length === 0)
                 {
@@ -952,7 +952,7 @@ function InsertMarkers(res)
             }
             else if (entry.length > 1)
             {   
-                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y], {icon: enhabitIcon}).addTo(map);
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 
                 var popupContent =  
                             '<div class="popup">' +
@@ -976,8 +976,10 @@ function InsertMarkers(res)
                     
                     var listingPic = (listing.Thumbnails.length !== 0 ? listing.Thumbnails.split(",")[0].replace(/'/, "") : defaultPicture);
 
+                    var base = (listing.Testing ? "" : "/images/enhabit/images/");
+                    
                     var listingHtml = "<div class='item-content listing'>" +
-                                "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
+                                "<img src='" + base + listingPic + "' height='100' width='100' />" +
                                 "<div class='information text-left'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
@@ -1015,14 +1017,14 @@ function InsertMarkers(res)
 function InsertIntoListingSlideshowObject(entry)
 {
     var slideShowHTML = 
-    "<h1>Sed scelerisque</h1>" +
-    "<p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat.<br></p>" +
+    "" +
     "<div id='owl-slider-" + entry._id.$oid + "' class='owl-carousel popup-image-gallery'>";
+    var base = (entry.Testing ? "" : "/images/enhabit/images/");
     for (var i = 0; i < entry.Pictures.length; i++)
     {
         slideShowHTML += 
         "<div>" +
-            "<img class='lazyOwl' data-src='/images/enhabit/images/" + entry.Pictures[i] + "'>" +
+            "<img class='lazyOwl' data-src='" + base + entry.Pictures[i] + "'>" +
         "</div>";
     }
     slideShowHTML += "</div>";
@@ -1083,25 +1085,26 @@ function InsertIntoListView(data)
     
     var image = $("#listings .item-content img").last()[0];
     var downloadingImage = new Image();
+    var base = (data.Testing ? "" : '/images/enhabit/images/');
     downloadingImage.onload = function()
     {
         image.src = this.src;   
     };
     if (typeof data.Thumbnails === "object" && data.Thumbnails.length > 0)
     {
-        downloadingImage.src = '/images/enhabit/images/' + data.Thumbnails[0];
+        downloadingImage.src = base + data.Thumbnails[0];
     }
     else if (typeof data.Thumbnails === "string" && data.Thumbnails !== "" || data.Thumbnails.length == 0)
     {
-        downloadingImage.src = '/images/enhabit/images/' + data.Thumbnails.split(",")[0].replace(/'/g, "");
+        downloadingImage.src = base + data.Thumbnails.split(",")[0].replace(/'/g, "");
     }
     else
     {
-        downloadingImage.src = '/images/enhabit/images/' + defaultPicture;
+        downloadingImage.src = base + defaultPicture;
     }
 }
 
-function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, listingInfo, Testing)
+function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
 {
     $("#details-view").fadeIn();
     
@@ -1109,7 +1112,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     
     //load up the images into the modal...
     var slideshowContent = "";
-    var base = (Testing ? "" : "/images/enhabit/images/");
+    var base = (Testing == 'true' ? "" : "/images/enhabit/images/");
     if (!Images || Images.length === 0)
     {
         Images = [];
@@ -1277,15 +1280,6 @@ function LoginUser(hideMainModal)
                     if (Contains(res, "Okay"))
                     {
                         ShowLoginFeatures(hideMainModal);
-                        
-                        if (Contains(res, "Landlord"))
-                        {
-                            $("#portal-function a").attr("href", "/landlord/listings");
-                        }
-                        else if (!Contains(res, "Tenant"))
-                        {
-                            throw new Error("Problem Logging In");
-                        }
                     }
                     else
                     {
@@ -1470,9 +1464,6 @@ function LogoutUser()
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
-    
-    $("#login").text("Log In");
-    $("#login-function").attr("onclick", "LoadModal(event, 'modal-content-login', 'login', 'Log In');");
 }
 
 function RemoveLoginFeatures()
@@ -1625,11 +1616,6 @@ function CloseDetailsView()
         "<div id='details-items' class='row'>" +
             "<div id='details-view-listing-details' class='col-lg-8 col-md-8 col-sm-8'></div>" +
             "<div id='details-view-actions' class='col-lg-4 col-md-4 col-sm-4'></div>" +
-            /*
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<div id='details-view-slideshow-section' class='row'></div>" +
-                "<div id='details-view-map-section' class='row'></div>" +
-            "</div>" +*/
         "</div>");
         
     $("#details-view").fadeOut();
@@ -1751,17 +1737,17 @@ function SendEmail(listingId)
                 }
                 else
                 {
-                    throw new Error(res);
+                    throw new Error("Problem Sending Email");
                 }
             }
             catch(e)
             {
-                SetError("SendEmail", e.message);
+                SetError("SendEmail", "Problem Sending Email");
             }
         },
         error: function(res, err)
         {
-            SetError("SendEmail", res + " " + err);
+            SetError("SendEmail", res);
         },
         complete: function()
         {
