@@ -885,7 +885,7 @@ function UpdateListing(oid)
 
 function DeleteAccount(uid)
 {
-    $.msgbox("Are you sure that you want to delete all listings older than ONE year?", 
+    $.msgbox("Are you sure that you want to delete this user?", 
     {
         type: "confirm",
 		buttons : 
@@ -1886,7 +1886,7 @@ function CreateAccordionUsersView(uid, data)
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary btn-success' onclick='UpdateAccount(\"" + uid + "\");'>Update</button>" + 
-                                "<button class='btn btn-danger' onclick='DeleteAccount(\"" + uid + "\");'>Delete</button>" +
+                                (data.IsAdmin ? "" : "<button class='btn btn-danger' onclick='DeleteAccount(\"" + uid + "\");'>Delete</button>") +
                             "</div>" +
                         "</div>" +
                     "</div>" +
