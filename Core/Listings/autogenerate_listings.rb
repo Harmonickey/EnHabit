@@ -44,24 +44,24 @@ def CreateListings(amount)
         listingObj["UserId"] = SecureRandom.uuid
         listingObj["Landlord"] = SecureRandom.uuid
         listingObj["LandlordId"] = SecureRandom.uuid
-        listingObj["Price"] = 0
-        listingObj["Address"] = SecureRandom.uuid
-        listingObj["Unit"] = "a"
-        listingObj["Bedrooms"] = 1
-        listingObj["Bathrooms"] = 1
-        listingObj["HasAnimals"] = true
-        listingObj["HasLaundry"] = true
-        listingObj["HasParking"] = true
-        listingObj["HasAirConditioning"] = true
+        listingObj["Price"] = Random.new.rand(1000)
+        listingObj["Address"] = Random.new.rand(10000).to_s + " Stupid Street" 
+        listingObj["Unit"] = Random.new.rand(20).to_s + " "  + (65 + Random.new.rand(26)).chr
+        listingObj["Bedrooms"] = Random.new.rand(4)
+        listingObj["Bathrooms"] = Random.new.rand(4)
+        listingObj["HasAnimals"] = [true, false].sample
+        listingObj["HasLaundry"] = [true, false].sample
+        listingObj["HasParking"] = [true, false].sample
+        listingObj["HasAirConditioning"] = [true, false].sample
         listingObj["LeaseType"] = "rental"
         listingObj["BuildingType"] = "apartment"
         listingObj["Start"] = Date.strptime("09/20/2018", "%m/%d/%Y").mongoize
         listingObj["WorldCoordinates"] = {"x" => points[i]["lat"], "y" => points[i]["lng"]}
         listingObj["University"] = "Northwestern"
         listingObj["Testing"] = true
-        listingObj["Pictures"] = []
+        listingObj["Pictures"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/cats/"]
         listingObj["IsActive"] = true
-        listingObj["Thumbnails"] = []
+        listingObj["Thumbnails"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/cats/"]
        
         begin
             mongoSession.with(safe: true) do |session|

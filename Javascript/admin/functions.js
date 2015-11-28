@@ -885,58 +885,62 @@ function UpdateListing(oid)
 
 function DeleteAccount(uid)
 {
-    $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", {
-        type    : "prompt",
-        inputs  : [
-          {type: "password", label: "Password:", required: true}
-        ],
-        buttons : [
-          {type: "submit", value: "OK"},
-          {type: "cancel", value: "Cancel"}
-        ]
-    }, function(password) {
-        
-        var data = {"Password": password, "id": uid};
-        
-        $.ajax(
+    $.msgbox("Are you sure that you want to delete all listings older than ONE year?", 
+    {
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
         {
-            type: "POST",
-            url: "/api.php",
-            beforeSend: function()
+            var data = { "id": uid };
+            
+            $.ajax(
             {
-                $("#" + uid + " button").prop("disabled", true);
-                $($("#" + uid + " button")[1]).text("Deleting...");
-            },
-            data:
-            {
-                command: "delete_account",
-                endpoint: "Accounts",
-                data: data
-            },
-            success: function(res)
-            {
-                if (Contains(res, "Okay"))
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
                 {
-                    // remove the row that we just selected
-                    $("#" + uid).parent().remove();
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
-                }
-                else
+                    $("#" + uid + " button").prop("disabled", true);
+                    $($("#" + uid + " button")[1]).text("Deleting...");
+                },
+                data:
+                {
+                    command: "delete_account",
+                    endpoint: "Accounts",
+                    data: data
+                },
+                success: function(res)
+                {
+                    if (Contains(res, "Okay"))
+                    {
+                        // remove the row that we just selected
+                        $("#" + uid).parent().remove();
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "User Deleted Successfully!", position: 'top-center'});
+                    }
+                    else
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
                 {
                     $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + uid + " button").prop("disabled", false);
+                    $($("#" + uid + " button")[1]).text("Delete");
                 }
-            },
-            error: function(res, err)
-            {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
-            },
-            complete: function()
-            {
-                $("#" + uid + " button").prop("disabled", false);
-                $($("#" + uid + " button")[1]).text("Delete");
-            }
-        });
-    });  
+            });
+        }  
+    }
 }
 
 function DeleteListing(id)

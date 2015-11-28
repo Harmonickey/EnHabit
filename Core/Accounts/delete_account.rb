@@ -14,14 +14,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def UserExists(id, key, pass, isAdmin)
+def UserExists(id, key, pass)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
     queryObj = Hash.new
     queryObj[key] = (key == "_id" ? Moped::BSON::ObjectId.from_string(id.to_s) : id)
-    
-    queryObj = { :Username => "Admin" } if isAdmin
     
     documents = Array.new
     
@@ -81,7 +79,7 @@ begin
     id = data["id"] if not data["id"].nil? and not data["id"].empty? and isAdmin
     key = "_id" if isAdmin
     
-    if UserExists(id, key, data["Password"], isAdmin)
+    if UserExists(id, key, data["Password"]) || isAdmin
         puts DeleteUser(id, key)
     else
         puts "Incorrect Password"
