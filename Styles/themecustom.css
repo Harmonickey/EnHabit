@@ -1015,7 +1015,8 @@ select::-ms-expand
     background: rgba(0, 0, 0, 0) url(https://api.tiles.mapbox.com/mapbox.js/v2.1.9/images/icons-000000@2x.png) no-repeat scroll -3px -55px / 26px 260px padding-box border-box;
 }
 
-.apply-btn
+.apply-btn,
+.email-btn
 {
     border-radius: 6px;
     border: 2px white solid;
@@ -1023,7 +1024,8 @@ select::-ms-expand
     margin-bottom: 5px;
 }
 
-.apply-btn:hover {
+.apply-btn:hover,
+.email-btn:hover {
     background: white;
     color: black;
 }
