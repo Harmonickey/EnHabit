@@ -353,7 +353,7 @@ function FillAccountInfo(data)
     $(inputs[2]).val(data["FirstName"]);
     $(inputs[3]).val(data["LastName"]);
     
-    if (Contains(data["PhoneNumber"], "-")
+    if (Contains(data["PhoneNumber"], "-"))
     {
         $(inputs[4]).val(data["PhoneNumber"]);
     }
