@@ -1245,6 +1245,8 @@ function LoginUser(hideMainModal)
     
     var data = BuildData(["Username", "Password"]);
 
+    data.Confirm = data.Password; // just to get around the password thing...
+    
     var error = BuildError(data);
     
     if (error != "Please Include<br>")

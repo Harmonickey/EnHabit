@@ -141,7 +141,8 @@
       		<div class="widget stacked">
       			<div class="widget-header actions">
 					<h3>Registered Listing</h3>
-                    <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px; display: none;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+                    <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px; display: none;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+                    <p id="create-listing-warning" class="pull-right" style="color: red; display: none;">Update your account to create a listing!</p>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
                     <label>Click the listing(s) below to update and see more details</label>

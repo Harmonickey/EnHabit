@@ -287,7 +287,12 @@ function GetAccount(isListingPage)
 
 function HandleCreateListingButton(data)
 {
-    console.log(data);
+    if (Contains(data.Username, "Facebook"))
+    {
+        $("#create-listing-button").remove(); // create listing button
+        $("#createListingModal").remove(); // create listing modal
+        $("#create-listing-warning").show();
+    }
 }
 
 function SetBootstrapSwitches(rowId)
