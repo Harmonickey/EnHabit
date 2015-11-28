@@ -85,13 +85,17 @@ if (!isset($_SESSION['CREATED'])) {
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li id="portal-function" class="admin-nav hidden"><a style="cursor: pointer;" href="/AnalyticsPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Analytics</a></li>
-                                <li id="portal-function" class="admin-nav hidden"><a style="cursor: pointer;" href="/UsersPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Users</a></li>
-                                <li id="portal-function" class="admin-nav hidden"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Listings</a></li>
-                                <li id="portal-function" class="admin-nav hidden"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Payments</a></li>
-                                <li id="portal-function" class="admin-nav hidden"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Renters</a></li>
-                                <li id="portal-function" class="tenant-nav hidden"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
-                                <li id="portal-function" class="tenant-nav hidden"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/AnalyticsPortal.php"><i class="fa fa-bar-chart" style="margin-right: 5px;"></i>Analytics</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/UsersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Users</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>Listings</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ApplicantPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Applicants</a></li>                               
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Renters</a></li>
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
                                     <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                                 </li>
