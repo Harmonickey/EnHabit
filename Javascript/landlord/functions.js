@@ -288,8 +288,9 @@ function SetGeocompleteTextBox(rowId)
     
     $(row[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            $(hidden[0]).val(result.geometry.location.A);
-            $(hidden[1]).val(result.geometry.location.F);
+            var keys = Object.keys(result.geometry.location);
+            $(hidden[0]).val(result.geometry.location[keys[0]]);
+            $(hidden[1]).val(result.geometry.location[keys[1]]);
             $(hidden[2]).val($(row[0]).val());
         });
 }
