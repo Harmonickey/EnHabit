@@ -260,6 +260,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <h1>Create New Account</h1>
                 <label>Username: </label><input type="text" class="form-control Username" />
                 <label>Password: </label><input type="password" class="form-control Password" />
+                <label>Confirm Password: </label><input type="password" class="form-control Confirm" />
                 <label>First Name: </label><input type="text" class="form-control FirstName" />
                 <label>Last Name: </label><input type="text" class="form-control LastName" />
                 <label>Email: </label><input type="text" class="form-control Email" />
@@ -442,22 +443,27 @@ if (!isset($_SESSION['CREATED'])) {
         <!-- placeholder for details view -->
         <div id="details-view" style="display: none;">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
-            <div class="row">
+            <!-- top section -->
+            <div id="details-view-slideshow-section" class="row">
+                
+            </div>
+            <div id="details-items" class="row">
                 <!-- left section -->
-                <div id="details-view-listing-details" class="col-lg-6 col-md-6 col-sm-6">
+                <div id="details-view-listing-details" class="col-lg-8 col-md-8 col-sm-8">
+                
+                </div>
+                <div id="details-view-actions" class="col-lg-4 col-md-4 col-sm-4">
                 
                 </div>
                 <!-- right section -->
+                <!--
                 <div class="col-lg-6 col-md-6 col-sm-6">
-                    <!-- top section -->
-                    <div id="details-view-slideshow-section" class="row">
-                        
-                    </div>
-                    <!-- bottom section -->
+                    
+                    bottom section
                     <div id="details-view-map-section" class="row">
                     
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
         <!-- end details view -->

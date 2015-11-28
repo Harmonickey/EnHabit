@@ -1136,7 +1136,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     '</div>';
     
     var detailsContent = 
-    "<div class='container-fluid text-center'>" +
+    "<div class='container-fluid' style='padding-left: 40px;'>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
                 "<h2>" + Address + " " + (Unit ? Unit : "") + "</h2>" +
@@ -1147,52 +1147,55 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
                 "<h2>$" + Price + "/Month</h2>" +
             "</div>" + 
         "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+        "<div class='row' style='margin-top: 25px;'>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Bedrooms: " + Bedrooms + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                 "<p>Lease Type: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Bathrooms: " + Bathrooms + "</p>" +
+            "</div>" + 
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                 "<p>Building Type: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Bedrooms) + "</p>" + 
-            "</div>" +
-            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                "<p>Bedrooms: " + Bedrooms + "</p>" + 
-            "</div>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                "<p>Bathrooms: " + Bathrooms + "</p>" +
-            "</div>" + 
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+        "<div class='row'>" + 
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                 "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
             "</div>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
-            "</div>" +
-            
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
+            "</div>" +        
         "</div>" +
         "<div class='row'>" +
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
+            "</div>" + 
+            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Laundry) + "</p>" + 
+            "</div>" +
+        "</div>" +
+        "<div class='row' style='margin-top: 50px;'>" +
             "<div class='col-lg-7 col-md-7 col-sm-7'>" +
                 "<p>" + (Notes != "undefined" ? Notes : "") + "</p>" + 
             "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
-                //"<div class='row'>" +
-                //    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Share Listing' //onclick='ShareListing(\"" + Id + "\");' />" +
-                //"</div>" +
-                //"<div class='row'>" +
-                //    "<input type='btn' class='btn btn-outline-inverse btn-sm' value='Contact //Landlord' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
-                //"</div>" +
-                "<div class='row'>" +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='Apply for This Listing' onclick='ApplyForListing(\"" + Id + "\");' />" +
-                "</div>" +
-            "</div>" +
+        "</div>" +
+    "</div>";
+    
+    var actionsContent =
+    "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+        "<div class='row'>" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='ApplyForListing(\"" + Id + "\");' />" +
+        "</div>" +
+        "<div class='row'>" +
+            "<input type='btn' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
+        "</div>" +
+        "<div class='row'>" +
+            "<input type='btn' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
     
@@ -1200,19 +1203,24 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     
     $("#details-view-listing-details").html(detailsContent);
     
+    $("#details-view-actions").html(actionsContent);
+    /*
     $('#details-view-listing-details .container-fluid').slimScroll({
         height: '100%',
         railVisible: true,
         alwaysVisible: true,
         size: '10px'
     });
-    
+    */
+    var width = $("#details-view").width();
+    $("#details-items").width(width);
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
-    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
+    //SubscribeSlideshowArrows();
+    //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
+    //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
+    
     SubscribeSlideshowArrows();
-    var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
-    L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
 }
 
 /*
@@ -1508,8 +1516,7 @@ function DisableModalSubmit(modal)
 
 function CreateAccount()
 {
-    var data = BuildData(["Username", "Password", "FirstName", "LastName",
-                                    "Email", "PhoneNumber"]);
+    var data = BuildData(["Username", "Password", "Confirm", "FirstName", "LastName", "Email", "PhoneNumber"]);
                                     
     var error = BuildError(data);
     
@@ -1616,17 +1623,22 @@ function CloseDetailsView()
 {
     $("#details-view").html(
         "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
-        "<div class='row'>" +
-            "<div id='details-view-listing-details' class='col-lg-6 col-md-6 col-sm-6'></div>" +
+        "<div id='details-view-slideshow-section' class='row'></div>" + 
+        "<div id='details-items' class='row'>" +
+            "<div id='details-view-listing-details' class='col-lg-8 col-md-8 col-sm-8'></div>" +
+            "<div id='details-view-actions' class='col-lg-4 col-md-4 col-sm-4'></div>" +
+            /*
             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                 "<div id='details-view-slideshow-section' class='row'></div>" +
                 "<div id='details-view-map-section' class='row'></div>" +
-            "</div>" +
+            "</div>" +*/
         "</div>");
         
     $("#details-view").fadeOut();
     
-    location.hash = "";
+    //location.hash = "";
+    
+    SubscribeSlideshowArrows();
 }
 
 function OpenExtrasView()
@@ -1826,9 +1838,12 @@ function BuildError(fields)
     {
         error += "Username<br>";
     }
-    if (fields.Password === "")
+    if (fields.Password !== "" || fields.Confirm !== "")
     {
-        error += "Password<br>";
+        if (fields.Password !== fields.Confirm)
+        {
+            error += "Matching Password and Confirmation<br>";
+        }
     }
     if (fields.FirstName === "")
     {
@@ -1930,5 +1945,4 @@ $(window).on('resize', function() {
     
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
-    $("#details-view-slideshow-section .slideshow .image img").css("top", (height / 2) - 100);
 });

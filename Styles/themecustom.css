@@ -590,8 +590,8 @@
 
 #details-view .close
 {
-    top: 50px;
-    right: 50px;
+    top: 55px;
+    right: 55px;
 }
 
 #Filters input,
@@ -827,28 +827,26 @@
     margin: 0;
 }
 
-#details-view > .row
-{
-    background-color: #3a3836;
-    border: 1px solid black;
-}
-
-#details-view > .row,
-#details-view > .row > div
-{
-    height: 100%;
-}
-
-#details-view-listing-details,
-#details-view-slideshow-section,
-#details-view-map-section
+#details-view-listing-details
 {
     padding: 10px;
 }
 
-#details-view-listing-details
+#details-view-listing-details .row p
 {
-    height: 100%;
+    margin: 0;
+}
+
+#details-items
+{
+    height: 50%;
+    position: absolute;
+    background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(35,36,39,0.85) 50%, rgba(69,72,77,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0045484d',GradientType=0 );
+    top: 50px;
+    border-radius: 30px;
 }
 
 #details-view-listing-details h2
@@ -863,10 +861,56 @@
     margin-top: 18px;
 }
 
-#details-view-slideshow-section,
-#details-view-map-section
+#details-view-slideshow-section
 {
-    height: 50%;
+    padding: 0;
+}
+
+#details-view-slideshow-section,
+#details-view-slideshow-section .slideshow
+{
+    border-radius: 30px;
+}
+
+#details-view-slideshow-section img
+{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+}
+
+#details-view-slideshow-section .slider-arrow
+{
+    z-index: 1;
+}
+
+#details-view-slideshow-section
+{
+    height: 100%;
+}
+
+#details-view .details-listing-action-btn 
+{
+    background: transparent;
+    border: 2px green solid;
+    color: green;
+    border-radius: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 150px;
+    margin-top: 20px;
+    transition: all 0.4s;
+}
+
+#details-view .details-listing-action-btn:hover
+{
+    color: black;
+    background: darkgreen;
+}
+
+#details-view-actions
+{
+    margin-top: 120px;
 }
 
 #details-view .slideshow .slider-arrow
