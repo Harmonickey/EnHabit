@@ -431,7 +431,31 @@ if (!isset($_SESSION['CREATED'])) {
         <?php 
             if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']) || isset($_SESSION['admin']))
             {
-                echo "<script type='text/javascript'>ShowLoginFeatures(); </script>\n";
+                $res = "";
+                if (isset($_SESSION['tenant']))
+                {
+                    if (isset($_SESSION['admin']))
+                    {
+                        $res = "Admin";
+                    }
+                    else
+                    {
+                        $res = "Tenant";
+                    }
+                }
+                else if (isset($_SESSION['landlord']))
+                {
+                    if (isset($_SESSION['admin']))
+                    {
+                        $res = "Admin";
+                    }
+                    else
+                    {
+                        $res = "Landlord";
+                    }
+                }
+                
+                echo "<script type='text/javascript'>ShowLoginFeatures(false,'" . $res . "'); </script>\n";
             }
             else
             {
