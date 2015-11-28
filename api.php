@@ -32,7 +32,18 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     if (strpos($result, "Okay") === 0)
     {
         // we don't want to expose UserIds or LandlordIds, or UserIds that belong to Admins
-        echo "Okay";
+        if (strpos($result, "Landlord") === 5)
+        {
+            echo "Okay:Landlord";
+        }
+        if (strpos($result, "Tenant") === 5 || strpos($result, "Created") === 5 )
+        {
+            echo "Okay:Tenant";
+        }
+        if (strpos($result, "Admin") === 5)
+        {
+            echo "Okay:Admin";
+        }
     }
     else
     {

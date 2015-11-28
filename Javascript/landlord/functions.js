@@ -46,7 +46,7 @@ function GetAllRenters()
         {
             try
             {
-                if (!res || Contains(res, "No Applicants Found"))
+                if (!res || Contains(res, "No Renters Found"))
                 {
                     throw new Error("No Renters");
                 }
@@ -58,7 +58,7 @@ function GetAllRenters()
                     
                     if (Contains(res, "Error"))
                     {
-                        throw new Error(res);
+                        throw new Error("No Renters Found");
                     }
                     else
                     {

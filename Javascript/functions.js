@@ -1279,7 +1279,7 @@ function LoginUser(hideMainModal)
                 {
                     if (Contains(res, "Okay"))
                     {
-                        ShowLoginFeatures(hideMainModal);
+                        ShowLoginFeatures(hideMainModal, res);
                     }
                     else
                     {
@@ -1329,7 +1329,7 @@ function LoginFacebookUser(userID, accessToken)
             {
                 if (Contains(res, "Okay"))
                 {
-                    ShowLoginFeatures(true);
+                    ShowLoginFeatures(true, res);
                 }
                 else
                 {
@@ -1472,10 +1472,23 @@ function RemoveLoginFeatures()
     $(".account-nav").hide();
 }
 
-function ShowLoginFeatures(hideMainModal)
+function ShowLoginFeatures(hideMainModal, userType)
 {   
     $(".navbar-login-btn").hide();
     $(".account-nav").show();
+    
+    if (Contains(userType, "Admin"))
+    {
+        $(".admin-nav").show();
+    }
+    if (Contains(userType, "Landlord"))
+    {
+        $(".landlord-nav").show();
+    }
+    if (Contains(userType, "Tenant"))
+    {
+        $(".tenant-nav").show();
+    }
 
     if (hideMainModal === true)
     {
