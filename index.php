@@ -420,7 +420,7 @@ if (!isset($_SESSION['CREATED'])) {
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
-            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']))
+            if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']) || isset($_SESSION['admin']))
             {
                 echo "<script type='text/javascript'>ShowLoginFeatures(); </script>\n";
             }
