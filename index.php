@@ -306,7 +306,7 @@ if (!isset($_SESSION['CREATED'])) {
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
                         <label>Message</label>
-                        <textarea rows='10' class="form-control email-message" />
+                        <textarea rows='10' class="form-control email-message">I would like to meet up with you to view this listing!</textarea>
                     </div>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
