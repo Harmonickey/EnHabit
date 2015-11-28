@@ -165,11 +165,13 @@ function GetAllListings()
                     throw new Error("No Listings Found");
                     $("#accordion").html("<p>No Listings Yet</p>");
                     $(".actions a").show();
+                    $(".listings-message").hide();
                 }
                 else if (Contains(res, "No Matching Entries"))
                 {
                     $("#accordion").html("<p>No Listings Yet</p>");
                     $(".actions a").show();
+                    $(".listings-message").hide();
                 }
                 else
                 {
@@ -181,6 +183,7 @@ function GetAllListings()
                     {
                         throw new Error(res);
                         $(".actions a").show();
+                        $(".listings-message").hide();
                     }
                     else
                     {
@@ -200,6 +203,8 @@ function GetAllListings()
                             SetBootstrapSwitches(oid);
                             
                             addedFiles[oid] = false;
+                            
+                            $(".listings-message").show();
                         }
                     }
                 }
@@ -589,6 +594,8 @@ function ProcessListing()
                             numUploaded[oid] = 0;
                             
                             pendingData = null;
+                            
+                            $(".listings-message").show();
                         }
                     }
                 }

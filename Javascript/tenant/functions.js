@@ -106,11 +106,13 @@ function GetAllListings()
                 {
                     throw new Error("No Listings Found");
                     $("#accordion").html("<p>No Listing Yet</p>");
+                    $(".listings-message").hide();
                     $(".actions a").show();                      
                 }
                 else if (Contains(res, "No Matching Entries"))
                 {
                     $("#accordion").html("<p>No Listing Yet</p>");
+                    $(".listings-message").hide();
                     $(".actions a").show();
                 }
                 else
@@ -123,6 +125,7 @@ function GetAllListings()
                     {
                         throw new Error(res);
                         $(".actions a").show();
+                        $(".listings-message").hide();
                     }
                     else
                     {
@@ -142,11 +145,13 @@ function GetAllListings()
                             SetBootstrapSwitches(oid);
                             
                             addedFiles[oid] = false;
+                            $(".listings-message").show();
                         }
                         
                         if (data.length == 0)
                         {
                             $(".actions a").show();
+                            $(".listings-message").hide();
                         }
                     }                       
                 }
@@ -593,6 +598,7 @@ function ProcessListing()
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                             
                             $(".actions a").hide();
+                            $(".listings-message").show();
                             
                             numUploaded = 0;
                             

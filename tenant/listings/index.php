@@ -145,7 +145,7 @@
                     <p id="create-listing-warning" class="pull-right" style="color: red; display: none;">Update your account to create a listing!</p>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
-                    <label>Click the listing(s) below to update and see more details</label>
+                    <label class="listings-message" style="display: none;">Click the listing below to update and see more details</label>
 					<!-- all the listings go here -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         

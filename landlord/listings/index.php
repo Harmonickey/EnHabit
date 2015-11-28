@@ -147,7 +147,7 @@
                     <a class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
-                    <label>Click the listing(s) below to update and see more details</label>
+                    <label class="listings-message" style="display: none;">Click the listing(s) below to update and see more details</label>
 					<!-- all the listings go here -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         
