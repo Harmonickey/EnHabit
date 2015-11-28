@@ -305,6 +305,7 @@ $(function()
 
     GetAllListings();
     GetAllLandlords();
+    GetAccount(true);
 
     InitSpecialFields();
 });

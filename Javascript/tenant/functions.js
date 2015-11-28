@@ -223,7 +223,7 @@ function GetAllLandlords()
     });
 }
 
-function GetAccount()
+function GetAccount(isListingPage)
 {
     $.ajax(
     {
@@ -258,7 +258,14 @@ function GetAccount()
                     }
                     else
                     {
-                        FillAccountInfo(data);
+                        if (isListingPage)
+                        {
+                            HandleCreateListingButton(data);
+                        }
+                        else
+                        {
+                            FillAccountInfo(data);
+                        }
                     }
                 }
             }
@@ -276,6 +283,11 @@ function GetAccount()
             $(".account .fa-spinner").remove();
         }
     });
+}
+
+function HandleCreateListingButton(data)
+{
+    console.log(data);
 }
 
 function SetBootstrapSwitches(rowId)
