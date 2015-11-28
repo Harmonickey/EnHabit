@@ -1475,6 +1475,7 @@ function RemoveLoginFeatures()
 function ShowLoginFeatures(hideMainModal, userType)
 {   
     $(".navbar-login-btn").hide();
+    $(".account-nav .dropdown-menu li").not("#login-function").hide(); // reset menu
     $(".account-nav").show();
     
     if (Contains(userType, "Admin"))
