@@ -956,9 +956,9 @@ function InsertMarkers(res)
                 
                 var popupContent =  
                             '<div class="popup">' +
-                                '<h2>' + entry[0].Address + '</h2>' +
-                                '<p>Multiple listings available.</p>' +
-                                '<input type="button" class="btn btn-outline-inverse btn-sm" value="Show All" onclick="LoadMultipleListings(\'' + entry[0].Address + '\')">' +
+                                '<h2 class="multi-h2">' + entry[0].Address + '</h2>' +
+                                '<p class="multi-p">Multiple listings available.</p>' +
+                                '<input type="button" class="btn btn-outline-inverse btn-sm multi-showall" value="Show All" onclick="LoadMultipleListings(\'' + entry[0].Address + '\')">' +
                             '</div>';
                 
                 marker.bindPopup(popupContent, 
@@ -978,14 +978,14 @@ function InsertMarkers(res)
 
                     var listingHtml = "<div class='item-content listing'>" +
                                 "<img src='/images/enhabit/images/" + listingPic + "' height='100' width='100' />" +
-                                "<div class='information'>" +
+                                "<div class='information text-left'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<p class='listing-leaseType'>" + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
+                                    "<br>" +
+                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "')\" />" + 
                                 "</div>" +
                             "</div>";
                     

@@ -567,6 +567,20 @@
     margin-bottom: 15px;
 }
 
+#common-modal .listing .multi-more-details
+{
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    margin-bottom: 5px;
+}
+
+#common-modal .listing .multi-more-details:hover
+{
+    background: white;
+    color: black;
+}
+
 #listings .close,
 #details-view .close
 {
@@ -616,6 +630,29 @@
 .popup h2 {
     float: left;
 }
+
+.popup .multi-showall {
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    margin-bottom: 5px;
+}
+
+.popup .multi-showall:hover {
+    background: white;
+    color: black;
+}
+
+.popup .multi-h2 {
+    float: none;
+    width: 100%;
+    text-align: center;
+}
+
+.popup .multi-p {
+    color: white;
+}
+
 .popup h3 {
     float: right;
     font-size: 1.7em;
