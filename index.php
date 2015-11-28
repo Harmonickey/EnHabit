@@ -311,7 +311,7 @@ if (!isset($_SESSION['CREATED'])) {
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
-                        <input type="button" class="btn btn-outline-inverse btn-sm email-btn" value="Send Email" style="width: 75px; margin-top: 10px;"/>
+                        <input type="button" class="btn btn-outline-inverse btn-sm email-btn" value="Send Email" style="width: 100px; margin-top: 10px;"/>
                     </div>
                 </div>
                 <p class="SendEmail-error alert alert-danger" style="display: none;"></p>
