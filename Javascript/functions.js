@@ -1192,10 +1192,10 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='ApplyForListing(\"" + Id + "\");' />" +
         "</div>" +
         "<div class='row'>" +
-            "<input type='btn' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
         "</div>" +
         "<div class='row'>" +
-            "<input type='btn' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
     

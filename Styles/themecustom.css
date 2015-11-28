@@ -1017,9 +1017,15 @@ select::-ms-expand
 
 .apply-btn
 {
-    background-color: green;
-    border-color: green;
-    margin-top: 18px;
+    border-radius: 6px;
+    border: 2px white solid;
+    background: transparent;
+    margin-bottom: 5px;
+}
+
+.apply-btn:hover {
+    background: white;
+    color: black;
 }
 
 .navbar
