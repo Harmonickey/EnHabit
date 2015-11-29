@@ -230,7 +230,7 @@
                                 <div class="form-group row">
                                     <div class="form-group col-lg-12 col-md-12 col-sm-12">
                                         <label for="name_on_card">Name on card</label>
-                                        <input class="form-control text-center" type="text" name="name_on_card" id="name_on_card" style="width: ">
+                                        <input class="form-control text-center" type="text" name="name_on_card" id="name_on_card">
                                     </div>
                                 </div>
                                 <div class="row">                                           
@@ -255,7 +255,7 @@
                             </li>
                         </ul>
                     </form>
-                    <div class="text-center" style="width: 100%">
+                    <div class="text-center" style="width: 100%; margin-top: 10px;">
                         <button id="pay-now" class="btn btn-info" style="font-size: 25px;"><i class="fa fa-cc-paypal fa-2" style="margin-right: 10px;"></i>Pay Now</button>
                     </div>                      
                 </div>
