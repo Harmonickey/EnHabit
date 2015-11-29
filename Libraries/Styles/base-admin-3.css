@@ -1652,7 +1652,7 @@ nav .container
   position: absolute;
 }
 
-nav ul .navbar-right
+nav .container .navbar-right
 {
   margin-top: -2px;
   margin-right: 0;
