@@ -967,7 +967,7 @@ function OpenPaymentModal(uid)
 function MakePayment(uid)
 {
     var rent = $("#" + uid + " .rent").text().replace("$", "");
-    var description = "Payment from Admin Portal";
+    var description = "Payment from Enhabit System";
     var landlordEmail = $("#" + uid + " .landlordEmail").text();
     
     // call from my custom payment library
@@ -1364,8 +1364,11 @@ function CreatePaymentView(oid, data)
                                 "<label>Unit</label><p>" + (data.Unit ? data.Unit : "") + "</p>" + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Rent Due</label><p>$" + data.Rent + "</p>" + 
+                                "<label>Rent Due</label><p class='rent'>$" + data.Rent + "</p>" + 
                             "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Landlord Email</label><p class='landlordEmail'>" + data.LandlordEmail + "</p>" + 
+                            "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
