@@ -74,7 +74,15 @@ else if (isset($_POST["command"]))
             }
             else
             {
-                echo "Okay:Tenant";
+                if (strpos($result, "true") !== false) // I don't wanna talk about it
+                {
+                    echo "Okay:Tenant:HasRental";
+                }
+                else
+                {
+                    echo "Okay:Tenant";
+                }
+                
             }
         }
         else 

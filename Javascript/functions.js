@@ -1491,6 +1491,10 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
+        if (Contains(userType, "HasRental"))
+        {
+            $(".rental-nav").show();
+        }
     }
 
     if (hideMainModal === true)
