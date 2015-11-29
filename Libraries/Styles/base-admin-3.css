@@ -96,7 +96,9 @@ h6 {
   border-color: transparent;
 }
 .navbar .navbar-nav > li > a {
-  font-size: 12px;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
 }
 .navbar .navbar-header .navbar-brand {
   color: #CCC;

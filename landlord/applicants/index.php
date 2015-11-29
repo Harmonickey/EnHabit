@@ -80,19 +80,22 @@
 
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav navbar-right">
-		<li class="dropdown">
-						
-			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="fa fa-user"></i> 
-				Account
-				<b class="caret"></b>
-			</a>
-			
-			<ul class="dropdown-menu">
-				<li><a style="cursor: pointer;" onclick="Logout()">Logout</a></li>
-			</ul>
-		</li>
+    <ul class="nav navbar-nav navbar-right">                       
+        <li class="account-nav dropdown" style="">      
+            <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown"> 
+                Account
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
+                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>My Renters</a></li>                    
+                <li id="login-function" class="menu-item scroll" onclick="Logout()">
+                    <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
+                </li>
+            </ul>
+        </li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </div> <!-- /.container -->

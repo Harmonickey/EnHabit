@@ -25,13 +25,6 @@ var background_settings = {
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
 var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
-var enhabitIcon = L.icon({
-    iconUrl: '/assets/images/theme_images/pin.png',
-
-    iconSize:     [25, 36.65], // size of the icon
-    iconAnchor:   [12, 36.65], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -35] // point from which the popup should open relative to the iconAnchor
-});
 var markers = new L.FeatureGroup();
 
 //map.on('draw:created', getPointsWithinPolygon);
@@ -799,8 +792,8 @@ function SearchForListings()
         url: "/api.php",
         beforeSend: function()
         {
-            $($("#search-section a")[0]).prop("disabled", true);
-            $($("#search-section a")[0]).val("Searching...");
+            $("#search").prop("disabled", true);
+            $("#search").text("Searching...");
         },
         data: 
         {
@@ -814,26 +807,26 @@ function SearchForListings()
             {
                 if (Contains(res, "No Matching Entries"))
                 {
-                    throw new Error(res);
+                    throw new Error("No Matching Entries");
                 }
                 else
                 {
-                    intervalVal = setInterval(InsertMarkers, 60000, res);
+                    InsertMarkers(res);
                 }
             }
             catch (e)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'}); 
+                $.msgGrowl ({ type: 'warning', title: 'Result', text: "No Matching Entries", position: 'top-center'}); 
             }
         },
         error: function(res, err) 
         {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'}); 
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'}); 
         },
         complete: function()
         {
-            $($("#search-section a")[0]).prop("disabled", false);
-            $($("#search-section a")[0]).val("Search");
+            $("#search").prop("disabled", false);
+            $("#search").text("Search");
         }
     });
 }
@@ -895,9 +888,14 @@ function InsertMarkers(res)
         
         $.each(entries, function(address, entry) 
         {
-            if (entry.length == 1)
+            if (entry.length == 1) // single listing
             {
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                marker.setIcon(L.mapbox.marker.icon({
+                    'marker-color': '#000',
+                    'marker-size': 'medium',
+                    'marker-symbol': 'building'
+                }));
                 
                 var slideshowContent = "";
                 var base = (entry[0].Testing ? "" : "/images/enhabit/images/");
@@ -950,9 +948,14 @@ function InsertMarkers(res)
                 
                 InsertIntoListingSlideshowObject(entry[0]);
             }
-            else if (entry.length > 1)
+            else if (entry.length > 1) // multi listings
             {   
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                marker.setIcon(L.mapbox.marker.icon({
+                    'marker-color': '#000',
+                    'marker-size': 'medium',
+                    'marker-symbol': 'building'
+                }));
                 
                 var popupContent =  
                             '<div class="popup">' +
@@ -981,11 +984,10 @@ function InsertMarkers(res)
                     var listingHtml = "<div class='item-content listing'>" +
                                 "<img src='" + base + listingPic + "' height='100' width='100' />" +
                                 "<div class='information text-left'>" +
-                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p>" +
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
-                                    "<p class='listing-price'>$" + listing.Price + "/month</p>" +
-                                    "<br>" +
                                     "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
                                     "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
                                 "</div>" +

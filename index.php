@@ -90,8 +90,14 @@ if (!isset($_SESSION['CREATED'])) {
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>Listings</a></li>
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>
-                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+                                <?php
+                                if ($_SESSION["hasRental"] == 'true')
+                                {
+                                    echo "<li class='tenant-nav' style='display: none;'><a style='cursor: pointer;' href='/ListingsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>";
+                                }
+                                ?>
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
@@ -179,9 +185,9 @@ if (!isset($_SESSION['CREATED'])) {
                     </div>
                 </div>
                 <div class="double-item-content">
-                    <div class="item-content list-view-button">
+                    <!--<div class="item-content list-view-button">
                         <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
-                    </div>
+                    </div>-->
                     <div class="item-content extra-filter-button">
                         <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
                     </div>

@@ -1204,8 +1204,6 @@ function ProcessListing()
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                             
-                            $(".actions a").hide();
-                            
                             numUploaded[oid] = 0;
                             
                             pendingData = null;

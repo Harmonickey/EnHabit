@@ -998,10 +998,15 @@ function RemoveApplicant(applicantId, isAccepting)
             {
                 if (Contains(res, "Okay"))
                 {
-                    $("#" + applicantId).remove();
+                    $("#heading" + applicantId).parent().remove();
                     if (!isAccepting)
                     {
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Removed Applicant", position: 'top-center'});
+                    }
+                    
+                    if ($("#accordion").text() == "")
+                    {
+                        $("#accordion").text("<p>No Applicants</p>");
                     }
                 }
                 else
