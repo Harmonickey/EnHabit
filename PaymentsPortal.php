@@ -2,9 +2,16 @@
 
 session_start();
 
-if ((isset($_SESSION["admin"])))
+if ((isset($_SESSION["admin"])) || isset($_SESSION["tenant"]))
 {
-    header("Location: /admin/payments", FALSE);
+    if (isset($_SESSION["admin"]))
+    {
+        header("Location: /admin/payments", FALSE);
+    }
+    else
+    {
+        header("Location: /tenant/payments", FALSE);
+    }
 }
 
 ?>

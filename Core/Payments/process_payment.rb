@@ -42,12 +42,11 @@ include PayPal::SDK::REST
           :postal_code => @data["postal"], :country_code => "US" }}}]},
   :transactions => [{
     :amount => {
-      :total => 0.01,
+      :total => @data["amount"],
       :currency => "USD"},
     :description => @data["description"] }]})
     
-
-@result = @payment.create
+@result = @payment.create # create the payment in our system, sends to the paypal account
 
 File.open("results.log", "a") do |output|
     output.puts @result.inspect
