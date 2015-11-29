@@ -45,6 +45,11 @@ def UpdateUser(isAdmin, key, userId, isLandlord, isVerified, isActive, isAdminDa
             # on an existing account
             if (account[0]["LandlordId"].nil? and isLandlord)
                 usrObj["LandlordId"] = SecureRandom.uuid
+                
+                landlordObj = Hash.new
+                landlordObj["Landlord"] = usrObj["Username"]
+                
+                session[:listings].find(landlordObj).update_all('$set' => {"LandlordId" => usrObj["LandlordId"]})
             end
             
             session[:accounts].find(queryObj).update('$set' => usrObj)

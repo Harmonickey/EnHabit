@@ -792,7 +792,7 @@ function SearchForListings()
         url: "/api.php",
         beforeSend: function()
         {
-            $("#search").prop("disabled", true);
+            $("#search-function").prop("disabled", true);
             $("#search").text("Searching...");
         },
         data: 
@@ -825,7 +825,7 @@ function SearchForListings()
         },
         complete: function()
         {
-            $("#search").prop("disabled", false);
+            $("#search-function").prop("disabled", false);
             $("#search").text("Search");
         }
     });
