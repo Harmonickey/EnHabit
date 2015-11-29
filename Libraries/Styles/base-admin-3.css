@@ -1645,3 +1645,15 @@ ul.pagination li.active a:hover {
 .panel-default > .panel-heading {
   background-color: #F3F3F3;
 }
+
+nav .container
+{
+  width: 98%;
+  position: absolute;
+}
+
+nav ul .navbar-right
+{
+  margin-top: -2px;
+  margin-right: 0;
+}
