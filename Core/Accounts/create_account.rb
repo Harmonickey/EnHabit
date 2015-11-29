@@ -47,6 +47,14 @@ def InsertUser(isAdmin, isActive, isVerified, isLandlord, user, pass, firstName,
         
         mongoSession.with(safe: true) do |session|
             document = session[:accounts].find(queryObj).select(_id: 1, Username: 1, Password: 1, FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1, IsAdmin: 1, IsActive: 1, IsVerified: 1, IsLandlord: 1).one
+            
+            if isLandlord
+                landlordObj = Hash.new
+                landlordObj["Landlord"] = usrObj["Username"]
+                
+                session[:listings].find(landlordObj).update_all('$set' => {"LandlordId" => usrObj["LandlordId"]})
+            end
+            
         end
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$Username_1"
