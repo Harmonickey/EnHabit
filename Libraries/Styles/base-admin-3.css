@@ -1652,6 +1652,11 @@ nav .container
   position: absolute;
 }
 
+nav .container .logo
+{
+  margin-left: 30px;
+}
+
 nav .container .navbar-right
 {
   margin-top: -2px;
