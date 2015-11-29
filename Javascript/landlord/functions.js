@@ -1006,7 +1006,7 @@ function RemoveApplicant(applicantId, isAccepting)
                     
                     if ($("#accordion").text() == "")
                     {
-                        $("#accordion").text("<p>No Applicants</p>");
+                        $("#accordion").html("<p>No Applicants</p>");
                     }
                 }
                 else
