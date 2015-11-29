@@ -135,7 +135,7 @@ def GetApplicantData(applicantId)
         # get the applicant stuff
         applicant = Array.new
         mongoSession.with(safe: true) do |session|
-            applicant = session[:applicant].find(queryObj).to_a
+            applicant = session[:applicants].find(queryObj).to_a
         end
         
         if applicant.count == 0
