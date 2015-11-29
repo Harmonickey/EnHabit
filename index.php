@@ -93,7 +93,7 @@ if (!isset($_SESSION['CREATED'])) {
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
                                 <?php
-                                if ($_SESSION["hasRental"] == 'true')
+                                if ($_SESSION["hasRental"] == true)
                                 {
                                     echo "<li class='tenant-nav' style='display: none;'><a style='cursor: pointer;' href='/ListingsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>";
                                 }

@@ -37,7 +37,7 @@ function set_session($result, $data)
             $arr = explode(":", $result);
             $end = end($arr);
             $id = array_shift(array_values(explode(",", $end)));
-            $hasRental = end($end);
+            $hasRental = end(array_values(explode(",", $end)));
             $_SESSION["hasRental"] = $hasRental;
             $_SESSION["userId"] = trim($id);
         }
