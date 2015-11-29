@@ -72,7 +72,7 @@ function ProcessPayoutToLandlord(uid, rent, landlordEmail, paymentMonth, descrip
 {
     var data = {
         Rent: rent,
-        Email: "AAyerdi@u.northwestern.edu",
+        Email: landlordEmail,
         Description: description,
         Month: paymentMonth
     };
@@ -87,7 +87,6 @@ function ProcessPayoutToLandlord(uid, rent, landlordEmail, paymentMonth, descrip
            data: data 
        },
        success: function(res) {
-           
            // Now the data needs to be inserted into the database and the
            // flag on the renter's document needs to be set to HasPaidRent = true          
            UpdateRenter(uid);
