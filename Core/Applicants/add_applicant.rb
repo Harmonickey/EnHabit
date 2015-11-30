@@ -14,7 +14,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def InsertApplicant(userId, listingId, landlordId, salary, jobTitle)
+def InsertApplicant(userId, listingId, landlordId)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
