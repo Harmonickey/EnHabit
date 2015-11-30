@@ -1149,7 +1149,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>$" + Price + "/Month, Available " + Start + "</h2>" +
+                "<h2>$" + Price + "/Month, Available " + DateToHumanReadable(Start) + "</h2>" +
             "</div>" + 
         "</div>" +
         "<div class='row' style='margin-top: 25px;'>" +
@@ -1583,6 +1583,13 @@ function CreateAccount()
             }
         });
     }
+}
+
+function DateToHumanReadable(date)
+{
+    var date = new Date(date);
+    
+    return (date.getMonth() + 1) + "-" date.getDate() + "-" + date.getFullYear();
 }
 
 function LoadModal(event, which, enterDefault, btnText)
