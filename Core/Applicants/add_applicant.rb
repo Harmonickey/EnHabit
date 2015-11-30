@@ -23,8 +23,6 @@ def InsertApplicant(userId, listingId, landlordId, salary, jobTitle)
     applicantsObj["UserId"] = userId
     applicantsObj["ListingId"] = listingId
     applicantsObj["LandlordId"] = landlordId
-    applicantsObj["Salary"] = salary
-    applicantsObj["JobTitle"] = jobTitle
  
     retVal = nil
  
@@ -79,7 +77,7 @@ begin
     listingData = GetListingData(data["ListingId"]) # ListingId (oid), LandlordId
     raise "No Listing Data" if listingData.nil?
     
-    puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId], data["Salary"], data["JobTitle"])
+    puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId])
 rescue Exception => e
     puts e.inspect
 end

@@ -283,30 +283,6 @@ if (!isset($_SESSION['CREATED'])) {
                 <p>Welcome to Enhabit! You can set up our service with your credit or debit card to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
             </div>
             <!-- #modal-content-register-success -->
-            <!-- Application -->
-            <div class="content-to-populate-in-modal" id="modal-content-application">
-                <!-- placeholder for details view -->
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <div class="row row-centered" style="margin-top: 10px;">
-                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
-                        <label>Job Title</label>
-                        <input type="text" class="form-control jobTitle" />
-                    </div>
-                </div>
-                <div class="row row-centered" style="margin-top: 10px;">
-                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
-                        <label>Salary</label>
-                        <input type="text" class="form-control salary" />
-                    </div>
-                </div>
-                <div class="row row-centered" style="margin-top: 10px;">
-                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
-                        <input type="button" class="btn btn-outline-inverse btn-sm apply-btn" value="Apply" style="width: 75px; margin-top: 10px;"/>
-                    </div>
-                </div>
-                <!-- end application view-->
-            </div>
-            <!-- End Application -->
             <!-- Email -->
             <div class="content-to-populate-in-modal" id="modal-content-email">
                 <!-- placeholder for details view -->

@@ -58,7 +58,7 @@ def GetEmailDetails(userId, listingId)
             return nil
         end
         
-        return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"])}
+        return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"]), "Name" => account[0]["FirstName"] + " " + account[0]["LastName"], "PhoneNumber" => (account[0]["PhoneNumber"].nil? ? "" : account[0]["PhoneNumber"])}
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
@@ -77,26 +77,17 @@ begin
     
     raise "Could not Get Details" if @details.nil?
     
-    @from = @details["From"]
     @to = @details["To"]
+    @message = data["Message"]
+    @name = @details["Name"]
     @listing = @details["Listing"]
+    @from = @details["From"]
+    @phone = @details["PhoneNumber"] if not @details["PhoneNumber"].nil?
     
     raise "Could Not Find User" if @from.nil? 
     
-    @message = data["Message"]
-    
-    message = "From: <#{@from}>
-               To: <#{@from}>
-               Subject: Request Info for #{@listing}
+    `#{@deploymentBase}/Core/Accounts/mail.rb #{@to} #{@message} #{@name} #{@listing} #{@from} #{@phone}`
 
-               #{@message}"
-
-    puts message
-               
-    Net::SMTP.start('66.147.244.154') do |smtp|
-      smtp.send_message message, @from, 
-                                 @from
-    end
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
