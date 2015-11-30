@@ -1760,8 +1760,8 @@ function SendEmail(listingId)
         },
         complete: function()
         {
-            $("#common-modal .email-btn").prop("disabled", true);
-            $("#common-modal .email-btn").val("Sending...");
+            $("#common-modal .email-btn").prop("disabled", false);
+            $("#common-modal .email-btn").val("Send Email");
             
             SetDefaultButtonOnEnter("");
         }
