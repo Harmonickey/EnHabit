@@ -1371,49 +1371,57 @@ function AdjustZIndex()
 
 function Apply(listingId)
 {
-    var data = 
+    if ($(".navbar-login-btn").css("display") == "block")
     {
-        ListingId: listingId
-    };
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+    }
+    else
+    {
     
-    $.ajax(
-    {
-        type: "POST",
-        url: "api.php",
-        data:
+        var data = 
         {
-            command: "add_applicant",
-            data: data,
-            endpoint: "Applicants"
-        },
-        success: function(res)
+            ListingId: listingId
+        };
+        
+        $.ajax(
         {
-            try
+            type: "POST",
+            url: "/api.php",
+            data:
             {
-                if (Contains(res, "Okay"))
-                {
-                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Application Sent!", position: 'top-center'});
-                }
-                else
-                {
-                    throw new Error("Problem Sending Application");
-                }
-            }
-            catch(e)
+                command: "add_applicant",
+                data: data,
+                endpoint: "Applicants"
+            },
+            success: function(res)
             {
-                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Sending Application", position: 'top-center'});
+                try
+                {
+                    if (Contains(res, "Okay"))
+                    {
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Application Sent!", position: 'top-center'});
+                    }
+                    else
+                    {
+                        throw new Error("Problem Sending Application");
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Sending Application", position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#common-modal").modal('hide');
+                $("#common-modal").css("z-index", "2000");
             }
-        },
-        error: function(res, err)
-        {
-            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
-        },
-        complete: function()
-        {
-            $("#common-modal").modal('hide');
-            $("#common-modal").css("z-index", "2000");
-        }
-    });
+        });
+    }
 }
 
 function LogoutUser()
