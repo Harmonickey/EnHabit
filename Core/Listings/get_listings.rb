@@ -95,7 +95,7 @@ def setFilters
         @startFilter = nil
     else 
         @startFilter[:Start] = {}
-        @startFilter[:Start][:$gtl] = Date.strptime(@start, "%m/%d/%Y").mongoize
+        @startFilter[:Start][:$lte] = Date.strptime(@start, "%m/%d/%Y").mongoize
     end
     
     if @university.nil?
