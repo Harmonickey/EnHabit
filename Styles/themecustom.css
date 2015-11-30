@@ -945,7 +945,7 @@
 {
     color: white;
     background: darkgreen;
-    border: darkgreen;
+    border: 2px darkgreen solid;
 }
 
 #details-view-actions
