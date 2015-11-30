@@ -85,9 +85,10 @@ begin
     
     raise "Could Not Find User" if @from.nil? 
     
-    `chmod 775 mail.rb`
+    `chmod 775 #{@deploymentBase}/Core/Accounts/mail.rb`
     `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
 
+    puts "Okay"
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
