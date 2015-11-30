@@ -89,7 +89,7 @@
                 <li class="landlord-nav"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
                 <li class="landlord-nav"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
                 <li class="landlord-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>My Renters</a></li>                    
-                <li id="login-function" class="menu-item scroll" href="/logout.php">
+                <li id="login-function" class="menu-item scroll" onclick="Logout()">
                     <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                 </li>
             </ul>

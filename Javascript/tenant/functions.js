@@ -783,13 +783,42 @@ function Login()
 
 function QuickLogout()
 {
-    $.post("/quicklogout.php");
+    $.post("/logout.php");
 }
 
 function Logout()
 {
-    $.post("/logout.php");
+    $.ajax(
+    {
+        type: "POST",
+        url: "/logout.php",
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Successfully"))
+                {
+                    // TODO: Ideally I'd like this to be a server redirect in PHP, location would
+                    // be a POST element, this is good for now
+                    location.href = "/";
+                }
+                else
+                {
+                    throw new Error("Problem with Logging Out");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });
 }
+
 
 function UpdateAccount()
 {

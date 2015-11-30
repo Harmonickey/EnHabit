@@ -93,7 +93,7 @@
                             echo "<li class='tenant-nav'><a style='cursor: pointer;' href='/PaymentsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>";
                         }
                         ?>
-                        <li id="login-function" class="menu-item scroll" href="/logout.php">
+                        <li id="login-function" class="menu-item scroll" onclick="Logout()">
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                         </li>
                     </ul>

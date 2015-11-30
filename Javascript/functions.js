@@ -1108,6 +1108,8 @@ function InsertIntoListView(data)
 
 function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
 {
+    $("#common-modal").modal('hide');
+    
     $("#details-view").fadeIn();
     
     //location.hash = Id;
