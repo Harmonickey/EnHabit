@@ -1364,11 +1364,6 @@ function LoginFacebookUser(userID, accessToken)
     });
 }
 
-function AdjustZIndex()
-{
-    $("#common-modal").css("z-index", "2000");
-}
-
 function Apply(listingId)
 {
     if ($(".navbar-login-btn").css("display") == "block")
@@ -1418,7 +1413,6 @@ function Apply(listingId)
             complete: function()
             {
                 $("#common-modal").modal('hide');
-                $("#common-modal").css("z-index", "2000");
             }
         });
     }
@@ -1701,8 +1695,6 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
-    $("#common-modal").css("z-index", "4000");
-    $("#common-modal .modal-backdrop").on("click", AdjustZIndex);
     if ($(".navbar-login-btn").css("display") == "block")
     {
         LoadModal(event, 'modal-content-login', 'login', 'Log In');
