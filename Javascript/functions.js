@@ -1570,7 +1570,7 @@ function DateToHumanReadable(date)
 {
     var date = new Date(date);
     
-    return (date.getMonth() + 1) + "-" + date.getDate() + "-" + date.getFullYear();
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
 }
 
 function LoadModal(event, which, enterDefault, btnText)
