@@ -302,11 +302,6 @@ if (!isset($_SESSION['CREATED'])) {
                 <!-- end application view-->
             </div>
             <!-- End Email -->
-            <!-- Log out confirmation -->
-            <div class="content-to-populate-in-modal" id="modal-content-logout">
-                <h3>You are now logged out.</h3>
-            </div>
-            <!-- #modal-content-logout -->
             <!-- Pop Up Listing Modal -->
             <div class="content-to-populate-in-modal" id="modal-content-popup-listing">
                 <div class="item-content listing"> 

@@ -1430,7 +1430,7 @@ function LogoutUser()
             {
                 if (Contains(res, "Successfully"))
                 {
-                    PopulateAndOpenModal(null, "modal-content-logout");
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Logout Success", position: 'top-center'});
                 }
                 else
                 {
