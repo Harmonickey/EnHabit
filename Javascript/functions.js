@@ -1149,11 +1149,16 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>$" + Price + "/Month, Available " + DateToHumanReadable(Start) + "</h2>" +
+                "<h2>$" + Price + "/Month"</h2>" +
+            "</div>" + 
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<h2>Available " + DateToHumanReadable(Start) + "</h2>" +
             "</div>" + 
         "</div>" +
         "<div class='row' style='margin-top: 25px;'>" +
-            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                 "<p>Bedrooms: " + Bedrooms + "</p>" + 
             "</div>" +
             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
@@ -1161,7 +1166,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
             "</div>" +
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                 "<p>Bathrooms: " + Bathrooms + "</p>" +
             "</div>" + 
             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
@@ -1169,7 +1174,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
             "</div>" +
         "</div>" +
         "<div class='row'>" + 
-            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                 "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
             "</div>" +
             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
@@ -1177,7 +1182,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
             "</div>" +        
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                 "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
             "</div>" + 
             "<div class='col-lg-5 col-md-5 col-sm-5'>" +
