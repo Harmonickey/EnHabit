@@ -12,7 +12,6 @@ require 'bson'
 require 'moped'
 require 'mongoid'
 require 'tools'
-require 'net/smtp'
 
 Moped::BSON = BSON
 
@@ -86,7 +85,8 @@ begin
     
     raise "Could Not Find User" if @from.nil? 
     
-    `#{@deploymentBase}/Core/Accounts/mail.rb #{@to} #{@message} #{@name} #{@listing} #{@from} #{@phone}`
+    `chmod 775 mail.rb`
+    `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
 
 rescue Exception => e
     File.open("error.log", "a") do |output|
