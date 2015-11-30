@@ -1741,7 +1741,8 @@ function SendEmail(listingId)
             {
                 if (Contains(res, "Okay"))
                 {
-                    PopulateAndOpenModal(null, 'modal-content-email-success');
+                    $("#common-modal").modal('hide');
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Sent Email!", position: 'top-center'});
                 }
                 else
                 {
