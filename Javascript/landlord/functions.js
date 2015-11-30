@@ -1393,10 +1393,7 @@ function CreateAccordionApplicantsView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Job Title:</label><p>" + data.JobTitle + "</p>" +
-                            "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>Salary:</label><p>$" + data.Salary + "</p>" +
+                                "<label>Email:</label><p>" + data.Email + "</p>" +
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;'>" +

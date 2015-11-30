@@ -1199,7 +1199,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     var actionsContent =
     "<div class='col-lg-12 col-md-12 col-sm-12'>" +
         "<div class='row'>" +
-            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='ApplyForListing(\"" + Id + "\");' />" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
         "</div>" +
         "<div class='row'>" +
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
@@ -1367,37 +1367,11 @@ function AdjustZIndex()
     $("#common-modal").css("z-index", "2000");
 }
 
-function ApplyForListing(listingId)
-{
-    $("#common-modal").css("z-index", "4000");
-    $("#common-modal .modal-backdrop").on("click", AdjustZIndex);
-    if ($(".navbar-login-btn").css("display") == "block")
-    {
-        LoadModal(event, 'modal-content-login', 'login', 'Log In');
-    }
-    else
-    {
-        PopulateAndOpenModal(null, 'modal-content-application');
-        $("#common-modal .apply-btn").attr("onclick", "Apply('" + listingId +"');");
-    }
-}
-
 function Apply(listingId)
 {
-    var jobTitle = $("#common-modal .jobTitle").val().trim();
-    var salary = $("#common-modal .salary").val().trim();
-    
-    if (!jobTitle || !salary)
-    {
-        $.msgGrowl ({ type: 'error', title: 'Error', text: "Salary and Job Title Required", position: 'top-center'});
-        return;
-    }
-    
     var data = 
     {
-        ListingId: listingId,
-        JobTitle: jobTitle,
-        Salary: salary
+        ListingId: listingId
     };
     
     $.ajax(
