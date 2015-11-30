@@ -1203,10 +1203,10 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
         "<div class='row'>" +
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
         "</div>" +
-        "<div class='row'>" +
-            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
-        "</div>" +
-        "<div class='row'>" +
+        //"<div class='row'>" +
+        //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
+        //"</div>" +
+        //"<div class='row'>" +
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
