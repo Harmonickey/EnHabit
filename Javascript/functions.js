@@ -934,7 +934,7 @@ function InsertMarkers(res)
                 popupContent += slideshowContent +
                                 '</div>' +
                             '</div>' +
-                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
                 
                 marker.bindPopup(popupContent, 
                 {
@@ -989,7 +989,7 @@ function InsertMarkers(res)
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
                                 "</div>" +
                             "</div>";
                     
@@ -1080,7 +1080,7 @@ function InsertIntoListView(data)
                     "</div>" +
                 "</div>" +
                 "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
                 "</div>" +
             "</div>" +
         "</div>");
@@ -1106,7 +1106,7 @@ function InsertIntoListView(data)
     }
 }
 
-function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
 {
     $("#details-view").fadeIn();
     
@@ -1149,38 +1149,38 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>$" + Price + "/Month</h2>" +
+                "<h2>$" + Price + "/Month, Available " + Start + "</h2>" +
             "</div>" + 
         "</div>" +
         "<div class='row' style='margin-top: 25px;'>" +
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                 "<p>Bedrooms: " + Bedrooms + "</p>" + 
             "</div>" +
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
                 "<p>Lease Type: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                 "<p>Bathrooms: " + Bathrooms + "</p>" +
             "</div>" + 
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
                 "<p>Building Type: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
         "<div class='row'>" + 
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                 "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
             "</div>" +
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
                 "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
             "</div>" +        
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                 "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
             "</div>" + 
-            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
                 "<p>In-Unit Laundry: " + BooleanToHumanReadable(Laundry) + "</p>" + 
             "</div>" +
         "</div>" +
@@ -1221,7 +1221,7 @@ function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, B
     $("#details-items").width(width);
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
-    //SubscribeSlideshowArrows();
+
     //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
     //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
     

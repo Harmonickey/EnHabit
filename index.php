@@ -125,10 +125,8 @@ if (!isset($_SESSION['CREATED'])) {
                     <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
                 </div>
                 <div id="datepicker-row" class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        <label>Available</label>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8">
+                    <div class="col-lg-8 col-md-8 col-sm-8" style="float: none; margin: 0 auto;">
+                        <label>Available From</label>
                         <input id="datepicker-inline" type="button" class="form-control" value="MM/DD/YYYY"/>
                     </div>
                 </div>
