@@ -150,7 +150,7 @@
       		<div class="widget stacked">
                 <div class="widget-header actions">
                     <h3>Registered Universities</h3>
-					<a class="btn btn-success" data-toggle="modal" href="#createUserModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
+					<a class="btn btn-success" data-toggle="modal" href="#addUniversityModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
 					<!-- all the listings go here -->
@@ -209,8 +209,12 @@
     
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
+
+<!-- jquery geocomplete api -->
+<script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
