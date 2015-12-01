@@ -585,6 +585,11 @@ function ProcessListing()
                             $(".actions a").hide();
                             $(".listings-message").show();
                             
+                            if (numUploaded > 0)
+                            {
+                                $("#" + oid + " .activecheckbox").prop("disabled", false);
+                            }
+                            
                             numUploaded = 0;
                             
                             pendingData = null;
@@ -1303,7 +1308,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Listing Active</label><input type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.IsActive ? "" : "disabled") + "/>" +
+                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label style='color: red'>To Activate your Listing You Must Include Images!</label>" : "")) + 

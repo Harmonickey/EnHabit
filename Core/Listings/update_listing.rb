@@ -16,7 +16,7 @@ require 'rmagick'
 
 Moped::BSON = BSON
 
-def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures)
+def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive)
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])
     mongoSession.use("enhabit")
 
@@ -41,9 +41,12 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
-    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0)
+    listingObj["IsActive"] = false
     listingObj["Pictures"] = pictures
+    
     if not pictures.nil? and pictures.length > 0
+        listingObj["IsActive"] = isActive
+        
         thumbnails = []
         pictures.each do |filename|
             thumbFileName = filename + "_thumbnail"
@@ -184,7 +187,7 @@ begin
         end
     end
     
-    puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"])
+    puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"])
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
