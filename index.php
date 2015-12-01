@@ -227,6 +227,7 @@ if (!isset($_SESSION['CREATED'])) {
                             </div>
                         </div>
                     </div>
+                    <!--
                     <div class="item-content type-content">
                         <label>Rental or Sublet</label>
                         <div class="styled-select">
@@ -237,6 +238,7 @@ if (!isset($_SESSION['CREATED'])) {
                             </select>
                         </div>
                     </div>
+                    -->
                     <div class="item-content type-content">
                         <label>Apartment or House</label>
                         <div class="styled-select">
