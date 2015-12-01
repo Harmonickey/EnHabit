@@ -288,8 +288,8 @@ function GetAccount(isListingPage)
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
-    checkboxes.not(":eq(5), :eq(6)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    checkboxes.not(":eq(5)").bootstrapSwitch({onText: "Yes", offText: "No"});
+    //$(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
     $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
