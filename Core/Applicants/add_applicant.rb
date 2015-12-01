@@ -59,9 +59,9 @@ def GetListingData(listingId, userId)
         mongoSession.with(safe: true) do |session|
             userAccount = session[:accounts].find({:UserId => userId}).one
         end
-        
+
         # determine if we're applying for our own listing!
-        isOwnListing = (userAccount["Username"] == listing["Landlord"] || userAccount["Username"] == listing["Username"])
+        isOwnListing = (userAccount["Username"] == listing[0]["Landlord"] || userAccount["Username"] == listing[0]["Username"])
         hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
         
         if listing.count == 0
@@ -83,7 +83,7 @@ begin
     userId = ARGV[1].split(",")[0] if not ARGV[1].nil?
     key = ARGV[2] if not ARGV[2].nil?
     isAdmin = ARGV[3].to_b
-    
+
     listingData = GetListingData(data["ListingId"], userId) # ListingId (oid), LandlordId
     
     puts "No Listing Data" if listingData.nil?
