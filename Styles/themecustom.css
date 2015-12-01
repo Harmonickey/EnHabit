@@ -514,7 +514,7 @@
     width: 100px;
     border-radius: 6px;
     border: 2px white solid;
-    background: transparent;
+    background: rgba(255,255,255,0.5);;
     bottom: 37px;
     left: 114px;
 }
@@ -1110,4 +1110,15 @@ select::-ms-expand
     background: rgba(0,0,0,0.35);
     color: white;
     border-radius: 10px;
+ }
+ 
+ .popup-background-shadow
+ {
+    height: 50%;
+    position: absolute;
+    background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(35,36,39,0.85) 50%, rgba(69,72,77,0) 100%);
+    background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0045484d',GradientType=0 );
+    border-radius: 20px;
  }
