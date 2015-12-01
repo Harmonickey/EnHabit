@@ -438,9 +438,9 @@ function DeleteListing(id)
 
 function UpdateListing(oid)
 {
-    var inputs = $("#" + id + " input, #" + id + " textarea");
+    var inputs = $("#" + oid + " input, #" + oid + " textarea");
    
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -512,7 +512,7 @@ function CreateListing()
             $("#create-listing-button").text("Creating...");
             $("#create-listing-button").prop("disabled", true);
             
-            if (numAdded == 0)
+            if (numAdded["create"] == 0)
             {
                 ProcessListing();
             }
@@ -1179,7 +1179,7 @@ function BuildData(inputs, elements)
         }
         else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes")
         {
-            data[elements[i]] = $(inputs[i]).val();
+            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
         }
         else if (elements[i] == "Rent")
         {
@@ -1307,6 +1307,8 @@ function FormattedDate(dateString)
 
 function CreateAccordionView(oid, data)
 {
+    var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
+    
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
@@ -1377,7 +1379,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 
