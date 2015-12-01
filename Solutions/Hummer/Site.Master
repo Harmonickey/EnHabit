@@ -7,7 +7,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>- My ASP.NET Application</title>
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="stylesheet" type="text/css"href="~/_references/styles/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/_references/styles/bootstrap.min.css" />
+    <script type="text/javascript" src="~/_references/js/bootstrap.min.js" ></script>
 </head>
 <body>
     <form runat="server">
@@ -23,8 +26,11 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/Listings"></a></li>
+                        <li><a runat="server" href="~/">Analytics</a></li>
+                        <li><a runat="server" href="~/Users">Users</a></li>
+                        <li><a runat="server" href="~/Listings">Listings</a></li>
+                        <li><a runat="server" href="~/Payments">Payments</a></li>
+                        <li><a runat="server" href="~/Renters">Renters</a></li>
                     </ul>
                 </div>
             </div>

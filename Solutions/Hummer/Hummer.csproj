@@ -60,14 +60,22 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Payments.aspx" />
+    <Content Include="Renters.aspx" />
+    <Content Include="Users.aspx" />
     <Content Include="Listings.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
     <Content Include="Web.config" />
+    <Content Include="_references\js\bootstrap.min.js" />
+    <Content Include="_references\styles\bootstrap-theme.min.css" />
+    <Content Include="_references\styles\bootstrap.min.css" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -76,6 +84,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Payments.aspx.cs">
+      <DependentUpon>Payments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Renters.aspx.cs">
+      <DependentUpon>Renters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Listings.aspx.cs">
       <DependentUpon>Listings.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
