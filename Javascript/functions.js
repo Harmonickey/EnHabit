@@ -957,6 +957,7 @@ function InsertMarkers(res)
                 }));
                 
                 var popupContent =  
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button" href="#close">x</a>' +
                             '<div class="popup">' +
                                 '<h2 class="multi-h2">' + entry[0].Address + '</h2>' +
                                 '<p class="multi-p">Multiple listings available.</p>' +
