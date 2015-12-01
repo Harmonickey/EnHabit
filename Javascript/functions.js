@@ -1156,42 +1156,43 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
             "</div>" + 
         "</div>" +
         "<div class='row' style='margin-top: 25px;'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground' style='border-top-left-radius: 10px;'>" +
                 "<p>Bedrooms: " + Bedrooms + "</p>" + 
             "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground' style='border-top-right-radius: 10px;'>" +
                 "<p>Lease Type: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground'>" +
                 "<p>Bathrooms: " + Bathrooms + "</p>" +
             "</div>" + 
-            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground'>" +
                 "<p>Building Type: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
             "</div>" +
         "</div>" +
         "<div class='row'>" + 
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground'>" +
                 "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
             "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground'>" +
                 "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
-            "</div>" +        
+            "</div>" +
         "</div>" +
         "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground' style='border-bottom-left-radius: 10px;'>" +
                 "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
             "</div>" + 
-            "<div class='col-lg-5 col-md-5 col-sm-5'>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground' style='border-bottom-right-radius: 10px;'>" +
                 "<p>In-Unit Laundry: " + BooleanToHumanReadable(Laundry) + "</p>" + 
             "</div>" +
         "</div>" +
+        (Notes == null || Notes == "" ? "" : 
         "<div class='row' style='margin-top: 50px;'>" +
-            "<div class='col-lg-7 col-md-7 col-sm-7'>" +
+            "<div class='col-lg-8 col-md-8 col-sm-8 darkbackground'>" +
                 "<p>" + (Notes != "undefined" ? Notes : "") + "</p>" + 
             "</div>" +
-        "</div>" +
+        "</div>") +
     "</div>";
     
     var actionsContent =
@@ -1697,7 +1698,7 @@ function CreateEmailMessage(listingId)
 {
     if ($(".navbar-login-btn").css("display") == "block")
     {
-        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+        LoadModal(null, 'modal-content-login', 'login', 'Log In');
     }
     else
     {
