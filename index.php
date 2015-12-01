@@ -14,6 +14,9 @@ if (!isset($_SESSION['CREATED'])) {
 ?> 
 <html lang="en">
     <head>
+        <script>if(/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || screen.width <= 800){
+window.location ="https://enhabitlife.com/mobile.html";}</script>
+    
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
