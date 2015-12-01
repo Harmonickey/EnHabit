@@ -90,6 +90,7 @@ begin
     if not @from.nil?
         `chmod 775 #{@deploymentBase}/Core/Accounts/mail.rb`
         `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
+        puts "#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'"
 
         puts "Okay"
     end
