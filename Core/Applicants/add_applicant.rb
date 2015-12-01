@@ -61,7 +61,7 @@ def GetListingData(listingId, userId)
         end
         
         # determine if we're applying for our own listing!
-        isOwnListing = (userAccount["Username"] == listing["Landlord"] || userAccount["Username"] == listing["Username"])
+        isOwnListing = (userAccount["Username"] == listing[0]["Landlord"] || userAccount["Username"] == listing[0]["Username"])
         hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
         
         if listing.count == 0
