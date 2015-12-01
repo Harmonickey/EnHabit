@@ -514,9 +514,10 @@
     width: 100px;
     border-radius: 6px;
     border: 2px white solid;
-    background: rgba(255,255,255,0.5);;
+    background: transparent;
     bottom: 37px;
     left: 114px;
+    font-weight: bold;
 }
 
 #search-section > li.menu-item
