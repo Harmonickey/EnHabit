@@ -645,19 +645,15 @@ function InitSlider()
                 }
                 else
                 { 
-                    // dividing by 100 and multiplying by 100 without floating point will truncate
-                    // and round to nearest 100
                     var step = 5;
-                    var valueMinStart = Math.max(Math.round((data.MaxRent.Price / 2) / step) * step, (data.MinRent.Price / step) * step);
-                    var valueMaxStart = Math.round(Math.max(data.MaxRent.Price / 2, data.MaxRent.Price / 2 + 300) / step) * step;
-                    $("#amount").text("$" + valueMinStart + " - $" + valueMaxStart);
+                    $("#amount").text("$" + data.MinRent.Price + " - $" + data.MaxRent.Price);
                     $("#PriceRangeSlider").slider(
                     {
                         range: true,
                         min: data.MinRent.Price,
                         max: data.MaxRent.Price,
                         step: step,
-                        values: [ valueMinStart, valueMaxStart ],
+                        values: [ data.MinRent.Price, data.MaxRent.Price ],
                         slide: function( event, ui )
                         {
                             $("#amount").text ("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
@@ -1368,7 +1364,7 @@ function Apply(listingId)
 {
     if ($(".navbar-login-btn").css("display") == "block")
     {
-        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+        LoadModal(null, 'modal-content-login', 'login', 'Log In');
     }
     else
     {
@@ -1576,7 +1572,7 @@ function DateToHumanReadable(date)
 {
     var date = new Date(date);
     
-    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+    return (date.getUTCMonth() + 1) + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
 }
 
 function LoadModal(event, which, enterDefault, btnText)
