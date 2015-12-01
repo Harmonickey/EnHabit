@@ -79,7 +79,7 @@ begin
     id = data["id"] if not data["id"].nil? and not data["id"].empty? and isAdmin
     key = "_id" if isAdmin
     
-    if UserExists(id, key, data["Password"]) || isAdmin
+    if isAdmin || UserExists(id, key, data["Password"])
         puts DeleteUser(id, key)
     else
         puts "Incorrect Password"

@@ -701,11 +701,11 @@ function UpdateAccount(uid)
                             var inputs = $("#" + uid + " input");
                             var headingInputs = $("#heading" + uid + " label");
                             
-                            $(headingInputs[0]).text("Username: " + $(inputs[0]).val());
-                            $(headingInputs[1]).text("First Name: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Last Name: " + $(inputs[2]).val());
+                            $(headingInputs[1]).text("Username: " + $(inputs[0]).val());
+                            $(headingInputs[2]).text("First Name: " + $(inputs[1]).val());
+                            $(headingInputs[3]).text("Last Name: " + $(inputs[2]).val());
                             
-                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated User", position: 'top-center'});
                             
                             // close the div
                             $("#heading" + uid + " a").click();
@@ -722,7 +722,7 @@ function UpdateAccount(uid)
                 },
                 error: function(res, err)
                 {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
                 },
                 complete: function()
                 {
@@ -756,12 +756,12 @@ function SetGeocompleteTextBox(rowId)
     var row = $("#" + rowId + " div input[type='text']");
     var hidden = $("#" + rowId + " input[type='hidden']");
     
-    $(row[2]).geocomplete()
+    $(row[1]).geocomplete()
         .bind("geocode:result", function(event, result){
             var keys = Object.keys(result.geometry.location);
             $(hidden[0]).val(result.geometry.location[keys[0]]);
             $(hidden[1]).val(result.geometry.location[keys[1]]);
-            $(hidden[2]).val($(row[2]).val());
+            $(hidden[2]).val($(row[1]).val());
         });
 }
 
