@@ -26,6 +26,49 @@ $(document).on("keypress", function(e)
     }
 });
 
+function GetAllUniversities(isListingPage)
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_all_universities",
+            endpoint: "Universities"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Universities"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        universities.push(data[i].UniversityName);
+                        if (isListingPage)
+                        {
+                            $("#universities-filter").append("<option value='" + data[i].UniversityName + "'>" + data[i].UniversityName + "</option>");
+                        }
+                    }
+                    
+                    GetAllListings();
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });                  
+}
+
 function GetAllUsersAndLandlords(isRenterPage)
 {
     $.ajax(
@@ -72,7 +115,7 @@ function GetAllUsersAndLandlords(isRenterPage)
                             $("#landlords-filter").append("<option value='" + landlord + "'>" + landlord + "</option>")
                         });
                         
-                        GetAllListings();
+                        GetAllUniversities(true);
                     }
                     else
                     {
@@ -738,6 +781,88 @@ function UpdateAccount(uid)
     }
 }
 
+function UpdateUniversity(oid)
+{
+    var universityfield = $("#" + oid + " input");
+    
+    var data = BuildData(userfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    data.id = oid;
+    
+    var error = BuildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+    {
+        try
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
+                {
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[0]).text("Updating...");
+                },
+                data:
+                {
+                    command: "update_university",
+                    endpoint: "Universities",
+                    data: data
+                },
+                success: function(res)
+                {    
+                    try
+                    {
+                        if (!res)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update University", position: 'top-center'});
+                        }
+                        else if (Contains(res, "Okay"))
+                        {
+                            var inputs = $("#" + oid + " input");
+                            var headingInputs = $("#heading" + oid + " label");
+                            
+                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
+                            
+                            // close the div
+                            $("#heading" + oid + " a").click();
+                        }
+                        else
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + oid + " button").prop("disabled", false);
+                    $($("#" + oid + " button")[0]).text("Update");
+                }
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+        }
+    }
+}
+
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
@@ -1247,6 +1372,88 @@ function ProcessListing()
     }
 }
 
+function AddUniversity()
+{
+    var universityfield = $("#addUniversityModal input");
+    
+    var data = BuildData(universityfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
+            {
+                $("#add-university-button").text("Creating...");
+                $("#add-university-button").prop("disabled", "true");
+            },
+            data:
+            {
+                command: "add_university",
+                endpoint: "Universities",
+                data: data
+            },
+            success: function(res)
+            {    
+                try
+                {
+                    if (!res)
+                    {
+                        throw new Error("Unable to Add University");
+                    }
+                    else
+                    {
+                        var university = JSON.parse(res);
+                            
+                        if (university["error"])
+                        {
+                            throw new Error(university["error"]);
+                        }
+                        else
+                        {
+                            if ($("#accordion").text() == "No Universities Yet")
+                            {
+                                $("#accordion").html("");
+                            }
+                            
+                            var oid = university._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionUniversitiesView(oid, university));
+                            
+                            SetGeocompleteTextBox(oid);
+                            
+                            $("#addUniversityModal").modal('hide');
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "University Added Successfully!", position: 'top-center'});
+                        }
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#add-university-button").text("Add University");
+                $("#add-university-button").prop("disabled", false);
+            }
+        });
+    }
+}
+
 function Login()
 {
     var username = $("#username").val().trim();
@@ -1426,6 +1633,20 @@ function InitSpecialFieldsUser()
     $("#createUserModal input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
 }
 
+function InitSpecialFieldsUniversity()
+{    
+    var universityModal = $("#addUniversityModal input");
+
+    $(universityModal[1]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            var hiddenFields = $("#addUniversityModal input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listingModal[0]).val());
+        });
+}
+
 function CreateDropzone(key, element, existingPics)
 {
     dropzones[key] = new Dropzone(element,
@@ -1528,7 +1749,7 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University" || elements[i] == "UniversityName")
         {
             data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
         }
@@ -1554,6 +1775,10 @@ function BuildError(fields)
     
     var beginning = "Please Include ";
     
+    if (fields.UniversityName === "")
+    {
+        errorArr.push("Valid University Name");
+    }
     if (fields.FirstName === "")
     {
         errorArr.push("Valid First Name");
@@ -1688,6 +1913,11 @@ function CreateAccordionView(oid, data)
         landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
     });
     
+    var universities = "";
+    $.each(universitiesList, function(index, university) {
+        universities += "<option value='" + university + "'" + (data.University == university ? "selected" : "") + ">" + university + "</option>";
+    });
+    
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
     
     return "<div class='panel panel-default'>" +
@@ -1727,7 +1957,8 @@ function CreateAccordionView(oid, data)
                                 "<label>Start Date</label><input type='text' class='form-control' value='" + FormattedDate(data.Start) + "' />" +
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
+                                "<label>University</label>" +
+                                "<select class='form-control'>" + universities + "</select>" +
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
@@ -1784,6 +2015,37 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                         "</div>" +
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreateAccordionUniversitiesView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>University Name: " + data.UniversityName + "</label>" +
+                            "<label>Address: " + data.Address + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>University Name</label><input type='text' class='form-control' value='" + data.UniversityName + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' />" + 
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary btn-success' onclick='UpdateUniversity(\"" + oid + "\");'>Update</button>" +
+                            "</div>" +
+                        "</div>" +
                     "</div>" +
                 "</div>" +
             "</div>";
