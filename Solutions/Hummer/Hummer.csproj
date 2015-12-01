@@ -72,7 +72,7 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Site.Master" />
+    <Content Include="Hummer.Master" />
     <Content Include="Web.config" />
     <Content Include="_references\js\bootstrap.min.js" />
     <Content Include="_references\styles\bootstrap-theme.min.css" />
@@ -113,8 +113,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
+    <Compile Include="Hummer.Master.cs">
+      <DependentUpon>Hummer.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>

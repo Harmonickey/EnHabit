@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Payments" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Payments.aspx.cs" Inherits="Hummer.Payments" %>
+﻿<%@ Page Title="Payments" Language="C#" MasterPageFile="~/Hummer.Master" AutoEventWireup="true" CodeBehind="Payments.aspx.cs" Inherits="Hummer.Payments" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="jumbotron">
