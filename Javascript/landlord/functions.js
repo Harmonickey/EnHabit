@@ -478,7 +478,7 @@ function DeleteListing(id)
 
 function UpdateListing(oid)
 {
-    var inputs = $("#" + oid + " input, #" + oid + "select, #" + oid + " textarea");
+    var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
    
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "University", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
@@ -1220,7 +1220,7 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "University")
         {
             data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
         }
