@@ -316,9 +316,8 @@ var landlordList = [];
 $(function() 
 {  
     CreateDropzone("create", "#createListingModal form");
-
-    GetAllListings();
     GetAllLandlords();
+    
     GetAccount(true);
 
     InitSpecialFields();

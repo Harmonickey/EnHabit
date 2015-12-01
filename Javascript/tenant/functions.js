@@ -197,28 +197,10 @@ function GetAllLandlords()
                     
                     $.each(landlordList, function(index, landlord)
                     {
-                        $("#landlord-filter").append("<option value='" + landlord + "'>" + landlord + "</option>")
+                        $("#landlords-filter").append("<option value='" + landlord + "'>" + landlord + "</option>")
                     });
-                    /*
-                    $($("#createListingModal .ui-widget input")[0]).autocomplete(
-                    {
-                        source: function(request, response) 
-                        {
-                            var results = $.ui.autocomplete.filter(landlordList, request.term);
-
-                            response(results.slice(0, 5)); // limit to 5 results at a time
-                        } 
-                    });
-                    */
-                    $($("#createListingModal .ui-widget input")[1]).autocomplete(
-                    {
-                        source: function(request, response) 
-                        {
-                            var results = $.ui.autocomplete.filter(userList, request.term);
-
-                            response(results.slice(0, 5)); // limit to 5 results at a time
-                        }
-                    });
+                    
+                    GetAllListings();
                 }
             }
             catch(e)
@@ -446,7 +428,7 @@ function DeleteListing(id)
 
 function UpdateListing(id)
 {
-    var inputs = $("#" + id + " input, #" + id + " textarea");
+    var inputs = $("#" + id + " input, #" + id + " select, #" + id + " textarea");
     
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
@@ -458,7 +440,6 @@ function UpdateListing(id)
     //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
-    data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
     data.Pictures = pictures[id];
     
@@ -503,7 +484,6 @@ function CreateListing()
     //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
-    data.Landlord = (data.Landlord == "" ? data.Landlord = '-' : data.Landlord);
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
     data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
     
@@ -1123,9 +1103,9 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord")
         {
-            data[elements[i]] = $(inputs[i]).val();
+            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
         }
         else if (elements[i] == "Rent")
         {
@@ -1135,6 +1115,7 @@ function BuildData(inputs, elements)
         {
             if ($(inputs[i]).attr("placeholder") !== "")
             {
+                console.log(i);
                 data[elements[i]] = $(inputs[i]).val().trim();
             }
         }
@@ -1253,6 +1234,13 @@ function FormattedDate(dateString)
 
 function CreateAccordionView(oid, data)
 {   
+    var landlords = "";
+    $.each(landlordList, function(index, landlord) {
+        landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
+    });
+    
+    var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
+
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
@@ -1323,12 +1311,13 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Landlord</label><input type='text' class='form-control' value='" + (data.Landlord && data.Landlord !== "-" ? data.Landlord : "") + "' />" +
+                                "<label>Landlord</label>" + 
+                                "<select class='form-control'>" + landlords + "</select>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 

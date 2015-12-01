@@ -260,14 +260,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-5 col-md-5 col-sm-5 ui-widget">
-                        <label>Landlord</label><input type='text' class='form-control' />
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 required" style="width: 14%;">
-                        <label>and/or</label>
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-sm-5 ui-widget">
-                        <label>User</label><input type='text' class='form-control' />
+                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
+                        <label>Landlord</label>
+                        <select id="landlords-filter" class="form-control">
+                        
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -327,7 +324,7 @@ $(function()
 {  
     CreateDropzone("create", "#createListingModal form");
 
-    GetAllListings();
+    GetAllUsersAndLandlords();
 
     InitSpecialFields();
     

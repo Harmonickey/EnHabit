@@ -67,27 +67,12 @@ function GetAllUsersAndLandlords(isRenterPage)
                     
                     if (!isRenterPage)
                     {
-                        $($("#createListingModal .ui-widget input")[0]).autocomplete(
+                        $.each(landlordList, function(index, landlord)
                         {
-                            source: function(request, response) 
-                            {
-                                var results = $.ui.autocomplete.filter(landlordList, request.term);
-
-                                response(results.slice(0, 5)); // limit to 5 results at a time
-                            } 
+                            $("#landlords-filter").append("<option value='" + landlord + "'>" + landlord + "</option>")
                         });
                         
-                        $($("#createListingModal .ui-widget input")[1]).autocomplete(
-                        {
-                            source: function(request, response) 
-                            {
-                                var results = $.ui.autocomplete.filter(userList, request.term);
-
-                                response(results.slice(0, 5)); // limit to 5 results at a time
-                            }
-                        });
-                        
-                        SetUserAndLandlordFields();
+                        GetAllListings();
                     }
                     else
                     {
@@ -555,10 +540,6 @@ function GetAllListings()
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
             $(".actions a").show();
-        },
-        complete: function() 
-        {
-            GetAllUsersAndLandlords(false);
         }
     });
 }
@@ -757,38 +738,6 @@ function UpdateAccount(uid)
     }
 }
 
-function SetUserAndLandlordFields()
-{
-    var users = $("#accordion .users");
-    var landlords = $("#accordion .landlords");
-    
-    $.each(users, function(index, user) 
-    {
-        $(user).autocomplete(
-        {
-            source: function(request, response) 
-            {
-                var results = $.ui.autocomplete.filter(userList, request.term);
-
-                response(results.slice(0, 5)); // limit to 5 results at a time
-            } 
-        });
-    });
-    
-    $.each(landlords, function(index, landlord) 
-    {
-        $(landlord).autocomplete(
-        {
-            source: function(request, response) 
-            {
-                var results = $.ui.autocomplete.filter(landlordList, request.term);
-
-                response(results.slice(0, 5)); // limit to 5 results at a time
-            }
-        });
-    });
-}
-
 function SetBootstrapSwitches(rowId)
 {
     var checkboxes = $("#" + rowId + " input[type='checkbox']");
@@ -820,7 +769,7 @@ function SetTextBoxWithAutoNumeric(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
-    $(row[4]).autoNumeric('init', 
+    $(row[3]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
@@ -840,9 +789,9 @@ function SetDatePickerTextBox(rowId)
 
 function UpdateListing(oid)
 {
-    var inputs = $("#" + oid + " input, #" + oid + " textarea");
+    var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -1101,7 +1050,7 @@ function CreateListing()
 {
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "User", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -1126,7 +1075,7 @@ function CreateListing()
             $("#create-listing-button").text("Creating...");
             $("#create-listing-button").prop("disabled", true);
             
-            if (numAdded == 0)
+            if (numAdded["create"] == 0)
             {
                 ProcessListing();
             }
@@ -1255,11 +1204,11 @@ function ProcessListing()
                         var inputs = $("#" + id + " input");
                         var headingInputs = $("#heading" + id + " label");
                         
-                        $(headingInputs[0]).text("Address: " + $(inputs[2]).val());
-                        $(headingInputs[1]).text("Unit: " + $(inputs[3]).val());
-                        $(headingInputs[2]).text("Rent: $" + $(inputs[4]).autoNumeric('get') + "/Month");
-                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[5]).val())));
-                        $(headingInputs[4]).text("University: " + $(inputs[6]).val());
+                        $(headingInputs[0]).text("Address: " + $(inputs[1]).val());
+                        $(headingInputs[1]).text("Unit: " + $(inputs[2]).val());
+                        $(headingInputs[2]).text("Rent: $" + $(inputs[3]).autoNumeric('get') + "/Month");
+                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[4]).val())));
+                        $(headingInputs[4]).text("University: " + $(inputs[5]).val());
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                         numUploaded[id] = 0;
@@ -1574,9 +1523,9 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes")
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University")
         {
-            data[elements[i]] = $(inputs[i]).val();
+            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
         }
         else if (elements[i] == "Rent")
         {
@@ -1729,6 +1678,13 @@ function FormattedTime(time)
 
 function CreateAccordionView(oid, data)
 {
+    var landlords = "";
+    $.each(landlordList, function(index, landlord) {
+        landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
+    });
+    
+    var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
+    
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
@@ -1748,8 +1704,9 @@ function CreateAccordionView(oid, data)
                                 "<label>User</label><input type='text' class='form-control users' value='" + (data.Username ? data.Username : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Landlord</label><input type='text' class='form-control landlords' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
-                            "</div>" +
+                                "<label>Landlord</label>" + 
+                                "<select class='form-control'>" + landlords + "</select>" +
+                            "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
@@ -1806,7 +1763,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 
@@ -1828,7 +1785,7 @@ function CreateAccordionView(oid, data)
 }
 
 function CreateAccordionUsersView(uid, data)
-{           
+{  
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + uid + "'>" +
                     "<h4 class='panel-title'>" +
