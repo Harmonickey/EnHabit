@@ -1125,3 +1125,14 @@ select::-ms-expand
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0045484d',GradientType=0 );
     border-radius: 20px;
  }
+ 
+ .enhabit-popup-close-button
+ {
+    color: white !important;
+    position: absolute;
+    right: 14px;
+    top: 8px;
+    z-index: 1;
+    cursor: pointer;
+    font: 16px/14px Tahoma, Verdana, sans-serif;
+ }
