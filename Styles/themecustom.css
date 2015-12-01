@@ -1114,7 +1114,7 @@ select::-ms-expand
  
  .popup-background-shadow
  {
-    height: 50%;
+    height: 25%;
     width: 100%;
     position: absolute;
     top: 0;
