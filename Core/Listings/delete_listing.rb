@@ -1,6 +1,5 @@
 #!/usr/local/bin/ruby
 
-
 absPath = Dir.pwd
 base = absPath.split("/").index("public_html")
 @deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
@@ -30,9 +29,11 @@ def DeleteListing(isAdmin, listingId, userId, key)
             #make sure we're not deleting someone else's listing
             if documents[0][key] == userId or isAdmin
                 listing = session[:listings].find(listingObj).select(Pictures: 1).one
-                listing["Pictures"].each do |pic|
-                    filename = "#{@deploymentBase}/images/enhabit/images/" + pic
-                    File.delete(filename) if File.exist? filename
+                if not listing["Pictures"].nil?
+                    listing["Pictures"].each do |pic|
+                        filename = "#{@deploymentBase}/images/enhabit/images/" + pic
+                        File.delete(filename) if File.exist? filename
+                    end
                 end
                 session[:listings].find(listingObj).remove
                 retMsg = "Okay"

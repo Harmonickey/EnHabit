@@ -195,6 +195,11 @@ function GetAllLandlords()
                         }
                     }
                     
+                    $.each(landlordList, function(index, landlord)
+                    {
+                        $("#landlord-filter").append("<option value='" + landlord + "'>" + landlord + "</option>")
+                    });
+                    /*
                     $($("#createListingModal .ui-widget input")[0]).autocomplete(
                     {
                         source: function(request, response) 
@@ -204,7 +209,7 @@ function GetAllLandlords()
                             response(results.slice(0, 5)); // limit to 5 results at a time
                         } 
                     });
-                    
+                    */
                     $($("#createListingModal .ui-widget input")[1]).autocomplete(
                     {
                         source: function(request, response) 
