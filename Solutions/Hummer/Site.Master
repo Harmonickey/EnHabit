@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>- My ASP.NET Application</title>
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="stylesheet" type="text/css"href="~/_references/styles/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/_references/styles/bootstrap-theme.min.css" />
     <link rel="stylesheet" type="text/css" href="~/_references/styles/bootstrap.min.css" />
-    <script type="text/javascript" src="~/_references/js/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="~/_references/js/bootstrap.min.js"></script>
 </head>
 <body>
     <form runat="server">
@@ -27,21 +27,30 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Analytics</a></li>
-                        <li><a runat="server" href="~/Users">Users</a></li>
-                        <li><a runat="server" href="~/Listings">Listings</a></li>
-                        <li><a runat="server" href="~/Payments">Payments</a></li>
-                        <li><a runat="server" href="~/Renters">Renters</a></li>
+                        <li><a runat="server" href="~/Users.aspx">Users</a></li>
+                        <li><a runat="server" href="~/Listings.aspx">Listings</a></li>
+                        <li><a runat="server" href="~/Payments.aspx">Payments</a></li>
+                        <li><a runat="server" href="~/Renters.aspx">Renters</a></li>
                     </ul>
                 </div>
             </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <br />
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <footer>
-                <p></p>
-                some test
-            </footer>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div id="footer-copyright" class="col-md-6">
+                        &copy; Hyperion Group LLC & LbKStudios LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </body>

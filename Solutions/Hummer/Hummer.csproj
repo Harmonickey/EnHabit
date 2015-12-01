@@ -66,6 +66,7 @@
   <ItemGroup>
     <Content Include="Payments.aspx" />
     <Content Include="Renters.aspx" />
+    <Content Include="Users_Edit.aspx" />
     <Content Include="Users.aspx" />
     <Content Include="Listings.aspx" />
     <Content Include="Default.aspx" />
@@ -90,6 +91,10 @@
     </Compile>
     <Compile Include="Renters.aspx.cs">
       <DependentUpon>Renters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users_Edit.aspx.cs">
+      <DependentUpon>Users_Edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Users.aspx.cs">

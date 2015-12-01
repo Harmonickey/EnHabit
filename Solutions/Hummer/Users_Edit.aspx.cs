@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace Hummer
 {
-    public partial class Renters : Page
+    public partial class Users_Edit : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
