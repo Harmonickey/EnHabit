@@ -60,13 +60,19 @@ def GetListingData(listingId, userId)
             userAccount = session[:accounts].find({:UserId => userId}).one
         end
 
-        # determine if we're applying for our own listing!
-        isOwnListing = (userAccount["Username"] == listing[0]["Landlord"] || userAccount["Username"] == listing[0]["Username"])
-        hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
-        
+        if userAccount.nil?
+          mongoSession.with(safe: true) do |session|
+            userAccount = session[:accounts].find({:LandlordId => userId}).one
+          end
+        end
+
         if listing.count == 0
             return nil
         else
+            # determine if we're applying for our own listing!
+            isOwnListing = (userId == listing[0]["LandlordId"] || userAccount["Username"] == listing[0]["Username"])
+            hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
+
             return { :LandlordId => listing[0]["LandlordId"], :OwnListing => isOwnListing, :HasUpdatedAccount => hasUpdatedAccount }
         end
     rescue Moped::Errors::OperationFailure => e
