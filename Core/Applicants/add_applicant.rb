@@ -41,7 +41,7 @@ def InsertApplicant(userId, listingId, landlordId)
     return retVal
 end
 
-def GetListingData(listingId)
+def GetListingData(listingId, userId)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -54,10 +54,20 @@ def GetListingData(listingId)
             listing = session[:listings].find(queryObj).to_a
         end
         
+        # get the user associated with this session
+        userAccount = Hash.new
+        mongoSession.with(safe: true) do |session|
+            userAccount = session[:accounts].find({:UserId => userId}).one
+        end
+        
+        # determine if we're applying for our own listing!
+        isOwnListing = (userAccount["Username"] == listing["Landlord"] || userAccount["Username"] == listing["Username"])
+        hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
+        
         if listing.count == 0
             return nil
         else
-            return { :LandlordId => listing[0]["LandlordId"] }
+            return { :LandlordId => listing[0]["LandlordId"], :OwnListing => isOwnListing, :HasUpdatedAccount => hasUpdatedAccount }
         end
     rescue Moped::Errors::OperationFailure => e
         return nil
@@ -74,10 +84,15 @@ begin
     key = ARGV[2] if not ARGV[2].nil?
     isAdmin = ARGV[3].to_b
     
-    listingData = GetListingData(data["ListingId"]) # ListingId (oid), LandlordId
-    raise "No Listing Data" if listingData.nil?
+    listingData = GetListingData(data["ListingId"], userId) # ListingId (oid), LandlordId
     
-    puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId])
+    puts "No Listing Data" if listingData.nil?
+    puts "Cannot Apply to Your Own Listing" if listingData[:OwnListing]
+    puts "Please Update Your Account" if not listingData[:HasUpdatedAccount]
+    
+    if not listingData.nil? and not listingData[:OwnListing]
+        puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId])
+    end
 rescue Exception => e
     puts e.inspect
 end

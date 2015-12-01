@@ -1396,6 +1396,14 @@ function Apply(listingId)
                     {
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Application Sent!", position: 'top-center'});
                     }
+                    else if (Contains(res, "Update"))
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Please Update Your Account", position: 'top-center'});
+                    }
+                    else if (Contains(res, "Apply"))
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Cannot Apply To Your Own Listing!", position: 'top-center'});
+                    }
                     else
                     {
                         throw new Error("Problem Sending Application");
@@ -1409,10 +1417,6 @@ function Apply(listingId)
             error: function(res, err)
             {
                 $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
-            },
-            complete: function()
-            {
-                $("#common-modal").modal('hide');
             }
         });
     }
@@ -1743,6 +1747,11 @@ function SendEmail(listingId)
                 {
                     $("#common-modal").modal('hide');
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Sent Email!", position: 'top-center'});
+                }
+                else if (Contains(res, "Update"))
+                {
+                    $("#common-modal").modal('hide');
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Please Update Your Account!", position: 'top-center'});
                 }
                 else
                 {

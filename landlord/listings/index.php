@@ -236,9 +236,10 @@
                         <div class="modal-switch airConditioning-content">
                             <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
                         </div>
+                        <!--
                         <div class="modal-switch type-content">
                             <label>Lease Type</label><input type='checkbox' data-size='mini' />
-                        </div>
+                        </div>-->
                         <div class="modal-switch type-content">
                             <label>Building Type</label><input type='checkbox' data-size='mini' />
                         </div>
