@@ -45,7 +45,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
-        listingObj["IsActive"] = isActive
+        listingObj["IsActive"] = isActive.to_b
         
         thumbnails = []
         pictures.each do |filename|
