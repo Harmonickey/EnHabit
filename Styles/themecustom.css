@@ -1115,7 +1115,9 @@ select::-ms-expand
  .popup-background-shadow
  {
     height: 50%;
+    width: 100%;
     position: absolute;
+    top: 0;
     background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(35,36,39,0.85) 50%, rgba(69,72,77,0) 100%);
     background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%);
     background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%);
