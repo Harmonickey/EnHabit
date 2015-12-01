@@ -1098,3 +1098,16 @@ select::-ms-expand
  {
     color: #777;
  }
+ 
+ .lightbackground
+ {
+    background: rgba(0,0,0,0.2);
+    color: white;
+ }
+ 
+ .darkbackground
+ {
+    background: rgba(0,0,0,0.35);
+    color: white;
+    border-radius: 10px;
+ }
