@@ -47,14 +47,25 @@ function GetAllUniversities(isListingPage)
                     
                     for (var i = 0; i < data.length; i++)
                     {
-                        universities.push(data[i].UniversityName);
+                        universitiesList.push(data[i].UniversityName);
                         if (isListingPage)
                         {
                             $("#universities-filter").append("<option value='" + data[i].UniversityName + "'>" + data[i].UniversityName + "</option>");
                         }
+                        else
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionUniversitiesView(oid, data[i]));
+                            
+                            SetGeocompleteTextBox(oid);
+                        }
                     }
                     
-                    GetAllListings();
+                    if (isListingPage)
+                    {
+                        GetAllListings();
+                    }
                 }
             }
             catch(e)
