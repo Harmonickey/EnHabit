@@ -912,7 +912,7 @@ function InsertMarkers(res)
                 }
                 
                 var popupContent =  
-                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button" href="#close">x</a>' +
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
                                 '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
                                     '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
@@ -957,7 +957,7 @@ function InsertMarkers(res)
                 }));
                 
                 var popupContent =  
-                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button" href="#close">x</a>' +
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
                             '<div class="popup">' +
                                 '<h2 class="multi-h2">' + entry[0].Address + '</h2>' +
                                 '<p class="multi-p">Multiple listings available.</p>' +

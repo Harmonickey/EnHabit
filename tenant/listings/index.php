@@ -258,6 +258,14 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <label>University</label>
+                        <select id="Universities-filter" class="form-control">
+                        
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
@@ -312,12 +320,13 @@ var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
 var addedFiles = {};
 var landlordList = [];
+var universitiesList = [];
 
 $(function() 
 {  
     CreateDropzone("create", "#createListingModal form");
-    GetAllLandlords();
     
+    GetAllUniversities();
     GetAccount(true);
 
     InitSpecialFields();

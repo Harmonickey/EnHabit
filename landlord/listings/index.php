@@ -246,6 +246,14 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
+                        <label>Universities</label>
+                        <select id="universities-filter" class="form-control">
+                        
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
@@ -299,12 +307,13 @@ Dropzone.autoDiscover = false;
 var pictures = {}; // object of arrays for update-listing
 var dropzones = {};
 var addedFiles = {};
+var universitiesList = [];
 
 $(function() 
 {
     CreateDropzone("create", "#createListingModal form");
 
-    GetAllListings();
+    GetAllUniversities();
     GetAccount(true);
 
     InitSpecialFields();

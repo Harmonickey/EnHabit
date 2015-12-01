@@ -426,17 +426,56 @@ function DeleteListing(id)
     });
 }
 
+function GetAllUniversities()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_all_universities",
+            endpoint: "Universities"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Universities"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        universitiesList.push(data[i].UniversityName);
+                        $("#universities-filter").append("<option value='" + data[i].UniversityName + "'>" + data[i].UniversityName + "</option>");
+                    }
+                    
+                    GetAllLandlords();
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });     
+}
+
 function UpdateListing(id)
 {
     var inputs = $("#" + id + " input, #" + id + " select, #" + id + " textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "University", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
     
     data.id = id;
-    data.University = "Northwestern";
     //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
@@ -476,11 +515,10 @@ function CreateListing()
 {   
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
-    data.University = "Northwestern";
     //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
@@ -1244,6 +1282,11 @@ function CreateAccordionView(oid, data)
         landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
     });
     
+    var universities = "";
+    $.each(universitiesList, function(index, university) {
+        universities += "<option value='" + university + "'" + (data.University == university ? "selected" : "") + ">" + university + "</option>";
+    });
+    
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
 
     return "<div class='panel panel-default'>" +
@@ -1279,6 +1322,10 @@ function CreateAccordionView(oid, data)
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>University</label>" + 
+                                "<select class='form-control'>" + universities + "</select>" +
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" +
