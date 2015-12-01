@@ -57,7 +57,7 @@ def GetEmailDetails(userId, listingId)
             return nil
         end
         
-        return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"]), "Name" => account[0]["FirstName"] + " " + account[0]["LastName"], "PhoneNumber" => (account[0]["PhoneNumber"].nil? ? "" : account[0]["PhoneNumber"])}
+        return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"]), "Name" => account[0]["FirstName"] + " " + account[0]["LastName"], "PhoneNumber" => (account[0]["PhoneNumber"].nil? ? "" : account[0]["PhoneNumber"]), "Username" => account[0]["Username"]}
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
@@ -81,14 +81,18 @@ begin
     @name = @details["Name"]
     @listing = @details["Listing"]
     @from = @details["From"]
+    @username = @details["Username"]
     @phone = @details["PhoneNumber"] if not @details["PhoneNumber"].nil?
     
-    raise "Could Not Find User" if @from.nil? 
+    puts "Could Not Find User" if @from.nil? 
+    puts "Please Update Your Account" if @username.include? "Facebook"
     
-    `chmod 775 #{@deploymentBase}/Core/Accounts/mail.rb`
-    `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
+    if not @from.nil?
+        `chmod 775 #{@deploymentBase}/Core/Accounts/mail.rb`
+        `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
 
-    puts "Okay"
+        puts "Okay"
+    end
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
