@@ -206,7 +206,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Bedrooms</label>
                         <select id="bedrooms-filter" class="form-control">
                             <option value="studio">Studio</option>
@@ -217,7 +217,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Bathrooms</label>
                         <select id="bathrooms-filter" class="form-control">
                             <option value="1" selected>1</option>

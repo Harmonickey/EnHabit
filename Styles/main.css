@@ -35,6 +35,7 @@ a {
     color:#fff;
     color:rgba(255,255,255,0.8);
     font-weight: bold;
+    outline: 0;
 }
 a:hover {
     color:#fff;

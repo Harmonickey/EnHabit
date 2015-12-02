@@ -23,6 +23,9 @@ body {
 p {
   font: 13px/1.7em 'Open Sans';
 }
+a {
+    outline: 0;
+}
 h1,
 h2,
 h3,
