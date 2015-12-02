@@ -173,19 +173,19 @@
             </div>
             <div class="modal-body">
                 <div class="row"> <!-- this is used to get the display names -->
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
                         <label>University Name: </label><input type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="row"> <!-- address is used to get latitude and longitude -->
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
                         <label>Address: </label><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
                         <button id="add-university-button" type="button" class="btn btn-success" onclick="AddUniversity()">Add University</button>
                     </div>
                 </div>

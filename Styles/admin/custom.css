@@ -129,7 +129,8 @@ textarea
     top: -10px;
 }
 
-#create-listing-button
+#create-listing-button,
+#add-university-button
 {
     margin-top: 10px;
 }
@@ -158,7 +159,8 @@ textarea
 }
 
 #createListingModal .row,
-#createUserModal .row
+#createUserModal .row,
+#addUniversityModal .row
 {
     margin-left: 0;
 }
