@@ -690,11 +690,13 @@ function ProcessListing()
                         {
                             $("#" + id + " .activecheckbox").prop("disabled", false);
                             $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
+                            $("#" + id + " .activemsg").hide();
                         }
                         else if (pictures[id].length == 0)
                         {
                             $("#" + id + " .activecheckbox").prop("disabled", true);
                             $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
+                            $("#" + id + " .activemsg").show();
                         }
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
@@ -1434,7 +1436,7 @@ function CreateAccordionView(oid, data)
                                 "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label style='color: red'>To Activate This Listing You Must Include Images!</label>" : "")) + 
+                                (data.IsActive ? "" : (data.Pictures == null || data.Pictures.length == 0 ? "<label style='color: red' class='activemsg'>To Activate This Listing You Must Include Images!</label>" : "")) + 
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
