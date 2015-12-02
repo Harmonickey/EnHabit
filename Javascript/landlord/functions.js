@@ -660,7 +660,6 @@ function ProcessListing()
     else if (pendingUpdateData != null)
     {
         var id = pendingUpdateData.id;
-        addedFiles[id] = false;
         
         // update listing
         $.ajax(
@@ -687,14 +686,18 @@ function ProcessListing()
                         $(headingInputs[2]).text("Rent: $" + $(inputs[2]).autoNumeric('get') + "/Month");
                         $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
                         
-                        if (numUploaded[id] > 0)
+                        if (addedFiles[id])
                         {
                             $("#" + id + " .activecheckbox").prop("disabled", false);
+                        }
+                        else if (pictures[id].length == 0)
+                        {
+                            $("#" + id + " .activecheckbox").prop("disabled", true);
                         }
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                         numUploaded[id] = 0;
-                        
+                        addedFiles[id] = false;
                         pendingUpdateData = null;
                         
                         // close the div
@@ -719,6 +722,9 @@ function ProcessListing()
             {
                 $("#" + id + " button").prop("disabled", false);
                 $($("#" + id + " button")[0]).text("Update");
+                addedFiles[id] = false;
+                numUploaded[id] = 0;
+                pendingUpdateData = null;
             }
         });
     }
