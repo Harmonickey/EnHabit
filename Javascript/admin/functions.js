@@ -1353,10 +1353,12 @@ function ProcessListing()
                         if (addedFiles[id])
                         {
                             $("#" + id + " .activecheckbox").prop("disabled", false);
+                            $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
                         }
                         else if (pictures[id].length == 0)
                         {
                             $("#" + id + " .activecheckbox").prop("disabled", true);
+                            $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
                         }
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
