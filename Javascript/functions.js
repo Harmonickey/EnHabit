@@ -24,32 +24,9 @@ var background_settings = {
 
 var markers = new L.FeatureGroup();
 
-function resetColors()
-{
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setIcon(L.mapbox.marker.icon({
-            'marker-color': '#000',
-            'marker-size': 'medium',
-            'marker-symbol': 'building'
-        }));
-    }
-}
-
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
 var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
-map.on('click', resetColors);
-var myLayer = L.mapbox.featureLayer().addTo(map);
-myLayer.on('click', function(e) {
-    resetColors();
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setIcon(L.mapbox.marker.icon({
-            'marker-color': '#006400',
-            'marker-size': 'medium',
-            'marker-symbol': 'building'
-        }));
-    }
-});
 
 //map.on('draw:created', getPointsWithinPolygon);
 
