@@ -689,6 +689,11 @@ function ProcessListing()
                         $(headingInputs[2]).text("Rent: $" + $(inputs[2]).autoNumeric('get') + "/Month");
                         $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
                         
+                        if (numUploaded > 0)
+                        {
+                            $("#" + id + " .activecheckbox").prop("disabled", false);
+                        }
+                        
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
                         numUploaded = 0;
                         
