@@ -1527,21 +1527,22 @@ function Login()
                     }
                     else
                     {
-                        throw new Error("Problem Logging In");
+                        throw new Error(res);
                     }
                 }
                 catch(e)
                 {
                     $(".login-error").show();
                     $(".login-error").text(e.message);
-                    $(".login-action").text("Sign In");
-                    $(".login-action").prop("disabled", false);
                 }
             },
             error: function(res, err)
             {
                 $(".login-error").show();
                 $(".login-error").text(res);
+            },
+            complete: function() 
+            {
                 $(".login-action").text("Sign In");
                 $(".login-action").prop("disabled", false);
             }

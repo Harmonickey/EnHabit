@@ -779,7 +779,7 @@ function Login()
                         }
                         else
                         {
-                            throw new Error("Problem Logging In");
+                            throw new Error(res);
                         }
                     }
                     catch(e)
