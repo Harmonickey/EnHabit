@@ -65,11 +65,9 @@ begin
 	
     result = UserExists(data["Username"], data["Password"])
     
-    puts "Incorrect Username/Password" if result == false
-    
-    hasRental = HasRental(result["id"])
-    
-    if result["exists"]
+    if result != false && result["exists"]
+        hasRental = HasRental(result["id"])
+
         retMsg = "Okay"
         retMsg += ":Landlord" if @isLandlord
         retMsg += ":Tenant" if not @isLandlord
