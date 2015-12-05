@@ -7,6 +7,7 @@ base = absPath.split("/").index("public_html")
 $: << "#{@deploymentBase}/Libraries"
 
 require 'net/http'
+require 'json'
 
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
 
@@ -53,3 +54,8 @@ req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
 res = Net::HTTP.start(@uri.hostname, @uri.port) {|http|
   http.request(req)
 }
+
+app_result = Hash.new
+app_result["PayKey"] = res
+
+puts app_result.to_json
