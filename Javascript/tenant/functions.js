@@ -30,7 +30,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function GetRenter()
+function GetRenter(paykey)
 {
     $.ajax(
     {
@@ -68,9 +68,9 @@ function GetRenter()
                     {
                         var oid = data._id.$oid;
                             
-                        $("#payment").append(CreatePaymentView(oid, data));
-                        
-                        GetPayKey();
+                        $("#payment").append(CreatePaymentView(oid, data, paykey));
+                       
+                        var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
                     }                       
                 }
             }
@@ -1031,9 +1031,7 @@ function GetPayKey()
                 {
                     var paykey = data["payKey"];
                     
-                    $("#paykey").val(paykey);
-                    
-                    var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                    GetRenter(paykey);
                 }
             }
             catch(e)
@@ -1464,7 +1462,7 @@ function CreateAccordionView(oid, data)
 }
 
 /* Rent, HasPaidRent, Address,  */
-function CreatePaymentView(oid, data)
+function CreatePaymentView(oid, data, paykey)
 {
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
@@ -1487,7 +1485,7 @@ function CreatePaymentView(oid, data)
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                             "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
                                 "<button class='btn btn-primary btn-success' id='submitBtn'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
-                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
+                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value='" + paykey + "'>" +
                             "</form>" +
                             "</div>" +
                         "</div>" +
