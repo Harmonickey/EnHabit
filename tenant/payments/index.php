@@ -264,7 +264,7 @@
         </div>
     </div>
 </div>
-<a id="paypal-adaptive" href="" class="btn btn-warning lightbox-type"></a>
+<a id="paypal-adaptive" style="display:none;" href="" class="btn btn-warning lightbox-type"></a>
 
 <!-- Le javascript
 ================================================== -->

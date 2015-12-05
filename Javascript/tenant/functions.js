@@ -1029,7 +1029,7 @@ function MakeAdaptivePayment(uid)
                 {
                     var paykey = data["PayKey"];
                     
-                    var href = $("#paypal-adaptive").attr("onclick", "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + paykey);
+                    var href = $("#paypal-adaptive").attr("href", "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + paykey);
                     
                     $("#paypal-adaptive").click();
                 }
