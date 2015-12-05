@@ -44,10 +44,10 @@ req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
 req['X-PAYPAL-SECURITY-PASSWORD'] =  'G83KPXZFF7WJ79RH'
 req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AzoDVGfo-Olt0X8dTEvq7my6ZsJoAYm67DkUBc8AHYKxQnhq0pIfIsEt'
 
-// Global Sandbox Application ID
+# Global Sandbox Application ID
 req['X-PAYPAL-APPLICATION-ID'] = 'APP-80W284485P519543T'
 
-// Input and output formats
+# Input and output formats
 req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
 req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
 
