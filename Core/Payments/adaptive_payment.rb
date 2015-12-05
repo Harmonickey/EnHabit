@@ -37,7 +37,7 @@ params =
         "detailLevel" => "ReturnAll"   # Error detail level
     }
 }
-uri.query = URI.encode_www_form(params)
+@uri.query = URI.encode_www_form(params)
 
 req = Net::HTTP::Get.new(@uri)
 req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
