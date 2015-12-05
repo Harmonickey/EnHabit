@@ -1483,7 +1483,7 @@ function CreatePaymentView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary btn-success' onclick='MakeAdaptivePayment('" + oid + "');'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
+                                "<button class='btn btn-primary btn-success' onclick='MakeAdaptivePayment(\"" + oid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
