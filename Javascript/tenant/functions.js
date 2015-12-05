@@ -1028,7 +1028,6 @@ function MakeAdaptivePayment(uid)
                 else
                 {
                     var paykey = data["payKey"];
-                    console.log(paykey);
                     
                     var href = $("#paypal-adaptive").attr("href", "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + paykey);
                     
