@@ -49,6 +49,7 @@
     
     <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
     <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
+    <link href="../../Libraries/Styles/jquery.lightbox.css" rel="stylesheet">
     
     <link href="../../Libraries/Styles/dropzone.css" rel="stylesheet">
     
@@ -263,6 +264,7 @@
         </div>
     </div>
 </div>
+<a id="paypal-adaptive" href="" class="btn btn-warning lightbox-type"></a>
 
 <!-- Le javascript
 ================================================== -->
@@ -275,6 +277,7 @@
 <!-- helper for notifications -->
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
+<script src="../../Libraries/jquery.lightbox.min.js"></script>
 
 <script src="../../Javascript/tenant/functions.js"></script>
 
