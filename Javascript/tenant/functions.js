@@ -15,6 +15,10 @@ $(function() {
    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
    
    $(".main").css("min-height", height + "px");
+   
+   if ($.fn.lightbox) {
+        $('.ui-lightbox').lightbox();
+    }
 });
 
 $(document).on("keypress", function(e)
@@ -64,7 +68,7 @@ function GetRenter()
                     {
                         var oid = data._id.$oid;
                             
-                        $("#payment").append(CreatePaymentView(oid, data));
+                        GetPayKey();
                     }                       
                 }
             }
@@ -985,6 +989,72 @@ function DeleteAccount()
     });
 }
 
+function MakeAdaptivePayment(uid)
+{
+    var rent = $("#" + uid + " .rent").text().replace("$", "");
+    var landlordEmail = $("#" + uid + " .landlordEmail").text();
+    
+    var data = 
+    {
+        "Rent": rent,
+        "LandlordEmail": landlordEmail
+    };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $(".adaptive-payment button").prop("disabled", true);
+            $($(".adaptive-payment button")[1]).text("Deleting...");
+        },
+        data:
+        {
+            command: "adaptive_payment",
+            data: data,
+            endpoint: "Payments"
+        },
+        success: function(res)
+        {
+            try
+            {
+                var data = JSON.parse(res);
+                
+                if (data["error"])
+                {
+                   throw Error("Unable to Process Payment"); 
+                }
+                else
+                {
+                    var paykey = data["PayKey"];
+                    
+                    var href = $("#paypal-adaptive").attr("onclick", "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + paykey);
+                    
+                    $("#paypal-adaptive").click();
+                }
+                else
+                {
+                    throw new Error(res);
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $(".adaptive-payment button").prop("disabled", false);
+            $($(".adaptive-payment button")[1]).text("Delete");
+        }
+    });
+}
+
 function OpenPaymentModal(uid)
 {
     $("#createPaymentModal").modal('show');
@@ -1396,7 +1466,7 @@ function CreateAccordionView(oid, data)
 }
 
 /* Rent, HasPaidRent, Address,  */
-function CreatePaymentView(oid, data)
+function CreatePaymentView(oid, data, paykey)
 {
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
@@ -1417,7 +1487,7 @@ function CreatePaymentView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary btn-success' onclick='OpenPaymentModal(\"" + oid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                                "<button class='btn btn-primary btn-success' onclick='MakeAdaptivePayment('" + oid + "');'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
