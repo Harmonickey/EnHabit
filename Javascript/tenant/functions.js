@@ -1033,10 +1033,6 @@ function MakeAdaptivePayment(uid)
                     
                     $("#paypal-adaptive").click();
                 }
-                else
-                {
-                    throw new Error(res);
-                }
             }
             catch(e)
             {
