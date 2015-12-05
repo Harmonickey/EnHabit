@@ -1485,8 +1485,8 @@ function CreatePaymentView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                            "<form action='https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
-                                "<input type='image' id='submitBtn' value='Pay Rent' src='https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif'>" +
+                            "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
+                                "<button class='btn btn-primary btn-success' id='submitBtn'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
                                 "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
                             "</form>" +
                             "</div>" +
