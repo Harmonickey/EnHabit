@@ -37,25 +37,24 @@ params =
         "detailLevel" => "ReturnAll"   # Error detail level
     }
 }
+
 @uri.query = URI.encode_www_form(params)
 
-req = Net::HTTP::Get.new(@uri)
-req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
-req['X-PAYPAL-SECURITY-PASSWORD'] =  'G83KPXZFF7WJ79RH'
-req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AzoDVGfo-Olt0X8dTEvq7my6ZsJoAYm67DkUBc8AHYKxQnhq0pIfIsEt'
+res = Net::HTTP.start(@uri, @uri) {|http|
 
-# Global Sandbox Application ID
-req['X-PAYPAL-APPLICATION-ID'] = 'APP-80W284485P519543T'
+  req = Net::HTTP::Get.new(@uri.query)
+  req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
+  req['X-PAYPAL-SECURITY-PASSWORD'] =  'G83KPXZFF7WJ79RH'
+  req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AzoDVGfo-Olt0X8dTEvq7my6ZsJoAYm67DkUBc8AHYKxQnhq0pIfIsEt'
 
-# Input and output formats
-req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
-req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
+  # Global Sandbox Application ID
+  req['X-PAYPAL-APPLICATION-ID'] = 'APP-80W284485P519543T'
 
-res = Net::HTTP.start(@uri.hostname, @uri.port) {|http|
-  http.request(req)
+  # Input and output formats
+  req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
+  req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
+
+  response = http.request(req)
+  
+  puts response
 }
-
-app_result = Hash.new
-app_result["PayKey"] = res
-
-puts app_result.to_json
