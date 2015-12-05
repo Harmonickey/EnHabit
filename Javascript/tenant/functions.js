@@ -68,7 +68,7 @@ function GetRenter()
                     {
                         var oid = data._id.$oid;
                             
-                        GetPayKey();
+                        $("#payment").append(CreatePaymentView(oid, data));
                     }                       
                 }
             }
@@ -1462,7 +1462,7 @@ function CreateAccordionView(oid, data)
 }
 
 /* Rent, HasPaidRent, Address,  */
-function CreatePaymentView(oid, data, paykey)
+function CreatePaymentView(oid, data)
 {
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
