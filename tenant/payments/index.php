@@ -264,7 +264,6 @@
         </div>
     </div>
 </div>
-<a id="paypal-adaptive" style="display:none;" href="" class="btn btn-warning lightbox-type"></a>
 
 <!-- Le javascript
 ================================================== -->
@@ -278,6 +277,8 @@
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 <script src="../../Libraries/Javascript/jquery.lightbox.min.js"></script>
+
+<script src="https://www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
 
 <script src="../../Javascript/tenant/functions.js"></script>
 
