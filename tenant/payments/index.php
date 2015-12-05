@@ -277,7 +277,7 @@
 <!-- helper for notifications -->
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
-<script src="../../Libraries/jquery.lightbox.min.js"></script>
+<script src="../../Libraries/Javascript/jquery.lightbox.min.js"></script>
 
 <script src="../../Javascript/tenant/functions.js"></script>
 
