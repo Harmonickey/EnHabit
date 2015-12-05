@@ -38,4 +38,4 @@ end
 
 res = `curl -s #{headers}#{@uri.to_s} -d \"#{params}\"`
 
-puts JSON.parse(res)
+puts JSON.parse(res).to_json
