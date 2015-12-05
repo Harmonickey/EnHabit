@@ -12,49 +12,30 @@ require 'json'
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
 
 @rent = @data["Rent"]
-@recipient = @data["Recipient"]
+@recipient = @data["LandlordEmail"]
 
-@uri = URI('https://svcs.sandbox.paypal.com/AdaptivePayments/Pay')
+@uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
 
-params =
-{
-    "actionType" => "PAY",    # Specify the payment action
-    "currencyCode" => "USD",  # The currency of the payment
-    "receiverList" => {
-        "receiver" => [{
-            "amount" => @rent,    # The payment amount
-            "email" => @recipient # The payment Receiver's email address
-        }]  
-    },
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}]}, \"returnUrl\":\"http://www.example.com/success.html\", \"cancelUrl\":\"http://www.example.com/failure.html\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
 
-    # Where the Sender is redirected to after approving a successful payment
-    "returnUrl" => "http://dev.enhabitlife.com/paymentSuccess",
+req = Hash.new
+req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
+req['X-PAYPAL-SECURITY-PASSWORD'] = 'DVWC6FTKRG7WYWFY'
+req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AWjlrRdzrtV5-PSI427csM4fUlCsA3Y.solWILTwvYm8VyPRKVxsqXFZ'
 
-    # Where the Sender is redirected to upon a canceled payment
-    "cancelUrl" => "http://dev.enhabitlife.com/paymentCancelled",
-    "requestEnvelope" => {
-        "errorLanguage" => "en_US",    # Language used to display errors
-        "detailLevel" => "ReturnAll"   # Error detail level
-    }
-}
+# Global Sandbox Application ID
+req['X-PAYPAL-APPLICATION-ID'] = 'APP-1GK94644F85169934'
 
-@uri.query = URI.encode_www_form(params)
+# Input and output formats
+req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
+req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
 
-res = Net::HTTP.start(@uri, @uri) {|http|
+headers = ""
 
-  req = Net::HTTP::Get.new(@uri.query)
-  req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
-  req['X-PAYPAL-SECURITY-PASSWORD'] =  'G83KPXZFF7WJ79RH'
-  req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AzoDVGfo-Olt0X8dTEvq7my6ZsJoAYm67DkUBc8AHYKxQnhq0pIfIsEt'
+req.each do |key, value|
+  headers += "-H \"#{key.chomp}: #{value.chomp}\" "
+end
 
-  # Global Sandbox Application ID
-  req['X-PAYPAL-APPLICATION-ID'] = 'APP-80W284485P519543T'
+res = `curl -s #{headers}#{@uri.to_s} -d \"#{params}\"`
 
-  # Input and output formats
-  req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
-  req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
-
-  response = http.request(req)
-  
-  puts response
-}
+puts JSON.parse(res)
