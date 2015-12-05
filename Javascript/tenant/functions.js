@@ -30,7 +30,7 @@ $(document).on("keypress", function(e)
     }
 });
 
-function GetRenter(paykey)
+function GetRenter()
 {
     $.ajax(
     {
