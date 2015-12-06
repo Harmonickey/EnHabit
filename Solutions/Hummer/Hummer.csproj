@@ -64,7 +64,6 @@
     <Folder Include="styles\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Usersold.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -72,7 +71,7 @@
     <Content Include="Listings.aspx" />
     <Content Include="Payments.aspx" />
     <Content Include="Renters.aspx" />
-    <Content Include="Users_Edit.aspx" />
+    <Content Include="Users_AddEdit.aspx" />
     <Content Include="Users.aspx" />
     <Content Include="_references\js\bootstrap.min.js" />
     <Content Include="_references\styles\bootstrap-theme.min.css" />
@@ -92,10 +91,6 @@
     </Compile>
     <Compile Include="Hummer.Master.designer.cs">
       <DependentUpon>Hummer.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Usersold.aspx.cs">
-      <DependentUpon>Usersold.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -129,12 +124,12 @@
     <Compile Include="Renters.aspx.designer.cs">
       <DependentUpon>Renters.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users_Edit.aspx.cs">
-      <DependentUpon>Users_Edit.aspx</DependentUpon>
+    <Compile Include="Users_AddEdit.aspx.cs">
+      <DependentUpon>Users_AddEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users_Edit.aspx.designer.cs">
-      <DependentUpon>Users_Edit.aspx</DependentUpon>
+    <Compile Include="Users_AddEdit.aspx.designer.cs">
+      <DependentUpon>Users_AddEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Users.aspx.cs">
       <DependentUpon>Users.aspx</DependentUpon>
