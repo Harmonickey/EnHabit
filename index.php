@@ -372,7 +372,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <!-- Jquery, Jquery UI, and Bootstrap JS -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+        <script src="//maps.googleapis.com/maps/api/js?libraries=places"></script>
         <script>window.jQuery || document.write("<script src='Libraries/Javascript/jquery-1.11.2.min.js'><\/script>")</script>
         <script src="Libraries/Javascript/bootstrap.min.js"></script>
         
