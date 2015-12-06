@@ -41,8 +41,8 @@
     
     <link href="../Libraries/Styles/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
     
-    <link href="../../Libraries/Styles/msgGrowl.css" rel="stylesheet">
-    <link href="../../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
+    <link href="../Libraries/Styles/msgGrowl.css" rel="stylesheet">
+    <link href="../Libraries/Styles/jquery.msgbox.css" rel="stylesheet">
     
     <link href="../Libraries/Styles/base-admin-3.css" rel="stylesheet">
     <link href="../Libraries/Styles/base-admin-3-responsive.css" rel="stylesheet">
@@ -204,8 +204,8 @@
 <script src="../Libraries/Javascript/jquery.flot.pie.js"></script>
 <script src="../Libraries/Javascript/jquery.flot.resize.js"></script>
 
-<script src="../../Libraries/Javascript/msgGrowl.js"></script>
-<script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
+<script src="../Libraries/Javascript/msgGrowl.js"></script>
+<script src="../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
 <script src="../Javascript/admin/functions.js"></script>
 

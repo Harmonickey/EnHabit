@@ -175,7 +175,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
-<script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+<script src="//maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-tagsinput.min.js"></script>

@@ -271,7 +271,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui.min.js"></script>
-<script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+<script src="//maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 
 <!-- helper for notifications -->
