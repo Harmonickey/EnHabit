@@ -22,6 +22,8 @@
             $_SESSION['CREATED'] = time();  // update creation time
         }
     }
+    
+    $resultmsg = $_GET["result"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -282,7 +284,16 @@
 
 <script src="../../Libraries/Javascript/jquery.payment.js"></script>
 <script src="../../Javascript/paymentsandbox/functions.js"></script>
-
+<?php
+    if ($resultmsg == "success")
+    {
+        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
+    }
+    else if ($resultmsg == "cancelled")
+    {
+        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'error', title: 'Error', text: 'Cancelled Payment', position: 'top-center'});</script>\n";
+    }
+?>
 <script>
 
 $(function() 

@@ -13,6 +13,11 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     $id = (isset($_SESSION["userId"]) ? $_SESSION["userId"] : $_SESSION["landlordId"]);
     $key = (isset($_SESSION["userId"]) ? "UserId" : "LandlordId");
 
+    if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
+    {
+        header("Location: /", FALSE);
+    }
+    
     // if we're running commands off of the front page, we don't want to filter
     // on user or landlord in the back end
     $no_user_filter = no_user_filter();
