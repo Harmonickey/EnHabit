@@ -64,19 +64,20 @@
     <Folder Include="styles\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Usersold.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+    <Content Include="Default.aspx" />
+    <Content Include="Listings.aspx" />
     <Content Include="Payments.aspx" />
     <Content Include="Renters.aspx" />
     <Content Include="Users_Edit.aspx" />
     <Content Include="Users.aspx" />
-    <Content Include="Listings.aspx" />
-    <Content Include="Default.aspx" />
-    <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
-    <Content Include="Hummer.Master" />
-    <Content Include="Web.config" />
     <Content Include="_references\js\bootstrap.min.js" />
     <Content Include="_references\styles\bootstrap-theme.min.css" />
     <Content Include="_references\styles\bootstrap.min.css" />
+    <Content Include="Hummer.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -85,37 +86,62 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Payments.aspx.cs">
-      <DependentUpon>Payments.aspx</DependentUpon>
+    <Compile Include="Hummer.Master.cs">
+      <DependentUpon>Hummer.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Renters.aspx.cs">
-      <DependentUpon>Renters.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="Hummer.Master.designer.cs">
+      <DependentUpon>Hummer.Master</DependentUpon>
     </Compile>
-    <Compile Include="Users_Edit.aspx.cs">
-      <DependentUpon>Users_Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Users.aspx.cs">
-      <DependentUpon>Users.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Listings.aspx.cs">
-      <DependentUpon>Listings.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Usersold.aspx.cs">
+      <DependentUpon>Usersold.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Hummer.Master.cs">
-      <DependentUpon>Hummer.Master</DependentUpon>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Listings.aspx.cs">
+      <DependentUpon>Listings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Listings.aspx.designer.cs">
+      <DependentUpon>Listings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Payments.aspx.cs">
+      <DependentUpon>Payments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Payments.aspx.designer.cs">
+      <DependentUpon>Payments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Renters.aspx.cs">
+      <DependentUpon>Renters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Renters.aspx.designer.cs">
+      <DependentUpon>Renters.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Users_Edit.aspx.cs">
+      <DependentUpon>Users_Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users_Edit.aspx.designer.cs">
+      <DependentUpon>Users_Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users.aspx.designer.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />
