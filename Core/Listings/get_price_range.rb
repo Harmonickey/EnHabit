@@ -13,12 +13,18 @@ def GetPriceRange(university)
     document = {:MinRent => 0, :MaxRent => 0}
     
     mongoSession.with(safe: true) do |session|
-        document[:MinRent] = session[:listings].find({IsActive: true, UniversityName: university}).sort({"Price" => 1}).limit(1).select("_id" => 0, "Price" => 1).one
-        document[:MaxRent] = session[:listings].find({IsActive: true, UniversityName: university}).sort({"Price" => -1}).limit(1).select("_id" => 0, "Price" => 1).one
-    end
+        document[:MinRent] = session[:listings].find({IsActive: true, University: university}).sort({"Price" => 1}).limit(1).select("_id" => 0, "Price" => 1).one
+        document[:MaxRent] = session[:listings].find({IsActive: true, University: university}).sort({"Price" => -1}).limit(1).select("_id" => 0, "Price" => 1).one
     
-    mongoSession.with(safe: true) do |session|
-        pricing = session[:pricing].find({UniversityName: university}).one
+        puts document.inspect
+    
+        universityObj = session[:universities].find({UniversityName: university}).one
+    
+        puts universityObj.inspect
+    
+        pricing = session[:pricing].find({UniversityId: universityObj["UniversityId"]}).one
+        
+        puts pricing.inspects
         
         document[:MinRent]["Price"] = (document[:MinRent]["Price"]  * (pricing["ListingMarkup"].to_f / 100) + document[:MinRent]["Price"]).to_i
         document[:MaxRent]["Price"] = (document[:MaxRent]["Price"] * (pricing["ListingMarkup"].to_f / 100) + document[:MaxRent]["Price"]).to_i
