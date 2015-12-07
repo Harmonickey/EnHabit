@@ -1,6 +1,11 @@
 <?php
     session_start();
     
+    if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
+    {
+        header("Location: /", FALSE);
+    }
+    
     if (!isset($_SESSION["admin"]))
     {
         header("Location: /admin/login.php", FALSE);
@@ -76,6 +81,7 @@
                     <li class="admin-nav"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>   
                     <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
                     <li id="login-function" class="menu-item scroll" onclick="Logout()">
                         <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                     </li>
@@ -129,6 +135,12 @@
 						<a href="../universities">
 							<i class="fa fa-bank"></i>
 							<span>Universities</span>
+						</a>	    				
+					</li>
+                    <li>
+						<a href="../pricing">
+							<i class="fa fa-percent"></i>
+							<span>Pricing</span>
 						</a>	    				
 					</li>
 				</ul>
