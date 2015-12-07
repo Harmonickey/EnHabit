@@ -235,13 +235,9 @@
 
 <script>
 
-var universitiesList = [];
-
 $(function() 
 {   
-    InitSpecialFieldsUniversity();
-
-    GetAllUniversities(false);
+    GetPricing();
 });
 
 </script>
