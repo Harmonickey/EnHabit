@@ -50,6 +50,8 @@ function GetPricing()
                         var oid = data[i]._id.$oid;
                             
                         $("#accordion").append(CreateAccordionPricingView(oid, data[i]));
+                        
+                        SetTextBoxWithAutoNumeric(oid);
                     }
                 }
             }
@@ -1033,6 +1035,27 @@ function SetTextBoxWithAutoNumeric(rowId)
         vMax: '999999.99', 
         wEmpty: 'sign',
         lZero: 'deny'
+    });
+}
+
+function SetTextBoxWithAutoNumericPricing(rowId)
+{
+    var row = $("#" + rowId + " input[type='text']");
+    
+    $(row[1]).autoNumeric('init', 
+    {
+        aSign: '%', 
+        pSign: 's',
+        vMax: '99',
+        vMin: '0'
+    });
+    
+    $(row[2]).autoNumeric('init', 
+    {
+        aSign: '%', 
+        pSign: 's', 
+        vMax: '99',
+        vMin: '0'
     });
 }
 

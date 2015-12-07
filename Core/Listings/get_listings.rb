@@ -284,6 +284,12 @@ begin
             end
         end
         
+        documents.each do |doc|
+            pricing = mongoSession[:pricing].find({"UniversityName" => doc["UniversityName"]}).one
+            
+            doc["RentWithMarkup"] = doc["Rent"] * (pricing["ListingMarkup"] / 100) + doc["Rent"] 
+        end
+        
         puts documents.to_json
     end
 rescue Exception => e
