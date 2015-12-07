@@ -22,7 +22,7 @@ begin
     end
     
     universities.each do |university|
-        docs = documents.select {|doc| doc["UniversityId"] > university["UniversityId"] }
+        docs = documents.select {|doc| doc["UniversityId"] == university["UniversityId"] }
         document = docs[0]
         
         document["UniversityName"] = university["UniversityName"]
