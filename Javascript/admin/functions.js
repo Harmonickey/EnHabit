@@ -26,6 +26,45 @@ $(document).on("keypress", function(e)
     }
 });
 
+function GetPricing()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_pricing",
+            endpoint: "Pricing"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Pricing Markups"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        var oid = data[i]._id.$oid;
+                            
+                        $("#accordion").append(CreateAccordionPricingView(oid, data[i]));
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });       
+}
+
 function GetAllUniversities(isListingPage)
 {
     $.ajax(
@@ -792,11 +831,94 @@ function UpdateAccount(uid)
     }
 }
 
+function UpdatePricing(oid)
+{
+    var pricingField = $("#" + oid + " input");
+    
+    var data = BuildData(pricingField, ["ListingMarkup", "FeaturedMarkup"]);
+    
+    data.id = oid;
+    
+    var error = BuildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+    {
+        try
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
+                {
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[0]).text("Updating...");
+                },
+                data:
+                {
+                    command: "update_pricing",
+                    endpoint: "Pricing",
+                    data: data
+                },
+                success: function(res)
+                {    
+                    try
+                    {
+                        if (!res)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update Pricing", position: 'top-center'});
+                        }
+                        else if (Contains(res, "Okay"))
+                        {
+                            var inputs = $("#" + oid + " input");
+                            var headingInputs = $("#heading" + oid + " label");
+                            
+                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val());
+                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val());
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Pricing", position: 'top-center'});
+                            
+                            // close the div
+                            $("#heading" + oid + " a").click();
+                        }
+                        else
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + oid + " button").prop("disabled", false);
+                    $($("#" + oid + " button")[0]).text("Update");
+                }
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+        }
+    }
+}
+
 function UpdateUniversity(oid)
 {
     var universityfield = $("#" + oid + " input");
     
-    var data = BuildData(userfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(universityfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
     
     data.id = oid;
     
@@ -1774,10 +1896,6 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University" || elements[i] == "UniversityName")
-        {
-            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
-        }
         else if (elements[i] == "Rent")
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
@@ -1787,6 +1905,10 @@ function BuildData(inputs, elements)
             if ($(inputs[i]).attr("placeholder") !== "")
             {
                 data[elements[i]] = $(inputs[i]).val().trim();
+            }
+            else
+            {
+                data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
             }
         }
     }
@@ -1839,6 +1961,14 @@ function BuildError(fields)
     if (fields.Email === "" || (fields.Email !== undefined && !IsValidEmail(fields.Email)))
     {
         errorArr.push("Valid Email");
+    }
+    if (fields.ListingMarkup === "")
+    {
+        errorArr.push("Valid Listing Markup");
+    }
+    if (fields.FeaturedMarkup === "")
+    {
+        errorArr.push("Valid Featured Markup");
     }
     if (fields.PhoneNumber !== "" && fields.PhoneNumber !== undefined)
     {
@@ -2069,6 +2199,41 @@ function CreateAccordionUniversitiesView(oid, data)
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary btn-success' onclick='UpdateUniversity(\"" + oid + "\");'>Update</button>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreateAccordionPricingView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>University Name: " + data.UniversityName + "</label>" +
+                            "<label>Listing Markup: " + data.ListingMarkup + "</label>" +
+                            "<label>Featured Markup: " + data.FeaturedMarkup + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>University Name</label><input type='text' class='form-control' value='" + data.UniversityName + "' /> " + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Listing Markup</label><input type='text' class='form-control' value='" + data.ListingMarkup + "' />" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Featured Markup</label><input type='text' class='form-control' value='" + data.FeaturedMarkup + "' />" + 
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary btn-success' onclick='UpdatePricing(\"" + oid + "\");'>Update</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
