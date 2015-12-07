@@ -13,8 +13,15 @@ def GetPriceRange()
     document = {:MinRent => 0, :MaxRent => 0}
     
     mongoSession.with(safe: true) do |session|
-        document[:MinRent] = session[:listings].find({IsActive: true}).sort({"Price" => 1}).limit(1).select("_id" => 0, "Price" => 1).one
-        document[:MaxRent] = session[:listings].find({IsActive: true}).sort({"Price" => -1}).limit(1).select("_id" => 0, "Price" => 1).one
+        document[:MinRent] = session[:listings].find({IsActive: true, University: "Northwestern"}).sort({"Price" => 1}).limit(1).select("_id" => 0, "Price" => 1).one
+        document[:MaxRent] = session[:listings].find({IsActive: true, University: "Northwestern"}).sort({"Price" => -1}).limit(1).select("_id" => 0, "Price" => 1).one
+    end
+    
+    mongoSession.with(safe: true) do |session|
+        pricing = session[:pricing].find({University: "Northwestern"}).one
+        
+        document.MinRent = document.MinRent.to_i * (pricing["ListingMarkup"].to_f / 100) + document.MinRent.to_i
+        document.MaxRent = document.MaxRent.to_i * (pricing["ListingMarkup"].to_f / 100) + document.MaxRent.to_i
     end
     
     return document.to_json
