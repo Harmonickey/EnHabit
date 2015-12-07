@@ -1813,7 +1813,7 @@ function InitSpecialFieldsUniversity()
             var keys = Object.keys(result.geometry.location);
             $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
             $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
-            $(hiddenFields[2]).val($(listingModal[0]).val());
+            $(hiddenFields[2]).val($(universityModal[1]).val());
         });
 }
 
