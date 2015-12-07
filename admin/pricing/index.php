@@ -161,11 +161,10 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
                 <div class="widget-header actions">
-                    <h3>Registered Universities</h3>
-					<a class="btn btn-success" data-toggle="modal" href="#addUniversityModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
+                    <h3>Registered Pricing</h3>
 				</div> <!-- /widget-header -->
-				<div class="widget-content listings">
-					<!-- all the listings go here -->
+				<div class="widget-content pricings">
+					<!-- all the pricings go here -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         
                     </div>
