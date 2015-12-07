@@ -4,6 +4,7 @@
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
         header("Location: /", FALSE);
+        return;
     }
     
     if (!isset($_SESSION["admin"]))

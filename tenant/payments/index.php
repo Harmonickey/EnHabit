@@ -5,6 +5,7 @@
     if (!isset($_SESSION["userId"]))
     {
         header("Location: /", FALSE);
+        return;
     }
     
     if (!isset($_SESSION["tenant"]))
