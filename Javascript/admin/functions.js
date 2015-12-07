@@ -51,7 +51,7 @@ function GetPricing()
                             
                         $("#accordion").append(CreateAccordionPricingView(oid, data[i]));
                         
-                        SetTextBoxWithAutoNumeric(oid);
+                        SetTextBoxWithAutoNumericPricing(oid);
                     }
                 }
             }
@@ -880,8 +880,8 @@ function UpdatePricing(oid)
                             var headingInputs = $("#heading" + oid + " label");
                             
                             $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
-                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val());
+                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val() + "%");
+                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val() + "%");
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Pricing", position: 'top-center'});
                             
@@ -2236,8 +2236,8 @@ function CreateAccordionPricingView(oid, data)
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
                             "<label>University Name: " + data.UniversityName + "</label>" +
-                            "<label>Listing Markup: " + data.ListingMarkup + "</label>" +
-                            "<label>Featured Markup: " + data.FeaturedMarkup + "</label>" +
+                            "<label>Listing Markup: " + data.ListingMarkup + "%</label>" +
+                            "<label>Featured Markup: " + data.FeaturedMarkup + "%</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +

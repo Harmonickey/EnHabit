@@ -227,7 +227,8 @@
 
 <!-- jquery geocomplete api -->
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
-
+<!-- helper for numeric text boxes -->
+<script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
