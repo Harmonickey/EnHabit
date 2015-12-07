@@ -15,6 +15,8 @@ begin
         documents = session[:pricing].find().select(_id: 1, UniversityId: 1, ListingMarkup: 1, FeaturedMarkup: 1).to_a
     end
     
+    universities = []
+    
     mongoSession.with(safe: true) do |session|
         universities = session[:universities].find().to_a
     end
