@@ -287,7 +287,7 @@ begin
         documents.each do |doc|
             pricing = mongoSession[:pricing].find({"UniversityName" => doc["UniversityName"]}).one
             
-            doc["RentWithMarkup"] = doc["Rent"].to_i * (pricing["ListingMarkup"].to_f / 100).to_i + doc["Rent"].to_i 
+            doc["RentWithMarkup"] = (doc["Price"] * (pricing["ListingMarkup"].to_f / 100) + doc["Price"]).to_i
         end
         
         puts documents.to_json
