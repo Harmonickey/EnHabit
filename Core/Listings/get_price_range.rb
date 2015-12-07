@@ -6,25 +6,36 @@ require 'bson'
 require 'moped'
 require 'mongoid'
 
-def GetPriceRange()
+def GetPriceRange(university)
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])
     mongoSession.use("enhabit")
 
     document = {:MinRent => 0, :MaxRent => 0}
     
     mongoSession.with(safe: true) do |session|
-        document[:MinRent] = session[:listings].find({IsActive: true, University: "Northwestern"}).sort({"Price" => 1}).limit(1).select("_id" => 0, "Price" => 1).one
-        document[:MaxRent] = session[:listings].find({IsActive: true, University: "Northwestern"}).sort({"Price" => -1}).limit(1).select("_id" => 0, "Price" => 1).one
+        document[:MinRent] = session[:listings].find({IsActive: true, UniversityName: university}).sort({"Price" => 1}).limit(1).select("_id" => 0, "Price" => 1).one
+        document[:MaxRent] = session[:listings].find({IsActive: true, UniversityName: university}).sort({"Price" => -1}).limit(1).select("_id" => 0, "Price" => 1).one
     end
     
     mongoSession.with(safe: true) do |session|
-        pricing = session[:pricing].find({University: "Northwestern"}).one
+        pricing = session[:pricing].find({UniversityName: university}).one
         
-        document.MinRent = document.MinRent.to_i * (pricing["ListingMarkup"].to_f / 100) + document.MinRent.to_i
-        document.MaxRent = document.MaxRent.to_i * (pricing["ListingMarkup"].to_f / 100) + document.MaxRent.to_i
+        document[:MinRent]["Price"] = (document[:MinRent]["Price"]  * (pricing["ListingMarkup"].to_f / 100) + document[:MinRent]["Price"]).to_i
+        document[:MaxRent]["Price"] = (document[:MaxRent]["Price"] * (pricing["ListingMarkup"].to_f / 100) + document[:MaxRent]["Price"]).to_i
     end
     
     return document.to_json
 end
 
-puts GetPriceRange()
+begin
+    data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
+
+    puts GetPriceRange("Northwestern")
+rescue Exception => e
+    File.open("error.log", "a") do |output|
+        output.puts e.message
+        output.puts e.backtrace.inspect
+    end
+
+    puts "Error: #{e.message}"
+end
