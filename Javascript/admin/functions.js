@@ -1042,7 +1042,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
-    $(row[1]).autoNumeric('init', 
+    $(row[0]).autoNumeric('init', 
     {
         aSign: '%', 
         pSign: 's',
@@ -1050,7 +1050,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
         vMin: '0'
     });
     
-    $(row[2]).autoNumeric('init', 
+    $(row[1]).autoNumeric('init', 
     {
         aSign: '%', 
         pSign: 's', 
