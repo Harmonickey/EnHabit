@@ -1,6 +1,5 @@
 #!/usr/local/bin/ruby
 
-
 absPath = Dir.pwd
 base = absPath.split("/").index("public_html")
 deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
@@ -14,7 +13,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def InsertRenter(userId, landlordId, address, unit, rent, listingId)
+def InsertRenter(userId, landlordId, universityId, address, unit, rent, listingId)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -24,6 +23,7 @@ def InsertRenter(userId, landlordId, address, unit, rent, listingId)
     renterObj = Hash.new
     renterObj["RenterId"] = userId
     renterObj["LandlordId"] = landlordId
+    renterObj["UniversityId"] = universityId
     renterObj["Address"] = address
     renterObj["Unit"] = unit
     renterObj["Rent"] = rent
@@ -42,7 +42,7 @@ def InsertRenter(userId, landlordId, address, unit, rent, listingId)
         
         #grab listing associated data
         mongoSession.with(safe: true) do |session|
-            document = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, Rent: 1, Address: 1, Unit: 1).one
+            document = session[:renters].find(queryObj).select(_id: 1, UniversityId: 1, RenterId: 1, Rent: 1, Address: 1, Unit: 1).one
         end
         
         #grab user associated data
@@ -113,7 +113,8 @@ def GetListingData(listingId)
             return { :Rent => listing[0]["Price"], 
                      :Address => listing[0]["Address"], 
                      :Unit => listing[0]["Unit"],
-                     :LandlordId => listing[0]["LandlordId"]}
+                     :LandlordId => listing[0]["LandlordId"],
+                     :UniversityName => listing[0]["University"]}
         end
     rescue Moped::Errors::OperationFailure => e
         return nil
@@ -174,6 +175,29 @@ def GetApplicantData(applicantId)
     return applicantData
 end
 
+def GetUniversityId(universityName)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
+
+    begin
+        queryObj = Hash.new
+        queryObj["UniversityName"] = universityName
+        
+        university = Hash.new
+        mongoSession.with(safe: true) do |session|
+            university = session[:universities].find(queryObj).one
+        end
+        
+        if university.nil?
+            return nil
+        else
+            return university["UniversityId"]
+        end
+    rescue Moped::Errors::OperationFailure => e
+        return nil
+    end
+end
+
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
@@ -184,14 +208,17 @@ begin
         raise "No UserId" if userId.nil?
         listingData = GetListingData(data["ListingId"])
         raise "No Listing Data" if listingData.nil?
-    
-        puts InsertRenter(userId, listingData[:LandlordId], listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
+        universityId = GetUniversityId(listingData[:UniversityName])
+        raise "No University Data" if universityId.nil?
+        
+        puts InsertRenter(userId, listingData[:LandlordId], universityId, listingData[:Address], listingData[:Unit], listingData[:Rent], data["ListingId"])
     else #landlord endpoint only has access to the applicant object id
         applicantData = GetApplicantData(data["ApplicantId"])
-        
         raise "No Applicant Data" if applicantData.nil?
+        universityId = GetUniversityId(listingData[:UniversityName])
+        raise "No University Data" if universityId.nil?
         
-        puts InsertRenter(applicantData[:UserId], applicantData[:LandlordId], applicantData[:Address], applicantData[:Unit], applicantData[:Rent], applicantData[:ListingId])
+        puts InsertRenter(applicantData[:UserId], applicantData[:LandlordId], universityId, applicantData[:Address], applicantData[:Unit], applicantData[:Rent], applicantData[:ListingId])
     end
 rescue Exception => e
     puts e.inspect
