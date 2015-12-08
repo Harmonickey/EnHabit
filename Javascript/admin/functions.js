@@ -2245,9 +2245,6 @@ function CreateAccordionPricingView(oid, data)
                     "<div class='panel-body'>" +
                         "<div class='row'>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
-                                "<label>University Name</label><input type='text' class='form-control' value='" + data.UniversityName + "' /> " + 
-                            "</div>" +
-                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Listing Markup</label><input type='text' class='form-control' value='" + data.ListingMarkup + "' />" + 
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
