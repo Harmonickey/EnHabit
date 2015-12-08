@@ -18,8 +18,6 @@ require 'json'
 
 @markup = @data["ListingMarkup"]
 
-exit
-
 @receiverList = []
 @receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"alex@lbkstudios.net\"}'
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}'
