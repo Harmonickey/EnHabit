@@ -163,7 +163,8 @@ def GetApplicantData(applicantId)
         else
             applicantData = applicantData.merge({ :Address => listing[0]["Address"], 
                                                   :Unit => listing[0]["Unit"], 
-                                                  :Rent => listing[0]["Price"] })
+                                                  :Rent => listing[0]["Price"],
+                                                  :UniversityName => listing[0]["University"]})
                                 
             return nil if applicantData[:Address].nil? || applicantData[:Rent].nil?
         end
@@ -215,7 +216,7 @@ begin
     else #landlord endpoint only has access to the applicant object id
         applicantData = GetApplicantData(data["ApplicantId"])
         raise "No Applicant Data" if applicantData.nil?
-        universityId = GetUniversityId(listingData[:UniversityName])
+        universityId = GetUniversityId(applicantData[:UniversityName])
         raise "No University Data" if universityId.nil?
         
         puts InsertRenter(applicantData[:UserId], applicantData[:LandlordId], universityId, applicantData[:Address], applicantData[:Unit], applicantData[:Rent], applicantData[:ListingId])
