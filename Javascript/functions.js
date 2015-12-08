@@ -917,7 +917,7 @@ function InsertMarkers(res)
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
                                 '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
                                     '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
-                                    '<h3>$' + entry[0].RentWithMarkup + '</h3>' +
+                                    '<h3>$' + entry[0].Price + '</h3>' +
                                 '</div>' +
                                 '<div class="slideshow">';
                                 
@@ -932,7 +932,7 @@ function InsertMarkers(res)
                 popupContent += slideshowContent +
                                 '</div>' +
                             '</div>' +
-                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].RentWithMarkup + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
                 
                 popupContent += '<div class="popup-background-shadow"></div>';
                 
@@ -986,11 +986,11 @@ function InsertMarkers(res)
                                 "<img src='" + base + listingPic + "' height='100' width='100' />" +
                                 "<div class='information text-left'>" +
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p><br>" +
-                                    "<p class='listing-price'>$" + listing.RentWithMarkup + "/month</p><br>" +
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
-                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.RentWithMarkup + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
                                 "</div>" +
                             "</div>";
                     
@@ -1072,7 +1072,7 @@ function InsertIntoListView(data)
                         "<p class='listing-address'>" + data.Address + " " + (data.Unit ? data.Unit : "") + "</p>" +
                     "</div>" +
                     "<div class='row'>" +
-                        "<p class='listing-price'>$" + data.RentWithMarkup + "/month</p>" +
+                        "<p class='listing-price'>$" + data.Price + "/month</p>" +
                     "</div>" +
                 "</div>" +
                 "<div class='col-lg-4 col-md-4 col-sm-4'>" +
@@ -1086,7 +1086,7 @@ function InsertIntoListView(data)
                     "</div>" +
                 "</div>" +
                 "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.RentWithMarkup + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
                 "</div>" +
             "</div>" +
         "</div>");
@@ -1112,7 +1112,7 @@ function InsertIntoListView(data)
     }
 }
 
-function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, RentWithMarkup, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
 {
     $("#common-modal").modal('hide');
     
@@ -1128,7 +1128,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, RentWithMark
         Images = [];
         Images.push(defaultPicture);
     }
-    for(var i = 0; i < Images.length; i++) 
+    for(var i = 0; i < Images.length; i++)
     {
         var source = base + Images[i];
 
@@ -1159,7 +1159,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, RentWithMark
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>$" + RentWithMarkup + "/Month</h2>" +
+                "<h2>$" + Price + "/Month</h2>" +
             "</div>" + 
         "</div>" +
         "<div class='row'>" +
