@@ -12,15 +12,18 @@ require 'json'
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
 
 @rent = @data["Rent"]
-@recipient = @data["LandlordEmail"]
+@landlord = @data["LandlordEmail"]
+@enhabit = "alex@lbkstudios.net"
 
 @uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
 
 @markup = @data["ListingMarkup"]
 
 @receiverList = []
-@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"alex@lbkstudios.net\"}'
-@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}'
+#enhabit gets markup
+@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\"}'
+#landlord gets rent
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\"}'
 
 params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://dev.enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://dev.enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
 
