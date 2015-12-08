@@ -295,7 +295,7 @@
     {
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
     }
-    else if ($resultmsg == "cancelled")
+    else if ($resultmsg == "cancel")
     {
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'error', title: 'Error', text: 'Cancelled Payment', position: 'top-center'});</script>\n";
     }
