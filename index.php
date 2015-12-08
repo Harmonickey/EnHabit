@@ -142,8 +142,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             <select id="Bedrooms-filter" class="form-control">
                                 <option value="studio">Studio</option>
                                 <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
                                 <option value="3">3+</option>
                             </select>
                         </div>
@@ -153,8 +153,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <div class="styled-select"> 
                             <select id="Bathrooms-filter" class="form-control">
                                 <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
                                 <option value="3">3+</option>
                             </select>
                         </div>
