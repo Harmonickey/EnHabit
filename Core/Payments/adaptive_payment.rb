@@ -15,6 +15,10 @@ require 'json'
 @landlord = @data["LandlordEmail"]
 @enhabit = "alex@lbkstudios.net"
 
+@isDev = `cat #{@deploymentBase}/enhabit.git/hooks/post-receive`.split("\n")[4].split(" ")[-2].include? 'dev'
+
+@returnLocation = @isDev ? "dev." : ""
+
 @uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
 
 @markup = @data["ListingMarkup"]
@@ -25,7 +29,7 @@ require 'json'
 #landlord gets rent
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\"}'
 
-params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://dev.enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://dev.enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
 
 req = Hash.new
 req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
