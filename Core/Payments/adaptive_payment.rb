@@ -16,7 +16,15 @@ require 'json'
 
 @uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
 
-params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}]}, \"returnUrl\":\"http://dev.enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://dev.enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
+@markup = @data["ListingMarkup"]
+
+exit
+
+@receiverList = []
+@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"alex@lbkstudios.net\"}'
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}'
+
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://dev.enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://dev.enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
 
 req = Hash.new
 req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
