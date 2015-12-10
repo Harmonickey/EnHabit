@@ -166,7 +166,7 @@
 <div class="main">
     <div class="container">
       <div class="row">
-      	<div class="col-md-6">
+      	<div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header">
 					<h3>Commands</h3>
@@ -175,8 +175,11 @@
 					
 				</div>
 			</div> <!-- /widget -->					
-	    </div> <!-- /col-md-6 -->     	
-        <div class="col-md-6">
+	    </div> <!-- /col-md-6 -->   
+      </div>
+      <div style="padding-top: 20px;">
+      <div class="row">
+        <div class="col-md-12">
       		<div class="widget stacked">
       			<div class="widget-header">
 					<h3>Errors (some of these are not necessarily errors)</h3>
