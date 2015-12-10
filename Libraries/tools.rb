@@ -4,3 +4,9 @@ class String
         (self.downcase == 'true' || self.downcase == '1')
     end
 end
+
+class Float
+    def to_rad
+        (self * Math.PI / 180)
+    end
+end

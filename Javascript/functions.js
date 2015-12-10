@@ -950,6 +950,7 @@ function InsertMarkers(res)
             }
             else if (entry.length > 1) // multi listings
             {   
+                console.log(entry[0].WorldCoordinates);
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
                     'marker-color': '#000',

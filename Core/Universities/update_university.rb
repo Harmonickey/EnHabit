@@ -15,7 +15,7 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def UpdateUniversity(id, universityName, address, latitude, longitude)
+def UpdateUniversity(id, universityName, address, threshold, latitude, longitude)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -24,6 +24,7 @@ def UpdateUniversity(id, universityName, address, latitude, longitude)
     univObj["UniversityName"] = universityName
     univObj["Address"] = address
     univObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
+    univObj["Threshold"] = threshold
     
     queryObj = Hash.new
     queryObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
@@ -49,7 +50,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
     
-    puts UpdateUniversity(data["id"], data["UniversityName"], data["Address"], data["Latitude"], data["Longitude"])
+    puts UpdateUniversity(data["id"], data["UniversityName"], data["Address"], data["Threshold"], data["Latitude"], data["Longitude"])
 rescue Exception => e
     puts e.inspect
 end
