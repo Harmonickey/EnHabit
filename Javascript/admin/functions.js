@@ -971,7 +971,7 @@ function UpdateUniversity(oid)
 {
     var universityfield = $("#" + oid + " input");
     
-    var data = BuildData(universityfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(universityfield, ["UniversityName", "Address", "Threshold", "Latitude", "Longitude", "SelectedAddress"]);
     
     data.id = oid;
     
@@ -1015,6 +1015,7 @@ function UpdateUniversity(oid)
                             
                             $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
+                            $(headingInputs[2]).text("Threshold: " + $(inputs[2]).val());
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
                             
@@ -1596,7 +1597,7 @@ function AddUniversity()
 {
     var universityfield = $("#addUniversityModal input");
     
-    var data = BuildData(universityfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(universityfield, ["UniversityName", "Address", "Threshold", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -2354,6 +2355,7 @@ function CreateAccordionUniversitiesView(oid, data)
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
                             "<label>University Name: " + data.UniversityName + "</label>" +
                             "<label>Address: " + data.Address + "</label>" +
+                            "<label>Listing Distance (miles): " + data.Threshold + "</label>" +
                         "</a>" +
                     "</h4>" +
                 "</div>" +
@@ -2365,6 +2367,9 @@ function CreateAccordionUniversitiesView(oid, data)
                             "</div>" +
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' />" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Listing Distance (miles)</label><input type='text' class='form-control' value='" + data.Threshold + "' />" + 
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
