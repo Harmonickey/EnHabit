@@ -35,9 +35,22 @@ def InsertUniversity(universityName, address, latitude, longitude)
         mongoSession.with(safe: true) do |session|
             document = session[:universities].find(queryObj).select(_id: 1, UniversityName: 1, Address: 1).one
         end
+        
+        # also insert default pricing for that university
+        universityId = document["UniversityId"]
+        
+        pricingObj = Hash.new
+        pricingObj["UniversityId"] = universityId
+        pricingObj["ListingMarkup"] = 1
+        pricingObj["FeaturedMarkup"] = 20
+        
+        mongoSession.with(safe: true) do |session|
+            session[:universities].insert(pricingObj)
+        end
+        
     rescue Moped::Errors::OperationFailure => e
         if e.message.include? "enhabit.accounts.$UniversityName_1"
-            document["error"] = "That username already exists!"
+            document["error"] = "That university name already exists!"
         end
     end
     

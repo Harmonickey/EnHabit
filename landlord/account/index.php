@@ -2,6 +2,12 @@
 
     session_start();
     
+    if (!isset($_SESSION["landlordId"]))
+    {
+        header("Location: /", FALSE);
+        return;
+    }
+    
     if (!isset($_SESSION["landlord"]))
     {
         header("Location: /landlord/login.php", FALSE); // just redirect if the user isn't authorized to go here....
