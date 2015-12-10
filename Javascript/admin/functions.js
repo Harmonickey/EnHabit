@@ -34,14 +34,14 @@ function GetAllOutput()
         url: "/api.php",
         data: 
         {
-            command: "get_pricing",
-            endpoint: "Pricing"
+            command: "get_all_output",
+            endpoint: "Output"
         },
         success: function(res) 
         {
             try
             {
-                if (res && !Contains(res, "No Pricing Markups"))
+                if (res)
                 {             
                     var data = JSON.parse(res);
                     var commands = data["Commands"];
