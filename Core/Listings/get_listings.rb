@@ -11,6 +11,7 @@ require 'bson'
 require 'moped'
 require 'mongoid'
 require 'tools'
+require 'date'
 
 def setFilters
     if @lower.nil? and @upper.nil? 
@@ -238,7 +239,7 @@ begin
     combineFiltersIntoQuery
     
     File.open("output.log", "a") do |output|
-        output.puts "[" + Date.now + "] " + @mainFilter.inspect
+        output.puts "[" + DateTime.now.to_s + "] " + @mainFilter.inspect
     end
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
