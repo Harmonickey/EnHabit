@@ -7,6 +7,6 @@ end
 
 class Float
     def to_rad
-        (self * Math.PI / 180)
+        (self * Math::PI / 180)
     end
 end
