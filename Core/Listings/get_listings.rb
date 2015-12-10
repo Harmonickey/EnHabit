@@ -25,7 +25,7 @@ def setFilters
         @bedroomFilter = nil
     else
         @bedroomFilter[:Bedrooms] = {}
-        @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
+        @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
     end
 
     if @bathrooms.nil? 
