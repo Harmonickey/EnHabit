@@ -13,7 +13,7 @@ require 'mongoid'
 require 'tools'
 require 'date'
 
-MAX_BATHROOMS_FOR_FILTER = 3
+MAX_BEDROOMS_FOR_FILTER = 3
 MIN_BEDROOMS_FOR_FILTER = 0
 
 def setFilters
