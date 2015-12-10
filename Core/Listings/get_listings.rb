@@ -238,7 +238,7 @@ begin
     combineFiltersIntoQuery
     
     File.open("output.log", "a") do |output|
-        output.puts @mainFilter.inspect
+        output.puts "[" + Date.now + "] " + @mainFilter.inspect
     end
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
