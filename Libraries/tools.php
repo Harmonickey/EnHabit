@@ -72,15 +72,17 @@ function debug_data($data)
 
 function debug_string($data)
 {
+    $date = date('Y-m-d H:i:s');
     $output = fopen("output.log", "a") or die("Unable to open file!");
-    fwrite($output, $data . "\n");
+    fwrite($output, "[" . $date . "] " .$data . "\n");
     fclose($output);
 }
 
 function debug_error($data)
 {
+    $date = date('Y-m-d H:i:s');
     $output = fopen("error.log", "a") or die("Unable to open file!");
-    fwrite($output, $data . "\n");
+    fwrite($output, "[" . $date . "] " . $data . "\n");
     fclose($output);
 }
 

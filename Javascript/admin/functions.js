@@ -34,8 +34,13 @@ function GetAllOutput()
         url: "/api.php",
         data: 
         {
-            command: "get_all_output",
+            command: "get_output_data",
             endpoint: "Output"
+        },
+        beforeSend: function()
+        {
+            $('.commands').html("<i class='fa fa-spinner fa-pulse' />");
+            $('.errors').html("<i class='fa fa-spinner fa-pulse' />");
         },
         success: function(res) 
         {
@@ -47,11 +52,13 @@ function GetAllOutput()
                     var commands = data["Commands"];
                     var errors = data["Errors"];
                     
+                    $(".commands").html("");
                     for (var i = 0; i < commands.length; i++)
                     {                            
-                        $(".command").append(CreateOutputView(commands[i]));
+                        $(".commands").append(CreateOutputView(commands[i]));
                     }
                     
+                    $(".errors").html("");
                     for (var i = 0; i < errors.length; i++)
                     {
                         $(".errors").append(CreateOutputView(errors[i]));
@@ -2558,6 +2565,6 @@ function CreateAccordionPaymentsView(oid, data)
 
 function CreateOutputView(data)
 {
-    return "<p>" + data + "</p>";
+    return "<p style='overflow-x: scroll'>" + data + "</p>";
 }
 
