@@ -187,7 +187,7 @@ def GetUniversity(universityName)
         if university.count == 0
             return nil
         else
-            return {"X": university[0]["WorldCoordinates"]["x"], "Y": university[0]["WorldCoordinates"]["y"], "Threshold": university[0]["Threshold"]}
+            return {:X => university[0]["WorldCoordinates"]["x"], :Y => university[0]["WorldCoordinates"]["y"], :Threshold => university[0]["Threshold"]}
         end
     rescue Moped::Errors::OperationFailure => e
         return nil
@@ -234,7 +234,7 @@ begin
     university = GetUniversity(data["University"])
     
     raise "Unable to get university" if university.nil?
-    raise "Listing is too far from campus" if ComputeDistance(university["X"], university["Y"], data["Latitude"], data["Longitude"]) > university["Threshold"]
+    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold]
         
     result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"])
 
