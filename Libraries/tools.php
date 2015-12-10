@@ -77,6 +77,13 @@ function debug_string($data)
     fclose($output);
 }
 
+function debug_error($data)
+{
+    $output = fopen("error.log", "a") or die("Unable to open file!");
+    fwrite($output, $data . "\n");
+    fclose($output);
+}
+
 function no_user_filter()
 {   
     $http_ref = $_SERVER['HTTP_REFERER'];
