@@ -28,7 +28,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Admin | Users</title>
+    <title>Admin | Pricing</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
@@ -86,9 +86,9 @@
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UsersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Users</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>Listings</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
-                        <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li> 
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>  
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
-                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>                        
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                         </li>
@@ -114,8 +114,8 @@
 							<span>Home</span>
 						</a>	    				
 					</li>
-                    <li class="active">
-						<a href="./">
+                    <li>
+						<a href="../users">
 							<i class="fa fa-user"></i>
 							<span>Users</span>
 						</a>	    				
@@ -144,8 +144,8 @@
 							<span>Universities</span>
 						</a>	    				
 					</li>
-                    <li>
-						<a href="../pricing">
+                    <li class="active">
+						<a href="./">
 							<i class="fa fa-money"></i>
 							<span>Pricing</span>
 						</a>	    				
@@ -162,11 +162,10 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
                 <div class="widget-header actions">
-                    <h3>Registered Users</h3>
-					<a class="btn btn-success" data-toggle="modal" href="#createUserModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New User</a>
+                    <h3>Registered Pricing</h3>
 				</div> <!-- /widget-header -->
-				<div class="widget-content listings">
-					<!-- all the listings go here -->
+				<div class="widget-content pricings">
+					<!-- all the pricings go here -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         
                     </div>
@@ -177,69 +176,29 @@
     </div> <!-- /container -->
 </div> <!-- /main -->
 
-<div id="createUserModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+<div id="addUniversityModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Create New User</h4>
+                <h4 class="modal-title">Add New University</h4>
             </div>
             <div class="modal-body">
-                <!-- Put all the fields to create a listing here --> 
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Username: </label><input type="text" class="form-control" />
+                <div class="row"> <!-- this is used to get the display names -->
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
+                        <label>University Name: </label><input type="text" class="form-control" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Password: </label><input type="password" class="form-control" />
+                <div class="row"> <!-- address is used to get latitude and longitude -->
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
+                        <label>Address: </label><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
+                <!-- Lat, Long, Address Hidden fields -->
+                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Confirm Password: </label><input type="password" class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>First Name: </label><input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Last Name: </label><input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Email: </label><input type="text" class="form-control" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="modal-switch landlord-content">
-                            <label>Landlord</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch active-content">
-                            <label>Active</label><input type='checkbox' data-size='mini' />
-                        </div>   
-                        <div class="modal-switch verified-content">
-                            <label>Verified</label><input type='checkbox' data-size='mini' />
-                        </div> 
-                        <div class="modal-switch admin-content">
-                            <label>Admin</label><input type='checkbox' data-size='mini' />
-                        </div>  
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-user-button" type="button" class="btn btn-success" onclick="CreateAccount()">Create User</button>
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <button id="add-university-button" type="button" class="btn btn-success" onclick="AddUniversity()">Add University</button>
                     </div>
                 </div>
             </div>
@@ -262,9 +221,14 @@
     
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="//maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
 
+<!-- jquery geocomplete api -->
+<script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
+<!-- helper for numeric text boxes -->
+<script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
@@ -274,9 +238,7 @@
 
 $(function() 
 {   
-    InitSpecialFieldsUser();
-
-    GetAllUsers();
+    GetPricing();
 });
 
 </script>

@@ -2,6 +2,12 @@
 
     session_start();
     
+    if (!isset($_SESSION["userId"]))
+    {
+        header("Location: /", FALSE);
+        return;
+    }
+    
     if (!isset($_SESSION["tenant"]))
     {
         header("Location: /tenant/login.php", FALSE); // just redirect if the user isn't authorized to go here....
@@ -289,7 +295,7 @@
     {
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
     }
-    else if ($resultmsg == "cancelled")
+    else if ($resultmsg == "cancel")
     {
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'error', title: 'Error', text: 'Cancelled Payment', position: 'top-center'});</script>\n";
     }

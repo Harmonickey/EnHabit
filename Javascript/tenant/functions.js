@@ -1014,7 +1014,7 @@ function GetPayKey(oid, data)
                 
                 if (payResponse["error"])
                 {
-                   throw Error("Unable to Process Payment"); 
+                   throw Error("Unable to Get Payment Key"); 
                 }
                 else
                 {

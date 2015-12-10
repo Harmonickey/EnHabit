@@ -1128,7 +1128,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
         Images = [];
         Images.push(defaultPicture);
     }
-    for(var i = 0; i < Images.length; i++) 
+    for(var i = 0; i < Images.length; i++)
     {
         var source = base + Images[i];
 
