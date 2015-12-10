@@ -11,7 +11,7 @@ require 'moped'
 require 'bson'
 require 'securerandom'
 
-def InsertUniversity(universityName, address, latitude, longitude)
+def InsertUniversity(universityName, address, threshold, latitude, longitude)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -21,6 +21,7 @@ def InsertUniversity(universityName, address, latitude, longitude)
     univObj["UniversityName"] = universityName
     univObj["Address"] = address
     univObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
+    univObj["Threshold"] = threshold
  
     document = Hash.new
  
@@ -61,7 +62,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     
-    puts InsertUniversity(data["UniversityName"], data["Address"], data["Latitude"], data["Longitude"])
+    puts InsertUniversity(data["UniversityName"], data["Address"], data["Threshold"], data["Latitude"], data["Longitude"])
 rescue Exception => e
     puts e.inspect
 end

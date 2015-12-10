@@ -12,7 +12,7 @@ begin
 
     documents = Array.new
     mongoSession.with(safe: true) do |session|
-        documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1).to_a
+        documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1, Threshold: 1).to_a
     end
     mongoSession.disconnect
 
