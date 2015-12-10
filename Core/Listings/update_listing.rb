@@ -190,7 +190,6 @@ end
 
 def ComputeDistance(lat1, lon1, lat2, lon2)
 
-    R = 6371000 # metres
     phi1 = lat1.to_rad
     phi2 = lat2.to_rad
     deltaphi = (lat2-lat1).to_rad
@@ -199,7 +198,7 @@ def ComputeDistance(lat1, lon1, lat2, lon2)
     a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
 
-    d = R * c
+    d = 6371000 * c # meters
     
     return d * 0.000621371; # to miles
 end
