@@ -13,6 +13,9 @@ require 'mongoid'
 require 'tools'
 require 'date'
 
+MAX_BEDROOMS_FOR_FILTER = 3
+MIN_BEDROOMS_FOR_FILTER = 0
+
 def setFilters
     if @lower.nil? and @upper.nil? 
         @priceFilter = nil
@@ -26,7 +29,11 @@ def setFilters
         @bedroomFilter = nil
     else
         @bedroomFilter[:Bedrooms] = {}
-        @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
+        if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
+            @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
+        else
+            @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
+        end
     end
 
     if @bathrooms.nil? 
