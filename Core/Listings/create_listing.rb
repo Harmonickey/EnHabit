@@ -195,7 +195,7 @@ def GetUniversity(universityName)
 end
 
 def ComputeDistance(lat1, lon1, lat2, lon2)
-{
+
     R = 6371000 # metres
     phi1 = lat1.to_rad
     phi2 = lat2.to_rad
@@ -208,7 +208,7 @@ def ComputeDistance(lat1, lon1, lat2, lon2)
     d = R * c
     
     return d * 0.000621371; # to miles
-}
+end
 
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
@@ -233,6 +233,7 @@ begin
     
     university = GetUniversity(data["University"])
     
+    raise "Unable to get university" if university.nil?
     raise "Listing is too far from campus" if ComputeDistance(university["X"], university["Y"], data["Latitude"], data["Longitude"]) > university["Threshold"]
         
     result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"])
