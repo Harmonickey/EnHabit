@@ -83,6 +83,7 @@
                     <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>   
                     <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
                     <li id="login-function" class="menu-item scroll" onclick="Logout()">
                         <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                     </li>
@@ -142,6 +143,12 @@
 						<a href="../pricing">
 							<i class="fa fa-money"></i>
 							<span>Pricing</span>
+						</a>	    				
+					</li>
+                    <li>
+						<a href="../logs">
+							<i class="fa fa-file-text"></i>
+							<span>Logs</span>
 						</a>	    				
 					</li>
 				</ul>
