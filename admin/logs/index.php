@@ -171,7 +171,7 @@
       			<div class="widget-header">
 					<h3>Commands</h3>
 				</div> <!-- /widget-header -->
-				<div class="commands widget-content">
+				<div class="commands widget-content" style="max-height: 1000px; overflow-y: scroll;">
 					
 				</div>
 			</div> <!-- /widget -->					
@@ -179,9 +179,9 @@
         <div class="col-md-6">
       		<div class="widget stacked">
       			<div class="widget-header">
-					<h3>Errors</h3>
+					<h3>Errors (some of these are not necessarily errors)</h3>
 				</div> <!-- /widget-header -->
-				<div class="errors widget-content">
+				<div class="errors widget-content" style="max-height: 1000px; overflow-y: scroll;">
 					
 				</div>
 			</div> <!-- /widget -->					

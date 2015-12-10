@@ -12,4 +12,8 @@ commands_contents = File.open("#{deploymentBase}/output.log").read
 
 errors_contents = File.open("#{deploymentBase}/error.log").read
 
-puts {"Commands" => commands_contents, "Errors" => errors_contents}.to_json
+ret_data = Hash.new
+ret_data["Commands"] = commands_contents.split("\n").reverse
+ret_data["Errors"] = errors_contents.split("\n").reverse
+
+puts ret_data.to_json
