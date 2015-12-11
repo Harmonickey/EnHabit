@@ -9,7 +9,7 @@
 
 namespace Hummer
 {
-	public partial class Payments
+	public partial class Logs
 	{
 	}
 }

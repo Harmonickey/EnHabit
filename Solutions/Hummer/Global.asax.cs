@@ -8,11 +8,11 @@ using System.Web.SessionState;
 
 namespace Hummer
 {
-    public class Global : HttpApplication
-    {
-        void Application_Start(object sender, EventArgs e)
-        {
+	public class Global : HttpApplication
+	{
+		void Application_Start(object sender, EventArgs e)
+		{
 
-        }
-    }
+		}
+	}
 }

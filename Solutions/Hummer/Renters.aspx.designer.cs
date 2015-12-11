@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Hummer {
-    
-    
-    public partial class Renters {
-    }
+namespace Hummer
+{
+	public partial class Renters
+	{
+	}
 }

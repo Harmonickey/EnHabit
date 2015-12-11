@@ -9,24 +9,15 @@
 
 namespace Hummer
 {
-	public partial class Users_AddEdit
+	public partial class Universities
 	{
 		/// <summary>
-		/// AddUserButton control.
+		/// UniversitiesGridView control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.Button AddUserButton;
-
-		/// <summary>
-		/// UpdateUserButton control.
-		/// </summary>
-		/// <remarks>
-		/// Auto-generated field.
-		/// To modify move field declaration from designer file to code-behind file.
-		/// </remarks>
-		protected global::System.Web.UI.WebControls.Button UpdateUserButton;
+		protected global::System.Web.UI.WebControls.GridView UniversitiesGridView;
 	}
 }

@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Hummer {
-    
-    
-    public partial class _Default {
-    }
+namespace Hummer
+{
+	public partial class _Default
+	{
+	}
 }
