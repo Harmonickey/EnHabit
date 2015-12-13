@@ -879,9 +879,8 @@ function UpdatePricing(oid)
                             var inputs = $("#" + oid + " input");
                             var headingInputs = $("#heading" + oid + " label");
                             
-                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
-                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val() + "%");
-                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val() + "%");
+                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[0]).val() + "%");
+                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[1]).val() + "%");
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Pricing", position: 'top-center'});
                             
