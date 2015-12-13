@@ -1919,7 +1919,7 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Rent")
+        else if (elements[i] == "Rent" || elements[i] == "ListingMarkup" || elements[i] == "FeaturedMarkup")
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }
