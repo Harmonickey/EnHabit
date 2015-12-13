@@ -165,6 +165,29 @@ def GetUserId(user)
     end
 end
 
+def GetUniversity(universityName)
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
+
+    begin
+        queryObj = Hash.new
+        queryObj["UniversityName"] = universityName
+        
+        university = Array.new
+        mongoSession.with(safe: true) do |session|
+            university = session[:universities].find(queryObj).to_a
+        end
+        
+        if university.count == 0
+            return nil
+        else
+            return {:X => university[0]["WorldCoordinates"]["x"], :Y => university[0]["WorldCoordinates"]["y"], :Threshold => university[0]["Threshold"]}
+        end
+    rescue Moped::Errors::OperationFailure => e
+        return nil
+    end
+end
+
 begin
     # when user updates a listing they only input a landlord (optional)
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
@@ -186,6 +209,11 @@ begin
             landlordId = id
         end
     end
+    
+    university = GetUniversity(data["University"])
+    
+    raise "Unable to get university" if university.nil?
+    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold]
     
     puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"])
 rescue Exception => e

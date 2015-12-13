@@ -202,6 +202,11 @@
                         <label>Address: </label><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
+                <div class="row"> <!-- address is used to get latitude and longitude -->
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
+                        <label>Listing Distance (miles): </label><input type='text' class='form-control' autocomplete="false" />
+                    </div>
+                </div>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <div class="row">
