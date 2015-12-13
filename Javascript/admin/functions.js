@@ -1015,7 +1015,7 @@ function UpdateUniversity(oid)
                             
                             $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Threshold: " + $(inputs[2]).val());
+                            $(headingInputs[2]).text("Listing Distance (miles): " + $(inputs[2]).val());
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
                             
