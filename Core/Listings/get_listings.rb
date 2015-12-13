@@ -253,12 +253,12 @@ begin
     mongoSession.use("enhabit")# this is our current database
     
     # get all the non featured ones first
-    @mainFilter["$and"].push {:IsFeatured => false}
+    @mainFilter["$and"].push({"IsFeatured" => false})
     documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
    
     # now get all the featured ones
     @mainFilter["$and"].pop
-    @mainFilter["$and"].push {:IsFeatured => true}
+    @mainFilter["$and"].push({"IsFeatured" => true})
     featured_documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
     
     # smoosh them all together now
