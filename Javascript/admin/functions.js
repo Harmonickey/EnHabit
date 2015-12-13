@@ -1097,16 +1097,16 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's',
-        vMax: '99',
-        vMin: '0'
+        vMax: '100.00',
+        vMin: '0.00'
     });
     
     $(row[1]).autoNumeric('init', 
     {
         aSign: '%', 
         pSign: 's', 
-        vMax: '99',
-        vMin: '0'
+        vMax: '100.00',
+        vMin: '0.00'
     });
 }
 
