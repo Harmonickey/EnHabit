@@ -2377,6 +2377,7 @@ function CreateAccordionUniversitiesView(oid, data)
                                 "<button class='btn btn-primary btn-success' onclick='UpdateUniversity(\"" + oid + "\");'>Update</button>" +
                             "</div>" +
                         "</div>" +
+                        "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
                     "</div>" +
                 "</div>" +
             "</div>";
