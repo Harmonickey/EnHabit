@@ -1,0 +1,60 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="BMW.Master.cs" Inherits="BMW.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>BMW</title>
+	<link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="~/_references/styles/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="~/_references/styles/bootstrap.min.css" />
+	<script type="text/javascript" src="~/_references/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<form runat="server">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" runat="server" href="~/">BMW</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a runat="server" href="~/">Analytics</a></li>
+						<li><a runat="server" href="~/Users.aspx">Users</a></li>
+						<li><a runat="server" href="~/Listings.aspx">Listings</a></li>
+						<li><a runat="server" href="~/Payments.aspx">Payments</a></li>
+						<li><a runat="server" href="~/Renters.aspx">Renters</a></li>
+						<li><a runat="server" href="~/Universities.aspx">Universities</a></li>
+						<li><a runat="server" href="~/Pricing.aspx">Pricing</a></li>
+						<li><a runat="server" href="~/Logs.aspx">Logs</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<br />
+		<br />
+		<br />
+		<br />
+		<div class="container body-content">
+			<asp:ContentPlaceHolder ID="MainContent" runat="server">
+			</asp:ContentPlaceHolder>
+		</div>
+		<div class="footer">
+			<div class="container">
+				<div class="row">
+					<div id="footer-copyright" class="col-md-6">
+						&copy; Hyperion Group LLC & LbKStudios LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</body>
+</html>
