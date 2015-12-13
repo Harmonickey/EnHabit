@@ -12,12 +12,6 @@ require 'moped'
 require 'mongoid'
 require 'tools'
 
-MAX_BEDROOMS_FOR_FILTER = 3
-MAX_BATHROOMS_FOR_FILTER = 3
-
-MIN_BEDROOMS_FOR_FILTER = 0
-MIN_BATHROOMS_FOR_FILTER = 0
-
 def setFilters
     if @lower.nil? and @upper.nil? 
         @priceFilter = nil
@@ -31,22 +25,14 @@ def setFilters
         @bedroomFilter = nil
     else
         @bedroomFilter[:Bedrooms] = {}
-        if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
-            @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
-        else
-            @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
-        end
+        @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
     end
 
     if @bathrooms.nil? 
         @bathroomFilter = nil
     else
         @bathroomFilter[:Bathrooms] = {}
-        if @bathrooms == MAX_BATHROOMS_FOR_FILTER || @bathrooms == MIN_BATHROOMS_FOR_FILTER
-            @bathroomFilter[:Bathrooms][:$gte] = @bathrooms
-        else
-            @bathroomFilter[:Bathrooms][:$eq] = @bathrooms
-        end
+        @bathroomFilter[:Bathrooms][:$gte] = @bathrooms
     end
 
     if @hasLaundry.nil? 
@@ -282,12 +268,6 @@ begin
                 doc.delete("UserId")
                 doc.delete("LandlordId")
             end
-        end
-        
-        documents.each do |doc|
-            pricing = mongoSession[:pricing].find({"UniversityName" => doc["UniversityName"]}).one
-            
-            doc["RentWithMarkup"] = (doc["Price"] * (pricing["ListingMarkup"].to_f / 100) + doc["Price"]).to_i
         end
         
         puts documents.to_json

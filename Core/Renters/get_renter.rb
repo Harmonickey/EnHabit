@@ -1,6 +1,5 @@
 #!/usr/local/bin/ruby
 
-
 absPath = Dir.pwd
 base = absPath.split("/").index("public_html")
 deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
@@ -32,11 +31,15 @@ begin
     #grab listing associated data
     mongoSession.with(safe: true) do |session|
         #get all renters
-        document = session[:renters].find(queryObj).select(_id: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1).one
+        document = session[:renters].find(queryObj).select(_id: 1, UniversityId: 1, RenterId: 1, LandlordId: 1, Rent: 1, Address: 1, Unit: 1).one
 
         landlordData = session[:accounts].find({:LandlordId => document["LandlordId"]}).select(Email: 1).one
         
         document["LandlordEmail"] = landlordData["Email"]
+        
+        pricing = mongoSession[:pricing].find({"UniversityId" => document["UniversityId"]}).one
+            
+        document["ListingMarkup"] = (document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f
         
         #we don't need to expose these to the front end
         document.delete("LandlordId") 
