@@ -12,6 +12,96 @@ namespace Hummer
 	public partial class Users_AddEdit
 	{
 		/// <summary>
+		/// UserIdLabel control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Label UserIdLabel;
+
+		/// <summary>
+		/// UsernameTextbox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox UsernameTextbox;
+
+		/// <summary>
+		/// FacebookIdLabel control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Label FacebookIdLabel;
+
+		/// <summary>
+		/// FirstNameTextbox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox FirstNameTextbox;
+
+		/// <summary>
+		/// LastNameTextbox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox LastNameTextbox;
+
+		/// <summary>
+		/// PhoneNumerTextbox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox PhoneNumerTextbox;
+
+		/// <summary>
+		/// EmailTextbox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.TextBox EmailTextbox;
+
+		/// <summary>
+		/// IsVerifiedCheckBox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.CheckBox IsVerifiedCheckBox;
+
+		/// <summary>
+		/// IsActiveCheckBox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.CheckBox IsActiveCheckBox;
+
+		/// <summary>
+		/// DeletedCheckBox control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.CheckBox DeletedCheckBox;
+
+		/// <summary>
 		/// AddUserButton control.
 		/// </summary>
 		/// <remarks>

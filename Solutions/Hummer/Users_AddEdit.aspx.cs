@@ -17,20 +17,22 @@ namespace Hummer
 
 			if (add)    //Adding new User
 			{
-				//this.UserIdLabel.Text = WIN;
+				this.UserIdLabel.Text = "New UserId Will be created upon Submit";
+				this.AddUserButton.Visible = true;
 			}
 			else if (!String.IsNullOrEmpty(userId))    //Load existing User
 			{
-				//this.UserIdLabel.Text = WIN;
 				LoadUser();
+				this.UpdateUserButton.Visible = true;
+				this.DeleteUserButton.Visible = true;
 			}
 		}
 
 		#region Button Handlers
 
-		protected void UpdateUser_Click(object sender, EventArgs e)
+		protected void AddUserButton_Click(object sender, EventArgs e)
 		{
-			string insertStatement = "INSERT INTO table (id, name, age) VALUES(1, , 19) ON DUPLICATE KEY UPDATE   nameA, age=19";
+			string insertStatement = "INSERT INTO enhabit.users (id, name, age) VALUES(1, , 19)";
 			try
 			{
 				//MySqlConnection mycon = new MySqlConnection(ConfigurationManager.ConnectionStrings["mfs"].ToString());
@@ -47,17 +49,39 @@ namespace Hummer
 			{
 				EventLog logger = new EventLog();
 				logger.Source = "EnhabitAdmin";
-				logger.WriteEntry("Error: Inserting User Data Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
+				logger.WriteEntry("Error: Updating User Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
 			}
 		}
 
+		protected void UpdateUserButton_Click(object sender, EventArgs e)
+		{
+			string insertStatement = "INSERT INTO enhabit.users (id, name, age) VALUES(1, , 19) ON DUPLICATE KEY UPDATE   nameA, age=19";
+			try
+			{
+				//MySqlConnection mycon = new MySqlConnection(ConfigurationManager.ConnectionStrings["mfs"].ToString());
+				//mycon.Open();
+				//MySqlCommand mycmd = new MySqlCommand(mySQLStatement, mycon);
+				int rowsAffected = 0;	// mycmd.ExecuteNonQuery();
+				if (rowsAffected != 1)
+				{
+					throw new Exception("Inserting failed. Either no rows or more than 1 rows were inserted. Please check. " + rowsAffected + " rows were affected.");
+				}
+				//mycon.Close();
+			}
+			catch (Exception ex)
+			{
+				EventLog logger = new EventLog();
+				logger.Source = "EnhabitAdmin";
+				logger.WriteEntry("Error: Updating User Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
+			}
+		}
 		#endregion
 
 		#region Helper Methods
 
 		protected void LoadUser()
 		{
-			string queryString = "SELECT Name_First, Name_Middle, Name_Last, Phone_Primary, Phone_Secondary, Birthdate, Email, Gender, Ethnicity, WMUEnrollmentDate, MfSSignupDate, ContactType, Alpha, ";
+			string queryString = "SELECT UserId, Username, FacebookId, Name_First, Name_Last, PhoneNumbery, Email, IsVerified, IsActive, IsDeleted FROM enhabit.users WHERE UserId = '" + userId + "';";
 
 			try
 			{
@@ -68,10 +92,16 @@ namespace Hummer
 				//{
 				//	while (reader.Read())
 				//	{
-				//		FirstNameLabel.Text = reader["Name_First"].ToString();
-				//		MiddleNameLabel.Text = reader["Name_Middle"].ToString();
-				//		LastNameLabel.Text = reader["Name_Last"].ToString();
-				//		WINLabel.Text = WIN;
+				this.UserIdLabel.Text = "";					//reader["UserId"].ToString();
+				this.UsernameTextbox.Text = "";				//reader["Username"].ToString();
+				this.FacebookIdLabel.Text = "";				//reader["FacebookId"].ToString();
+				this.FirstNameTextbox.Text = "";			//reader["Name_First"].ToString();
+				this.LastNameTextbox.Text = "";				//reader["Name_Last"].ToString();
+				this.PhoneNumerTextbox.Text = "";			//reader["PhoneNumbery"].ToString();
+				this.EmailTextbox.Text = "";				//reader["Email"].ToString();
+				this.IsVerifiedCheckBox.Checked = true;		//reader["IsVerified"].ToString();	//boolean tryparse this shit
+				this.IsActiveCheckBox.Checked = true;		//reader["IsActive"].ToString();	//boolean tryparse this shit
+				this.DeletedCheckBox.Checked = true;		//reader["IsDeleted"].ToString();	//boolean tryparse this shit
 				//	}
 				//	reader.Close();
 				//}

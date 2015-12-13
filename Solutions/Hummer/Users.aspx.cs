@@ -17,7 +17,7 @@ namespace Hummer
 
 		#region Button Handlers
 
-		protected void UsersGridViewButton_Click(object sender, EventArgs e)
+		protected void ViewUserRow_Click(object sender, EventArgs e)
 		{
 			Response.Redirect("/Users_AddEdit?UserId=" + ((Button)sender).CommandArgument);
 		}
@@ -57,12 +57,15 @@ namespace Hummer
 				//		{
 				UsersGridData user = new UsersGridData()
 				{
-					FirstName = "",		//reader["Name_First"].ToString()
-					LastName = "",		//reader["Name_Last"].ToString()
+					UserId = "",		//reader["UserId"].ToString()
+					Name_First = "",	//reader["Name_First"].ToString()
+					Name_Last = "",		//reader["Name_Last"].ToString()
 					UserName = "",		//reader["UserName"].ToString()
 					PhoneNumber = "",	//reader["PhoneNumber"].ToString()
 					EmailAddress = "",	//reader["EmailAddress"].ToString()
-					UserID = ""			//reader["UserID"].ToString()
+					IsVerified = "",	//reader["IsVerified"].ToString()
+					IsActive = "",		//reader["IsActive"].ToString()
+					Deleted = ""		//reader["Deleted"].ToString()
 				};
 				usersGridData.Add(user);
 				//		}
@@ -87,16 +90,17 @@ namespace Hummer
 
 		public class UsersGridData
 		{
-			public string FirstName { get; set; }
-			public string LastName { get; set; }
+			public string UserId { get; set; }
+			public string Name_First { get; set; }
+			public string Name_Last { get; set; }
 			public string UserName { get; set; }
 			public string PhoneNumber { get; set; }
 			public string EmailAddress { get; set; }
-			public string UserID { get; set; }
+			public string IsVerified { get; set; }
+			public string IsActive { get; set; }
+			public string Deleted { get; set; }
 		}
 
 		#endregion
-
-
 	}
 }
