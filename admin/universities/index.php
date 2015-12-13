@@ -239,6 +239,7 @@
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
 
 <!-- jquery geocomplete api -->
+<script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
