@@ -65,7 +65,6 @@ namespace BMW
 					EmailAddress = "",	//reader["EmailAddress"].ToString()
 					IsVerified = "",	//reader["IsVerified"].ToString()
 					IsActive = "",		//reader["IsActive"].ToString()
-					Deleted = ""		//reader["Deleted"].ToString()
 				};
 				usersGridData.Add(user);
 				//		}
@@ -98,7 +97,6 @@ namespace BMW
 			public string EmailAddress { get; set; }
 			public string IsVerified { get; set; }
 			public string IsActive { get; set; }
-			public string Deleted { get; set; }
 		}
 
 		#endregion

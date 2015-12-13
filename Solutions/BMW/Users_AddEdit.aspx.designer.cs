@@ -93,15 +93,6 @@ namespace BMW
 		protected global::System.Web.UI.WebControls.CheckBox IsActiveCheckBox;
 
 		/// <summary>
-		/// DeletedCheckBox control.
-		/// </summary>
-		/// <remarks>
-		/// Auto-generated field.
-		/// To modify move field declaration from designer file to code-behind file.
-		/// </remarks>
-		protected global::System.Web.UI.WebControls.CheckBox DeletedCheckBox;
-
-		/// <summary>
 		/// AddUserButton control.
 		/// </summary>
 		/// <remarks>
@@ -118,5 +109,14 @@ namespace BMW
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.Button UpdateUserButton;
+
+		/// <summary>
+		/// DeleteUserButton control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button DeleteUserButton;
 	}
 }

@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 
 namespace BMW
 {
-	public partial class Users_AddEdit : Page
+	public partial class Universities_AddEdit : Page
 	{
 		string userId = "";
 
@@ -48,7 +48,7 @@ namespace BMW
 			{
 				EventLog logger = new EventLog();
 				logger.Source = "EnhabitAdmin";
-				logger.WriteEntry("Error: Adding New Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
+				logger.WriteEntry("Error: Updating User Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace BMW
 				int rowsAffected = 0;	// mycmd.ExecuteNonQuery();
 				if (rowsAffected != 1)
 				{
-					throw new Exception("Updating failed. Either no rows or more than 1 rows were inserted. Please check. " + rowsAffected + " rows were affected.");
+					throw new Exception("Inserting failed. Either no rows or more than 1 rows were inserted. Please check. " + rowsAffected + " rows were affected.");
 				}
 				//mycon.Close();
 			}
@@ -74,37 +74,13 @@ namespace BMW
 				logger.WriteEntry("Error: Updating User Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
 			}
 		}
-
-		protected void DeleteUserButton_Click(object sender, EventArgs e)
-		{
-			string insertStatement = "DELETE FROM USER SHIT";
-			try
-			{
-				//MySqlConnection mycon = new MySqlConnection(ConfigurationManager.ConnectionStrings["mfs"].ToString());
-				//mycon.Open();
-				//MySqlCommand mycmd = new MySqlCommand(mySQLStatement, mycon);
-				int rowsAffected = 0;	// mycmd.ExecuteNonQuery();
-				if (rowsAffected != 1)
-				{
-					throw new Exception("Deleting failed. Either no rows or more than 1 rows were inserted. Please check. " + rowsAffected + " rows were affected.");
-				}
-				//mycon.Close();
-			}
-			catch (Exception ex)
-			{
-				EventLog logger = new EventLog();
-				logger.Source = "EnhabitAdmin";
-				logger.WriteEntry("Error: Deleting User Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
-			}
-		}
-
 		#endregion
 
 		#region Helper Methods
 
 		protected void LoadUser()
 		{
-			string queryString = "SELECT UserId, Username, FacebookId, Name_First, Name_Last, PhoneNumbery, Email, IsVerified, IsActive, FROM enhabit.users WHERE UserId = '" + userId + "';";
+			string queryString = "SELECT UserId, Username, FacebookId, Name_First, Name_Last, PhoneNumbery, Email, IsVerified, IsActive, IsDeleted FROM enhabit.users WHERE UserId = '" + userId + "';";
 
 			try
 			{
@@ -124,6 +100,7 @@ namespace BMW
 				this.EmailTextbox.Text = "";				//reader["Email"].ToString();
 				this.IsVerifiedCheckBox.Checked = true;		//reader["IsVerified"].ToString();	//boolean tryparse this shit
 				this.IsActiveCheckBox.Checked = true;		//reader["IsActive"].ToString();	//boolean tryparse this shit
+				this.DeletedCheckBox.Checked = true;		//reader["IsDeleted"].ToString();	//boolean tryparse this shit
 				//	}
 				//	reader.Close();
 				//}

@@ -11,12 +11,11 @@
 				<asp:BoundField HeaderText="UserName" DataField="UserName" />
 				<asp:BoundField HeaderText="PhoneNumber" DataField="PhoneNumber" />
 				<asp:BoundField HeaderText="Email Address" DataField="EmailAddress" />
-				<asp:BoundField HeaderText="Verified" DataField="IsVerified" />
-				<asp:BoundField HeaderText="Active" DataField="IsActive" />
-				<asp:BoundField HeaderText="Deleted" DataField="Deleted" />
+				<asp:BoundField HeaderText="Is Verified" DataField="IsVerified" />
+				<asp:BoundField HeaderText="Is Active" DataField="IsActive" />
 				<asp:TemplateField>
 					<ItemTemplate>
-						<asp:Button ID="ViewUserGutton" Text="Edit User" runat="server" CommandArgument='<% #Eval("UserId")%>' OnClick="ViewUserRow_Click" />
+						<asp:Button ID="ViewUserButton" Text="Edit User" runat="server" CommandArgument='<% #Eval("UserId")%>' OnClick="ViewUserRow_Click" />
 					</ItemTemplate>
 				</asp:TemplateField>
 			</Columns>
