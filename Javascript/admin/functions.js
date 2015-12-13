@@ -1113,7 +1113,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
 
 function SetDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " input[type='text']")[5]).pikaday(
+    $($("#" + rowId + " input[type='text']")[4]).pikaday(
     {
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[3]).val()) //current
