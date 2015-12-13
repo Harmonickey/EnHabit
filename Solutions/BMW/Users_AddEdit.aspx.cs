@@ -20,10 +20,11 @@ namespace BMW
 				this.UserIdLabel.Text = "New UserId Will be created upon Submit";
 				this.AddUserButton.Visible = true;
 			}
-			else if (!String.IsNullOrEmpty(userId))    //Load existing User
+			else if (!String.IsNullOrEmpty(userId))	//Load existing User
 			{
 				LoadUser();
 				this.UpdateUserButton.Visible = true;
+				this.DeleteUserButton.Visible = true;
 			}
 		}
 
@@ -48,7 +49,7 @@ namespace BMW
 			{
 				EventLog logger = new EventLog();
 				logger.Source = "EnhabitAdmin";
-				logger.WriteEntry("Error: Adding New Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
+				logger.WriteEntry("Error: Adding New User Failed, Page: Users_AddEdit.aspx" + Environment.NewLine + ex.ToString(), EventLogEntryType.Error);
 			}
 		}
 
