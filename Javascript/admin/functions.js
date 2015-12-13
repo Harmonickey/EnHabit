@@ -151,6 +151,7 @@ function GetAllUniversities(isListingPage)
                             $("#accordion").append(CreateAccordionUniversitiesView(oid, data[i]));
                             
                             SetGeocompleteTextBox(oid);
+                            SetTextBoxWithAutoNumericUniversity(oid);
                         }
                     }
                     
@@ -1081,6 +1082,19 @@ function SetTextBoxWithAutoNumeric(rowId)
     var row = $("#" + rowId + " input[type='text']");
     
     $(row[3]).autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+}
+
+function SetTextBoxWithAutoNumericUniversity(rowId)
+{
+    var row = $("#" + rowId + " input[type='text']");
+    
+    $(row[2]).autoNumeric('init', 
     {
         aSign: '$ ', 
         vMax: '999999.99', 
