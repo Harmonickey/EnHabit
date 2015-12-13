@@ -1097,8 +1097,8 @@ function SetTextBoxWithAutoNumericUniversity(rowId)
     
     $(row[2]).autoNumeric('init', 
     { 
-        vMax: '999.99',
-        vMin: '00.00'
+        vMax: '999.9999',
+        vMin: '00.0000'
     });
 }
 
