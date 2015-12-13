@@ -42,6 +42,10 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     else
     {
         // we can print out the errors though, in full
+        if ($_POST["command"] != "get_output_data")
+        {
+            debug_error($result);
+        }
         echo $result;
     }
 }
