@@ -1097,7 +1097,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's',
-        vMax: '100.00',
+        vMax: '99.99',
         vMin: '0.00'
     });
     
@@ -1105,7 +1105,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's', 
-        vMax: '100.00',
+        vMax: '99.99',
         vMin: '0.00'
     });
 }
