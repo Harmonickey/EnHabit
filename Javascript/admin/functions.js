@@ -1096,11 +1096,9 @@ function SetTextBoxWithAutoNumericUniversity(rowId)
     var row = $("#" + rowId + " input[type='text']");
     
     $(row[2]).autoNumeric('init', 
-    {
-        aSign: '$ ', 
-        vMax: '999999.99', 
-        wEmpty: 'sign',
-        lZero: 'deny'
+    { 
+        vMax: '999.99',
+        vMin: '00.00'
     });
 }
 
