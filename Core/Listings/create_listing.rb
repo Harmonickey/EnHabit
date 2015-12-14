@@ -99,7 +99,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
                 # if we already had some listings, only grab the new one we just put in
                 retQueryObj["$and"].push({"_id" => {"$nin" => currListings.collect{|l| l["_id"]}}}) if currListings.count > 0
                 
-                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1).one
+                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1, IsPastThreshold: 1).one
                 
                 document[:Threshold] = threshold
             end
