@@ -185,9 +185,6 @@ def combineFiltersIntoQuery
     if not @isActiveFilter.nil?
         @mainFilter["$and"].push @isActiveFilter
     end
-    if @mainFilter["$and"].count == 0
-        @mainFilter = {}
-    end
 end
 
 begin
