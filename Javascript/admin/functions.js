@@ -15,6 +15,13 @@ $(function() {
    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
    
    $(".main").css("min-height", height + "px");
+   
+   if (location.hash == "success")
+   {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+       
+       location.hash = "";
+   }
 });
 
 $(document).on("keypress", function(e)
@@ -1549,33 +1556,7 @@ function ProcessListing()
                 {
                     if (Contains(res, "Okay"))
                     {
-                        var inputs = $("#" + id + " input");
-                        var headingInputs = $("#heading" + id + " label");
-                        
-                        $(headingInputs[0]).text("Address: " + $(inputs[1]).val());
-                        $(headingInputs[1]).text("Unit: " + $(inputs[2]).val());
-                        $(headingInputs[2]).text("Rent: $" + $(inputs[3]).autoNumeric('get') + "/Month");
-                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[4]).val())));
-                        $(headingInputs[4]).text("University: " + $(inputs[5]).val());
-                        
-                        if (addedFiles[id])
-                        {
-                            $("#" + id + " .activecheckbox").prop("disabled", false);
-                            $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
-                        }
-                        else if (pictures[id].length == 0)
-                        {
-                            $("#" + id + " .activecheckbox").prop("disabled", true);
-                            $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
-                        }
-                        
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
-                        numUploaded[id] = 0;
-                        addedFiles[id] = false;
-                        pendingUpdateData = null;
-                        
-                        // close the div
-                        $("#heading" + id + " a").click();
+                        window.location = "/admin/listings/#success";
                     }
                     else
                     {
@@ -2332,7 +2313,8 @@ function CreateAccordionView(oid, data)
                                 "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" + 
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, You Must Include Images!</label>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, The Address Must Be Within the University Radius!</label>" +                    
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
