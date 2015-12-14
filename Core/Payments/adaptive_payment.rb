@@ -15,7 +15,7 @@ require 'json'
 @landlord = @data["LandlordEmail"]
 @memo = "Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 @uid = @data["_id"]["oid"]
-@enhabit = "marcel@lbkstudios.net"
+@enhabit = "alex@lbkstudios.net"
 
 @isDev = `cat #{@deploymentBase}/enhabit.git/hooks/post-receive`.split("\n")[4].split(" ")[-2].include? 'dev'
 
