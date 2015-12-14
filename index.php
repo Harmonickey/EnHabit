@@ -418,7 +418,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     }
                     else
                     {
-                        $res = "Tenant";
+                        $res = "Tenant" . (isset($_SESSION["hasRental"]) ? ":HasRental" : "");
                     }
                 }
                 else if (isset($_SESSION['landlord']))
