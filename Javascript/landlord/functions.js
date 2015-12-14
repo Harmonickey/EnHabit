@@ -688,7 +688,7 @@ function ProcessListing()
             { 
                 try
                 {
-                    if (Contains(res, "Okay")
+                    if (Contains(res, "Okay"))
                     {
                         window.location = "/landlord/listings/#success";
                     }
