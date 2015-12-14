@@ -10,6 +10,7 @@ var pendingData = null;
 var numUploaded = 0;
 var numAdded = 0;
 var pendingUpdateData = null;
+var threshold = 0;
 
 $(function() {
    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
@@ -18,7 +19,14 @@ $(function() {
    
    if ($.fn.lightbox) {
         $('.ui-lightbox').lightbox();
-    }
+   }
+    
+   if (location.hash == "success")
+   {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+       
+       location.hash = "";
+   }
 });
 
 $(document).on("keypress", function(e)
@@ -620,6 +628,8 @@ function ProcessListing()
                             var oid = listing._id.$oid;
                             var userId = listing.UserId;
                             
+                            threshold = listing.Threshold;
+                            
                             $("#accordion").append(CreateAccordionView(oid, listing));
                                 
                             var selector = "[id='" + oid + "'] form";
@@ -690,32 +700,7 @@ function ProcessListing()
                 {
                     if (Contains(res, "Okay"))
                     {
-                        var inputs = $("#" + id + " input");
-                        var headingInputs = $("#heading" + id + " label");
-                        
-                        $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
-                        $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
-                        $(headingInputs[2]).text("Rent: $" + $(inputs[2]).autoNumeric('get') + "/Month");
-                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
-                        
-                        if (addedFiles[id])
-                        {
-                            $("#" + id + " .activecheckbox").prop("disabled", false);
-                            $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
-                        }
-                        else if (pictures[id].length == 0)
-                        {
-                            $("#" + id + " .activecheckbox").prop("disabled", true);
-                            $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
-                        }
-                        
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
-                        numUploaded = 0;
-                        addedFiles[id] = false;
-                        pendingUpdateData = null;
-                        
-                        // close the div
-                        $("#heading" + id + " a").click();
+                        window.location = "/tenant/listings/#success"
                     }
                     else
                     {
@@ -1438,6 +1423,7 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, Please Choose an Address Within " + threshold + " miles of this University!</label>" +
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
