@@ -136,25 +136,25 @@
 						</a>	    				
 					</li>
                     <li>
-						<a href="../renters">
+						<a href="./renters">
 							<i class="fa fa-users"></i>
 							<span>Renters</span>
 						</a>	    				
 					</li>
                     <li>
-						<a href="../universities">
+						<a href="./universities">
 							<i class="fa fa-bank"></i>
 							<span>Universities</span>
 						</a>	    				
 					</li>
                     <li>
-						<a href="../pricing">
+						<a href="./pricing">
 							<i class="fa fa-money"></i>
 							<span>Pricing</span>
 						</a>	    				
 					</li>
                     <li>
-						<a href="../logs">
+						<a href="./logs">
 							<i class="fa fa-file-text"></i>
 							<span>Logs</span>
 						</a>	    				

@@ -39,7 +39,7 @@ begin
         
         pricing = mongoSession[:pricing].find({"UniversityId" => document["UniversityId"]}).one
             
-        document["ListingMarkup"] = (document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f
+        document["ListingMarkup"] = ((document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f).round(2)
         
         #we don't need to expose these to the front end
         document.delete("LandlordId") 
