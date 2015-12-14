@@ -270,6 +270,12 @@ begin
             end
         end
         
+        documents.each do |doc|
+            university = mongoSession[:universities].find({"UniversityName" => doc["University"]}).one
+            
+            doc["Threshold"] = university["Threshold"]
+        end
+        
         puts documents.to_json
     end
 rescue Exception => e
