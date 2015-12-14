@@ -41,6 +41,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
     listingObj["IsRented"] = false
+    listingObj["IsFeatured"] = false
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
     listingObj["Pictures"] = pictures
     
