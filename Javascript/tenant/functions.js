@@ -10,7 +10,7 @@ var pendingData = null;
 var numUploaded = 0;
 var numAdded = 0;
 var pendingUpdateData = null;
-var threshold = 0;
+var threshold = 0.000;
 
 $(function() {
    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
@@ -143,6 +143,8 @@ function GetAllListings()
                     {
                         for (var i = 0; i < data.length; i++)
                         {
+                            threshold = data[0].Threshold;
+                            
                             var oid = data[i]._id.$oid;
                             
                             $("#accordion").append(CreateAccordionView(oid, data[i]));
