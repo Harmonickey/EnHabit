@@ -17,6 +17,6 @@
     
         <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . rent . "')"; ?>
     
-        window.top.location = "/tenant/payments?result=success"
+        window.top.location = "/tenant/payments/#successpayment"
     </script>
 </html>
