@@ -1012,7 +1012,7 @@ function InsertMarkers(res)
     }
     
     //map.fitBounds(markers.getBounds());
-    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 0] });
+    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 75] });
     //map.setZoom(map.getZoom() - 1); 
     clearInterval(intervalVal);
 }
