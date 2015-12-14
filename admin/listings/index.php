@@ -3,7 +3,7 @@
     
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
-        header("Location: /", FALSE);
+        header("Location: /#loggedout", FALSE);
         return;
     }
     

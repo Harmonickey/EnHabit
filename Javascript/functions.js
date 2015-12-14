@@ -1943,6 +1943,12 @@ $(function ()
     $("#listings_list").height($("#listings_list").height() - $(".navbar").outerHeight());
     
     $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo"); 
+    
+    if (location.hash == "#loggedout")
+    {
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
+        location.hash = "";
+    }
 });
 
 $(window).on('resize', function() {

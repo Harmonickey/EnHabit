@@ -4,7 +4,7 @@
     
     if (!isset($_SESSION["userId"]))
     {
-        header("Location: /", FALSE);
+        header("Location: /#loggedout", FALSE);
         return;
     }
     
