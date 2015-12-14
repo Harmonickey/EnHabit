@@ -2510,8 +2510,7 @@ function CreateAccordionRentersView(uid, data)
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;' >" +
-                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary btn-success' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" + 
                                 "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>Delete Renter</button>" +
                             "</div>" +
                         "</div>" +
