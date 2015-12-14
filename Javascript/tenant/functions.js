@@ -437,6 +437,7 @@ function DeleteListing(id)
                             $("#" + id).parent().remove();
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Deleted Successfully!", position: 'top-center'});
                             $(".actions a").show();
+                            $(".listings-message").hide();
                             $("#accordion").text("No Listing Yet");
                         }
                         else
