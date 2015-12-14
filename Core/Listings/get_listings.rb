@@ -179,7 +179,7 @@ def combineFiltersIntoQuery
     if not @isRentedFilter.nil?
         @mainFilter["$and"].push @isRentedFilter
     end
-    if not @isActiveFilter.nil?
+    if not @isActiveFilter.nil? and @userId.nil? and @landlordId.nil?
         @mainFilter["$and"].push @isActiveFilter
     end
     if @mainFilter["$and"].count == 0
