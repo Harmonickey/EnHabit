@@ -16,7 +16,7 @@ require 'rmagick'
 
 Moped::BSON = BSON
 
-def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive)
+def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive, isPastThreshold)
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])
     mongoSession.use("enhabit")
 
@@ -41,11 +41,12 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
+    listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = false
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
-        listingObj["IsActive"] = isActive.to_b
+        listingObj["IsActive"] = isActive.to_b and isPastThreshold
         
         thumbnails = []
         pictures.each do |filename|
@@ -212,10 +213,13 @@ begin
     
     university = GetUniversity(data["University"])
     
-    raise "Unable to get university" if university.nil?
-    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f
+    if university.nil?
+        puts "Unable to get university"
+    else
+        isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
     
-    puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"])
+        puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"],isPastThreshold)
+    end
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message
