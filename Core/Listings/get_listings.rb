@@ -164,9 +164,6 @@ def combineFiltersIntoQuery
     if not @startFilter.nil? 
         @mainFilter["$and"].push @startFilter
     end
-    if not @tagFilter.nil? 
-        @mainFilter["$and"].push @tagFilter
-    end
     if not @universityFilter.nil?
         @mainFilter["$and"].push @universityFilter
     end
@@ -234,7 +231,6 @@ begin
     @buildingTypeFilter = {}
     @startFilter = {}
     @universityFilter = {}
-    @tagFilter = {}
     @mainFilter = {}
     @userIdFilter = {}
     @landlordIdFilter = {}
