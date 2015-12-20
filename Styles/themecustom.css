@@ -274,16 +274,13 @@
 .Bedrooms,
 .Bathrooms, 
 .Rent,
-.PaymentFirstName,
-.PaymentLastName,
-.PaymentAddress,
-.PaymentUnit,
-.RentAmount,
-.PaymentMemo,
-.PaymentLandlord
+.Unit,
+.Memo,
+.LandlordEmail,
+.input-group.AmountWrapper
 {
 	text-align: center;
-	width: 50%;
+	width: 50% !important;
 	margin: 0 auto;
 }
 
