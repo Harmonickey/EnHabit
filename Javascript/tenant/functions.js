@@ -1619,7 +1619,7 @@ function CreatePaymentHistoryView(oid, data)
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
-                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Paid Rent: $" + data.Rent + "</label>" +
                             "<label>Month: " + data.Month + "</label>" +
                         "</a>" +
                     "</h4>" +
