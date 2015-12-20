@@ -698,13 +698,6 @@ function GetAllLandlords()
 function InitPaymentModal()
 {
     GetAllLandlords();
-    
-    $(".Address").geocomplete().bind("geocode:result", function(event, result){ });
-    
-    var today = new Date();
-    var nextMonth = GetNextMonth(today) + "'s Rent";
-    
-    $(".Memo").attr("placeholder", nextMonth);
 }
 
 function InitSlider()
@@ -1099,7 +1092,7 @@ function InsertMarkers(res)
     }
     
     //map.fitBounds(markers.getBounds());
-    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 0] });
+    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 75] });
     //map.setZoom(map.getZoom() - 1); 
     clearInterval(intervalVal);
 }
@@ -1684,6 +1677,16 @@ function LoadModal(event, which, enterDefault, btnText)
     //      because it's different for each modal
     
     ModalBackdropHeight($('#common-modal.modal')); 
+    
+    if (which == "modal-content-payment")
+    {
+        $(".Address").geocomplete();
+    
+        var today = new Date();
+        var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
+        
+        $(".Memo").attr("placeholder", nextMonth);
+    }
 } 
 
 function OpenListingsList()
@@ -1825,7 +1828,7 @@ function GetPayKey()
             beforeSend: function()
             {
                 $("#GetPaymentKey").prop("disabled", true);
-                $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
+                $("#GetPaymentKey").val("Submitting...");
             },
             data:
             {
@@ -1870,7 +1873,7 @@ function GetPayKey()
             complete: function()
             {
                 $("#GetPaymentKey").prop("disabled", false);
-                $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Make Payment");
+                $("#GetPaymentKey").val("Make Payment");
             }
         });
     }
