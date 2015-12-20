@@ -310,10 +310,7 @@ function GetAccount(isListingPage)
 
 function GetAllTransactions()
 {  
-    var data =
-    {
-        
-    };
+    var data = { TenantPaymentHistory: true };
 
     $.ajax(
     {

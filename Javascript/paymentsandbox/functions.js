@@ -133,7 +133,7 @@ function InsertPayment(uid, landlordEmail, rent)
            data: data 
        },
        success: function(res) {
-           // nothing should really happen here at this point really, it's all backend work
+           //window.top.location = "/tenant/payments/#successpayment"
        }
     });
 }
