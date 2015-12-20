@@ -155,6 +155,9 @@
                     <div class="row" id="payment" style="margin: 0;">
                         
                     </div>
+                    <div class="row" id="paymentHistory" style="margin: 0;">
+                        
+                    </div>
 				</div> <!-- /widget-content -->
 			</div> <!-- /widget -->					
 	    </div> <!-- /col-md-12 -->     	
