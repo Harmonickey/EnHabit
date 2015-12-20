@@ -308,6 +308,69 @@ function GetAccount(isListingPage)
     });
 }
 
+function GetAllTransactions()
+{  
+    var data =
+    {
+        
+    };
+
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "get_all_transactions",
+            data: data,
+            endpoint: "Payments"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to retrieve payments");
+                    $("#paymentHistory").html("<p>No Payments Yet</p>");
+                }
+                else if (Contains(res, "No Payments"))
+                {
+                    $("#paymentHistory").html("<p>No Payments Yet</p>");
+                }
+                else
+                {
+                    $("#paymentHistory").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#paymentHistory").append(CreatePaymentHistoryView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });
+}
+
 function HandleCreateListingButton(data)
 {
     if (Contains(data.Username, "Facebook"))
@@ -1545,6 +1608,32 @@ function CreatePaymentView(oid, data)
                         "</div>" +
                     "</div>" +
                   "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreatePaymentHistoryView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Rent: $" + data.Rent + "</label>" +
+                            "<label>Month: " + data.Month + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +   
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Month</label><p class='address'>" + data.Month + "</p>" + 
+                            "</div>" +                           
+                        "</div>" +
+                    "</div>" +
                 "</div>" +
             "</div>";
 }
