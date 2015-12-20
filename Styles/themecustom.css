@@ -273,7 +273,14 @@
 .Address, 
 .Bedrooms,
 .Bathrooms, 
-.Rent
+.Rent,
+.PaymentFirstName,
+.PaymentLastName,
+.PaymentAddress,
+.PaymentUnit,
+.RentAmount,
+.PaymentMemo,
+.PaymentLandlord
 {
 	text-align: center;
 	width: 50%;
