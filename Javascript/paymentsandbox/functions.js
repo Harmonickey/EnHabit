@@ -133,12 +133,14 @@ function InsertPayment(uid, landlordEmail, rent)
            data: data 
        },
        success: function(res) {
-           window.top.location = "/tenant/payments/#successpayment"
-           window.location.reload();
+           //window.top.location = "/tenant/payments/#successpayment"
+           //window.location.reload();
+           console.log("success");
        },
        error: function(res) {
-           window.top.location = "/tenant/payments/#cancelledpayment"
-           window.location.reload();
+           //window.top.location = "/tenant/payments/#cancelledpayment"
+           //window.location.reload();
+           console.log("failed");
        }
     });
 }
