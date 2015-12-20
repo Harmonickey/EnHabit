@@ -930,9 +930,8 @@ function UpdatePricing(oid)
                             var inputs = $("#" + oid + " input");
                             var headingInputs = $("#heading" + oid + " label");
                             
-                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
-                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val() + "%");
-                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val() + "%");
+                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[0]).val() + "%");
+                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[1]).val() + "%");
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Pricing", position: 'top-center'});
                             
@@ -1098,16 +1097,16 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's',
-        vMax: '99',
-        vMin: '0'
+        vMax: '99.99',
+        vMin: '0.00'
     });
     
     $(row[1]).autoNumeric('init', 
     {
         aSign: '%', 
         pSign: 's', 
-        vMax: '99',
-        vMin: '0'
+        vMax: '99.99',
+        vMin: '0.00'
     });
 }
 
@@ -2068,7 +2067,7 @@ function BuildData(inputs, elements)
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
-        else if (elements[i] == "Rent")
+        else if (elements[i] == "Rent" || elements[i] == "ListingMarkup" || elements[i] == "FeaturedMarkup")
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }

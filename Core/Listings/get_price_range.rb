@@ -19,9 +19,6 @@ def GetPriceRange(university)
         universityObj = session[:universities].find({UniversityName: university}).one
     
         pricing = session[:pricing].find({UniversityId: universityObj["UniversityId"]}).one
-        
-        document[:MinRent]["Price"] = (document[:MinRent]["Price"]  * (pricing["ListingMarkup"].to_f / 100) + document[:MinRent]["Price"]).to_i
-        document[:MaxRent]["Price"] = (document[:MaxRent]["Price"] * (pricing["ListingMarkup"].to_f / 100) + document[:MaxRent]["Price"]).to_i
     end
     
     return document.to_json
