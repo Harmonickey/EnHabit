@@ -62,7 +62,13 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="navbar-header">
                     <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
                 </div>
-
+                
+                <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
+                    <a style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                        <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
+                    </a>
+                </div>
+                
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -291,6 +297,29 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <p>Welcome to Enhabit! You can set up our service with your credit or debit card to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
             </div>
             <!-- #modal-content-register-success -->
+            <!-- Speedy Payment -->
+            <div class="content-to-populate-in-modal" id="modal-content-payment">
+                <h1>Pay Rent Now</h1>
+                <label>First Name: </label><input type="text" class="form-control FirstName" placeholder="Joe" />
+                <label>Last Name: </label><input type="password" class="form-control LastName" placeholder="Shmo" />
+                <label>Address: </label><input type="text" class="form-control Address" autocomplete="false" />
+                <label>Unit: </label><div class="input-group"><input type="text" class="form-control Unit" placeholder="2E"/>
+                <label>Rent Amount: </label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control Amount" placeholder="500" />
+                    </div>
+                <label>Payment Memo: </label><input type="text" class="form-control Memo" placeholder="" />
+                <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
+                <input type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
+                <!-- insert the hidden form there -->
+                <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
+                    <button class='hidden' id='submitBtn'></button>
+                    <input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>
+                </form>
+                <p class="MakePayment-error alert alert-danger" style="display: none;"></p>
+            </div>
+            <!-- #modal-content-payment -->
             <!-- Email -->
             <div class="content-to-populate-in-modal" id="modal-content-email">
                 <!-- placeholder for details view -->
