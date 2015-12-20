@@ -25,7 +25,7 @@ begin
         
         #loop through all payments and get associated information for the payment
         documents.each do |doc|
-            renterData = session[:renters].find({"_id" => Moped::BSON::ObjectId.from_string(doc["RenterId"].to_s)}).select(RenterId: 1).one
+            renterData = session[:renters].find({"RenterId" => doc["RenterId"]}).select(RenterId: 1).one
             
             userData = session[:accounts].find({:UserId => renterData["RenterId"]}).select(FirstName: 1, LastName: 1, Email: 1, PhoneNumber: 1).one
             

@@ -66,7 +66,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     
-    renterId = data["RenterId"]
+    renterId = ARGV[1].split(",")[0] if not ARGV[1].empty?
     raise "No RenterId" if renterId.nil?
     landlordId = GetLandlordIdFromEmail(data["LandlordEmail"])
     raise "No LandlordId" if landlordId.nil?
