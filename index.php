@@ -310,7 +310,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <input type="text" class="form-control Amount" placeholder="500" />
                     </div>
                 <label>Payment Memo: </label><input type="text" class="form-control Memo" placeholder="" />
-                <label>Landlord: </label><select class="form-control LandlordEmail" />
+                <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
                 <input type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
                 <!-- insert the hidden form there -->
                 <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
