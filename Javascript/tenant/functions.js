@@ -1594,7 +1594,7 @@ function CreatePaymentView(oid, data)
                             "<div class='row'>" +
                                 "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
                                     "<label>Optional Payment Note:</label>" + 
-                                    "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\">" +
+                                    "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\" maxlength='100'>" +
                                 "</div>" +
                                 "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
                                     "<span id='charactersLeft'>100</span> characters left" +
