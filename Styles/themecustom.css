@@ -320,7 +320,7 @@
 
 .pac-container 
 {
-    z-index: 1041 !important;
+    z-index: 9999 !important;
 }
 
 .listing .popup
