@@ -115,13 +115,12 @@ function UpdateRenter(uid)
     });
 }
 
-function InsertPayment(uid, landlordEmail, rent, paymentMonth)
+function InsertPayment(uid, landlordEmail, rent)
 {
     var data = {
       RenterId: uid,
       LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
-      Rent: rent, 
-      Month: paymentMonth
+      Rent: rent
     };
     
     $.ajax({
