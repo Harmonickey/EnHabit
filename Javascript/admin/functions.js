@@ -15,6 +15,13 @@ $(function() {
    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
    
    $(".main").css("min-height", height + "px");
+   
+   if (location.hash == "success")
+   {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+       
+       location.hash = "";
+   }
 });
 
 $(document).on("keypress", function(e)
@@ -151,6 +158,7 @@ function GetAllUniversities(isListingPage)
                             $("#accordion").append(CreateAccordionUniversitiesView(oid, data[i]));
                             
                             SetGeocompleteTextBox(oid);
+                            SetTextBoxWithAutoNumericUniversity(oid);
                         }
                     }
                     
@@ -1014,7 +1022,7 @@ function UpdateUniversity(oid)
                             
                             $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Threshold: " + $(inputs[2]).val());
+                            $(headingInputs[2]).text("Listing Distance (miles): " + $(inputs[2]).val());
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
                             
@@ -1089,6 +1097,17 @@ function SetTextBoxWithAutoNumeric(rowId)
     });
 }
 
+function SetTextBoxWithAutoNumericUniversity(rowId)
+{
+    var row = $("#" + rowId + " input[type='text']");
+    
+    $(row[2]).autoNumeric('init', 
+    { 
+        vMax: '999.9999',
+        vMin: '00.0000'
+    });
+}
+
 function SetTextBoxWithAutoNumericPricing(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
@@ -1112,7 +1131,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
 
 function SetDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " input[type='text']")[5]).pikaday(
+    $($("#" + rowId + " input[type='text']")[4]).pikaday(
     {
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[3]).val()) //current
@@ -1537,33 +1556,7 @@ function ProcessListing()
                 {
                     if (Contains(res, "Okay"))
                     {
-                        var inputs = $("#" + id + " input");
-                        var headingInputs = $("#heading" + id + " label");
-                        
-                        $(headingInputs[0]).text("Address: " + $(inputs[1]).val());
-                        $(headingInputs[1]).text("Unit: " + $(inputs[2]).val());
-                        $(headingInputs[2]).text("Rent: $" + $(inputs[3]).autoNumeric('get') + "/Month");
-                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[4]).val())));
-                        $(headingInputs[4]).text("University: " + $(inputs[5]).val());
-                        
-                        if (addedFiles[id])
-                        {
-                            $("#" + id + " .activecheckbox").prop("disabled", false);
-                            $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
-                        }
-                        else if (pictures[id].length == 0)
-                        {
-                            $("#" + id + " .activecheckbox").prop("disabled", true);
-                            $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
-                        }
-                        
-                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
-                        numUploaded[id] = 0;
-                        addedFiles[id] = false;
-                        pendingUpdateData = null;
-                        
-                        // close the div
-                        $("#heading" + id + " a").click();
+                        window.location = "/admin/listings/#success";
                     }
                     else
                     {
@@ -2320,7 +2313,8 @@ function CreateAccordionView(oid, data)
                                 "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" + 
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, You Must Include Images!</label>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, The Address Must Be Within the University Radius!</label>" +                    
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
@@ -2376,6 +2370,7 @@ function CreateAccordionUniversitiesView(oid, data)
                                 "<button class='btn btn-primary btn-success' onclick='UpdateUniversity(\"" + oid + "\");'>Update</button>" +
                             "</div>" +
                         "</div>" +
+                        "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
                     "</div>" +
                 "</div>" +
             "</div>";
@@ -2515,8 +2510,7 @@ function CreateAccordionRentersView(uid, data)
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px;' >" +
-                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<button class='btn btn-primary btn-success' onclick='OpenPaymentModal(\"" + uid + "\");'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" + 
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" + 
                                 "<button class='btn btn-danger' onclick='DeleteRenter(\"" + uid + "\");'>Delete Renter</button>" +
                             "</div>" +
                         "</div>" +
