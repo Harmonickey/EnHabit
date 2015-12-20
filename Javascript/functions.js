@@ -889,8 +889,8 @@ function InsertMarkers(res)
             {
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
-                    'marker-color': '#000',
-                    'marker-size': 'medium',
+                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
                     'marker-symbol': 'building'
                 }));
                 
@@ -952,8 +952,8 @@ function InsertMarkers(res)
             {   
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
-                    'marker-color': '#000',
-                    'marker-size': 'medium',
+                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
                     'marker-symbol': 'building'
                 }));
                 

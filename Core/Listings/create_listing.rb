@@ -43,6 +43,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsRented"] = false
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+    listingObj["IsFeatured"] = false
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
