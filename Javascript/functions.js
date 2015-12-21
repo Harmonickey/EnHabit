@@ -1559,10 +1559,12 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+        $("#payment-btn").hide();
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1570,6 +1572,7 @@ function ShowLoginFeatures(hideMainModal, userType)
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
         }
     }
 
