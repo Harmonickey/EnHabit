@@ -2042,6 +2042,14 @@ function BuildError(fields)
             error += "Valid Phone Number<br>";
         }
     }
+    if (fields.Address === "")
+    {
+        error += "Valid Address<br>";
+    }
+    if (fields.Amount === "")
+    {
+        error += "Valid Rent Amount<br>";
+    }
     
     return error;
 }
