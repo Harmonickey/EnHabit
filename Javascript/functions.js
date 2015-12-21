@@ -1548,6 +1548,8 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1559,10 +1561,12 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+        $("#payment-btn").hide();
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1570,6 +1574,7 @@ function ShowLoginFeatures(hideMainModal, userType)
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
         }
     }
 
@@ -1804,9 +1809,11 @@ function CreateEmailMessage(listingId)
 
 function GetPayKey()
 {
-    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Amount", "Memo", "LandlordEmail"]);
+    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Rent", "Memo", "LandlordEmail"]);
                                     
     var error = BuildError(data);
+    
+    data.Memo = data.Memo.replace("'", "");
     
     if (error != "Please Include<br>")
     {
@@ -2035,6 +2042,14 @@ function BuildError(fields)
             error += "Valid Phone Number<br>";
         }
     }
+    if (fields.Address === "")
+    {
+        error += "Valid Address<br>";
+    }
+    if (fields.Rent === "")
+    {
+        error += "Valid Rent Amount<br>";
+    }
     
     return error;
 }
@@ -2107,8 +2122,23 @@ $(function ()
     
     if (location.hash == "#loggedout")
     {
-        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
         location.hash = "";
+    }
+    else if (location.hash == "#sessiontimeout")
+    {
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Session Timed Out", position: 'top-center'});
+        location.hash = "";
+    }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
     }
 });
 

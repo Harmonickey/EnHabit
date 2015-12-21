@@ -936,7 +936,7 @@ function Logout()
                 {
                     // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                     // be a POST element, this is good for now
-                    location.href = "/";
+                    location.href = "/#loggedout";
                 }
                 else
                 {

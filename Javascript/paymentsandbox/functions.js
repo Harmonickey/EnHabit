@@ -118,10 +118,14 @@ function UpdateRenter(uid)
 function InsertPayment(uid, landlordEmail, rent)
 {
     var data = {
-      RenterId: uid,
-      LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
-      Rent: rent
+      "LandlordEmail": landlordEmail, // will be converted to LandlordID in backend
+      "Rent": rent
     };
+    
+    if (uid != "")
+    {
+        data["RenterId"] = uid;
+    }
     
     $.ajax({
        type: "POST",
@@ -132,17 +136,41 @@ function InsertPayment(uid, landlordEmail, rent)
            command: "insert_payment",
            data: data 
        },
+<<<<<<< HEAD
        success: function(res) {
 <<<<<<< HEAD
+=======
+       success: function(res) {
+<<<<<<< HEAD
+>>>>>>> f1f855f... 121 adapt
            window.top.location = "/tenant/payments/#successpayment"
            window.location.reload();
        },
        error: function(res) {
            window.top.location = "/tenant/payments/#cancelledpayment"
+<<<<<<< HEAD
            window.location.reload();
 =======
            //window.top.location = "/tenant/payments/#successpayment"
 >>>>>>> ed916d6... 130 insert payment?
+=======
+=======
+           window.top.location = "/tenant/payments/#successpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#successpayment";
+           }
+           window.location.reload();
+       },
+       error: function(res) {
+           window.top.location = "/tenant/payments/#cancelledpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#cancelledpayment";
+           }
+>>>>>>> 2f7ba8a... 121 some payment flow
+           window.location.reload();
+>>>>>>> f1f855f... 121 adapt
        }
     });
 }

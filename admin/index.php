@@ -6,7 +6,7 @@
     
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
-        header("Location: /#loggedout", FALSE);
+        header("Location: /#sessiontimeout", FALSE);
         return;
     }
     
