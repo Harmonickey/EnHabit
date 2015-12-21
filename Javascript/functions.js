@@ -1548,6 +1548,8 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
