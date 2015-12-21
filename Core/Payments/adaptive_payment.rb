@@ -13,7 +13,7 @@ require 'json'
 
 @rent = @data["Rent"]
 @landlord = @data["LandlordEmail"]
-@memo = @data["Memo"] + "\n\nRent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
+@memo = @data["Memo"] + " -- Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 @enhabit = "alex@lbkstudios.net"
 @uid = @data["_id"]["oid"]
 
