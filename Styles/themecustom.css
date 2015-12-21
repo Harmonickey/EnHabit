@@ -263,6 +263,14 @@
     }
 }
 
+.required:after 
+{ 
+    content: " *";
+    color: red;
+    display: inline-block;
+    position: relative;
+}
+
 .Username, 
 .Password,
 .Confirm,
