@@ -1548,6 +1548,8 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1559,10 +1561,12 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+        $("#payment-btn").hide();
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1570,6 +1574,7 @@ function ShowLoginFeatures(hideMainModal, userType)
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
         }
     }
 
