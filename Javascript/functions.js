@@ -1820,6 +1820,8 @@ function GetPayKey()
                                     
     var error = BuildError(data);
     
+    data.Memo = data.Memo.replace("'", "");
+    
     if (error != "Please Include<br>")
     {
         SetError("MakePayment", error);
