@@ -36,12 +36,12 @@ require 'json'
 params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/' + @successUri + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"SECONDARYONLY\"}'
 
 req = Hash.new
-req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
-req['X-PAYPAL-SECURITY-PASSWORD'] = 'DVWC6FTKRG7WYWFY'
-req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AWjlrRdzrtV5-PSI427csM4fUlCsA3Y.solWILTwvYm8VyPRKVxsqXFZ'
+req['X-PAYPAL-SECURITY-USERID'] = 'enhabitlife_api1.gmail.com'
+req['X-PAYPAL-SECURITY-PASSWORD'] = 'NJ3DJWL7B794Q8BJ'
+req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AMCv3slS9yBuKOniN2ij3Mh1fAG1A7koo8NHz0My20EiyPBHmfWBa.pT'
 
-# Global Sandbox Application ID
-req['X-PAYPAL-APPLICATION-ID'] = 'APP-1NM10749ND821735L'
+# Live App ID
+req['X-PAYPAL-APPLICATION-ID'] = 'APP-47R179153P103222T'
 
 # Input and output formats
 req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
