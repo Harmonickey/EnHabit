@@ -2125,6 +2125,16 @@ $(function ()
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
         location.hash = "";
     }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
 });
 
 $(window).on('resize', function() {
