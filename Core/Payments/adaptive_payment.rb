@@ -8,6 +8,31 @@ $: << "#{@deploymentBase}/Libraries"
 
 require 'net/http'
 require 'json'
+require 'moped'
+require 'bson'
+
+def GetMarkup
+
+    mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
+    mongoSession.use("enhabit") # this is our current database
+
+    pricing = Array.new
+    
+    begin    
+        mongoSession.with(safe: true) do |session|
+            university = session[:universities].find({"UniversityName" => "Northwestern"}).select(UniversityId: 1)
+        
+            pricing = session[:pricing].find({"UniversityId" => university[0]["UniversityId"]}).select(ListingMarkup: 1)
+        end       
+        
+        retVal = "Okay"
+    rescue Moped::Errors::OperationFailure => e
+        retVal = e
+    end
+    
+	mongoSession.disconnect
+    return pricing[0]["ListingMarkup"]
+end
 
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
 
@@ -24,6 +49,10 @@ require 'json'
 @uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
 
 @markup = @data["ListingMarkup"]
+
+if @markup.nil?
+  @markup = GetMarkup
+end
 
 @receiverList = []
 #enhabit gets the full rent amount and markup
