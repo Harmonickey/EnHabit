@@ -20,9 +20,9 @@ def GetMarkup()
     
     begin    
         mongoSession.with(safe: true) do |session|
-            university = session[:universities].find({"UniversityName" => "Northwestern"}).select(UniversityId: 1)
+            university = session[:universities].find({"UniversityName" => "Northwestern"}).select(UniversityId: 1).to_a
         
-            pricing = session[:pricing].find({"UniversityId" => university[0]["UniversityId"]}).select(ListingMarkup: 1)
+            pricing = session[:pricing].find({"UniversityId" => university[0]["UniversityId"]}).select(ListingMarkup: 1).to_a
         end       
         
         retVal = "Okay"
