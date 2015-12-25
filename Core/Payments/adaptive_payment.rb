@@ -11,7 +11,7 @@ require 'json'
 require 'moped'
 require 'bson'
 
-def GetMarkup
+def GetMarkup()
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
