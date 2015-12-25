@@ -1816,7 +1816,7 @@ function CreateEmailMessage(listingId)
 
 function GetPayKey()
 {
-    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Amount", "Memo", "LandlordEmail"]);
+    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Rent", "Memo", "LandlordEmail"]);
                                     
     var error = BuildError(data);
     
@@ -2046,7 +2046,7 @@ function BuildError(fields)
     {
         error += "Valid Address<br>";
     }
-    if (fields.Amount === "")
+    if (fields.Rent === "")
     {
         error += "Valid Rent Amount<br>";
     }
