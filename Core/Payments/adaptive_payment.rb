@@ -51,7 +51,7 @@ end
 @markup = @data["ListingMarkup"]
 
 if @markup.nil?
-  @markup = GetMarkup
+  @markup = GetMarkup()
 end
 
 @receiverList = []
