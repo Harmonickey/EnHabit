@@ -83,7 +83,7 @@ end
 @receiverList = []
 <<<<<<< HEAD
 #enhabit gets the full rent amount and markup
-@receiverList.push '{\"amount\":\"' + (@markup.to_f + @rent.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
+@receiverList.push '{\"amount\":\"' + (@markup.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
 #landlord gets the full rent amount
 <<<<<<< HEAD
 <<<<<<< HEAD
