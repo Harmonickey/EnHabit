@@ -11,7 +11,7 @@ require 'json'
 require 'moped'
 require 'bson'
 
-def GetMarkup()
+def GetMarkup(rent)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -31,7 +31,7 @@ def GetMarkup()
     end
     
 	mongoSession.disconnect
-    return pricing[0]["ListingMarkup"]
+    return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
 end
 
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
@@ -51,18 +51,22 @@ end
 @markup = @data["ListingMarkup"]
 
 if @markup.nil?
-  @markup = GetMarkup()
+  @markup = GetMarkup(@rent)
 end
 
 @receiverList = []
-#enhabit gets the full rent amount and markup
-@receiverList.push '{\"amount\":\"' + (@markup.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"false\"}'
-#landlord gets the full rent amount
-@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\", \"primary\":\"true\"}'
+#enhabit gets the markup amount
+@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+#landlord gets the rent plus markup amount
+@receiverList.push '{\"amount\":\"' + (@rent.to_f + @markup).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
 
 @successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
 
 params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife.com/tenant/payments/success/' + @successUri + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"SECONDARYONLY\"}'
+
+File.open("output.log", "a") do |output|
+    output.puts "[" + DateTime.now.to_s + "] " + params.inspect
+end
 
 req = Hash.new
 req['X-PAYPAL-SECURITY-USERID'] = 'enhabitlife_api1.gmail.com'
