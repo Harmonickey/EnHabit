@@ -676,7 +676,7 @@ function GetAllLandlords()
                     
                     for (var i = 0; i < data.length; i++)
                     {
-                        if (data[i].IsLandlord)
+                        if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
@@ -1561,20 +1561,21 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
-        $("#payment-btn").hide();
+        $("#payment-btn").hide(); // admins don't pay rent!!
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
-        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
+        $("#payment-btn").hide(); // landlords don't pay rent!!
     }
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
+        $("#payment-btn").show(); // in case we're going from landlord to user
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
-            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
     }
 
@@ -2140,6 +2141,8 @@ $(function ()
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
     }
+    
+    RemoveLoginFeatures();
 });
 
 $(window).on('resize', function() {

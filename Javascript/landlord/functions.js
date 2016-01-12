@@ -337,10 +337,9 @@ function GetAccount(isListingPage)
 
 function SetBootstrapSwitches(rowId)
 {
-    var checkboxes = $("#" + rowId + " input[type='checkbox']");
-    checkboxes.not(":eq(5)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    //$(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
-    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    $("#" + rowId + " .yesno").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $("#" + rowId + " .leasetype").bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $("#" + rowId + " .buildingtype").bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
 function SetGeocompleteTextBox(rowId)
@@ -842,6 +841,8 @@ function UpdateAccount()
     var inputs = $(".account input");
     
     var data = BuildData(inputs, ["Username", "Email", "FirstName", "LastName", "PhoneNumber", "Password", "Confirm"]);
+    
+    data.IsLandlord = true;
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -1350,6 +1351,17 @@ function CreateAccordionView(oid, data)
         universities += "<option value='" + university + "'" + (data.University == university ? "selected" : "") + ">" + university + "</option>";
     });
     
+    var bedrooms = "";
+    for (var i = 0; i <= 10; i++)
+    {
+        bedrooms += "<option value='" + (i == 0 ? "studio" : i) + "'" + (data.Bedrooms == i ? "selected" : "") + ">" + (i == 0 ? "studio" : i) + (i == 10 ? "+" : "") + "</option>";
+    }
+    var bathrooms = "";
+    for (var i = 0; i <= 10; i++)
+    {
+        bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") +"</option>";
+    }
+    
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
     
     return "<div class='panel panel-default'>" +
@@ -1381,11 +1393,13 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
+                                "<label>Bedrooms</label>" + 
+                                "<select class='form-control'>" + bedrooms + "</select>" +
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
-                            "</div>" + 
+                                "<label>Bathrooms</label>" + 
+                                "<select class='form-control'>" + bathrooms + "</select>" +
+                            "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>University</label>" + 
                                 "<select class='form-control'>" + universities + "</select>" +
@@ -1393,32 +1407,32 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Animals</label><input type='checkbox' " + (data.HasAnimals ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Animals</label><input class='yesno' type='checkbox' " + (data.HasAnimals ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Laundry</label><input type='checkbox' " + (data.HasLaundry ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Laundry</label><input class='yesno' type='checkbox' " + (data.HasLaundry ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>Parking</label><input type='checkbox' " + (data.HasParking ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Parking</label><input class='yesno' type='checkbox' " + (data.HasParking ? "checked" : "") + " data-size='mini' />" +
                             "</div>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
-                                "<label>AC</label><input type='checkbox' " + (data.HasAirConditioning ? "checked" : "") + " data-size='mini' />" +
+                                "<label>AC</label><input class='yesno' type='checkbox' " + (data.HasAirConditioning ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Is Rented</label><input type='checkbox' " + (data.IsRented ? "checked" : "") + " data-size='mini' disabled/>" +
+                                "<label>Is Rented</label><input class='yesno' type='checkbox' " + (data.IsRented ? "checked" : "") + " data-size='mini' disabled/>" +
                             "</div>" + 
-                            //"<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                            //    "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" //? "checked" : "") + " data-size='mini' />" +
-                            //"</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
+                                "<label>Lease Type</label><input class='leasetype' type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Building Type</label><input class='buildingtype' type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 || data.IsPastThreshold ? "disabled" : "") + "/>" +
+                                "<label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 || data.IsPastThreshold ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" +

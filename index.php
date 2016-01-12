@@ -60,15 +60,15 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+                    <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
                 </div>
-                
+                <!--
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
-                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium; display: none;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
                         <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
                     </a>
                 </div>
-                
+                -->
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -242,7 +242,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="item-content type-content">
                         <label>Rental or Sublet</label>
                         <div class="styled-select">
-                            <select id="leaseType-filter" class="form-control">
+                            <select id="LeaseType-filter" class="form-control">
                                 <option value="both">Both</option>
                                 <option value="rental">Rental</option>
                                 <option value="sublet">Sublet</option>
@@ -252,7 +252,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="item-content type-content">
                         <label>Apartment or House</label>
                         <div class="styled-select">
-                            <select id="buildingType-filter" class="form-control">
+                            <select id="BuildingType-filter" class="form-control">
                                 <option value="both">Both</option>
                                 <option value="apartment">Apartment</option>
                                 <option value="house">House</option>
@@ -310,6 +310,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <label>Payment Memo: </label><input type="text" class="form-control Memo" />
                 <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
                 <p class="small">If your landlord is not available, please contact Enhabit.</p>
+                <p class="small">Friendly Reminder: Use your Bank Account to avoid PayPal processing fees!</p>
                 <input id="GetPaymentKey" type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
                 <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
                     <button class='hidden' id='submitBtn'></button>
