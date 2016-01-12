@@ -1409,11 +1409,11 @@ function CreateListing()
 {
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
-    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));

@@ -34,7 +34,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["HasLaundry"] = laundry.to_b
     listingObj["HasParking"] = parking.to_b
     listingObj["HasAirConditioning"] = airConditioning.to_b
-    listingObj["LeaseType"] = "rental" # leaseType
+    listingObj["LeaseType"] = leaseType
     listingObj["BuildingType"] = buildingType
     listingObj["Notes"] = (notes.nil? ? "" : notes)
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
