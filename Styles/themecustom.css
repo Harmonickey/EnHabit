@@ -632,7 +632,7 @@
 #extras_view select
 {
     background-color: black;
-    border-radius: 0px;
+    border-radius: 10px;
     border: 1px solid #ffffff;
 }
 
