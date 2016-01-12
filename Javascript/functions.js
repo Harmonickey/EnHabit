@@ -1803,15 +1803,8 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
-    if ($(".navbar-login-btn").css("display") == "block")
-    {
-        LoadModal(null, 'modal-content-login', 'login', 'Log In');
-    }
-    else
-    {
-        PopulateAndOpenModal(null, 'modal-content-email');
-        $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
-    }
+    PopulateAndOpenModal(null, 'modal-content-email');
+    $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 }
 
 function GetPayKey()
@@ -1899,6 +1892,11 @@ function SendEmail(listingId)
     if (data.Message == null || data.Message == "")
     {
         SetError("SendEmail", "Please Include Message");
+        return;
+    }
+    if (data.EmailAddress == null || data.EmailAddress == "" || !IsValidEmail(data.EmailAddress))
+    {
+        SetError("SendEmail", "Please Include a Valid Email Address");
         return;
     }
     

@@ -276,13 +276,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!--
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
                             <label>Lease Type</label><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
-                    -->
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
                             <label>Building Type</label><input type='checkbox' data-size='mini' />

@@ -773,13 +773,13 @@
     margin-top: 5px;
 }
 
-
 .styled-select select {
    background: transparent !important;
    font-size: 16px;
    line-height: 1;
    -webkit-appearance: none;
    width: 100% !important;
+   border: none !important;
 }
 
 .styled-select select option
@@ -792,6 +792,7 @@
    width: 81%;
    background: url(../Libraries/Styles/images/new_arrow.png) no-repeat right black;
    margin: 0 auto;
+   border-radius: 10px;
 }
 
 #Filters #action-menu
@@ -815,6 +816,7 @@
     border: none;
     background-color: green;
     width: 100%;
+    border-radius: 10px;
 }
 
 #search-function a:hover
