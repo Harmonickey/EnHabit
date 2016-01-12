@@ -1209,13 +1209,13 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     
     var actionsContent =
     "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-        "<div class='row'>" +
-            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
-        "</div>" +
+        //"<div class='row'>" +
+            //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
+        //"</div>" +
         //"<div class='row'>" +
         //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
         //"</div>" +
-        //"<div class='row'>" +
+        "<div class='row'>" +
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
@@ -1724,6 +1724,8 @@ function SendEmail(listingId)
     var data =
     {
         Message: $("#common-modal .email-message").val(),
+        EmailAddress: $("#common-modal .email-address").val(),
+        PhoneNumber: $("#common-modal .email-phone-number").val(),
         ListingId: listingId
     };
 
