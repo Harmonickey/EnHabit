@@ -1,9 +1,13 @@
 <?php
  
-    $uid = $_GET["uid"];
+    $uid = "";
     $landlordEmail = $_GET["landlordEmail"];
     $rent = $_GET["rent"];
-    
+        
+    if (isset($_GET["uid"]))
+    {
+        $uid = $_GET["uid"];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +20,6 @@
     <script type="text/javascript">
     
         <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . rent . "')"; ?>
-    
-        window.top.location = "/tenant/payments/#successpayment"
+
     </script>
 </html>

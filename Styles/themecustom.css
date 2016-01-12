@@ -263,6 +263,14 @@
     }
 }
 
+.required:after 
+{ 
+    content: " *";
+    color: red;
+    display: inline-block;
+    position: relative;
+}
+
 .Username, 
 .Password,
 .Confirm,
@@ -273,11 +281,20 @@
 .Address, 
 .Bedrooms,
 .Bathrooms, 
-.Rent
+.Unit,
+.Memo,
+.LandlordEmail,
+.input-group.AmountWrapper
 {
 	text-align: center;
-	width: 50%;
+	width: 50% !important;
 	margin: 0 auto;
+}
+
+.Rent
+{
+    text-align: center;
+    padding-right: 45px;
 }
 
 .Animals,
@@ -316,7 +333,7 @@
 
 .pac-container 
 {
-    z-index: 1041 !important;
+    z-index: 9999 !important;
 }
 
 .listing .popup

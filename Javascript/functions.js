@@ -620,6 +620,86 @@ function InitMainSidebar()
     InitDatePicker();
 }
 
+function GetNextMonth(today)
+{
+    today.setMonth(today.getMonth() + 1);
+    
+    var monthNum = today.getMonth() + 1;
+    
+    switch(monthNum)
+    {
+        case 1:
+            return "January";
+        case 2:
+            return "February";
+        case 3:
+            return "March";
+        case 4:
+            return "April";
+        case 5:
+            return "May";
+        case 6:
+            return "June";
+        case 7: 
+            return "July";
+        case 8:
+            return "August";
+        case 9:
+            return "September";
+        case 10:
+            return "October";
+        case 11:
+            return "November";
+        case 12:
+            return "December";
+    }
+}
+
+function GetAllLandlords()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_all_users",
+            endpoint: "Accounts"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Users"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        if (data[i].IsLandlord)
+                        {
+                            $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });
+}
+
+function InitPaymentModal()
+{
+    GetAllLandlords();
+}
+
 function InitSlider()
 {
     $.ajax(
@@ -1012,7 +1092,7 @@ function InsertMarkers(res)
     }
     
     //map.fitBounds(markers.getBounds());
-    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 0] });
+    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 75] });
     //map.setZoom(map.getZoom() - 1); 
     clearInterval(intervalVal);
 }
@@ -1468,6 +1548,8 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1479,10 +1561,12 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+        $("#payment-btn").hide();
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1490,6 +1574,7 @@ function ShowLoginFeatures(hideMainModal, userType)
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
         }
     }
 
@@ -1597,6 +1682,16 @@ function LoadModal(event, which, enterDefault, btnText)
     //      because it's different for each modal
     
     ModalBackdropHeight($('#common-modal.modal')); 
+    
+    if (which == "modal-content-payment")
+    {
+        $(".Address").geocomplete();
+    
+        var today = new Date();
+        var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
+        
+        $(".Memo").attr("placeholder", nextMonth);
+    }
 } 
 
 function OpenListingsList()
@@ -1710,6 +1805,78 @@ function CreateEmailMessage(listingId)
 {
     PopulateAndOpenModal(null, 'modal-content-email');
     $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
+}
+
+function GetPayKey()
+{
+    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Rent", "Memo", "LandlordEmail"]);
+                                    
+    var error = BuildError(data);
+    
+    data.Memo = data.Memo.replace("'", "");
+    
+    if (error != "Please Include<br>")
+    {
+        SetError("MakePayment", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
+            {
+                $("#GetPaymentKey").prop("disabled", true);
+                $("#GetPaymentKey").val("Submitting...");
+            },
+            data:
+            {
+                command: "adaptive_payment",
+                data: data,
+                endpoint: "Payments"
+            },
+            success: function(res)
+            {
+                try
+                {
+                    var payResponse = JSON.parse(res);
+                    
+                    if (payResponse["error"])
+                    {
+                       throw Error("Unable to Make Payment"); 
+                    }
+                    else
+                    {
+                        // get pay key
+                        var paykey = payResponse["payKey"];
+                        
+                        // set it in the DOM
+                        $("#paykey").val(paykey);
+                        
+                        // init the PayPal popup object
+                        var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                        
+                        // programmatically submit
+                        $("#submitBtn").click();
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#GetPaymentKey").prop("disabled", false);
+                $("#GetPaymentKey").val("Make Payment");
+            }
+        });
+    }
 }
 
 function SendEmail(listingId)
@@ -1875,6 +2042,14 @@ function BuildError(fields)
             error += "Valid Phone Number<br>";
         }
     }
+    if (fields.Address === "")
+    {
+        error += "Valid Address<br>";
+    }
+    if (fields.Rent === "")
+    {
+        error += "Valid Rent Amount<br>";
+    }
     
     return error;
 }
@@ -1931,6 +2106,8 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
+    
+    InitPaymentModal();
 
     $('#listings').slimScroll({
         height: '100%',
@@ -1945,8 +2122,23 @@ $(function ()
     
     if (location.hash == "#loggedout")
     {
-        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
         location.hash = "";
+    }
+    else if (location.hash == "#sessiontimeout")
+    {
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Session Timed Out", position: 'top-center'});
+        location.hash = "";
+    }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
     }
 });
 

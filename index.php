@@ -62,7 +62,13 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="navbar-header">
                     <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
                 </div>
-
+                
+                <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
+                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                        <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
+                    </a>
+                </div>
+                
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -289,6 +295,29 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <p>Welcome to Enhabit! You can set up our service with your credit or debit card to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
             </div>
             <!-- #modal-content-register-success -->
+            <!-- Speedy Payment -->
+            <div class="content-to-populate-in-modal" id="modal-content-payment">
+                <h1>Pay Rent Now</h1>
+                <label class="required">First Name: </label><input type="text" class="form-control FirstName" />
+                <label class="required">Last Name: </label><input type="text" class="form-control LastName" />
+                <label class="required">Address: </label><input type="text" class="form-control Address" autocomplete="false" />
+                <label>Unit: </label><input type="text" class="form-control Unit" placeholder="Ex: 2E"/>
+                <label class="required">Rent Amount: </label>
+                    <div class="input-group AmountWrapper">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control Rent" placeholder="Ex: 500" />
+                    </div>
+                <label>Payment Memo: </label><input type="text" class="form-control Memo" />
+                <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
+                <p class="small">If your landlord is not available, please contact Enhabit.</p>
+                <input id="GetPaymentKey" type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
+                <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
+                    <button class='hidden' id='submitBtn'></button>
+                    <input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>
+                </form>
+                <p class="MakePayment-error alert alert-danger" style="display: none;"></p>
+            </div>
+            <!-- #modal-content-payment -->
             <!-- Email -->
             <div class="content-to-populate-in-modal" id="modal-content-email">
                 <!-- placeholder for details view -->
@@ -412,7 +441,9 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <script src="Libraries/Javascript/pikaday.js"></script>
         <script src="Libraries/Javascript/pikaday.jquery.js"></script>
         <!-- fancy scrollbars -->
-        <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>       
+        <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>  
+        <!-- PayPal -->
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>        
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>

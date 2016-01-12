@@ -118,10 +118,14 @@ function UpdateRenter(uid)
 function InsertPayment(uid, landlordEmail, rent)
 {
     var data = {
-      RenterId: uid,
-      LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
-      Rent: rent
+      "LandlordEmail": landlordEmail, // will be converted to LandlordID in backend
+      "Rent": rent
     };
+    
+    if (uid != "")
+    {
+        data["RenterId"] = uid;
+    }
     
     $.ajax({
        type: "POST",
@@ -133,7 +137,20 @@ function InsertPayment(uid, landlordEmail, rent)
            data: data 
        },
        success: function(res) {
-           // nothing should really happen here at this point really, it's all backend work
+           window.top.location = "/tenant/payments/#successpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#successpayment";
+           }
+           window.location.reload();
+       },
+       error: function(res) {
+           window.top.location = "/tenant/payments/#cancelledpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#cancelledpayment";
+           }
+           window.location.reload();
        }
     });
 }

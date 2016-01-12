@@ -4,7 +4,7 @@
     
     if (!isset($_SESSION["userId"]))
     {
-        header("Location: /#loggedout", FALSE);
+        header("Location: /#sessiontimeout", FALSE);
         return;
     }
     
@@ -153,6 +153,9 @@
                 </div> <!-- /widget-header -->
 				<div class="widget-content">
                     <div class="row" id="payment" style="margin: 0;">
+                        
+                    </div>
+                    <div class="row" id="paymentHistory" style="margin: 0;">
                         
                     </div>
 				</div> <!-- /widget-content -->
@@ -305,6 +308,8 @@
 $(function() 
 {  
     GetRenter();
+    
+    GetAllTransactions();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
