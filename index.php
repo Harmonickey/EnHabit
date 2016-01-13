@@ -60,7 +60,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+                    <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
                 </div>
                 
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
@@ -239,7 +239,6 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             </div>
                         </div>
                     </div>
-                    <!--
                     <div class="item-content type-content">
                         <label>Rental or Sublet</label>
                         <div class="styled-select">
@@ -250,7 +249,6 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             </select>
                         </div>
                     </div>
-                    -->
                     <div class="item-content type-content">
                         <label>Apartment or House</label>
                         <div class="styled-select">
@@ -332,6 +330,18 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <label>Email Address</label>
+                        <input type="text" class="form-control email-address" />
+                    </div>
+                </div>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <label>Phone Number (optional)</label>
+                        <input type="text" class="form-control email-phone-number" />
+                    </div>
+                </div>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
                         <input type="button" class="btn btn-outline-inverse btn-sm email-btn" value="Send Email" style="width: 100px; margin-top: 10px;"/>
                     </div>
                 </div>
@@ -383,7 +393,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <!-- DO NOT MOVE, EDIT OR REMOVE - this is needed in order for popup content to be populated in it -->
         <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content" style="margin-top: 100px;">
+                <div class="modal-content" style="margin-top: 100px; border-radius: 10px;">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <div class="modal-body clearfix">
                     </div>

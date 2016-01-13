@@ -676,7 +676,7 @@ function GetAllLandlords()
                     
                     for (var i = 0; i < data.length; i++)
                     {
-                        if (data[i].IsLandlord)
+                        if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
@@ -1289,13 +1289,13 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     
     var actionsContent =
     "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-        "<div class='row'>" +
-            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
-        "</div>" +
+        //"<div class='row'>" +
+            //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
+        //"</div>" +
         //"<div class='row'>" +
         //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
         //"</div>" +
-        //"<div class='row'>" +
+        "<div class='row'>" +
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
@@ -1803,15 +1803,8 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
-    if ($(".navbar-login-btn").css("display") == "block")
-    {
-        LoadModal(null, 'modal-content-login', 'login', 'Log In');
-    }
-    else
-    {
-        PopulateAndOpenModal(null, 'modal-content-email');
-        $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
-    }
+    PopulateAndOpenModal(null, 'modal-content-email');
+    $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 }
 
 function GetPayKey()
@@ -1891,12 +1884,19 @@ function SendEmail(listingId)
     var data =
     {
         Message: $("#common-modal .email-message").val(),
+        EmailAddress: $("#common-modal .email-address").val(),
+        PhoneNumber: $("#common-modal .email-phone-number").val(),
         ListingId: listingId
     };
 
     if (data.Message == null || data.Message == "")
     {
         SetError("SendEmail", "Please Include Message");
+        return;
+    }
+    if (data.EmailAddress == null || data.EmailAddress == "" || !IsValidEmail(data.EmailAddress))
+    {
+        SetError("SendEmail", "Please Include a Valid Email Address");
         return;
     }
     
