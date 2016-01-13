@@ -65,7 +65,7 @@
           <span class="sr-only">Toggle navigation</span>
           <i class="fa fa-cog"></i>
         </button>
-        <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+        <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="57"/></a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -245,7 +245,14 @@
                             <option value="studio">Studio</option>
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
-                            <option value="3">3+</option>
+                            <option value="3">3</option>
+                            <option value="3">4</option>
+                            <option value="3">5</option>
+                            <option value="3">6</option>
+                            <option value="3">7</option>
+                            <option value="3">8</option>
+                            <option value="3">9</option>
+                            <option value="3">10+</option>
                         </select>
                     </div>
                 </div>
@@ -255,7 +262,14 @@
                         <select id="bathrooms-filter" class="form-control">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
-                            <option value="3">3+</option>
+                            <option value="3">3</option>
+                            <option value="3">4</option>
+                            <option value="3">5</option>
+                            <option value="3">6</option>
+                            <option value="3">7</option>
+                            <option value="3">8</option>
+                            <option value="3">9</option>
+                            <option value="3">10+</option>
                         </select>
                     </div>
                 </div>
