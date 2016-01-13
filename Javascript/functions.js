@@ -676,7 +676,7 @@ function GetAllLandlords()
                     
                     for (var i = 0; i < data.length; i++)
                     {
-                        if (data[i].IsLandlord && data[i].UserName != "BJBEvanston" && data[i].UserName != "EvanstonRentals")
+                        if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
