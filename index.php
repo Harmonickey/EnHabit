@@ -60,7 +60,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+                    <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="57"/></a>
                 </div>
                 
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
