@@ -2141,6 +2141,8 @@ $(function ()
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
     }
+    
+    RemoveLoginFeatures();
 });
 
 $(window).on('resize', function() {
