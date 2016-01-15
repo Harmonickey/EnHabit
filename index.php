@@ -310,6 +310,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <label>Payment Memo: </label><input type="text" class="form-control Memo" />
                 <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
                 <p class="small">If your landlord is not available, please contact Enhabit.</p>
+                <p class="small">Friendly Reminder: Use your Bank Account to avoid PayPal processing fees!</p>
                 <input id="GetPaymentKey" type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
                 <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
                     <button class='hidden' id='submitBtn'></button>
