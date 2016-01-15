@@ -1,6 +1,5 @@
 #!/usr/local/bin/ruby
 
-
 absPath = Dir.pwd
 base = absPath.split("/").index("public_html")
 @deploymentBase = absPath.split("/")[0..(base + 1)].join("/") #this will reference whatever deployment we're in
@@ -35,7 +34,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["HasLaundry"] = laundry.to_b
     listingObj["HasParking"] = parking.to_b
     listingObj["HasAirConditioning"] = airConditioning.to_b
-    #listingObj["LeaseType"] = leaseType
+    listingObj["LeaseType"] = leaseType
     listingObj["BuildingType"] = buildingType
     listingObj["Notes"] = (notes.nil? ? "" : notes)
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
