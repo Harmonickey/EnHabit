@@ -1561,20 +1561,21 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
-        $("#payment-btn").hide();
+        $("#payment-btn").hide(); // admins don't pay rent!!
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
-        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
+        $("#payment-btn").hide(); // landlords don't pay rent!!
     }
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
+        $("#payment-btn").show(); // in case we're going from landlord to user
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
-            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
     }
 
