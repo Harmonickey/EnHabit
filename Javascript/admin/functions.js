@@ -1142,13 +1142,13 @@ function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
     
     data.id = oid;
-    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -2237,6 +2237,17 @@ function CreateAccordionView(oid, data)
         universities += "<option value='" + university + "'" + (data.University == university ? "selected" : "") + ">" + university + "</option>";
     });
     
+    var bedrooms = "";
+    for (var i = 0; i <= 10; i++)
+    {
+        bedrooms += "<option value='" + (i == 0 ? "studio" : i) + "'" + (data.Bedrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") + "</option>";
+    }
+    var bathrooms = "";
+    for (var i = 0; i <= 10; i++)
+    {
+        bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + + (i == 10 ? "+" : "") +"</option>";
+    }
+    
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
     
     return "<div class='panel panel-default'>" +
@@ -2280,10 +2291,12 @@ function CreateAccordionView(oid, data)
                                 "<select class='form-control'>" + universities + "</select>" +
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
+                                "<label>Bedrooms</label>" + 
+                                "<select class='form-control'>" + bedrooms + "</select>" +
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
+                                "<label>Bathrooms</label>" + 
+                                "<select class='form-control'>" + bathrooms + "</select>" +
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" +
@@ -2301,9 +2314,9 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" + 
-                            //"<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                            //    "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" //? "checked" : "") + " data-size='mini' />" +
-                            //"</div>" +
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Building Type</label><input type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
