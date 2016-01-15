@@ -842,6 +842,8 @@ function UpdateAccount()
     
     var data = BuildData(inputs, ["Username", "Email", "FirstName", "LastName", "PhoneNumber", "Password", "Confirm"]);
     
+    data.IsLandlord = true;
+    
     //first validate that the fields are filled out
     var error = BuildError(data);
     
