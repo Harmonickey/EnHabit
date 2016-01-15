@@ -56,7 +56,7 @@ end
 
 @markupTotal = (@markup / 100) * @rent.to_f
 
-@memo = @markup.to_s + "% convenience charge through Enhabit.\\r\\n" + @data["Memo"] + " -- \\r\\nRent payment for: " + @data["Address"] + " Unit: " + @data["Unit"]
+@memo = @markup.to_s + "% Enhabit Convenience Charge. 2.9% PayPal Credit Card Processing Fee.\\r\\n" + @data["Memo"] + " -- \\r\\nRent payment for: " + @data["Address"] + " Unit: " + @data["Unit"]
 
 @receiverList = []
 #enhabit gets the markup amount
