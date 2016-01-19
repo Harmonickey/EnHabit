@@ -62,13 +62,13 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="navbar-header">
                     <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
                 </div>
-                
+                <!--
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
                     <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium; display: none;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
                         <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
                     </a>
                 </div>
-                
+                -->
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
