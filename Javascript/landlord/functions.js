@@ -892,29 +892,9 @@ function GetPayKey(oid)
     });
 }
 
-function OpenPaymentModal(uid)
-{
-    $("#createPaymentModal").modal('show');
-    
-    $("#pay-now").attr("onclick", "MakePayment('" + uid + "')");
-}
-
-function MakePayment(uid)
-{
-    var rent = $("#" + uid + " .rent").text().replace("$", "");
-    var description = "Payment from Enhabit System";
-    var landlordEmail = $("#" + uid + " .landlordEmail").text();
-    
-    // call from my custom payment library
-    if (IsValidSubmission())
-    {
-        ProcessPayment(uid, rent, description, landlordEmail);
-    }
-}
-
 function UpdateToFeatured(oid)
 {
-    
+    GetPayKey(oid);
 }
 
 function UpdateAccount()
@@ -1455,7 +1435,7 @@ function CreateAccordionView(oid, data)
                             "<label>Start Date: " + FormattedDate(data.Start) + "</label>" +
                         "</a>" +
                     "</h4>" +
-                    "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured('" + oid + "')>Update to Featured</button>" +
+                    "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>" +
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +

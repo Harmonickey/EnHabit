@@ -11,6 +11,8 @@ require 'json'
 require 'moped'
 require 'bson'
 
+Moped::BSON = BSON
+
 def GetLandlordEmail(oid)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -22,12 +24,12 @@ def GetLandlordEmail(oid)
         
             listingQueryObj = Hash.new
             listingQueryObj["_id"] = Moped::BSON::ObjectId.from_string(oid.to_s)
-        
+            
             listing = session[:listings].find(listingQueryObj).select(LandlordId: 1).one
-        
+            
             landlordQueryObj = Hash.new
-            landlordQueryObj["UserId"] = listing["LandlordId"]
-        
+            landlordQueryObj["LandlordId"] = listing["LandlordId"]
+            
             landlord = session[:accounts].find(landlordQueryObj).select(Email: 1).one
         end       
         
@@ -39,6 +41,8 @@ def GetLandlordEmail(oid)
 	mongoSession.disconnect
     return landlord["Email"]
 end
+
+@data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
 
 @enhabit = "enhabitlife@gmail.com"
 @oid = @data["oid"] if not @data["oid"].nil?
