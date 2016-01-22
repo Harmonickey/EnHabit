@@ -15,7 +15,7 @@
     </head>
     <script type="text/javascript">
     
-        <?php echo "InsertFeaturedPayment('" . $oid . "', '" . $landlordEmail . "', '" . $amount . "')"; ?>
+        <?php echo "UpdateToFeatured('" . $oid . "', '" . $landlordEmail . "', '" . $amount . "')"; ?>
 
     </script>
 </html>
