@@ -13,16 +13,26 @@ var pendingUpdateData = null;
 var threshold = 0.000;
 
 $(function() {
-   var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
-   
-   $(".main").css("min-height", height + "px");
-   
-   if (location.hash == "#success")
-   {
+    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
+
+    $(".main").css("min-height", height + "px");
+
+    if (location.hash == "#success")
+    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
        location.hash = "";
-   }
+    }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Featured Successfully!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
 });
 
 $(document).on("keypress", function(e)
