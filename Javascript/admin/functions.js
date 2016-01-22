@@ -1149,7 +1149,7 @@ function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "IsFeatured", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -2337,6 +2337,11 @@ function CreateAccordionView(oid, data)
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, The Address Must Be Within the University Radius!</label>" +                    
                             "</div>" +
                         "</div>" +
+                        "<div class='row' style='margin-top: 10px'>" + 
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>Featured Listing</label><input class='yesno' type='checkbox' " + (data.IsFeatured ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                        "</div>" + 
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
