@@ -19,7 +19,7 @@
     </head>
     <script type="text/javascript">
     
-        <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . rent . "')"; ?>
+        <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . $rent . "')"; ?>
 
     </script>
 </html>

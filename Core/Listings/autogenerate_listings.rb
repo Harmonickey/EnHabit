@@ -61,6 +61,7 @@ def CreateListings(amount)
         listingObj["Testing"] = true
         listingObj["Pictures"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/sports/"]
         listingObj["IsActive"] = true
+        listingObj["IsFeatured"] = [true, false].sample
         listingObj["Thumbnails"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/sports/"]
        
         begin
