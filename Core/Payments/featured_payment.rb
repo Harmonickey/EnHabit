@@ -59,7 +59,7 @@ end
 
 @receiverList = []
 #enhabit gets the markup amount
-@receiverList.push '{\"amount\":\"20\", \"email\":\"' + @enhabit.to_s + '\"}'
+@receiverList.push '{\"amount\":\"1\", \"email\":\"' + @enhabit.to_s + '\"}'
 #landlord gets the rent plus markup amount
 
 @successUri = '?landlordEmail=' + @landlord + '&amount=20&oid=' + @oid
