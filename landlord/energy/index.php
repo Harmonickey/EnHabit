@@ -159,7 +159,7 @@
             <h1 class="cover-heading">Direct Access To Top Energy Suppliers</h1>           
             <div class="row row-centered">
                 <div id="serviceTypesContainer" class="col-md-6 col-sm-6 col-lg-6 col-centered">
-                    <img id="loader1" src="images/ajax-loader.gif" style="display: none;">  
+                    <img id="loader1" src="../../Libraries/Styles/images/AjaxLoader.gif" style="display: none;">  
                     <ul id="serviceTypes" class="nav nav-pills nav-justified">
               
                     </ul>

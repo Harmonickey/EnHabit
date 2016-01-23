@@ -15,7 +15,7 @@ $.ajaxSetup({
     },
     error: function()
     {
-        $.notify("Bad Connection to API - Try Again!", { position: "right", className: "error" });
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Bad Connection to API - Try Again!", position: 'top-center'});
     }
 });
 
