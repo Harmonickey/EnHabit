@@ -1564,6 +1564,7 @@ function ProcessListing()
                     if (Contains(res, "Okay"))
                     {
                         window.location = "/admin/listings/#success";
+                        window.location.reload();
                     }
                     else
                     {
@@ -2063,7 +2064,7 @@ function BuildData(inputs, elements)
     
     for (var i = 0; i < elements.length; i++)
     {
-        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented")
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented" || elements[i] == "IsFeatured")
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
