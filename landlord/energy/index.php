@@ -28,14 +28,12 @@
             $_SESSION['CREATED'] = time();  // update creation time
         }
     }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Landlord | Applicants</title>
+    <title>Landlord | Energy</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
@@ -129,8 +127,8 @@
 							<span>Listings</span>
 						</a>	    				
 					</li>
-                    <li>
-						<a href="../energy">
+                    <li class="active">
+						<a href="./">
 							<i class="fa fa-bolt"></i>
 							<span>Save on Energy</span>
 						</a>	    				
@@ -141,8 +139,8 @@
 							<span>Manage Renters</span>
 						</a>
                     </li>
-                    <li class="active">
-						<a href="./">
+                    <li>
+						<a href="../applicants">
 							<i class="fa fa-files-o"></i>
 							<span>Manage Applicants</span>
 						</a>	    				
@@ -157,17 +155,71 @@
     <div class="container">
       <div class="row">
       	<div class="col-md-12">
-      		<div class="widget stacked">
-      			<div class="widget-header actions">
-					<h3>Applicants</h3>
-				</div> <!-- /widget-header -->
-				<div class="widget-content listings">
-					<!-- all the listings go here -->
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        
-                    </div>
-				</div> <!-- /widget-content -->
-			</div> <!-- /widget -->					
+            <div class="widget stacked">
+                <div class="widget-header text-center" style="height: 55px;">
+                    <img style="height: 50px; display: inline-block; margin-top: -15px;" src="../../assets/images/theme_images/PKLogo.png" />
+                    <h1 style="margin-top: 5px; display: inline-block;">Direct Access To Top Energy Suppliers</h1> 
+                </div>
+                <div class="widget-content text-center">
+                    <div class="inner cover">
+                                  
+                        <div class="row row-centered">
+                            <div id="serviceTypesContainer" class="col-md-6 col-sm-6 col-lg-6 col-centered">
+                                <img id="loader1" src="../../Libraries/Styles/images/AjaxLoader.gif" style="display: none;">  
+                                <ul id="serviceTypes" class="nav nav-pills nav-justified">
+                  
+                                </ul>
+                            </div>
+                        </div>      
+                        <p class="lead">Start By Entering Your Zip Code!</p>            
+                        <div class="row row-centered">              
+                            <div id="zipContainer" class="col-md-4 col-centered" style="float: none; margin: 0 auto;">        
+                                <input id="zipCode" class="form-control input-lg text-center" type="text" placeholder="#####" />
+                            </div>
+                        </div>
+                        <div class="row row-centered">
+                            <div id="utilityAlert" class="alert alert-danger" style="display: none;"></div>
+                            <div id="utilitiesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 0 auto;">
+                                <label for="utilitiesDropdown">Select Your Utility</label>
+                                 <button id="utilitiesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul id="utilities" role="menu" aria-labelledby="utilitiesDropdown" class="dropdown-menu text-capitalize">                     
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row row-centered">
+                            <div id="zoneAlert" class="alert alert-danger" style="display: none;"></div>
+                            <div id="zonesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 0 auto;">
+                                <label for="zonesDropdown">Select Your Zone</label>
+                                <button id="zonesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul id="zones" role="menu" aria-labelledby="zonesDropdown" class="dropdown-menu text-capitalize">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row row-centered">
+                            <div id="submitContainer" class="col-md-4 col-centered" style="display: none; float: none; margin: 0 auto;">
+                                <button id="submit" type="button" class="btn btn-primary" onclick="SubmitQuery();"><i class="fa fa-usd"></i> Save Money Now!</button>
+                            </div>
+                        </div>
+                        <form id="data-submit" class="hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
+
+                            <input type="hidden" name="directAgentID" id="directAgentId" value="energetic">
+                            <input type="hidden" name="stateID" id="stateID" value="">
+                            <input type="hidden" name="serviceTypeID" id="serviceTypeID" value="">
+                            <input type="hidden" name="zipCode" id="zipCodeID" value="">
+                            <input type="hidden" name="utilityID" id="utilityID" value="">
+                            <input type="hidden" name="zone" id="zoneID" value="">
+                            <input type="submit" name="rfq" id="getRates">
+
+                        </form>
+
+                    </form>
+                  </div>
+              </div>		
+            </div>
 	    </div> <!-- /col-md-12 -->     	
       </div> <!-- /row -->
     </div> <!-- /container -->
@@ -201,14 +253,9 @@
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
-<script src="../../Javascript/landlord/functions.js"></script>
+<script src="../../Libraries/Javascript/powerkiosk.js"></script>
 
 <script>
-
-$(function() 
-{
-    GetAllApplicants();
-});
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
