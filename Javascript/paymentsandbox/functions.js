@@ -180,17 +180,12 @@ function UpdateToFeatured(uid, landlordEmail, amount)
     });
     
 function InsertFeaturedPayment(uid, landlordEmail, amount)    
-    
-    
+{   
     var data = {
-      "LandlordEmail": landlordEmail, // will be converted to LandlordID in backend
-      "Rent": amount
+      LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
+      Rent: amount,
+      RenterId: uid
     };
-    
-    if (uid != "")
-    {
-        data["RenterId"] = uid;
-    }
     
     $.ajax({
        type: "POST",
