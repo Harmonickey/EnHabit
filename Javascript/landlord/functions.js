@@ -700,6 +700,7 @@ function ProcessListing()
                     if (Contains(res, "Okay"))
                     {
                         window.location = "/landlord/listings/#success";
+                        window.location.reload();
                     }
                     else
                     {
