@@ -331,7 +331,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
-                        <label>Email Address</label>
+                        <label>Your Email Address</label>
                         <input type="text" class="form-control email-address" />
                     </div>
                 </div>
