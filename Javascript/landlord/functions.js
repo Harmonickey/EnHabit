@@ -1445,7 +1445,7 @@ function CreateAccordionView(oid, data)
                             "<label>Start Date: " + FormattedDate(data.Start) + "</label>" +
                         "</a>" +
                     "</h4>" +
-                    "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>" +
+                    (data.IsFeatured ? "<label style='width: 20%; margin-right; 0;'>Featured Listing!</label>" : "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>" +)
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +
