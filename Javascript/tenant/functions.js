@@ -773,7 +773,7 @@ function ProcessListing()
                     if (Contains(res, "Okay"))
                     {
                         window.location = "/tenant/listings/#success"
-                        location.reload();
+                        window.location.reload();
                     }
                     else
                     {

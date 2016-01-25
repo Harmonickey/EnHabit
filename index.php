@@ -451,6 +451,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <?php 
             if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']) || isset($_SESSION['admin']))
             {
+                
                 $res = "";
                 if (isset($_SESSION['tenant']))
                 {

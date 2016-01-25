@@ -1,13 +1,9 @@
 <?php
  
-    $uid = "";
     $landlordEmail = $_GET["landlordEmail"];
-    $rent = $_GET["rent"];
-        
-    if (isset($_GET["uid"]))
-    {
-        $uid = $_GET["uid"];
-    }
+    $amount = $_GET["amount"];
+    $oid = $_GET["oid"];
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +15,7 @@
     </head>
     <script type="text/javascript">
     
-        <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . $rent . "')"; ?>
+        <?php echo "UpdateToFeatured('" . $oid . "', '" . $landlordEmail . "', '" . $amount . "')"; ?>
 
     </script>
 </html>

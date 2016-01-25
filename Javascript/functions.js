@@ -1030,10 +1030,19 @@ function InsertMarkers(res)
             }
             else if (entry.length > 1) // multi listings
             {   
+                var isMarkerFeatured = false;
+                for (var i = 0; i < entry.length; i++)
+                {
+                    if (entry[i].IsFeatured)
+                    {
+                        isMarkerFeatured = true;
+                    }
+                }
+                
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
-                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
-                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
+                    'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (isMarkerFeatured ? 'large' : 'medium'),
                     'marker-symbol': 'building'
                 }));
                 
@@ -1065,7 +1074,7 @@ function InsertMarkers(res)
                     var listingHtml = "<div class='item-content listing'>" +
                                 "<img src='" + base + listingPic + "' height='100' width='100' />" +
                                 "<div class='information text-left'>" +
-                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p><br>" +
+                                    "<p class='listing-address'>" + listing.Address + " Unit " + (listing.Unit ? listing.Unit : "") + (listing.IsFeatured ? " <strong style='color: #4078c0'>(Featured Listing)</strong>" : "") + "</p><br>" +
                                     "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
@@ -1548,8 +1557,6 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
-    $("#payment-btn").show(); // just in case an admin logged out
-    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1561,21 +1568,17 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
-        $("#payment-btn").hide(); // admins don't pay rent!!
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
-        $("#payment-btn").hide(); // landlords don't pay rent!!
     }
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
-        $("#payment-btn").show(); // in case we're going from landlord to user
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
-            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
     }
 
@@ -2125,11 +2128,13 @@ $(function ()
     {
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
         location.hash = "";
+        RemoveLoginFeatures();
     }
     else if (location.hash == "#sessiontimeout")
     {
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Session Timed Out", position: 'top-center'});
         location.hash = "";
+        RemoveLoginFeatures();
     }
     else if (location.hash == "#successpayment")
     {
@@ -2141,8 +2146,6 @@ $(function ()
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
     }
-    
-    RemoveLoginFeatures();
 });
 
 $(window).on('resize', function() {
