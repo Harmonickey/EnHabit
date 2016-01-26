@@ -155,63 +155,71 @@
     <div class="container">
       <div class="row">
       	<div class="col-md-12">
-      		<div class="inner cover">
-            <h1 class="cover-heading">Direct Access To Top Energy Suppliers</h1>           
-            <div class="row row-centered">
-                <div id="serviceTypesContainer" class="col-md-6 col-sm-6 col-lg-6 col-centered">
-                    <img id="loader1" src="../../Libraries/Styles/images/AjaxLoader.gif" style="display: none;">  
-                    <ul id="serviceTypes" class="nav nav-pills nav-justified">
-              
-                    </ul>
+            <div class="widget stacked">
+                <div class="widget-header text-center" style="height: 55px;">
+                    <img style="height: 50px; display: inline-block; margin-top: -15px;" src="../../assets/images/theme_images/PKLogo.png" />
+                    <h1 style="margin-top: 5px; display: inline-block;">Direct Access To Top Energy Suppliers</h1> 
                 </div>
-            </div>      
-            <p class="lead">Start By Entering Your Zip Code!</p>            
-            <div class="row row-centered">              
-                <div id="zipContainer" class="col-md-4 col-centered">        
-                    <input id="zipCode" class="form-control input-lg text-center" type="text" placeholder="#####" />
-                </div>
-            </div>
-            <div class="row row-centered">
-                <div id="utilityAlert" class="alert alert-danger" style="display: none;"></div>
-                <div id="utilitiesContainer" class="col-md-4 col-centered dropdown" style="display: none;">
-                    <label for="utilitiesDropdown">Select Your Utility</label>
-                    <button id="utilitiesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
-                        <span class="caret"></span>
-                    </button>
-                    <ul id="utilities" role="menu" aria-labelledby="utilitiesDropdown" class="dropdown-menu text-capitalize">                     
-                    </ul>
-                </div>
-            </div>
-            <div class="row row-centered">
-                <div id="zoneAlert" class="alert alert-danger" style="display: none;"></div>
-                <div id="zonesContainer" class="col-md-4 col-centered dropdown" style="display: none;">
-                    <label for="zonesDropdown">Select Your Zone</label>
-                    <button id="zonesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
-                        <span class="caret"></span>
-                    </button>
-                    <ul id="zones" role="menu" aria-labelledby="zonesDropdown" class="dropdown-menu text-capitalize">
-                    </ul>
-                </div>
-            </div>
-            <div class="row row-centered">
-                <div id="submitContainer" class="col-md-4 col-centered" style="display: none;">
-                    <button id="submit" type="button" class="btn btn-primary" onclick="SubmitQuery();"><i class="fa fa-usd"></i> Save Money Now!</button>
-                </div>
-            </div>
-            <form id="data-submit" class="hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
+                <div class="widget-content text-center">
+                    <div class="inner cover">
+                                  
+                        <div class="row row-centered">
+                            <div id="serviceTypesContainer" class="col-md-6 col-sm-6 col-lg-6 col-centered">
+                                <img id="loader1" src="../../Libraries/Styles/images/AjaxLoader.gif" style="display: none;">  
+                                <ul id="serviceTypes" class="nav nav-pills nav-justified">
+                  
+                                </ul>
+                            </div>
+                        </div>      
+                        <p class="lead">Start By Entering Your Zip Code!</p>            
+                        <div class="row row-centered">              
+                            <div id="zipContainer" class="col-md-4 col-centered" style="float: none; margin: 0 auto;">        
+                                <input id="zipCode" class="form-control input-lg text-center" type="text" placeholder="#####" />
+                            </div>
+                        </div>
+                        <div class="row row-centered">
+                            <div id="utilityAlert" class="alert alert-danger" style="display: none;"></div>
+                            <div id="utilitiesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 0 auto;">
+                                <label for="utilitiesDropdown">Select Your Utility</label>
+                                 <button id="utilitiesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul id="utilities" role="menu" aria-labelledby="utilitiesDropdown" class="dropdown-menu text-capitalize">                     
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row row-centered">
+                            <div id="zoneAlert" class="alert alert-danger" style="display: none;"></div>
+                            <div id="zonesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 0 auto;">
+                                <label for="zonesDropdown">Select Your Zone</label>
+                                <button id="zonesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul id="zones" role="menu" aria-labelledby="zonesDropdown" class="dropdown-menu text-capitalize">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row row-centered">
+                            <div id="submitContainer" class="col-md-4 col-centered" style="display: none; float: none; margin: 0 auto;">
+                                <button id="submit" type="button" class="btn btn-primary" onclick="SubmitQuery();"><i class="fa fa-usd"></i> Save Money Now!</button>
+                            </div>
+                        </div>
+                        <form id="data-submit" class="hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
 
-                <input type="hidden" name="directAgentID" id="directAgentId" value="energetic">
-                <input type="hidden" name="stateID" id="stateID" value="">
-                <input type="hidden" name="serviceTypeID" id="serviceTypeID" value="">
-                <input type="hidden" name="zipCode" id="zipCodeID" value="">
-                <input type="hidden" name="utilityID" id="utilityID" value="">
-                <input type="hidden" name="zone" id="zoneID" value="">
-                <input type="submit" name="rfq" id="getRates">
+                            <input type="hidden" name="directAgentID" id="directAgentId" value="energetic">
+                            <input type="hidden" name="stateID" id="stateID" value="">
+                            <input type="hidden" name="serviceTypeID" id="serviceTypeID" value="">
+                            <input type="hidden" name="zipCode" id="zipCodeID" value="">
+                            <input type="hidden" name="utilityID" id="utilityID" value="">
+                            <input type="hidden" name="zone" id="zoneID" value="">
+                            <input type="submit" name="rfq" id="getRates">
 
-            </form>
+                        </form>
 
-            </form>
-          </div>		
+                    </form>
+                  </div>
+              </div>		
+            </div>
 	    </div> <!-- /col-md-12 -->     	
       </div> <!-- /row -->
     </div> <!-- /container -->
