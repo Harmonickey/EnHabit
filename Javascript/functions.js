@@ -56,8 +56,9 @@ SubscribeSlideshowArrows();
 
 function SubscribeSlideshowArrows()
 {
-    $('#map, #common-modal, #details-view').on('click', '.slider-arrow img', function() 
+    $('body').on('click', '.slider-arrow img', function() 
     {
+        console.log("here");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -1321,7 +1322,6 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
     //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
     
-    SubscribeSlideshowArrows();
 }
 
 /*
@@ -1693,6 +1693,7 @@ function LoadModal(event, which, enterDefault, btnText)
         
         $(".Memo").attr("placeholder", nextMonth);
     }
+    
 } 
 
 function OpenListingsList()
@@ -1741,7 +1742,6 @@ function CloseDetailsView()
     
     //location.hash = "";
     
-    SubscribeSlideshowArrows();
 }
 
 function OpenExtrasView()
