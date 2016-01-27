@@ -69,6 +69,11 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </a>
                 </div>
                 -->
+                <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
+                    <a id="create-listing-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');">
+                        Post Listing Now!
+                    </a>
+                </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -388,9 +393,156 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <!-- #modal-content-owl-carousel -->
             <!-- end: Left Sidebar -->    
         </div>
-        <!-- #outer-container -->
         <!-- end: Outer Container -->
         
+        <!-- placeholder for details view -->
+        <div id="details-view" style="display: none;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
+            <!-- top section -->
+            <div id="details-view-slideshow-section" class="row">
+                
+            </div>
+            <div id="details-items" class="row">
+                <!-- left section -->
+                <div id="details-view-listing-details" class="col-lg-8 col-md-8 col-sm-8">
+                
+                </div>
+                <div id="details-view-actions" class="col-lg-4 col-md-4 col-sm-4">
+                
+                </div>
+                <!-- right section -->
+                <!--
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    
+                    bottom section
+                    <div id="details-view-map-section" class="row">
+                    
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <!-- end details view -->
+        <!-- Create Listing Modal -->
+        <div class="content-to-populate-in-modal" id="modal-content-listing">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Create New Listing</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Put all the fields to create a listing here -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Rent/Month</label><input type='text' class='form-control' />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                        <label>Start Date</label><input type='text' class='form-control' />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Bedrooms</label>
+                        <select id="bedrooms-filter" class="form-control">
+                            <option value="studio">Studio</option>
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Bathrooms</label>
+                        <select id="bathrooms-filter" class="form-control">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="modal-switch animals-content">
+                            <label>Animals</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch laundry-content">
+                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch parking-content">
+                            <label>Parking</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch airConditioning-content">
+                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch type-content">
+                            <label>Lease Type</label><input type='checkbox' data-size='mini' />
+                        </div>
+                        <div class="modal-switch type-content">
+                            <label>Building Type</label><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <label>Landlord</label>
+                        <select id="landlords-filter" class="form-control">
+                        
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <label>University</label>
+                        <select id="universities-filter" class="form-control">
+                        
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Images (Will Upload Upon Submit)</label>
+                        <form action="/images/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
+                    </div>
+                </div>
+                <!-- Lat, Long, Address Hidden fields -->
+                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="PendingListingCreation()">Create Listing</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal -->
         <!-- DO NOT MOVE, EDIT OR REMOVE - this is needed in order for popup content to be populated in it -->
         <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -439,6 +591,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
         <!-- helper for notifications -->
         <script src="Libraries/Javascript/msgGrowl.js"></script>
+        <!-- helper for file upload -->
+        <script src="Libraries/Javascript/dropzone.js"></script>
         <!-- helper for datepicker -->
         <script src="Libraries/Javascript/pikaday.js"></script>
         <script src="Libraries/Javascript/pikaday.jquery.js"></script>
@@ -495,32 +649,6 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
           ga('send', 'pageview');
 
         </script>
-        <!-- placeholder for details view -->
-        <div id="details-view" style="display: none;">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
-            <!-- top section -->
-            <div id="details-view-slideshow-section" class="row">
-                
-            </div>
-            <div id="details-items" class="row">
-                <!-- left section -->
-                <div id="details-view-listing-details" class="col-lg-8 col-md-8 col-sm-8">
-                
-                </div>
-                <div id="details-view-actions" class="col-lg-4 col-md-4 col-sm-4">
-                
-                </div>
-                <!-- right section -->
-                <!--
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    
-                    bottom section
-                    <div id="details-view-map-section" class="row">
-                    
-                    </div>
-                </div>-->
-            </div>
-        </div>
-        <!-- end details view -->
+        
     </body>
 </html>
