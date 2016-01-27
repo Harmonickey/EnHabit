@@ -935,6 +935,40 @@ function CreateQuery()
     return query;
 }
 
+function InitSpecialFields()
+{
+    var listingModal = $("#modal-content-listing input");
+    
+    $(listingModal[0]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            var hiddenFields = $("#modal-content-listing input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listingModal[0]).val());
+        });
+        
+    $("#modal-content-listing input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $($("#modal-content-listing .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#modal-content-listing .type-content input")[0]).prop("checked", true);
+    $($("#modal-content-listing .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#modal-content-listing .type-content input")[1]).prop("checked", true);
+    
+    $(listingModal[2]).autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $(listingModal[3]).pikaday(
+    {
+        minDate: new Date(), 
+        setDefaultDate: new Date()
+    });
+}
+
 function ResetListings()
 {
     $.each(markers._layers, function(id, marker) 
@@ -1570,7 +1604,7 @@ function RemoveLoginFeatures()
     $(".account-nav").hide();
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
-    $("#create-listing-button").attr("onclick", "LoginForListing()");
+    $("#create-listing-button").attr("onclick", "PendingListingCreation()");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -2330,6 +2364,8 @@ $(function ()
     SetHiddenSidebars();
     
     InitPaymentModal();
+    
+    InitSpecialFields();
 
     $('#listings').slimScroll({
         height: '100%',
