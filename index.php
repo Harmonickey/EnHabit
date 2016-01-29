@@ -35,6 +35,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <link rel="stylesheet" href="Libraries/Styles/owl.carousel.css">
         <link rel="stylesheet" href="Libraries/Styles/owl.theme.css">
         <link rel="stylesheet" href="Libraries/Styles/owl.transitions.css">
+        <link rel="stylesheet" href="Libraries/Styles/bootstrap-switch.min.css" >
+        <link rel="stylesheet" href="Libraries/Styles/dropzone.css" >
         <!-- Pickaday -->
         <link href="Libraries/Styles/pikaday.css" rel="stylesheet">
         <!-- MsgBoxes -->
@@ -70,7 +72,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 -->
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
-                    <a id="create-listing-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');">
+                    <a id="create-listing-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PostListingModal(event);">
                         Post Listing Now!
                     </a>
                 </div>
@@ -431,27 +433,25 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                         <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                         <label>Rent/Month</label><input type='text' class='form-control' />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <label>Start Date</label><input type='text' class='form-control' />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    </div> 
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <label>Bedrooms</label>
                         <select id="bedrooms-filter" class="form-control">
                             <option value="studio">Studio</option>
@@ -467,9 +467,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             <option value="10">10+</option>
                         </select>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <label>Bathrooms</label>
                         <select id="bathrooms-filter" class="form-control">
                             <option value="1" selected>1</option>
@@ -486,37 +484,49 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch animals-content">
                             <label>Animals</label><input type='checkbox' data-size='mini' />
                         </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch laundry-content">
                             <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch parking-content">
-                            <label>Parking</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch airConditioning-content">
-                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch type-content">
-                            <label>Lease Type</label><input type='checkbox' data-size='mini' />
-                        </div>
-                        <div class="modal-switch type-content">
-                            <label>Building Type</label><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch parking-content">
+                            <label>Parking</label><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch airConditioning-content">
+                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch type-content">
+                            <label style="width: 100%; text-align: left;">Lease Type</label><br><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch type-content">
+                            <label style="width: 100%; text-align: left;">Building Type</label><br><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
                         <label>Landlord</label>
                         <select id="landlords-filter" class="form-control">
                         
                         </select>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
                         <label>University</label>
                         <select id="universities-filter" class="form-control">
                         
@@ -589,6 +599,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <script src="Libraries/Javascript/detectmobilebrowser.js"></script>
         <!-- helper for numeric text boxes -->
         <script src="Libraries/Javascript/jquery.autoNumeric.js"></script>
+        <!-- helper for switches -->
+        <script src="Libraries/Javascript/bootstrap-switch.min.js"></script>
         <!-- helper for notifications -->
         <script src="Libraries/Javascript/msgGrowl.js"></script>
         <!-- helper for file upload -->
@@ -640,6 +652,9 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         ?>
         
         <script>
+            Dropzone.autoDiscover = false;
+        
+        
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
