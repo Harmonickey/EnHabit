@@ -21,6 +21,13 @@ var pendingData = null;
 var numUploaded = 0;
 var numAdded = 0;
 
+var landlordList = [];
+var universitiesList = [];
+
+var pictures = {};
+var dropzones = {};
+var addedFiles = {};
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -684,6 +691,10 @@ function GetAllLandlords()
                     {
                         if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
+                            // create listing dropdown
+                            $("#landlords-filter").append("<option value='" + data[i].Username + "'>" + data[i].Username + "</option>");
+                            
+                            // payment modal dropdown
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
                     }
@@ -699,11 +710,6 @@ function GetAllLandlords()
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
-}
-
-function InitPaymentModal()
-{
-    GetAllLandlords();
 }
 
 function InitSlider()
@@ -937,22 +943,22 @@ function CreateQuery()
 
 function InitSpecialFields()
 {
-    var listingModal = $("#modal-content-listing input");
+    var listingModal = $("#common-modal input");
     
     $(listingModal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
-            var hiddenFields = $("#modal-content-listing input[type='hidden']");
+            var hiddenFields = $("#common-modal input[type='hidden']");
             var keys = Object.keys(result.geometry.location);
             $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
             $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
             $(hiddenFields[2]).val($(listingModal[0]).val());
         });
         
-    $("#modal-content-listing input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $($("#modal-content-listing .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
-    $($("#modal-content-listing .type-content input")[0]).prop("checked", true);
-    $($("#modal-content-listing .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
-    $($("#modal-content-listing .type-content input")[1]).prop("checked", true);
+    $("#common-modal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $($("#common-modal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#common-modal .type-content input")[0]).prop("checked", true);
+    $($("#common-modal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#common-modal .type-content input")[1]).prop("checked", true);
     
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -1461,7 +1467,53 @@ function LoginUser(hideMainModal)
     }
 }
 
-/* Just a proxy method for setting the listing as waiting... */
+function GetAllUniversities()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_all_universities",
+            endpoint: "Universities"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Universities"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        $("#universities-filter").append("<option value='" + data[i].UniversityName + "'>" + data[i].UniversityName + "</option>");
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });     
+}
+
+function PostListingModal(event)
+{
+    LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
+    
+    CreateDropzone("create", "#common-modal form");
+    
+    InitSpecialFields();
+}
+
+/* Just a proxy method for handling the special listing creation mechanism... */
 function PendingListingCreation()
 {
     listingWaiting = true;
@@ -2380,10 +2432,9 @@ $(function ()
  
     SetHiddenSidebars();
     
-    InitPaymentModal();
+    GetAllUniversities();
+    GetAllLandlords();
     
-    InitSpecialFields();
-
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,
