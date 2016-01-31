@@ -527,7 +527,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </select>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">University</div>
                         <select id="universities-filter" class="form-control" style="font-size: 14px;">
@@ -548,9 +548,9 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
-                <div class="row">
+                <div class="row" style="margin-top: 15px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="PendingListingCreation()">Create Listing</button>
+                        <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PendingListingCreation()">Create Listing</button>
                     </div>
                 </div>
             </div>
