@@ -681,6 +681,7 @@ function GetAllLandlords()
         },
         success: function(res) 
         {
+            console.log(res);
             try
             {
                 if (res && !Contains(res, "No Users"))
@@ -1480,6 +1481,7 @@ function GetAllUniversities()
         },
         success: function(res) 
         {
+            console.log(res);
             try
             {
                 if (res && !Contains(res, "No Universities"))
@@ -2431,10 +2433,11 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
-    
+    console.log("here");
     GetAllUniversities();
+    console.log("here");
     GetAllLandlords();
-    
+    console.log("here");
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,
