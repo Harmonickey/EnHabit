@@ -510,12 +510,12 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
-                            <div style="font-weight: 700;">Lease Type</div><br><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Lease Type</div><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
-                            <div style="font-weight: 700;">Building Type</div><br><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Building Type</div><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
