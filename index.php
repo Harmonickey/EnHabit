@@ -483,45 +483,43 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="modal-switch animals-content">
                             <div style="font-weight: 700;">Animals</div><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="modal-switch laundry-content">
                             <div style="font-weight: 700;">In-Unit Laundry</div><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="modal-switch type-content">
+                            <div style="font-weight: 700;">Lease Type</div><br><input type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="modal-switch parking-content">
                             <div style="font-weight: 700;">Parking</div><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="modal-switch airConditioning-content">
                             <div style="font-weight: 700;">Air Conditioning</div><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
-                </div>
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
                         <div class="modal-switch type-content">
-                            <label style="width: 100%; text-align: left;">Lease Type</label><br><input type='checkbox' data-size='mini' />
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="modal-switch type-content">
-                            <label style="width: 100%; text-align: left;">Building Type</label><br><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Building Type</div><br><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">Landlord</div>
-                        <select id="landlords-filter" class="form-control">
+                        <select id="landlords-filter" class="form-control" style="font-size: 14px;">
                         
                         </select>
                     </div>
@@ -529,7 +527,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">University</div>
-                        <select id="universities-filter" class="form-control">
+                        <select id="universities-filter" class="form-control" style="font-size: 14px;">
                         
                         </select>
                     </div>
