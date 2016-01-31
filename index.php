@@ -436,22 +436,22 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
                     </div>
                     
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <label>Rent/Month</label><input type='text' class='form-control' />
+                        <div style="font-weight: 700;">Rent/Month</div><input type='text' class='form-control' />
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        <label>Start Date</label><input type='text' class='form-control' />
+                        <div style="font-weight: 700;">Start Date</div><input type='text' class='form-control' />
                     </div> 
                     
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        <label>Bedrooms</label>
+                        <div style="font-weight: 700;">Bedrooms</div>
                         <select id="bedrooms-filter" class="form-control">
                             <option value="studio">Studio</option>
                             <option value="1" selected>1</option>
@@ -467,7 +467,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        <label>Bathrooms</label>
+                        <div style="font-weight: 700;">Bathrooms</div>
                         <select id="bathrooms-filter" class="form-control">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
@@ -482,31 +482,31 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </select>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch animals-content">
-                            <label>Animals</label><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Animals</div><br><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch laundry-content">
-                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">In-Unit Laundry</div><br><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch parking-content">
-                            <label>Parking</label><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Parking</div><br><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch airConditioning-content">
-                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Air Conditioning</div><br><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
                             <label style="width: 100%; text-align: left;">Lease Type</label><br><input type='checkbox' data-size='mini' />
@@ -518,26 +518,28 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
-                        <label>Landlord</label>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <div style="font-weight: 700;">Landlord</div>
                         <select id="landlords-filter" class="form-control">
                         
                         </select>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
-                        <label>University</label>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <div style="font-weight: 700;">University</div>
                         <select id="universities-filter" class="form-control">
                         
                         </select>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Images (Will Upload Upon Submit)</label>
                         <form action="/images/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
