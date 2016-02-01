@@ -823,7 +823,8 @@
 
 #extra-filters-btn a:hover
 {
-    color: white;
+    color: white !important;
+    background-color: gray;
 }
 
 #action-menu 
