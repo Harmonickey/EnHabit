@@ -821,7 +821,7 @@
     background-color: darkgreen;
 }
 
-#extra-filters-btn a:hover
+#extra-filters-btn:hover
 {
     color: white !important;
     background-color: gray;
