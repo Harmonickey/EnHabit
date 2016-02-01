@@ -824,7 +824,7 @@
 #extra-filters-btn:hover
 {
     color: white !important;
-    background-color: gray;
+    background-color: #333;
 }
 
 #action-menu 
