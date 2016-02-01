@@ -1676,13 +1676,13 @@ function ShowLoginFeatures(hideMainModal, userType)
     {
         $(".admin-nav").show();
         $("#payment-btn").hide(); // admins don't pay rent!!
-        $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/;'");
+        $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
         $("#payment-btn").hide(); // landlords don't pay rent!!
-        $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/;'");
+        $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1694,7 +1694,7 @@ function ShowLoginFeatures(hideMainModal, userType)
             $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
         
-        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/;'");
+        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/';");
     }
 
     if (hideMainModal === true)
