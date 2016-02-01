@@ -196,15 +196,15 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </div>
                     </div>
                 </div>
-                <div class="double-item-content">
+                <div>
                     <!--<div class="item-content list-view-button">
                         <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
                     </div>-->
-                    <div class="item-content extra-filter-button">
-                        <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
-                    </div>
                 </div>
                 <ul id="action-menu">
+                    <li class="item-content extra-filter-button">
+                        <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
+                    </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                         <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
                     </li>
