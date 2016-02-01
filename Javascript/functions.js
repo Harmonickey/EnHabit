@@ -1249,7 +1249,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
         "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                (Username != 'undefined' ? "<h5>Listed By: " + Username + "</h5>" : (Landlord != 'undefined' ? "<h5>Listed By: " + Landlord + "</h5>" : "")) +
+                (Landlord != 'undefined' ? "<h5>Listed By: " + Landlord + "</h5>" : (Username != 'undefined' ? "<h5>Listed By: " + Username + "</h5>" : "")) +
             "</div>" + 
         "</div>" +
         "<div class='row' style='margin-top: 25px;'>" +
