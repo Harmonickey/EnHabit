@@ -1508,7 +1508,9 @@ function PendingListingCreation()
     // wait for registering
     listingWaiting = true;
     
-    var data = BuildCreateListingData(["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var input = $(".modal-dialog input, .modal-dialog select, .modal-dialog textarea");
+    
+    var data = BuildCreateListingData(input, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildCreateListingError(data);
     
