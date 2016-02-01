@@ -1522,9 +1522,7 @@ function PendingListingCreation()
     // wait for registering
     listingWaiting = true;
     
-    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
-    
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -1536,7 +1534,7 @@ function PendingListingCreation()
     
     if (error != "Please Include ")
     {
-        throw new Error(error);
+        SetError('create-listing', error);
     }
     else
     {
