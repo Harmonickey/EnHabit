@@ -1522,9 +1522,9 @@ function PendingListingCreation()
     // wait for registering
     listingWaiting = true;
     
-    var data = BuildData(["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildCreateListingData(["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
-    var error = BuildError(data);
+    var error = BuildCreateListingError(data);
     
     data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
@@ -2361,6 +2361,107 @@ function ToStringFromList(input)
     }
    
     return dataList;
+}
+
+function BuildCreateListingData(inputs, elements)
+{   
+    var data = {};
+    
+    for (var i = 0; i < elements.length; i++)
+    {
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
+         || elements[i] == "AirConditioning" || elements[i] == "IsRented" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive")
+        {
+            data[elements[i]] = $(inputs[i]).prop("checked");
+        }
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University")
+        {
+            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
+        }
+        else if (elements[i] == "Rent")
+        {
+            data[elements[i]] = $(inputs[i]).autoNumeric('get');
+        }
+        else
+        {
+            if ($(inputs[i]).attr("placeholder") !== "")
+            {
+                data[elements[i]] = $(inputs[i]).val().trim();
+            }
+        }
+    }
+    
+    return data;
+}
+
+function BuildCreateListingError(fields)
+{
+    var errorArr = [];
+    
+    var beginning = "Please Include ";
+    
+    if (fields.Username === "")
+    {
+        errorArr.push("Valid Username");
+    }
+    if (fields.Address === "" || fields.Latitude === "" || fields.Longitude === "")
+    {
+        errorArr.push("Valid Address - Must Select Google's Result");
+    }
+    if (fields.Address !== "" && fields.Address !== fields.SelectedAddress)
+	{
+		errorArr.push("Valid Address - Do Not Modify Google's Result After Selecting");
+	}
+    if (fields.Rent === "")
+    {
+        errorArr.push("Valid Monthly Rent Amount");
+    }
+    if (fields.FirstName === "")
+    {
+        errorArr.push("Valid First Name");
+    }
+    if (fields.LastName === "")
+    {
+        errorArr.push("Valid Last Name");
+    }
+    if (fields.Email === "" || (fields.Email !== undefined && !IsValidEmail(fields.Email)))
+    {
+        errorArr.push("Valid Email");
+    }
+    if (fields.PhoneNumber !== "" && fields.PhoneNumber !== undefined)
+    {
+        if (!IsValidPhoneNumber(fields.PhoneNumber))
+        {
+            errorArr.push("Valid Phone Number");
+        }
+    }
+    if (fields.Start === "")
+    {
+        errorArr.push("Valid Lease Start Date");
+    }
+    if (fields.Password !== "" || fields.Confirm !== "")
+    {
+        if (fields.Password != fields.Confirm)
+        {
+            errorArr.push("Matching Password and Confirmation");
+        }
+    }
+    if (errorArr.length > 0)
+    {
+        if (errorArr.length == 1)
+        {
+            return beginning + errorArr[0];
+        }
+        else
+        {
+            var last = " and " + errorArr[errorArr.length - 1];
+            errorArr.splice(errorArr.length - 1, 1);
+            
+            return beginning + errorArr.join(", ") + last;
+        }
+    }
+    
+    return beginning;
 }
 
 function BuildData(elements)
