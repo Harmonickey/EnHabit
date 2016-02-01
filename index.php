@@ -305,14 +305,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <!-- Speedy Payment -->
             <div class="content-to-populate-in-modal" id="modal-content-payment">
                 <h1>Pay Rent Now</h1>
-                <label class="required">First Name: </label><input type="text" class="form-control FirstName" />
-                <label class="required">Last Name: </label><input type="text" class="form-control LastName" />
-                <label class="required">Address: </label><input type="text" class="form-control Address" autocomplete="false" />
-                <label>Unit: </label><input type="text" class="form-control Unit" placeholder="Ex: 2E"/>
+                <label class="required">First Name: </label><input type="text" class="form-control Payment FirstName" />
+                <label class="required">Last Name: </label><input type="text" class="form-control Payment LastName" />
+                <label class="required">Address: </label><input type="text" class="form-control Payment Address" autocomplete="false" />
+                <label>Unit: </label><input type="text" class="form-control Payment Unit" placeholder="Ex: 2E"/>
                 <label class="required">Rent Amount: </label>
                     <div class="input-group AmountWrapper">
                         <span class="input-group-addon">$</span>
-                        <input type="text" class="form-control Rent" placeholder="Ex: 500" />
+                        <input type="text" class="form-control Payment Rent" placeholder="Ex: 500" />
                     </div>
                 <label>Payment Memo: </label><input type="text" class="form-control Memo" />
                 <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
