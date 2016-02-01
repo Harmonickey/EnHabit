@@ -624,7 +624,8 @@
 #Filters input,
 #Filters select,
 #extras_view input,
-#extras_view select
+#extras_view select,
+#extra-filters-btn
 {
     background-color: black;
     border-radius: 10px;
@@ -822,11 +823,6 @@
 #action-menu li a
 {
     font-size: 18px;
-}
-
-#Filters .btn-outline-inverse
-{
-    border-color: #5259e3;
 }
 
 #Filters .btn-primary
