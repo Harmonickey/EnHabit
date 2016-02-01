@@ -434,26 +434,26 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <!-- Put all the fields to create a listing here -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
+                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" />
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control Unit' />
                     </div>
                     
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div style="font-weight: 700;">Rent/Month</div><input type='text' class='form-control' />
+                        <div style="font-weight: 700;">Rent/Month</div><input type='text' class='form-control Rent' />
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        <div style="font-weight: 700;">Start Date</div><input type='text' class='form-control' />
+                        <div style="font-weight: 700;">Start Date</div><input type='text' class='form-control Start' />
                     </div> 
                     
                     <div class="col-lg-4 col-md-4 col-sm-4">
                         <div style="font-weight: 700;">Bedrooms</div>
-                        <select id="bedrooms-filter" class="form-control">
+                        <select id="bedrooms-filter" class="form-control Bedrooms">
                             <option value="studio">Studio</option>
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
@@ -469,7 +469,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4">
                         <div style="font-weight: 700;">Bathrooms</div>
-                        <select id="bathrooms-filter" class="form-control">
+                        <select id="bathrooms-filter" class="form-control Bathrooms">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -486,43 +486,43 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch animals-content">
-                            <div style="font-weight: 700;">Animals</div><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Animals</div><input class="Animals" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch laundry-content">
-                            <div style="font-weight: 700;">In-Unit Laundry</div><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">In-Unit Laundry</div><input class="Laundry" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch parking-content">
-                            <div style="font-weight: 700;">Parking</div><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Parking</div><input class="Parking" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch airConditioning-content">
-                            <div style="font-weight: 700;">Air Conditioning</div><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Air Conditioning</div><input "AirConditioning" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
-                            <div style="font-weight: 700;">Lease Type</div><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Lease Type</div><input class="LeaseType" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
-                            <div style="font-weight: 700;">Building Type</div><input type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Building Type</div><input class="BuildingType" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">Landlord</div>
-                        <select id="landlords-filter" class="form-control" style="font-size: 14px;">
+                        <select id="landlords-filter" class="form-control Landlord" style="font-size: 14px;">
                         
                         </select>
                     </div>
@@ -530,14 +530,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">University</div>
-                        <select id="universities-filter" class="form-control" style="font-size: 14px;">
+                        <select id="universities-filter" class="form-control University" style="font-size: 14px;">
                         
                         </select>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control Notes'></textarea>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
@@ -553,6 +553,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PendingListingCreation()">Create Listing</button>
                     </div>
                 </div>
+                <p class="create-listing-error alert alert-danger" style="display: none;"></p>
             </div>
         </div>
         <!-- Modal -->
