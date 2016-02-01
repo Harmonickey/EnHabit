@@ -1494,19 +1494,24 @@ function GetAllUniversities()
 
 function PostListingModal(event)
 {
+    // loading the listing modal
     LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
     
+    // make sure the picture dropzone is created
     CreateDropzone("create", "#common-modal form");
     
+    // initialize all the fields in the form
     InitSpecialFields();
 }
 
 /* Just a proxy method for handling the special listing creation mechanism... */
 function PendingListingCreation()
 {
+    // wait for registering
     listingWaiting = true;
     
-    LoadModal(event, 'modal-content-login', 'login', 'Log In');
+    // load the register modal
+    LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
 }
 
 function LoginFacebookUser(userID, accessToken)
@@ -1658,7 +1663,7 @@ function RemoveLoginFeatures()
     $(".account-nav").hide();
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
-    $("#create-listing-button").attr("onclick", "PendingListingCreation()");
+    $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1666,17 +1671,18 @@ function ShowLoginFeatures(hideMainModal, userType)
     $(".navbar-login-btn").hide();
     $(".account-nav .dropdown-menu li").not("#login-function").hide(); // reset menu
     $(".account-nav").show();
-    $("#create-listing-button").attr("onclick", "CreateListing()");
     
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
         $("#payment-btn").hide(); // admins don't pay rent!!
+        $("#create-listing-btn").attr("onclick", "/admin/listings");
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
         $("#payment-btn").hide(); // landlords don't pay rent!!
+        $("#create-listing-btn").attr("onclick", "/landlord/listings");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1687,6 +1693,8 @@ function ShowLoginFeatures(hideMainModal, userType)
             $(".rental-nav").show();
             $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
+        
+        $("#create-listing-btn").attr("onclick", "/tenant/listings");
     }
 
     if (hideMainModal === true)
@@ -1752,6 +1760,12 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
+                        
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                            listingWaiting = false;
+                        }
                     }
                     else
                     {
