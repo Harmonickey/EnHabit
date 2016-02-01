@@ -503,7 +503,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch airConditioning-content">
-                            <div style="font-weight: 700;">Air Conditioning</div><input "AirConditioning" type='checkbox' data-size='mini' />
+                            <div style="font-weight: 700;">Air Conditioning</div><input class="AirConditioning" type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
