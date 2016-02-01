@@ -1945,7 +1945,8 @@ function OpenExtrasView()
         done: function ()
         {
 			$("#extras").fadeIn(200);
-            $(".extra-filter-button input").attr("onclick", "CloseExtrasView()");
+            $("#extra-filters-btn").attr("onclick", "CloseExtrasView()");
+            $("#extra-filters-btn").text("Close Extra Filters");
         }
     });
 }
@@ -1961,7 +1962,8 @@ function CloseExtrasView()
             paddingRight: "0px"
         }, 300, function() 
         {
-            $(".extra-filter-button input").attr("onclick", "OpenExtrasView()");
+            $("#extra-filters-btn").attr("onclick", "OpenExtrasView()");
+            $("#extra-filters-btn").text("Open Extra Filters");
         });
     });
 }
