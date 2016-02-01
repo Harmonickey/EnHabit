@@ -16,6 +16,7 @@ var multiPopup = {};
 var listingSlideshows = {};
 
 var listingWaiting = false;
+var listingData = {};
 
 var pendingData = null;
 var numUploaded = 0;
@@ -681,7 +682,6 @@ function GetAllLandlords()
         },
         success: function(res) 
         {
-            console.log(res);
             try
             {
                 if (res && !Contains(res, "No Users"))
@@ -1443,7 +1443,6 @@ function LoginUser(hideMainModal)
                         if (listingWaiting)
                         {
                             CreateListing();
-                            listingWaiting = false;
                         }
                     }
                     else
@@ -1481,7 +1480,6 @@ function GetAllUniversities()
         },
         success: function(res) 
         {
-            console.log(res);
             try
             {
                 if (res && !Contains(res, "No Universities"))
@@ -1524,8 +1522,29 @@ function PendingListingCreation()
     // wait for registering
     listingWaiting = true;
     
-    // load the register modal
-    LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
+    
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildError(data);
+    
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    
+    if (error != "Please Include ")
+    {
+        throw new Error(error);
+    }
+    else
+    {
+        listingData = data;
+        
+        // load the register modal
+        LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
+    }
 }
 
 function LoginFacebookUser(userID, accessToken)
@@ -1809,7 +1828,6 @@ function CreateAccount()
                         if (listingWaiting)
                         {
                             CreateListing();
-                            listingWaiting = false;
                         }
                     }
                     else
@@ -1950,42 +1968,27 @@ function CloseExtrasView()
 
 function CreateListing()
 {   
-    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
-    
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
-    
-    var error = BuildError(data);
-    
-    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
-    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
-    data.Address = data.Address.split(",")[0];
-    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
-    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    console.log("here");
+
+    var data = listingData;
     
     try
     {
-        if (error != "Please Include ")
+        // need to put data into a saved state because uploading fileSize
+        // is asynchronous
+        pendingData = data;
+        
+        $("#create-listing-button").text("Creating...");
+        $("#create-listing-button").prop("disabled", true);
+        
+        // async call, caught in dropzone.success event handler below
+        if (numAdded == 0)
         {
-            throw new Error(error);
+            ProcessListing();
         }
         else
         {
-            // need to put data into a saved state because uploading fileSize
-            // is asynchronous
-            pendingData = data;
-            
-            $("#create-listing-button").text("Creating...");
-            $("#create-listing-button").prop("disabled", true);
-            
-            // async call, caught in dropzone.success event handler below
-            if (numAdded == 0)
-            {
-                ProcessListing();
-            }
-            else
-            {
-                dropzones["create"].processQueue();
-            }
+            dropzones["create"].processQueue();
         }
     }
     catch(e)
@@ -2039,6 +2042,10 @@ function ProcessListing()
                         numUploaded = 0;
                         
                         pendingData = null;
+                        
+                        listingWaiting = false;
+                        
+                        listingData = {};
                     }
                 }
             }
@@ -2475,11 +2482,10 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
-    console.log("here");
+
     GetAllUniversities();
-    console.log("here");
     GetAllLandlords();
-    console.log("here");
+   
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,
