@@ -546,7 +546,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
-                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
+                <input type='hidden' class="Latitude" /><input type='hidden' class="Longitude" /><input type='hidden' class="SelectedAddress" />
                 <div class="row" style="margin-top: 15px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PendingListingCreation()">Create Listing</button>
