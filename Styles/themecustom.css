@@ -821,6 +821,11 @@
     background-color: darkgreen;
 }
 
+#extra-filters-btn a:hover
+{
+    color: white;
+}
+
 #action-menu 
 {
     list-style-type: none;
