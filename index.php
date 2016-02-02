@@ -291,7 +291,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <label>Confirm Password: </label><input type="password" class="form-control Confirm" />
                 <label>First Name: </label><input type="text" class="form-control FirstName" />
                 <label>Last Name: </label><input type="text" class="form-control LastName" />
-                <label>Email: </label><input type="text" class="form-control Email" />
+                <label>Email: </label><input type="text" class="form-control Account Email" />
                 <label>Phone Number: </label><input type="text" class="form-control PhoneNumber" placeholder="xxx-xxx-xxxx" />
                 <input type="button" class="btn btn-outline-inverse btn-lg CreateAccount-btn" onclick="CreateAccount()" value="Create Account" style="margin-top: 15px;" />
                 <p class="CreateAccount-error alert alert-danger" style="display: none;"></p>
