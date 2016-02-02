@@ -272,6 +272,7 @@
 .FirstName, 
 .LastName,
 .Payment.Email, 
+.Account.Email,
 .PhoneNumber,
 .Payment.Address, 
 .Payment.Bedrooms,
