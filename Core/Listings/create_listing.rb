@@ -43,7 +43,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsRented"] = false
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
-    listingObj["IsFeatured"] = false
+    listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -226,7 +226,7 @@ begin
     else
         isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
     
-        result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold)
+        result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold, data["IsFeatured"])
 
         puts result.to_json
     end
