@@ -179,7 +179,7 @@
                         </div>
                         <div class="row row-centered">
                             <div id="utilityAlert" class="alert alert-danger" style="display: none;"></div>
-                            <div id="utilitiesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 0 auto;">
+                            <div id="utilitiesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 10px auto;">
                                 <label for="utilitiesDropdown">Select Your Utility</label>
                                  <button id="utilitiesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
                                     <span class="caret"></span>
@@ -190,7 +190,7 @@
                         </div>
                         <div class="row row-centered">
                             <div id="zoneAlert" class="alert alert-danger" style="display: none;"></div>
-                            <div id="zonesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 0 auto;">
+                            <div id="zonesContainer" class="col-md-4 col-centered dropdown" style="display: none; float: none; margin: 10px auto;">
                                 <label for="zonesDropdown">Select Your Zone</label>
                                 <button id="zonesDropdown" type="button" class="btn btn-default dropdown-toggle text-capitalize" data-toggle="dropdown">
                                     <span class="caret"></span>

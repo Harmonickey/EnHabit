@@ -2,7 +2,7 @@
 // it would do very very well with knockout.js observables
 // and a PowerKioskServiceModel viewmodel controlling them
 
-var apiUrl = "http://powerkioskapp.com/api";
+var apiUrl = "https://powerkioskapp.com/api";
 var utility;
 var zone;
 var state;
@@ -182,12 +182,9 @@ function GetServiceTypes()
         {
             //create the tabs          
             var serviceIds = $("#serviceTypes");
-            var electicity = "<i class='fa fa-bolt'></i> ";
-            var gas = "<i class='fa fa-industry'></i> ";
             for (var i = 0; i < result.data.length; i++) 
             {
-                var icon = (i === 0 ? electicity : gas);
-                serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + icon + result.data[i].name + "</a></li>");
+                serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + result.data[i].name + "</a></li>");
             }
             
             //setup the service tabs and their click events
