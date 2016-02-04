@@ -2,7 +2,7 @@
 // it would do very very well with knockout.js observables
 // and a PowerKioskServiceModel viewmodel controlling them
 
-var apiUrl = "http://powerkioskapp.com/api";
+var apiUrl = "https://powerkioskapp.com/api";
 var utility;
 var zone;
 var state;
