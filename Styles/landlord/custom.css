@@ -167,3 +167,13 @@ textarea
 .logo {
     position: absolute;
 }
+
+#serviceTypesContainer {
+    float: none !important;
+    margin: 0 auto;
+}
+
+#serviceTypes li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
