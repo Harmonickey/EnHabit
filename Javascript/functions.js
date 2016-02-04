@@ -15,6 +15,20 @@ var entries = {};
 var multiPopup = {};
 var listingSlideshows = {};
 
+var listingWaiting = false;
+var listingData = {};
+
+var pendingData = null;
+var numUploaded = 0;
+var numAdded = 0;
+
+var landlordList = [];
+var universitiesList = [];
+
+var pictures = {};
+var dropzones = {};
+var addedFiles = {};
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -678,6 +692,10 @@ function GetAllLandlords()
                     {
                         if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
+                            // create listing dropdown
+                            $("#landlords-filter").append("<option value='" + data[i].Username + "'>" + data[i].Username + "</option>");
+                            
+                            // payment modal dropdown
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
                     }
@@ -693,11 +711,6 @@ function GetAllLandlords()
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
-}
-
-function InitPaymentModal()
-{
-    GetAllLandlords();
 }
 
 function InitSlider()
@@ -927,6 +940,40 @@ function CreateQuery()
     query.University = "Northwestern"; // will be set by text box later
     
     return query;
+}
+
+function InitSpecialFields()
+{
+    var listingModal = $("#common-modal input");
+    
+    $(listingModal[0]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            var hiddenFields = $("#common-modal input[type='hidden']");
+            var keys = Object.keys(result.geometry.location);
+            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
+            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+            $(hiddenFields[2]).val($(listingModal[0]).val());
+        });
+        
+    $("#common-modal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $($("#common-modal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#common-modal .type-content input")[0]).prop("checked", true);
+    $($("#common-modal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#common-modal .type-content input")[1]).prop("checked", true);
+    
+    $(listingModal[2]).autoNumeric('init', 
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+    
+    $(listingModal[3]).pikaday(
+    {
+        minDate: new Date(), 
+        setDefaultDate: new Date()
+    });
 }
 
 function ResetListings()
@@ -1392,6 +1439,11 @@ function LoginUser(hideMainModal)
                     if (Contains(res, "Okay"))
                     {
                         ShowLoginFeatures(hideMainModal, res);
+                        
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                        }
                     }
                     else
                     {
@@ -1412,6 +1464,86 @@ function LoginUser(hideMainModal)
                 ResetModal("login", "Log In", false);
             }
         });
+    }
+}
+
+function GetAllUniversities()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data: 
+        {
+            command: "get_all_universities",
+            endpoint: "Universities"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (res && !Contains(res, "No Universities"))
+                {             
+                    var data = JSON.parse(res);
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        $("#universities-filter").append("<option value='" + data[i].UniversityName + "'>" + data[i].UniversityName + "</option>");
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        }
+    });     
+}
+
+function PostListingModal(event)
+{
+    // loading the listing modal
+    LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
+    
+    // make sure the picture dropzone is created
+    CreateDropzone("create", "#common-modal form");
+    
+    // initialize all the fields in the form
+    InitSpecialFields();
+}
+
+/* Just a proxy method for handling the special listing creation mechanism... */
+function PendingListingCreation()
+{
+    // wait for registering
+    listingWaiting = true;
+    
+    var input = $(".modal-dialog input, .modal-dialog select, .modal-dialog textarea");
+    
+    var data = BuildCreateListingData(input, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildCreateListingError(data);
+    
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    
+    if (error != "Please Include ")
+    {
+        SetError('create-listing', error);
+    }
+    else
+    {
+        listingData = data;
+        
+        // load the register modal
+        LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
     }
 }
 
@@ -1562,6 +1694,7 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
+    $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1573,10 +1706,12 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+        $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+        $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1585,6 +1720,8 @@ function ShowLoginFeatures(hideMainModal, userType)
         {
             $(".rental-nav").show();
         }
+        
+        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/';");
     }
 
     if (hideMainModal === true)
@@ -1650,6 +1787,11 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
+                        
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                        }
                     }
                     else
                     {
@@ -1766,7 +1908,8 @@ function OpenExtrasView()
         done: function ()
         {
 			$("#extras").fadeIn(200);
-            $(".extra-filter-button input").attr("onclick", "CloseExtrasView()");
+            $("#extra-filters-btn").attr("onclick", "CloseExtrasView()");
+            $("#extra-filters-btn").text("Close Extra Filters");
         }
     });
 }
@@ -1782,9 +1925,198 @@ function CloseExtrasView()
             paddingRight: "0px"
         }, 300, function() 
         {
-            $(".extra-filter-button input").attr("onclick", "OpenExtrasView()");
+            $("#extra-filters-btn").attr("onclick", "OpenExtrasView()");
+            $("#extra-filters-btn").text("Open Extra Filters");
         });
     });
+}
+
+function CreateListing()
+{   
+    console.log("here");
+
+    var data = listingData;
+    
+    try
+    {
+        // need to put data into a saved state because uploading fileSize
+        // is asynchronous
+        pendingData = data;
+        
+        $("#create-listing-button").text("Creating...");
+        $("#create-listing-button").prop("disabled", true);
+        
+        // async call, caught in dropzone.success event handler below
+        if (numAdded == 0)
+        {
+            ProcessListing();
+        }
+        else
+        {
+            dropzones["create"].processQueue();
+        }
+    }
+    catch(e)
+    {
+        $("#create-listing-button").prop("disabled", false);
+        $("#create-listing-button").text("Create Listing");
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+    }
+}
+
+function ProcessListing()
+{
+    if (pendingData == null)
+    {
+        return;
+    }
+    
+    // create listing
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "create_listing",
+            data: pendingData,
+            endpoint: "Listings"
+        },
+        success: function(res)
+        {    
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to Create Listing");
+                }
+                else
+                {
+                    var listing = JSON.parse(res);
+                        
+                    if (listing["error"])
+                    {
+                        throw new Error(listing["error"]);
+                    }
+                    else
+                    {
+                        ResetListings();
+                        
+                        LoadAllDefaultListings();
+                        
+                        numUploaded = 0;
+                        
+                        pendingData = null;
+                        
+                        listingWaiting = false;
+                        
+                        listingData = {};
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#create-listing-button").prop("disabled", false);
+            $("#create-listing-button").text("Create Listing");
+            
+            dropzones["create"].destroy();
+            
+            CreateDropzone("create", "#modal-content-listing form");
+        }
+    });
+}
+
+function CreateDropzone(key, element, existingPics)
+{
+    dropzones[key] = new Dropzone(element,
+    {
+        addRemoveLinks: true,
+        autoProcessQueue: false
+    });
+    
+    var myDropzone = dropzones[key];
+    
+    myDropzone.on("success", function(file)
+    {   
+        if (numUploaded == numAdded - 1)
+        {
+            numUploaded = 0;
+            numAdded = 0;
+            $(".dz-progress").remove();
+            ProcessListing(); 
+        }
+        else
+        {
+            numUploaded++;
+            $(".dz-progress").remove();
+        }
+    });
+    
+    myDropzone.on("addedfile", function(file) 
+    {
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
+        {
+            pictures[oid] = [];
+        }
+        var filename = (file.alreadyUploaded 
+                        ? file.name
+                        : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
+                                                           : Math.random().toString(36).slice(2) + "_" + file.name));
+        pictures[oid].push(filename);
+        
+        if (!file.alreadyUploaded)
+        {
+            this.files[this.files.length - 1].serverFileName = filename;
+        }
+        
+        addedFiles[oid] = true;
+        
+        numAdded++;
+    });
+    
+    myDropzone.on("removedfile", function(file) 
+    {
+        var index = this.files.indexOf(file);
+        
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
+        {
+            pictures[oid] = [];
+        }
+
+        pictures[oid].splice(index, 1); 
+        
+        numAdded--;
+        
+        if (numAdded < 0)
+        {
+            addedFiles[oid] = false;
+            numAdded = 0;
+        }
+    });
+    
+    if (existingPics != null)
+    {
+        for (var i = 0; i < existingPics.length; i++)
+        {
+            var mockFile = { name: existingPics[i], alreadyUploaded: true};
+
+            myDropzone.emit("addedfile", mockFile);
+            numAdded--;
+            myDropzone.emit("thumbnail", mockFile, "/images/enhabit/images/" + mockFile.name);
+            myDropzone.emit("complete", mockFile);
+        }
+    }
 }
 
 function SetDefaultButtonOnEnter(modal)
@@ -1998,6 +2330,107 @@ function ToStringFromList(input)
     return dataList;
 }
 
+function BuildCreateListingData(inputs, elements)
+{   
+    var data = {};
+    
+    for (var i = 0; i < elements.length; i++)
+    {
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" 
+         || elements[i] == "AirConditioning" || elements[i] == "IsRented" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive")
+        {
+            data[elements[i]] = $(inputs[i]).prop("checked");
+        }
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University")
+        {
+            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
+        }
+        else if (elements[i] == "Rent")
+        {
+            data[elements[i]] = $(inputs[i]).autoNumeric('get');
+        }
+        else
+        {
+            if ($(inputs[i]).attr("placeholder") !== "")
+            {
+                data[elements[i]] = $(inputs[i]).val().trim();
+            }
+        }
+    }
+    
+    return data;
+}
+
+function BuildCreateListingError(fields)
+{
+    var errorArr = [];
+    
+    var beginning = "Please Include ";
+    
+    if (fields.Username === "")
+    {
+        errorArr.push("Valid Username");
+    }
+    if (fields.Address === "" || fields.Latitude === "" || fields.Longitude === "")
+    {
+        errorArr.push("Valid Address - Must Select Google's Result");
+    }
+    if (fields.Address !== "" && fields.Address !== fields.SelectedAddress)
+	{
+		errorArr.push("Valid Address - Do Not Modify Google's Result After Selecting");
+	}
+    if (fields.Rent === "")
+    {
+        errorArr.push("Valid Monthly Rent Amount");
+    }
+    if (fields.FirstName === "")
+    {
+        errorArr.push("Valid First Name");
+    }
+    if (fields.LastName === "")
+    {
+        errorArr.push("Valid Last Name");
+    }
+    if (fields.Email === "" || (fields.Email !== undefined && !IsValidEmail(fields.Email)))
+    {
+        errorArr.push("Valid Email");
+    }
+    if (fields.PhoneNumber !== "" && fields.PhoneNumber !== undefined)
+    {
+        if (!IsValidPhoneNumber(fields.PhoneNumber))
+        {
+            errorArr.push("Valid Phone Number");
+        }
+    }
+    if (fields.Start === "")
+    {
+        errorArr.push("Valid Lease Start Date");
+    }
+    if (fields.Password !== "" || fields.Confirm !== "")
+    {
+        if (fields.Password != fields.Confirm)
+        {
+            errorArr.push("Matching Password and Confirmation");
+        }
+    }
+    if (errorArr.length > 0)
+    {
+        if (errorArr.length == 1)
+        {
+            return beginning + errorArr[0];
+        }
+        else
+        {
+            var last = " and " + errorArr[errorArr.length - 1];
+            errorArr.splice(errorArr.length - 1, 1);
+            
+            return beginning + errorArr.join(", ") + last;
+        }
+    }
+    
+    return beginning;
+}
+
 function BuildData(elements)
 {
     var modalAttr = ".modal-body .";
@@ -2115,9 +2548,10 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
-    
-    InitPaymentModal();
 
+    GetAllUniversities();
+    GetAllLandlords();
+   
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,
