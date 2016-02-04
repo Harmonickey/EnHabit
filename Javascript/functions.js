@@ -1440,6 +1440,7 @@ function LoginUser(hideMainModal)
                     {
                         ShowLoginFeatures(hideMainModal, res);
                         
+                        // session should be set, so the user will be attached to the listing
                         if (listingWaiting)
                         {
                             CreateListing();
@@ -1694,8 +1695,6 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
-    $("#payment-btn").show(); // just in case an admin logged out
-    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
     $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
 }
 
@@ -1708,13 +1707,11 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
-        $("#payment-btn").hide(); // admins don't pay rent!!
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
-        $("#payment-btn").hide(); // landlords don't pay rent!!
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
     }
     if (Contains(userType, "Tenant"))
@@ -1791,11 +1788,6 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
-                        
-                        if (listingWaiting)
-                        {
-                            CreateListing();
-                        }
                     }
                     else
                     {
