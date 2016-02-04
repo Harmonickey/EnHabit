@@ -13,16 +13,26 @@ var pendingUpdateData = null;
 var threshold = 0.000;
 
 $(function() {
-   var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
-   
-   $(".main").css("min-height", height + "px");
-   
-   if (location.hash == "#success")
-   {
+    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
+
+    $(".main").css("min-height", height + "px");
+
+    if (location.hash == "#success")
+    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
        location.hash = "";
-   }
+    }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Featured Successfully!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
 });
 
 $(document).on("keypress", function(e)
@@ -690,6 +700,7 @@ function ProcessListing()
                     if (Contains(res, "Okay"))
                     {
                         window.location = "/landlord/listings/#success";
+                        window.location.reload();
                     }
                     else
                     {
@@ -834,6 +845,67 @@ function Logout()
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
+}
+
+function GetPayKey(oid)
+{
+    var data = { oid: oid };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "featured_payment",
+            data: data,
+            endpoint: "Payments"
+        },
+        success: function(res)
+        {
+            try
+            {
+                var payResponse = JSON.parse(res);
+                
+                if (payResponse["error"])
+                {
+                   throw Error("Unable to Begin Payment"); 
+                }
+                else
+                {
+                    // get pay key
+                    var paykey = payResponse["payKey"];
+                    
+                    // set it in the DOM
+                    $("#paykey").val(paykey);
+                    
+                    // init the PayPal popup object
+                    var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                    
+                    // programmatically submit
+                    $("#submitBtn").click();
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#GetPaymentKey").prop("disabled", false);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
+        }
+    });
+}
+
+function UpdateToFeatured(oid)
+{
+    GetPayKey(oid);
 }
 
 function UpdateAccount()
@@ -1366,7 +1438,7 @@ function CreateAccordionView(oid, data)
     
     return "<div class='panel panel-default'>" +
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
-                    "<h4 class='panel-title'>" +
+                    "<h4 class='panel-title' style='width: 80%; display: inline-block;'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
                             "<label>Address: " + data.Address + "</label>" + 
                             (data.Unit ? "<label>Unit: " + data.Unit + "</label>" : "") +
@@ -1374,6 +1446,7 @@ function CreateAccordionView(oid, data)
                             "<label>Start Date: " + FormattedDate(data.Start) + "</label>" +
                         "</a>" +
                     "</h4>" +
+                    (data.IsFeatured ? "<label style='width: 20%; margin-right; 0;'>Featured Listing!</label>" : "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>") +
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +

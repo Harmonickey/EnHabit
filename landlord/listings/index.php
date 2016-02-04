@@ -301,7 +301,11 @@
         </div>
     </div>
 </div>
-    
+
+<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
+    <button class='hidden' id='submitBtn'></button>
+    <input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>
+</form>   
 
 <!-- Le javascript
 ================================================== -->
@@ -324,7 +328,8 @@
 <script src="../../Libraries/Javascript/pikaday.jquery.js"></script>
 <!-- helper for file upload -->
 <script src="../../Libraries/Javascript/dropzone.js"></script>
-
+<!-- PayPal -->
+<script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>         
 <script src="../../Javascript/landlord/functions.js"></script>
 
 <script>
