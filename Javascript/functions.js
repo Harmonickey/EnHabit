@@ -1440,6 +1440,7 @@ function LoginUser(hideMainModal)
                     {
                         ShowLoginFeatures(hideMainModal, res);
                         
+                        // session should be set, so the user will be attached to the listing
                         if (listingWaiting)
                         {
                             CreateListing();
@@ -1787,11 +1788,6 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
-                        
-                        if (listingWaiting)
-                        {
-                            CreateListing();
-                        }
                     }
                     else
                     {
