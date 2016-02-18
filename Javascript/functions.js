@@ -1517,6 +1517,15 @@ function PostListingModal(event)
     InitSpecialFields();
 }
 
+function PowerKioskModal(event)
+{
+    // loading the power kiosk modal
+    LoadModal(event, 'modal-content-power-kiosk', 'power-kiosk', 'Power Kiosk');
+    
+    // make sure the picture dropzone is created
+    InitializePowerKiosk();
+}
+
 /* Just a proxy method for handling the special listing creation mechanism... */
 function PendingListingCreation()
 {
