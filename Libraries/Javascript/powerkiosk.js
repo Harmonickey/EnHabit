@@ -29,8 +29,6 @@ $(function()
     
     GetServiceTypes();
     
-    SetInnerCoverHeight();
-    
     var height = $("html").height();
     $("body").css("min-height", height + "px");
 });
@@ -118,21 +116,6 @@ function SetClickListeners()
             ResetFields();
         }
     });
-    
-    // update promo code upon enter
-    $(".promoCode").on("keyup", function(e) 
-    {
-        if (e.which == 13 || e.keyCode == 13)
-        {
-            ChangeAgentID();
-        }
-    })
-}
-
-function SetInnerCoverHeight()
-{
-    var offset = 20;
-    $(".inner.cover").css("min-height", ($("html").height() - ($(".masthead").height() + $(".mastfoot").height())) - offset);
 }
 
 function CloseList(element)
@@ -401,22 +384,4 @@ function SetHiddenInputs()
 	$("#serviceTypeID").val($("#serviceTypes li.active a").attr("value")); //this sets utility service type!!!
 	$("#stateID").val(state);
 	$("#getRates").attr("name", $("#businessTypes li.active a").attr("value")); //this sets business type!!!
-}
-
-function OpenPromoCodeModal()
-{
-    $("#promoCodeModal").modal('show');
-}
-
-function ChangeAgentID()
-{
-	//take input from promocode box
-	var promoCode = $(".promoCode").val().trim();
-	$("#promoCodeModal").modal('hide');
-    
-	if (promoCode == "" || promoCode == null) return;
-	
-    // apply the promo code
-    $("#directAgentId").val(promoCode);
-    $("#promoCodeAlert").fadeIn().delay(2000).fadeOut();
 }

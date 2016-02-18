@@ -1157,3 +1157,13 @@ select::-ms-expand
     cursor: pointer;
     font: 16px/14px Tahoma, Verdana, sans-serif;
  }
+ 
+.serviceTypesContainer {
+    float: none !important;
+    margin: 0 auto;
+}
+
+.serviceTypes li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
