@@ -33,6 +33,8 @@ $(document).on("keypress", function(e)
     }
 });
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetAllOutput()
 {
     $.ajax(
@@ -84,6 +86,8 @@ function GetAllOutput()
     });       
 }
 
+=======
+>>>>>>> 2fdafcb... 115 frontend functions
 function GetPricing()
 {
     $.ajax(
@@ -108,8 +112,20 @@ function GetPricing()
                         var oid = data[i]._id.$oid;
                             
                         $("#accordion").append(CreateAccordionPricingView(oid, data[i]));
+<<<<<<< HEAD
+<<<<<<< HEAD
                         
                         SetTextBoxWithAutoNumericPricing(oid);
+=======
+>>>>>>> 2fdafcb... 115 frontend functions
+=======
+                        
+<<<<<<< HEAD
+                        SetTextBoxWithAutoNumeric(oid);
+>>>>>>> a1a8ea2... 115 autonumeric
+=======
+                        SetTextBoxWithAutoNumericPricing(oid);
+>>>>>>> 6f2b485... 115 rest of ui adjustments
                     }
                 }
             }
@@ -125,6 +141,11 @@ function GetPricing()
     });       
 }
 
+<<<<<<< HEAD
+=======
+>>>>>>> f518129... 107 universities
+=======
+>>>>>>> 2fdafcb... 115 frontend functions
 function GetAllUniversities(isListingPage)
 {
     $.ajax(
@@ -146,11 +167,23 @@ function GetAllUniversities(isListingPage)
                     
                     for (var i = 0; i < data.length; i++)
                     {
+<<<<<<< HEAD
+<<<<<<< HEAD
                         universitiesList.push(data[i].UniversityName);
+=======
+                        universities.push(data[i].UniversityName);
+>>>>>>> f518129... 107 universities
+=======
+                        universitiesList.push(data[i].UniversityName);
+>>>>>>> cdca1eb... 107 university stuff
                         if (isListingPage)
                         {
                             $("#universities-filter").append("<option value='" + data[i].UniversityName + "'>" + data[i].UniversityName + "</option>");
                         }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cdca1eb... 107 university stuff
                         else
                         {
                             var oid = data[i]._id.$oid;
@@ -158,6 +191,7 @@ function GetAllUniversities(isListingPage)
                             $("#accordion").append(CreateAccordionUniversitiesView(oid, data[i]));
                             
                             SetGeocompleteTextBox(oid);
+<<<<<<< HEAD
                             SetTextBoxWithAutoNumericUniversity(oid);
                         }
                     }
@@ -166,6 +200,20 @@ function GetAllUniversities(isListingPage)
                     {
                         GetAllListings();
                     }
+=======
+                    }
+                    
+                    GetAllListings();
+>>>>>>> f518129... 107 universities
+=======
+                        }
+                    }
+                    
+                    if (isListingPage)
+                    {
+                        GetAllListings();
+                    }
+>>>>>>> cdca1eb... 107 university stuff
                 }
             }
             catch(e)
@@ -226,7 +274,29 @@ function GetAllUsersAndLandlords(isRenterPage)
                             $("#landlords-filter").append("<option value='" + landlord + "'>" + landlord + "</option>")
                         });
                         
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         GetAllUniversities(true);
+=======
+                        $($("#createListingModal .ui-widget input")[1]).autocomplete(
+                        {
+                            source: function(request, response) 
+                            {
+                                var results = $.ui.autocomplete.filter(userList, request.term);
+
+                                response(results.slice(0, 5)); // limit to 5 results at a time
+                            }
+                        });
+                        
+                        SetUserAndLandlordFields();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                        GetAllListings();
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+                        GetAllUniversities(true);
+>>>>>>> f518129... 107 universities
                     }
                     else
                     {
@@ -796,8 +866,7 @@ function DeleteOldListings()
                 },
                 error: function(res, err)
                 {
-                    console.log(res);
-                    console.log(err);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 },
                 complete: function()
                 {
@@ -892,6 +961,48 @@ function UpdateAccount(uid)
     }
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+function UpdatePricing(oid)
+=======
+function SetUserAndLandlordFields()
+{
+    var users = $("#accordion .users");
+    var landlords = $("#accordion .landlords");
+    
+    $.each(users, function(index, user) 
+    {
+        $(user).autocomplete(
+        {
+            source: function(request, response) 
+            {
+                var results = $.ui.autocomplete.filter(userList, request.term);
+
+                response(results.slice(0, 5)); // limit to 5 results at a time
+            } 
+        });
+    });
+    
+    $.each(landlords, function(index, landlord) 
+    {
+        $(landlord).autocomplete(
+        {
+            source: function(request, response) 
+            {
+                var results = $.ui.autocomplete.filter(landlordList, request.term);
+
+                response(results.slice(0, 5)); // limit to 5 results at a time
+            }
+        });
+    });
+}
+
+=======
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+=======
 function UpdatePricing(oid)
 {
     var pricingField = $("#" + oid + " input");
@@ -909,6 +1020,291 @@ function UpdatePricing(oid)
     else
     {
         try
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
+                {
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[0]).text("Updating...");
+                },
+                data:
+                {
+                    command: "update_pricing",
+                    endpoint: "Pricing",
+                    data: data
+                },
+                success: function(res)
+                {    
+                    try
+                    {
+                        if (!res)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update Pricing", position: 'top-center'});
+                        }
+                        else if (Contains(res, "Okay"))
+                        {
+                            var inputs = $("#" + oid + " input");
+                            var headingInputs = $("#heading" + oid + " label");
+                            
+                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val() + "%");
+                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val() + "%");
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Pricing", position: 'top-center'});
+                            
+                            // close the div
+                            $("#heading" + oid + " a").click();
+                        }
+                        else
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + oid + " button").prop("disabled", false);
+                    $($("#" + oid + " button")[0]).text("Update");
+                }
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+        }
+    }
+}
+
+>>>>>>> 2fdafcb... 115 frontend functions
+function UpdateUniversity(oid)
+{
+    var universityfield = $("#" + oid + " input");
+    
+    var data = BuildData(universityfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    data.id = oid;
+    
+    var error = BuildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+    {
+        try
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/api.php",
+                beforeSend: function()
+                {
+                    $("#" + oid + " button").prop("disabled", true);
+                    $($("#" + oid + " button")[0]).text("Updating...");
+                },
+                data:
+                {
+                    command: "update_university",
+                    endpoint: "Universities",
+                    data: data
+                },
+                success: function(res)
+                {    
+                    try
+                    {
+                        if (!res)
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: "Unable to Update University", position: 'top-center'});
+                        }
+                        else if (Contains(res, "Okay"))
+                        {
+                            var inputs = $("#" + oid + " input");
+                            var headingInputs = $("#heading" + oid + " label");
+                            
+                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
+                            $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
+                            
+                            // close the div
+                            $("#heading" + oid + " a").click();
+                        }
+                        else
+                        {
+                            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    $("#" + oid + " button").prop("disabled", false);
+                    $($("#" + oid + " button")[0]).text("Update");
+                }
+            });
+        }
+        catch(e)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+        }
+    }
+}
+
+>>>>>>> f518129... 107 universities
+function SetBootstrapSwitches(rowId)
+{
+    var checkboxes = $("#" + rowId + " input[type='checkbox']");
+    checkboxes.not(":eq(4)").bootstrapSwitch({onText: "Yes", offText: "No"});
+    //$(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+}
+
+function SetBootstrapSwitchesForUsers(rowId)
+{
+    $("#" + rowId + " input[type='checkbox']").bootstrapSwitch({onText: "Yes", offText: "No"});
+}
+
+function SetGeocompleteTextBox(rowId)
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+{
+    var pricingField = $("#" + oid + " input");
+    
+<<<<<<< HEAD
+    var data = BuildData(pricingField, ["ListingMarkup", "FeaturedMarkup"]);
+    
+    data.id = oid;
+    
+<<<<<<< HEAD
+    var error = BuildError(data);
+=======
+    $(row[2]).geocomplete()
+=======
+    $(row[1]).geocomplete()
+>>>>>>> 64bd5e4... 107 admin fixes, portal fixes, front page addition, unit fixes
+        .bind("geocode:result", function(event, result){
+            var keys = Object.keys(result.geometry.location);
+            $(hidden[0]).val(result.geometry.location[keys[0]]);
+            $(hidden[1]).val(result.geometry.location[keys[1]]);
+            $(hidden[2]).val($(row[1]).val());
+        });
+}
+
+function SetTextBoxWithAutoNumeric(rowId)
+{
+    var row = $("#" + rowId + " input[type='text']");
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+    
+<<<<<<< HEAD
+    if (error != "Please Include ")
+=======
+    $(row[3]).autoNumeric('init', 
+>>>>>>> 0dc8937... 107 updating deleting creating
+    {
+<<<<<<< HEAD
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+=======
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+}
+
+function SetDatePickerTextBox(rowId)
+{
+    $($("#" + rowId + " input[type='text']")[5]).pikaday(
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+    {
+<<<<<<< HEAD
+        try
+=======
+        minDate: new Date(),  //today
+        setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[3]).val()) //current
+    });
+}
+
+function UpdateListing(oid)
+{
+    var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
+    
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    //first validate that the fields are filled out
+    var error = BuildError(data);
+    
+    data.id = oid;
+    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures[oid];
+    
+    try
+    {
+        if (error != "Please Include ")
+        {
+            throw new Error(error);
+        }
+        else
+        { 
+            pendingUpdateData = data;
+            
+            $($("#" + oid + " button")[0]).text("Updating...");
+            $("#" + oid + " button").prop("disabled", true);
+            
+            dropzones[oid].processQueue();
+            
+            if (addedFiles[oid] == false)
+            {
+                ProcessListing();
+            }
+        }
+    }
+    catch(e)
+    {
+        $($("#" + oid + " button")[0]).text("Update");
+        $("#" + oid + " button").prop("disabled", false);
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+    }
+}
+
+function DeleteAccount(uid)
+{
+    $.msgbox("Are you sure that you want to delete this user?", 
+    {
+        type: "confirm",
+		buttons : 
+        [
+            {type: "submit", value: "Yes"},
+            {type: "submit", value: "No"},
+            {type: "cancel", value: "Cancel"}
+		]
+	}, 
+    function(result) 
+    {
+        if (result === "Yes")
+>>>>>>> 65a35be... 107 lease type and front page fixes
         {
             $.ajax(
             {
@@ -976,7 +1372,13 @@ function UpdatePricing(oid)
 
 function UpdateUniversity(oid)
 {
+<<<<<<< HEAD
     var universityfield = $("#" + oid + " input");
+=======
+    var inputs = $("#" + oid + " input, #" + oid + " textarea");
+    
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     
     var data = BuildData(universityfield, ["UniversityName", "Address", "Threshold", "Latitude", "Longitude", "SelectedAddress"]);
     
@@ -1096,6 +1498,7 @@ function SetTextBoxWithAutoNumeric(rowId)
     });
 }
 
+<<<<<<< HEAD
 function SetTextBoxWithAutoNumericUniversity(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
@@ -1107,10 +1510,14 @@ function SetTextBoxWithAutoNumericUniversity(rowId)
     });
 }
 
+=======
+>>>>>>> a1a8ea2... 115 autonumeric
 function SetTextBoxWithAutoNumericPricing(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     $(row[0]).autoNumeric('init', 
     {
         aSign: '%', 
@@ -1133,6 +1540,25 @@ function SetTextBoxWithAutoNumericPricing(rowId)
         vMax: '100.00',
 >>>>>>> ce68029... 119 heading
         vMin: '0.00'
+=======
+    $(row[1]).autoNumeric('init', 
+=======
+    $(row[0]).autoNumeric('init', 
+>>>>>>> 81816df... 115 adjust index
+    {
+        aSign: '%', 
+        pSign: 's',
+        vMax: '99',
+        vMin: '0'
+    });
+    
+    $(row[1]).autoNumeric('init', 
+    {
+        aSign: '%', 
+        pSign: 's', 
+        vMax: '99',
+        vMin: '0'
+>>>>>>> a1a8ea2... 115 autonumeric
     });
 }
 
@@ -1408,11 +1834,23 @@ function CreateListing()
 {
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "User", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "User", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 0dc8937... 107 updating deleting creating
     
     var error = BuildError(data);
     
-    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -1511,11 +1949,20 @@ function ProcessListing()
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                             
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4e2c6fb... 107 active changes
                             if (numUploaded[oid] > 0)
                             {
                                 $("#" + oid + " .activecheckbox").prop("disabled", false);
                             }
                             
+<<<<<<< HEAD
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 4e2c6fb... 107 active changes
                             numUploaded[oid] = 0;
                             
                             pendingData = null;
@@ -1563,8 +2010,38 @@ function ProcessListing()
                 {
                     if (Contains(res, "Okay"))
                     {
+<<<<<<< HEAD
                         window.location = "/admin/listings/#success";
                         window.location.reload();
+=======
+                        var inputs = $("#" + id + " input");
+                        var headingInputs = $("#heading" + id + " label");
+                        
+                        $(headingInputs[0]).text("Address: " + $(inputs[1]).val());
+                        $(headingInputs[1]).text("Unit: " + $(inputs[2]).val());
+                        $(headingInputs[2]).text("Rent: $" + $(inputs[3]).autoNumeric('get') + "/Month");
+                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[4]).val())));
+                        $(headingInputs[4]).text("University: " + $(inputs[5]).val());
+                        
+                        if (addedFiles[id])
+                        {
+                            $("#" + id + " .activecheckbox").prop("disabled", false);
+                            $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
+                        }
+                        else if (pictures[id].length == 0)
+                        {
+                            $("#" + id + " .activecheckbox").prop("disabled", true);
+                            $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
+                        }
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+                        numUploaded[id] = 0;
+                        addedFiles[id] = false;
+                        pendingUpdateData = null;
+                        
+                        // close the div
+                        $("#heading" + id + " a").click();
+>>>>>>> 0dc8937... 107 updating deleting creating
                     }
                     else
                     {
@@ -1588,6 +2065,7 @@ function ProcessListing()
                 addedFiles[id] = false;
                 numUploaded[id] = 0;
                 pendingUpdateData = null;
+<<<<<<< HEAD
             }
         });
     }
@@ -1598,6 +2076,90 @@ function AddUniversity()
     var universityfield = $("#addUniversityModal input");
     
     var data = BuildData(universityfield, ["UniversityName", "Address", "Threshold", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildError(data);
+    
+    if (error != "Please Include ")
+    {
+        $.msgGrowl ({ type: 'error', title: 'Error', text: error, position: 'top-center'});
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
+            {
+                $("#add-university-button").text("Creating...");
+                $("#add-university-button").prop("disabled", "true");
+            },
+            data:
+            {
+                command: "add_university",
+                endpoint: "Universities",
+                data: data
+            },
+            success: function(res)
+            {    
+                try
+                {
+                    if (!res)
+                    {
+                        throw new Error("Unable to Add University");
+                    }
+                    else
+                    {
+                        var university = JSON.parse(res);
+                            
+                        if (university["error"])
+                        {
+                            throw new Error(university["error"]);
+                        }
+                        else
+                        {
+                            if ($("#accordion").text() == "No Universities Yet")
+                            {
+                                $("#accordion").html("");
+                            }
+                            
+                            var oid = university._id.$oid;
+                            
+                            $("#accordion").append(CreateAccordionUniversitiesView(oid, university));
+                            
+                            SetGeocompleteTextBox(oid);
+                            
+                            $("#addUniversityModal").modal('hide');
+                            
+                            $.msgGrowl ({ type: 'success', title: 'Success', text: "University Added Successfully!", position: 'top-center'});
+                        }
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#add-university-button").text("Add University");
+                $("#add-university-button").prop("disabled", false);
+=======
+>>>>>>> 8946fe2... 107 active stuff
+            }
+        });
+    }
+}
+
+function AddUniversity()
+{
+    var universityfield = $("#addUniversityModal input");
+    
+    var data = BuildData(universityfield, ["UniversityName", "Address", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
@@ -1737,9 +2299,18 @@ function Login()
             {
                 $(".login-error").show();
                 $(".login-error").text(res);
+<<<<<<< HEAD
+<<<<<<< HEAD
             },
             complete: function() 
             {
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+            },
+            complete: function() 
+            {
+>>>>>>> 5d4187a... 107 better message handling
                 $(".login-action").text("Sign In");
                 $(".login-action").prop("disabled", false);
             }
@@ -1754,6 +2325,10 @@ function QuickLogout()
 
 function Logout()
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6d15b60... 107 revert to old logout
     $.ajax(
     {
         type: "POST",
@@ -1766,7 +2341,11 @@ function Logout()
                 {
                     // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                     // be a POST element, this is good for now
+<<<<<<< HEAD
                     location.href = "/#loggedout";
+=======
+                    location.href = "/";
+>>>>>>> 6d15b60... 107 revert to old logout
                 }
                 else
                 {
@@ -1783,6 +2362,12 @@ function Logout()
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
+<<<<<<< HEAD
+=======
+    $.post("/logout.php");
+>>>>>>> 69861d1... 107 logout flow
+=======
+>>>>>>> 6d15b60... 107 revert to old logout
 }
 
 function DisplayAnalytics(analytics)
@@ -1890,11 +2475,15 @@ function DeleteAutoGeneratedListings()
         },
         error: function(res, err)
         {
+<<<<<<< HEAD
             $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
         },
         complete: function()
         {
             $("#deletegenerated").prop("disabled", false);
+=======
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
         }
     });
 }
@@ -1927,10 +2516,23 @@ function InitSpecialFields()
         });
     
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
+<<<<<<< HEAD
+<<<<<<< HEAD
     $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
     $($("#createListingModal .type-content input")[0]).prop("checked", true);
     $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+=======
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "Sublet", 'state': true, 'setState': true});
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     $($("#createListingModal .type-content input")[1]).prop("checked", true);
+=======
+    //$($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    //$($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).prop("checked", true);
+>>>>>>> 65a35be... 107 lease type and front page fixes
     
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -1962,7 +2564,15 @@ function InitSpecialFieldsUniversity()
             var keys = Object.keys(result.geometry.location);
             $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
             $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
+<<<<<<< HEAD
+<<<<<<< HEAD
             $(hiddenFields[2]).val($(universityModal[1]).val());
+=======
+            $(hiddenFields[2]).val($(listingModal[0]).val());
+>>>>>>> f518129... 107 universities
+=======
+            $(hiddenFields[2]).val($(universityModal[1]).val());
+>>>>>>> aad98c9... 115 fixes to university
         });
 }
 
@@ -2064,21 +2674,46 @@ function BuildData(inputs, elements)
     
     for (var i = 0; i < elements.length; i++)
     {
+<<<<<<< HEAD
         if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented" || elements[i] == "IsFeatured")
+=======
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented")
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         else if (elements[i] == "Rent" || elements[i] == "ListingMarkup" || elements[i] == "FeaturedMarkup")
+=======
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University")
+=======
+        else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University" || elements[i] == "UniversityName")
+>>>>>>> f518129... 107 universities
+        {
+            data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
+        }
+=======
+>>>>>>> 2fdafcb... 115 frontend functions
+        else if (elements[i] == "Rent")
+>>>>>>> 0dc8937... 107 updating deleting creating
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }
         else
         {
             if ($(inputs[i]).attr("placeholder") !== "")
+<<<<<<< HEAD
             {
                 data[elements[i]] = $(inputs[i]).val().trim();
             }
             else
+<<<<<<< HEAD
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 2fdafcb... 115 frontend functions
             {
                 data[elements[i]] = $(inputs[i]).val().replace("'", "&#39;").replace("\"", "&#34;");
             }
@@ -2235,17 +2870,21 @@ function FormattedTime(time)
 
 function CreateAccordionView(oid, data)
 {
-    console.log(data);
     var landlords = "";
     $.each(landlordList, function(index, landlord) {
         landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
     });
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f518129... 107 universities
     var universities = "";
     $.each(universitiesList, function(index, university) {
         universities += "<option value='" + university + "'" + (data.University == university ? "selected" : "") + ">" + university + "</option>";
     });
     
+<<<<<<< HEAD
     var bedrooms = "";
     for (var i = 0; i <= 10; i++)
     {
@@ -2257,6 +2896,10 @@ function CreateAccordionView(oid, data)
         bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") +"</option>";
     }
     
+=======
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+>>>>>>> f518129... 107 universities
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
     
     return "<div class='panel panel-default'>" +
@@ -2278,9 +2921,20 @@ function CreateAccordionView(oid, data)
                                 "<label>User</label><input type='text' class='form-control users' value='" + (data.Username ? data.Username : "") + "' /> " + 
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 "<label>Landlord</label>" + 
                                 "<select class='form-control'>" + landlords + "</select>" +
                             "</div>" + 
+=======
+                                "<label>Landlord</label><input type='text' class='form-control landlords' value='" + (data.Landlord ? data.Landlord : "") + "' /> " + 
+                            "</div>" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                "<label>Landlord</label>" + 
+                                "<select class='form-control'>" + landlords + "</select>" +
+                            "</div>" + 
+>>>>>>> 0dc8937... 107 updating deleting creating
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' /> " + 
                             "</div>" +
@@ -2296,6 +2950,8 @@ function CreateAccordionView(oid, data)
                                 "<label>Start Date</label><input type='text' class='form-control' value='" + FormattedDate(data.Start) + "' />" +
                             "</div>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 "<label>University</label>" +
                                 "<select class='form-control'>" + universities + "</select>" +
                             "</div>" + 
@@ -2306,6 +2962,19 @@ function CreateAccordionView(oid, data)
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Bathrooms</label>" + 
                                 "<select class='form-control'>" + bathrooms + "</select>" +
+=======
+                                "<label>University</label><input type='text' class='form-control' value='" + data.University + "' />" +
+=======
+                                "<label>University</label>" +
+                                "<select class='form-control'>" + universities + "</select>" +
+>>>>>>> f518129... 107 universities
+                            "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
+                            "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" +
@@ -2323,9 +2992,15 @@ function CreateAccordionView(oid, data)
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" + 
+<<<<<<< HEAD
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Lease Type</label><input class='leasetype' type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
+=======
+                            //"<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            //    "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" //? "checked" : "") + " data-size='mini' />" +
+                            //"</div>" +
+>>>>>>> 65a35be... 107 lease type and front page fixes
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Building Type</label><input class='buildingtype' type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
@@ -2344,9 +3019,25 @@ function CreateAccordionView(oid, data)
                                 "<label>Featured Listing</label><input class='yesno' type='checkbox' " + (data.IsFeatured ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
                         "</div>" + 
+                        "<div class='row' style='margin-top: 10px'>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
+                            "</div>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" + 
+                            "</div>" +
+                        "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
+=======
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
+>>>>>>> 0dc8937... 107 updating deleting creating
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 
@@ -2375,7 +3066,10 @@ function CreateAccordionUniversitiesView(oid, data)
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
                             "<label>University Name: " + data.UniversityName + "</label>" +
                             "<label>Address: " + data.Address + "</label>" +
+<<<<<<< HEAD
                             "<label>Listing Distance (miles): " + data.Threshold + "</label>" +
+=======
+>>>>>>> f518129... 107 universities
                         "</a>" +
                     "</h4>" +
                 "</div>" +
@@ -2388,16 +3082,54 @@ function CreateAccordionUniversitiesView(oid, data)
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Address</label><input type='text' class='form-control' value='" + data.Address + "' />" + 
                             "</div>" +
+<<<<<<< HEAD
                             "<div class='col-lg-4 col-md-4 col-sm-4'>" +
                                 "<label>Listing Distance (miles)</label><input type='text' class='form-control' value='" + data.Threshold + "' />" + 
                             "</div>" +
+=======
+>>>>>>> f518129... 107 universities
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<button class='btn btn-primary btn-success' onclick='UpdateUniversity(\"" + oid + "\");'>Update</button>" +
                             "</div>" +
                         "</div>" +
+<<<<<<< HEAD
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
+                    "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreateAccordionPricingView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>University Name: " + data.UniversityName + "</label>" +
+                            "<label>Listing Markup: " + data.ListingMarkup + "%</label>" +
+                            "<label>Featured Markup: " + data.FeaturedMarkup + "%</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Listing Markup</label><input type='text' class='form-control' value='" + data.ListingMarkup + "' />" + 
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Featured Markup</label><input type='text' class='form-control' value='" + data.FeaturedMarkup + "' />" + 
+                            "</div>" +
+                        "</div>" +
+                        "<div class='row' style='margin-top: 10px;' >" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<button class='btn btn-primary btn-success' onclick='UpdatePricing(\"" + oid + "\");'>Update</button>" +
+                            "</div>" +
+                        "</div>" +
+=======
+>>>>>>> f518129... 107 universities
                     "</div>" +
                 "</div>" +
             "</div>";
@@ -2590,6 +3322,102 @@ function CreateAccordionPaymentsView(oid, data)
 
 function CreateOutputView(data)
 {
+<<<<<<< HEAD
     return "<p style='overflow-x: scroll'>" + data + "</p>";
 }
 
+=======
+    var amount = $("#amount_to_autogenerate").val();
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $("#autogenerate").prop("disabled", true);
+        },
+        data:
+        {
+            command: "autogenerate_listings",
+            data: 
+            { 
+                amount: amount
+            },
+            endpoint: "Listings"
+        },
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Okay"))
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Listings Generated!", position: 'top-center'});
+                    location.reload();
+                }
+                else
+                {
+                    throw new Error("Problem Generating Listings");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#autogenerate").prop("disabled", false);
+        }
+    });
+}
+
+function DeleteAutoGeneratedListings()
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        beforeSend: function()
+        {
+            $("#deletegenerated").prop("disabled", true);
+        },
+        data:
+        {
+            command: "delete_autogenerated_listings",
+            endpoint: "Listings"
+        },
+        success: function(res)
+        {
+            try
+            {
+                if (Contains(res, "Okay"))
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Listings Deleted Successfully!", position: 'top-center'});
+                    location.reload();
+                }
+                else
+                {
+                    throw new Error("Problem Deleting Listings");
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#deletegenerated").prop("disabled", false);
+        }
+    });
+}
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit

@@ -3,8 +3,16 @@
     
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["admin"]))
@@ -28,7 +36,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
+<<<<<<< HEAD
     <title>Admin | Pricing</title>
+=======
+    <title>Admin | Users</title>
+>>>>>>> 12b3320... 115 added pricing location
+=======
+    <title>Admin | Pricing</title>
+>>>>>>> 1b87169... 115 remove the university name as a changable parameter, change the browser title for pricing
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">    
@@ -71,7 +87,11 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-cog"></i>
             </button>
+<<<<<<< HEAD
             <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+=======
+            <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+>>>>>>> 12b3320... 115 added pricing location
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -88,8 +108,16 @@
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>  
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 12b3320... 115 added pricing location
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 64522a7... 115 percent to money
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                         </li>
@@ -147,6 +175,8 @@
 					</li>
                     <li class="active">
 						<a href="./">
+<<<<<<< HEAD
+<<<<<<< HEAD
 							<i class="fa fa-money"></i>
 							<span>Pricing</span>
 						</a>	    				
@@ -157,6 +187,15 @@
 							<span>Logs</span>
 						</a>	    				
 					</li>
+=======
+							<i class="fa fa-percent"></i>
+=======
+							<i class="fa fa-money"></i>
+>>>>>>> 64522a7... 115 percent to money
+							<span>Pricing</span>
+						</a>	    				
+					</li>
+>>>>>>> 12b3320... 115 added pricing location
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->
@@ -169,10 +208,25 @@
       	<div class="col-md-12">
       		<div class="widget stacked">
                 <div class="widget-header actions">
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <h3>Registered Pricing</h3>
 				</div> <!-- /widget-header -->
 				<div class="widget-content pricings">
 					<!-- all the pricings go here -->
+=======
+                    <h3>Registered Universities</h3>
+					<a class="btn btn-success" data-toggle="modal" href="#addUniversityModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
+				</div> <!-- /widget-header -->
+				<div class="widget-content listings">
+					<!-- all the listings go here -->
+>>>>>>> 12b3320... 115 added pricing location
+=======
+                    <h3>Registered Pricing</h3>
+				</div> <!-- /widget-header -->
+				<div class="widget-content pricings">
+					<!-- all the pricings go here -->
+>>>>>>> 9248434... 115 ui stuff
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         
                     </div>
@@ -234,8 +288,17 @@
 
 <!-- jquery geocomplete api -->
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
+<<<<<<< HEAD
+<<<<<<< HEAD
 <!-- helper for numeric text boxes -->
 <script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
+=======
+
+>>>>>>> 12b3320... 115 added pricing location
+=======
+<!-- helper for numeric text boxes -->
+<script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
+>>>>>>> 6f2b485... 115 rest of ui adjustments
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 
@@ -243,9 +306,25 @@
 
 <script>
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 $(function() 
 {   
     GetPricing();
+=======
+var universitiesList = [];
+
+$(function() 
+{   
+    InitSpecialFieldsUniversity();
+
+    GetAllUniversities(false);
+>>>>>>> 12b3320... 115 added pricing location
+=======
+$(function() 
+{   
+    GetPricing();
+>>>>>>> 2fdafcb... 115 frontend functions
 });
 
 </script>

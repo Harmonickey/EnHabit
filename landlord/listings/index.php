@@ -4,8 +4,16 @@
     
     if (!isset($_SESSION["landlordId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["landlord"]))
@@ -96,7 +104,10 @@
                         <li class="landlord-nav"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
                         <li class="landlord-nav"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
                         <li class="landlord-nav"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+<<<<<<< HEAD
                         <li class="landlord-nav"><a style="cursor: pointer;" href="/EnergyPortal.php"><i class="fa fa-bolt" style="margin-right: 5px;"></i>Save on Energy</a></li>
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                         <li class="landlord-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>My Renters</a></li>                    
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
@@ -263,15 +274,20 @@
                         <div class="modal-switch airConditioning-content">
                             <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
                         </div>
+                        <!--
                         <div class="modal-switch type-content">
                             <label>Lease Type</label><input type='checkbox' data-size='mini' />
-                        </div>
+                        </div>-->
                         <div class="modal-switch type-content">
                             <label>Building Type</label><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
                 </div>
                 <div class="row">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b30758c... 107 universities
                     <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
                         <label>Universities</label>
                         <select id="universities-filter" class="form-control">
@@ -280,6 +296,11 @@
                     </div>
                 </div>
                 <div class="row">
+<<<<<<< HEAD
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> b30758c... 107 universities
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
@@ -344,7 +365,15 @@ $(function()
 {
     CreateDropzone("create", "#createListingModal form");
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     GetAllUniversities();
+=======
+    GetAllListings();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    GetAllUniversities();
+>>>>>>> b30758c... 107 universities
     GetAccount(true);
 
     InitSpecialFields();

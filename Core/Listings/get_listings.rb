@@ -15,10 +15,13 @@ require 'tools'
 require 'date'
 =======
 
+<<<<<<< HEAD
 MAX_BEDROOMS_FOR_FILTER = 3
 MIN_BEDROOMS_FOR_FILTER = 0
 >>>>>>> d1eed6e... 118 move to if statement
 
+=======
+>>>>>>> acc3e6e... 118 bathroom and bedroom are now searchable by plus
 def setFilters
     if @lower.nil? and @upper.nil? 
         @priceFilter = nil
@@ -32,11 +35,15 @@ def setFilters
         @bedroomFilter = nil
     else
         @bedroomFilter[:Bedrooms] = {}
+<<<<<<< HEAD
         if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
             @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
         else
             @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
         end
+=======
+        @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
+>>>>>>> acc3e6e... 118 bathroom and bedroom are now searchable by plus
     end
 
     if @bathrooms.nil? 
@@ -92,7 +99,19 @@ def setFilters
         @startFilter = nil
     else 
         @startFilter[:Start] = {}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         @startFilter[:Start][:$lte] = Date.strptime(@start, "%m/%d/%Y").mongoize
+=======
+        @startFilter[:Start][:$gte] = Date.strptime(@start, "%m/%d/%Y").mongoize
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        @startFilter[:Start][:$gtl] = Date.strptime(@start, "%m/%d/%Y").mongoize
+>>>>>>> 3f33eac... 107 fixed yo shit
+=======
+        @startFilter[:Start][:$lte] = Date.strptime(@start, "%m/%d/%Y").mongoize
+>>>>>>> c452f73... 107 gtl to lte
     end
     
     if @university.nil?
@@ -179,8 +198,16 @@ def combineFiltersIntoQuery
     if not @isRentedFilter.nil?
         @mainFilter["$and"].push @isRentedFilter
     end
+<<<<<<< HEAD
     if not @isActiveFilter.nil? and @userId.nil? and @landlordId.nil?
         @mainFilter["$and"].push @isActiveFilter
+=======
+    if not @isActiveFilter.nil?
+        @mainFilter["$and"].push @isActiveFilter
+    end
+    if @mainFilter["$and"].count == 0
+        @mainFilter = {}
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     end
 end
 
@@ -249,6 +276,7 @@ begin
     mongoSession.use("enhabit")# this is our current database
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1, IsPastThreshold: 1).to_a
 =======
     # get all the non featured ones first
@@ -271,6 +299,9 @@ begin
     # smoosh them all together now
     documents += featured_documents
 >>>>>>> 81164a5... 116 featured markers
+=======
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     
     mongoSession.disconnect
 
@@ -294,12 +325,29 @@ begin
                 doc.delete("UserId")
                 doc.delete("LandlordId")
             end
+<<<<<<< HEAD
         end
         
         documents.each do |doc|
             university = mongoSession[:universities].find({"UniversityName" => doc["University"]}).one
             
             doc["Threshold"] = university["Threshold"]
+=======
+        end
+        
+        documents.each do |doc|
+            pricing = mongoSession[:pricing].find({"UniversityName" => doc["UniversityName"]}).one
+            
+<<<<<<< HEAD
+<<<<<<< HEAD
+            doc["RentWithMarkup"] = doc["Rent"] * (pricing["ListingMarkup"] / 100) + doc["Rent"] 
+>>>>>>> a1a8ea2... 115 autonumeric
+=======
+            doc["RentWithMarkup"] = doc["Rent"].to_i * (pricing["ListingMarkup"].to_f / 100).to_i + doc["Rent"].to_i 
+>>>>>>> 136a813... 115 apply markups to front page
+=======
+            doc["RentWithMarkup"] = (doc["Price"] * (pricing["ListingMarkup"].to_f / 100) + doc["Price"]).to_i
+>>>>>>> 1da2e91... 115 university name
         end
         
         puts documents.to_json

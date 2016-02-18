@@ -243,6 +243,10 @@ function GetAllListings()
     });
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b30758c... 107 universities
 function GetAllUniversities()
 {
     $.ajax(
@@ -283,6 +287,11 @@ function GetAllUniversities()
     });                  
 }
 
+<<<<<<< HEAD
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> b30758c... 107 universities
 function GetAccount(isListingPage)
 {
     $.ajax(
@@ -347,9 +356,16 @@ function GetAccount(isListingPage)
 
 function SetBootstrapSwitches(rowId)
 {
+<<<<<<< HEAD
     $("#" + rowId + " .yesno").bootstrapSwitch({onText: "Yes", offText: "No"});
     $("#" + rowId + " .leasetype").bootstrapSwitch({onText: "Rental", offText: "Sublet"});
     $("#" + rowId + " .buildingtype").bootstrapSwitch({onText: "Apartment", offText: "House"});
+=======
+    var checkboxes = $("#" + rowId + " input[type='checkbox']");
+    checkboxes.not(":eq(5)").bootstrapSwitch({onText: "Yes", offText: "No"});
+    //$(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 }
 
 function SetGeocompleteTextBox(rowId)
@@ -497,14 +513,45 @@ function DeleteListing(id)
 
 function UpdateListing(oid)
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
    
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "University", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+=======
+    var inputs = $("#" + id + " input, #" + id + " textarea");
+   
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    var inputs = $("#" + oid + " input, #" + oid + " textarea");
+=======
+    var inputs = $("#" + oid + " input, #" + oid + "select, #" + oid + " textarea");
+>>>>>>> a4a87ed... 107 forgot the select part
+=======
+    var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
+>>>>>>> 8da06d7... 107 various bug fixes
+   
+<<<<<<< HEAD
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "University", "Animals", "Laundry", "Parking", "AirConditioning", "IsRented", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> b30758c... 107 universities
     
     //first validate that the fields are filled out
     var error = BuildError(data);
     
     data.id = oid;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    data.University = "Northwestern";
+>>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+>>>>>>> b30758c... 107 universities
     //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
@@ -544,11 +591,27 @@ function CreateListing()
 {
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     
     var error = BuildError(data);
     
     data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> b30758c... 107 universities
+    
+    var error = BuildError(data);
+    
+    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+>>>>>>> 65a35be... 107 lease type and front page fixes
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -699,8 +762,39 @@ function ProcessListing()
                 {
                     if (Contains(res, "Okay"))
                     {
+<<<<<<< HEAD
                         window.location = "/landlord/listings/#success";
                         window.location.reload();
+=======
+                        var inputs = $("#" + id + " input");
+                        var headingInputs = $("#heading" + id + " label");
+                        
+                        $(headingInputs[0]).text("Address: " + $(inputs[0]).val());
+                        $(headingInputs[1]).text("Unit: " + $(inputs[1]).val());
+                        $(headingInputs[2]).text("Rent: $" + $(inputs[2]).autoNumeric('get') + "/Month");
+                        $(headingInputs[3]).text("Start Date: " + $.datepicker.formatDate('mm/dd/yy', new Date($(inputs[3]).val())));
+                        
+                        if (addedFiles[id])
+                        {
+                            $("#" + id + " .activecheckbox").prop("disabled", false);
+                            $("#" + id + " .activecheckbox").parent().parent().removeClass("bootstrap-switch-disabled");
+                            $("#" + id + " .activemsg").hide();
+                        }
+                        else if (pictures[id].length == 0)
+                        {
+                            $("#" + id + " .activecheckbox").prop("disabled", true);
+                            $("#" + id + " .activecheckbox").parent().parent().addClass("bootstrap-switch-disabled");
+                            $("#" + id + " .activemsg").show();
+                        }
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+                        numUploaded[id] = 0;
+                        addedFiles[id] = false;
+                        pendingUpdateData = null;
+                        
+                        // close the div
+                        $("#heading" + id + " a").click();
+>>>>>>> 4e2c6fb... 107 active changes
                     }
                     else
                     {
@@ -816,6 +910,10 @@ function QuickLogout()
 
 function Logout()
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6d15b60... 107 revert to old logout
     $.ajax(
     {
         type: "POST",
@@ -828,7 +926,11 @@ function Logout()
                 {
                     // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                     // be a POST element, this is good for now
+<<<<<<< HEAD
                     location.href = "/#loggedout";
+=======
+                    location.href = "/";
+>>>>>>> 6d15b60... 107 revert to old logout
                 }
                 else
                 {
@@ -841,10 +943,15 @@ function Logout()
             }    
         },
         error: function(res, err)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6d15b60... 107 revert to old logout
         {
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
+<<<<<<< HEAD
 }
 
 function GetPayKey(oid)
@@ -899,13 +1006,22 @@ function GetPayKey(oid)
         {
             $("#GetPaymentKey").prop("disabled", false);
             $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
+=======
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
         }
     });
+=======
+    $.post("/logout.php");
+>>>>>>> 69861d1... 107 logout flow
 }
 
 function UpdateToFeatured(oid)
 {
     GetPayKey(oid);
+=======
+>>>>>>> 6d15b60... 107 revert to old logout
 }
 
 function UpdateAccount()
@@ -1164,10 +1280,10 @@ function InitSpecialFields()
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    //$($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    //$($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
     $($("#createListingModal .type-content input")[0]).prop("checked", true);
-    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
-    $($("#createListingModal .type-content input")[1]).prop("checked", true);
         
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -1418,11 +1534,16 @@ function FormattedDate(dateString)
 
 function CreateAccordionView(oid, data)
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b30758c... 107 universities
     var universities = "";
     $.each(universitiesList, function(index, university) {
         universities += "<option value='" + university + "'" + (data.University == university ? "selected" : "") + ">" + university + "</option>";
     });
     
+<<<<<<< HEAD
     var bedrooms = "";
     for (var i = 0; i <= 10; i++)
     {
@@ -1434,6 +1555,10 @@ function CreateAccordionView(oid, data)
         bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") +"</option>";
     }
     
+=======
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+>>>>>>> b30758c... 107 universities
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
     
     return "<div class='panel panel-default'>" +
@@ -1466,6 +1591,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row'>" +
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+<<<<<<< HEAD
                                 "<label>Bedrooms</label>" + 
                                 "<select class='form-control'>" + bedrooms + "</select>" +
                             "</div>" + 
@@ -1477,6 +1603,20 @@ function CreateAccordionView(oid, data)
                                 "<label>University</label>" + 
                                 "<select class='form-control'>" + universities + "</select>" +
                             "</div>" + 
+=======
+                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
+                            "</div>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
+                            "</div>" + 
+<<<<<<< HEAD
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>University</label>" + 
+                                "<select class='form-control'>" + universities + "</select>" +
+                            "</div>" + 
+>>>>>>> b30758c... 107 universities
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;'>" +
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
@@ -1496,9 +1636,15 @@ function CreateAccordionView(oid, data)
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Is Rented</label><input class='yesno' type='checkbox' " + (data.IsRented ? "checked" : "") + " data-size='mini' disabled/>" +
                             "</div>" + 
+<<<<<<< HEAD
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Lease Type</label><input class='leasetype' type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
+=======
+                            //"<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                            //    "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" //? "checked" : "") + " data-size='mini' />" +
+                            //"</div>" +
+>>>>>>> 65a35be... 107 lease type and front page fixes
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Building Type</label><input class='buildingtype' type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
@@ -1512,9 +1658,25 @@ function CreateAccordionView(oid, data)
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, Please Choose an Address Within " + threshold + " miles of this University!</label>" +                                
                             "</div>" +
                         "</div>" +
+                        "<div class='row' style='margin-top: 10px'>" + 
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
+                            "</div>" +
+                            "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" + 
+                            "</div>" +
+                        "</div>" +
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
+=======
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? data.Notes : "") + "</textarea>" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                "<label>Info</label><textarea rows='4' cols='50' class='form-control' >" + (data.Notes ? notes : "") + "</textarea>" +
+>>>>>>> 0dc8937... 107 updating deleting creating
                             "</div>" + 
                         "</div>" +
                         "<div class='row'>" + 

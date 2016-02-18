@@ -20,11 +20,30 @@ def UpdatePricing(id, listingMarkup, featuredMarkup)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
+<<<<<<< HEAD
     retMsg = ""
  
     begin
         queryObj = Hash.new
         queryObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+=======
+    universityObj = Hash.new
+    universityObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+    
+    retMsg = ""
+ 
+    begin
+        university = Hash.new
+    
+        mongoSession.with(safe: true) do |session|
+            university = session[:universities].find(universityObj).one
+        end
+        
+        universityId = university["UniversityId"]
+    
+        queryObj = Hash.new
+        queryObj["UniversityId"] = universityId
+>>>>>>> 34c5dec... 115 backend functions
     
         pricingObj = Hash.new
         pricingObj["ListingMarkup"] = listingMarkup

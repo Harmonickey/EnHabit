@@ -169,6 +169,14 @@
     width: 100%;
 }
 
+<<<<<<< HEAD
+=======
+.type-content .bootstrap-switch
+{
+    float: left;
+}
+
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 #datepicker-inline
 {
     font-weight: bold;
@@ -527,10 +535,31 @@
     width: 100px;
     border-radius: 6px;
     border: 2px white solid;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     background: rgba(0,0,0,0.4);
     bottom: 37px;
     left: 114px;
     font-weight: bold;
+=======
+    background: transparent;
+=======
+    background: rgba(255,255,255,0.5);;
+>>>>>>> eae1eea... 107 style additions
+    bottom: 37px;
+    left: 114px;
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    background: transparent;
+=======
+    background: rgba(0,0,0,0.4);
+>>>>>>> 27e1580... 107 slight black background
+    bottom: 37px;
+    left: 114px;
+    font-weight: bold;
+>>>>>>> 88f4b12... 107 revert but with bold now
 }
 
 #search-section > li.menu-item
@@ -619,14 +648,26 @@
 #details-view .close
 {
     top: 55px;
+<<<<<<< HEAD
+<<<<<<< HEAD
     right: 10%;
+=======
+    right: 55px;
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    right: 10%;
+>>>>>>> b0c5151... 107 minor style changes
 }
 
 #Filters input,
 #Filters select,
 #extras_view input,
+<<<<<<< HEAD
 #extras_view select,
 #extra-filters-btn
+=======
+#extras_view select
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 {
     background-color: black;
     border-radius: 10px;
@@ -907,7 +948,15 @@
     background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0045484d',GradientType=0 );
     top: 50px;
+<<<<<<< HEAD
+<<<<<<< HEAD
     border-radius: 25px;
+=======
+    border-radius: 30px;
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    border-radius: 25px;
+>>>>>>> b0c5151... 107 minor style changes
 }
 
 #details-view-listing-details h2
@@ -952,7 +1001,15 @@
 
 #details-view .details-listing-action-btn 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
     background-color: rgba(255,255,255,0.5);
+=======
+    background: transparent;
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    background-color: rgba(255,255,255,0.5);
+>>>>>>> 01d5436... 107 styles
     border: 2px green solid;
     color: green;
     border-radius: 20px;
@@ -965,9 +1022,24 @@
 
 #details-view .details-listing-action-btn:hover
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
     color: white;
     background: darkgreen;
     border: 2px darkgreen solid;
+=======
+    color: black;
+    background: darkgreen;
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    color: white;
+    background: darkgreen;
+<<<<<<< HEAD
+    border: darkgreen;
+>>>>>>> 01d5436... 107 styles
+=======
+    border: 2px darkgreen solid;
+>>>>>>> 8faeed1... 107 email success message
 }
 
 #details-view-actions
@@ -1026,7 +1098,14 @@ select::-ms-expand
 .leaflet-container a.leaflet-popup-close-button 
 {
     position: absolute;
+<<<<<<< HEAD
+<<<<<<< HEAD
     z-index: 1;
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    z-index: 1;
+>>>>>>> b0c5151... 107 minor style changes
     top: 6px;
     right: 10px;
     padding: 4px 4px 0 0;
@@ -1132,19 +1211,45 @@ select::-ms-expand
     background: rgba(0,0,0,0.35);
     color: white;
     border-radius: 10px;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eae1eea... 107 style additions
  }
  
  .popup-background-shadow
  {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     height: 30%;
     width: 100%;
     position: absolute;
     top: 0;
+=======
+    height: 50%;
+=======
+    height: 25%;
+>>>>>>> 9194be2... 107 50 to 25
+=======
+    height: 30%;
+>>>>>>> 7c5f81b... 107 styles
+    width: 100%;
+    position: absolute;
+<<<<<<< HEAD
+>>>>>>> eae1eea... 107 style additions
+=======
+    top: 0;
+>>>>>>> a703bc0... 107 minor fixes
     background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(35,36,39,0.85) 50%, rgba(69,72,77,0) 100%);
     background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%);
     background: linear-gradient(to bottom, rgba(0,0,0,1) 0%,rgba(35,36,39,0.85) 50%,rgba(69,72,77,0) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0045484d',GradientType=0 );
     border-radius: 20px;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 461525b... 107 close leaflet popup, white x
  }
  
  .enhabit-popup-close-button
@@ -1156,4 +1261,24 @@ select::-ms-expand
     z-index: 1;
     cursor: pointer;
     font: 16px/14px Tahoma, Verdana, sans-serif;
+<<<<<<< HEAD
  }
+ 
+.serviceTypesContainer {
+    float: none !important;
+    margin: 0 auto;
+}
+
+.serviceTypes li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+=======
+ }
+>>>>>>> 39804cb... 107 latest fixes
+=======
+ }
+>>>>>>> eae1eea... 107 style additions
+=======
+ }
+>>>>>>> 461525b... 107 close leaflet popup, white x

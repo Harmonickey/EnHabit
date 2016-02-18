@@ -3,8 +3,16 @@
     
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["admin"]))
@@ -80,11 +88,36 @@
                     <li class="admin-nav"><a style="cursor: pointer;" href="/UsersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Users</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>Listings</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>   
                     <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+=======
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>                 
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>   
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f518129... 107 universities
                     <li id="login-function" class="menu-item scroll" onclick="Logout()">
+=======
+                    <li id="login-function" class="menu-item scroll" href="/logout.php">
+>>>>>>> 7e845cc... 107 logout stuff
+=======
+=======
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 12b3320... 115 added pricing location
+=======
+                    <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 64522a7... 115 percent to money
+                    <li id="login-function" class="menu-item scroll" onclick="Logout()">
+>>>>>>> 6d15b60... 107 revert to old logout
                         <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                     </li>
                 </ul>
@@ -139,6 +172,8 @@
 							<span>Universities</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <li>
 						<a href="../pricing">
 							<i class="fa fa-money"></i>
@@ -151,6 +186,16 @@
 							<span>Logs</span>
 						</a>	    				
 					</li>
+=======
+>>>>>>> f518129... 107 universities
+=======
+                    <li>
+						<a href="../pricing">
+							<i class="fa fa-money"></i>
+							<span>Pricing</span>
+						</a>	    				
+					</li>
+>>>>>>> 12b3320... 115 added pricing location
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->
@@ -290,11 +335,13 @@
                     </div>
                 </div>
                 <div class="row">
+                    <!--
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
                             <label>Lease Type</label><input type='checkbox' data-size='mini' />
                         </div>
                     </div>
+                    -->
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch type-content">
                             <label>Building Type</label><input type='checkbox' data-size='mini' />
@@ -302,11 +349,28 @@
                     </div>
                 </div>
                 <div class="row">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0dc8937... 107 updating deleting creating
                     <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
                         <label>Landlord</label>
                         <select id="landlords-filter" class="form-control">
                         
                         </select>
+<<<<<<< HEAD
+=======
+                    <div class="col-lg-5 col-md-5 col-sm-5 ui-widget">
+                        <label>Landlord</label><input type='text' class='form-control' />
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 required" style="width: 14%;">
+                        <label>and/or</label>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 ui-widget">
+                        <label>User</label><input type='text' class='form-control' />
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 0dc8937... 107 updating deleting creating
                     </div>
                 </div>
                 <div class="row">
@@ -367,7 +431,19 @@ $(function()
 {  
     CreateDropzone("create", "#createListingModal form");
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     GetAllUsersAndLandlords(false);
+=======
+    GetAllListings();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    GetAllUsersAndLandlords();
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+    GetAllUsersAndLandlords(false);
+>>>>>>> f518129... 107 universities
 
     InitSpecialFields();
     

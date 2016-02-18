@@ -14,6 +14,7 @@ var defaultPicture = "404ImageNotFound.png";
 var entries = {};
 var multiPopup = {};
 var listingSlideshows = {};
+<<<<<<< HEAD
 
 var listingWaiting = false;
 var listingData = {};
@@ -28,6 +29,8 @@ var universitiesList = [];
 var pictures = {};
 var dropzones = {};
 var addedFiles = {};
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
@@ -38,9 +41,48 @@ var background_settings = {
 
 var markers = new L.FeatureGroup();
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
 var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
+<<<<<<< HEAD
+=======
+var markers = new L.FeatureGroup();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+function resetColors()
+{
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setIcon(L.mapbox.marker.icon({
+            'marker-color': '#000',
+            'marker-size': 'medium',
+            'marker-symbol': 'building'
+        }));
+    }
+}
+
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
+var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
+new L.Control.Zoom({ position: 'topright' }).addTo(map);
+map.on('click', resetColors);
+var myLayer = L.mapbox.featureLayer().addTo(map);
+myLayer.on('click', function(e) {
+    resetColors();
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setIcon(L.mapbox.marker.icon({
+            'marker-color': '#006400',
+            'marker-size': 'medium',
+            'marker-symbol': 'building'
+        }));
+    }
+});
+>>>>>>> f853bfc... 107 outline gone and updated styles, fixes
+=======
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
+var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
+new L.Control.Zoom({ position: 'topright' }).addTo(map);
+>>>>>>> 451c4de... 107 remove attemt for dynamic markers
 
 //map.on('draw:created', getPointsWithinPolygon);
 
@@ -72,7 +114,6 @@ function SubscribeSlideshowArrows()
 {
     $('body').on('click', '.slider-arrow img', function() 
     {
-        console.log("here");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -1017,8 +1058,13 @@ function InsertMarkers(res)
             {
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
+<<<<<<< HEAD
                     'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
                     'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
+=======
+                    'marker-color': '#000',
+                    'marker-size': 'medium',
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                     'marker-symbol': 'building'
                 }));
                 
@@ -1041,7 +1087,15 @@ function InsertMarkers(res)
                 }
                 
                 var popupContent =  
+<<<<<<< HEAD
+<<<<<<< HEAD
                             '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
+=======
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button" href="#close">x</a>' +
+>>>>>>> 461525b... 107 close leaflet popup, white x
+=======
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
+>>>>>>> b30758c... 107 universities
                             '<div id="' + entry[0]._id.$oid + '" class="popup">' +
                                 '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
                                     '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
@@ -1059,8 +1113,35 @@ function InsertMarkers(res)
                 
                 popupContent += slideshowContent +
                                 '</div>' +
+<<<<<<< HEAD
                             '</div>' +
                             "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "', '" + entry[0].Username + "', '" + entry[0].Landlord + "')\" />";
+                
+                popupContent += '<div class="popup-background-shadow"></div>';
+=======
+                            '</div>' +
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> b0c5151... 107 minor style changes
+=======
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> 8da06d7... 107 various bug fixes
+=======
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> dee9a17... 107 notes in different place
+=======
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].RentWithMarkup + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> 136a813... 115 apply markups to front page
+=======
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> 6b01f5f... 115 apply pricing not markup
                 
                 popupContent += '<div class="popup-background-shadow"></div>';
                 
@@ -1087,15 +1168,30 @@ function InsertMarkers(res)
                     }
                 }
                 
+                entry.reverse(); // reverse for now since we need to display the featured ones first
+                
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
+<<<<<<< HEAD
                     'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
                     'marker-size': (isMarkerFeatured ? 'large' : 'medium'),
+=======
+                    'marker-color': '#000',
+                    'marker-size': 'medium',
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                     'marker-symbol': 'building'
                 }));
                 
                 var popupContent =  
+<<<<<<< HEAD
+<<<<<<< HEAD
                             '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
+=======
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button" href="#close">x</a>' +
+>>>>>>> a1757c9... 107 x on multi listing
+=======
+                            '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
+>>>>>>> b30758c... 107 universities
                             '<div class="popup">' +
                                 '<h2 class="multi-h2">' + entry[0].Address + '</h2>' +
                                 '<p class="multi-p">Multiple listings available.</p>' +
@@ -1122,12 +1218,48 @@ function InsertMarkers(res)
                     var listingHtml = "<div class='item-content listing'>" +
                                 "<img src='" + base + listingPic + "' height='100' width='100' />" +
                                 "<div class='information text-left'>" +
+<<<<<<< HEAD
                                     "<p class='listing-address'>" + listing.Address + " Unit " + (listing.Unit ? listing.Unit : "") + (listing.IsFeatured ? " <strong style='color: #4078c0'>(Featured Listing)</strong>" : "") + "</p><br>" +
+=======
+                                    "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p><br>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                                     "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
                                     "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                                     "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "', '" + listing.Username + "', '" + listing.Landlord + "')\" />" + 
+=======
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+>>>>>>> b0c5151... 107 minor style changes
+=======
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+>>>>>>> 8da06d7... 107 various bug fixes
+=======
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+>>>>>>> dee9a17... 107 notes in different place
+=======
+                                    "<p class='listing-price'>$" + listing.RentWithMarkup + "/month</p><br>" +
+                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.RentWithMarkup + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+>>>>>>> 136a813... 115 apply markups to front page
+=======
+                                    "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
+                                    "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
+                                    "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
+                                    "<p class='listing-buildingType'>" + listing.BuildingType.CapitalizeFirstLetter() + " - " + listing.LeaseType.CapitalizeFirstLetter() + "</p><br>" +
+                                    "<input type='button' class='btn btn-outline-inverse btn-sm multi-more-details' value='More Details' onclick=\"OpenListing('" + listing._id.$oid + "', '" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType+ "', '" + listing.Notes + "', '" + listing.HasAnimals + "', '" + listing.HasLaundry + "', '" + listing.HasParking + "', '" + listing.HasAirConditioning + "', [" + listing.Thumbnails + "], '" + listing.WorldCoordinates.x + "', '" + listing.WorldCoordinates.y + "', '" + listing.Testing + "')\" />" + 
+>>>>>>> 6b01f5f... 115 apply pricing not markup
                                 "</div>" +
                             "</div>";
                     
@@ -1222,8 +1354,33 @@ function InsertIntoListView(data)
                         "</div>" +
                     "</div>" +
                 "</div>" +
+<<<<<<< HEAD
                 "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                     "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "', '" + data.Username + "', '" + data.Landlord + "')\" />" +
+=======
+                "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> b0c5151... 107 minor style changes
+=======
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> 8da06d7... 107 various bug fixes
+=======
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> dee9a17... 107 notes in different place
+=======
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.RentWithMarkup + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> 136a813... 115 apply markups to front page
+=======
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> 6b01f5f... 115 apply pricing not markup
                 "</div>" +
             "</div>" +
         "</div>");
@@ -1248,8 +1405,25 @@ function InsertIntoListView(data)
         downloadingImage.src = base + defaultPicture;
     }
 }
+<<<<<<< HEAD
 
 function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing, Username, Landlord)
+=======
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+function OpenListing(Id, Address, Unit, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+>>>>>>> b0c5151... 107 minor style changes
+=======
+function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, RentWithMarkup, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+>>>>>>> 136a813... 115 apply markups to front page
+=======
+function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+>>>>>>> 6b01f5f... 115 apply pricing not markup
 {
     $("#common-modal").modal('hide');
     
@@ -1304,6 +1478,12 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
                 "<h2>Available " + DateToHumanReadable(Start) + "</h2>" +
             "</div>" + 
         "</div>" +
+<<<<<<< HEAD
+        "<div class='row'>" +
+            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+                "<h2>Available " + DateToHumanReadable(Start) + "</h2>" +
+            "</div>" + 
+        "</div>" +
         "<div class='row'>" +
             "<div class='col-lg-12 col-md-12 col-sm-12'>" +
                 (Landlord != 'undefined' ? "<h5>Listed By: " + Landlord + "</h5>" : (Username != 'undefined' ? "<h5>Listed By: " + Username + "</h5>" : "")) +
@@ -1347,17 +1527,77 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
                 "<p>" + (notes != "undefined" ? notes : "") + "</p>" + 
             "</div>" +
         "</div>") +
+=======
+        "<div class='row' style='margin-top: 25px;'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground' style='border-top-left-radius: 10px;'>" +
+                "<p>Bedrooms: " + Bedrooms + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground' style='border-top-right-radius: 10px;'>" +
+                "<p>Lease Type: " + LeaseType.CapitalizeFirstLetter() + "</p>" +
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground'>" +
+                "<p>Bathrooms: " + Bathrooms + "</p>" +
+            "</div>" + 
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground'>" +
+                "<p>Building Type: " + BuildingType.CapitalizeFirstLetter() + "</p>" +
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" + 
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground'>" +
+                "<p>Animals: " + BooleanToHumanReadable(Animals) + "</p>" + 
+            "</div>" +
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground'>" +
+                "<p>Air Conditioning: " + BooleanToHumanReadable(AirConditioning) + "</p>" + 
+            "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground' style='border-bottom-left-radius: 10px;'>" +
+                "<p>Parking: " + BooleanToHumanReadable(Parking) + "</p>" + 
+            "</div>" + 
+            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground' style='border-bottom-right-radius: 10px;'>" +
+                "<p>In-Unit Laundry: " + BooleanToHumanReadable(Laundry) + "</p>" + 
+            "</div>" +
+        "</div>" +
+        (notes == null || notes == "" ? "" : 
+        "<div class='row' style='margin-top: 50px;'>" +
+            "<div class='col-lg-8 col-md-8 col-sm-8 darkbackground'>" +
+                "<p>" + (notes != "undefined" ? notes : "") + "</p>" + 
+            "</div>" +
+<<<<<<< HEAD
+        "</div>" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        "</div>") +
+>>>>>>> 39804cb... 107 latest fixes
     "</div>";
     
     var actionsContent =
     "<div class='col-lg-12 col-md-12 col-sm-12'>" +
+<<<<<<< HEAD
         //"<div class='row'>" +
             //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
         //"</div>" +
         //"<div class='row'>" +
         //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
         //"</div>" +
+=======
         "<div class='row'>" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
+        "</div>" +
+<<<<<<< HEAD
+        "<div class='row'>" +
+            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' onclick='ShareListing(\"" + Id + "\");' />" +
+        "</div>" +
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+        "<div class='row'>" +
+=======
+        //"<div class='row'>" +
+        //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
+        //"</div>" +
+        //"<div class='row'>" +
+>>>>>>> c623f5b... 107 remove share button
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
@@ -1379,10 +1619,22 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     $("#details-items").width(width);
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
     //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
     
+=======
+    //SubscribeSlideshowArrows();
+=======
+
+>>>>>>> b0c5151... 107 minor style changes
+    //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
+    //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
+    
+    SubscribeSlideshowArrows();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 }
 
 /*
@@ -1439,12 +1691,15 @@ function LoginUser(hideMainModal)
                     if (Contains(res, "Okay"))
                     {
                         ShowLoginFeatures(hideMainModal, res);
+<<<<<<< HEAD
                         
                         // session should be set, so the user will be attached to the listing
                         if (listingWaiting)
                         {
                             CreateListing();
                         }
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                     }
                     else
                     {
@@ -1515,6 +1770,15 @@ function PostListingModal(event)
     
     // initialize all the fields in the form
     InitSpecialFields();
+}
+
+function PowerKioskModal(event)
+{
+    // loading the power kiosk modal
+    LoadModal(event, 'modal-content-power-kiosk', 'power-kiosk', 'Power Kiosk');
+    
+    // make sure the picture dropzone is created
+    InitializePowerKiosk();
 }
 
 /* Just a proxy method for handling the special listing creation mechanism... */
@@ -1600,11 +1864,14 @@ function LoginFacebookUser(userID, accessToken)
     });
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Apply(listingId)
 {
     if ($(".navbar-login-btn").css("display") == "block")
     {
         LoadModal(null, 'modal-content-login', 'login', 'Log In');
+<<<<<<< HEAD
     }
     else
     {
@@ -1661,6 +1928,131 @@ function Apply(listingId)
 function LogoutUser()
 {
 	RemoveLoginFeatures();
+=======
+function AdjustZIndex()
+{
+    $("#common-modal").css("z-index", "2000");
+}
+
+=======
+>>>>>>> a76a00b... 107 z index stuff
+function Apply(listingId)
+{
+    if ($(".navbar-login-btn").css("display") == "block")
+    {
+<<<<<<< HEAD
+        ListingId: listingId
+    };
+>>>>>>> 013afa8... 107 emailing
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "logout.php",
+        success: function(res)
+=======
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+=======
+>>>>>>> 64bd5e4... 107 admin fixes, portal fixes, front page addition, unit fixes
+    }
+    else
+    {
+    
+        var data = 
+        {
+            ListingId: listingId
+        };
+        
+        $.ajax(
+>>>>>>> 274f629... 107 need login check for applying
+        {
+            type: "POST",
+            url: "/api.php",
+            data:
+            {
+<<<<<<< HEAD
+                if (Contains(res, "Successfully"))
+                {
+                    $.msgGrowl ({ type: 'success', title: 'Success', text: "Logout Success", position: 'top-center'});
+=======
+                command: "add_applicant",
+                data: data,
+                endpoint: "Applicants"
+            },
+            success: function(res)
+            {
+                try
+                {
+                    if (Contains(res, "Okay"))
+                    {
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Application Sent!", position: 'top-center'});
+                    }
+                    else if (Contains(res, "Update"))
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Please Update Your Account", position: 'top-center'});
+                    }
+                    else if (Contains(res, "Apply"))
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: "Cannot Apply To Your Own Listing!", position: 'top-center'});
+                    }
+                    else
+                    {
+                        throw new Error("Problem Sending Application");
+                    }
+>>>>>>> 274f629... 107 need login check for applying
+                }
+                catch(e)
+                {
+<<<<<<< HEAD
+                    throw new Error("Problem Logging Out");
+=======
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Sending Application", position: 'top-center'});
+>>>>>>> 274f629... 107 need login check for applying
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+<<<<<<< HEAD
+            },
+            complete: function()
+            {
+<<<<<<< HEAD
+<<<<<<< HEAD
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'top-center'});
+=======
+                $.msgGrowl ({ type: 'error', title: 'Error', text: "Problem Sending Application", position: 'top-center'});
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+<<<<<<< HEAD
+=======
+        },
+        complete: function()
+        {
+            $("#common-modal").modal('hide');
+            $("#common-modal").css("z-index", "2000");
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+        }
+    });
+=======
+                $("#common-modal").modal('hide');
+=======
+>>>>>>> 65a35be... 107 lease type and front page fixes
+            }
+        });
+    }
+>>>>>>> 274f629... 107 need login check for applying
+}
+
+<<<<<<< HEAD
+=======
+function LogoutUser()
+{
+	RemoveLoginFeatures();
     
     $.ajax(
     {
@@ -1691,6 +2083,7 @@ function LogoutUser()
     });
 }
 
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
@@ -1725,6 +2118,7 @@ function ShowLoginFeatures(hideMainModal, userType)
         $(".admin-nav").show();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 <<<<<<< HEAD
@@ -1739,10 +2133,13 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> 118cf11... 136 create listing with user id
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
 >>>>>>> 5a6323a... 136 semicolon
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1759,16 +2156,27 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> 118cf11... 136 create listing with user id
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
 >>>>>>> 5a6323a... 136 semicolon
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     }
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 65240df... 107 various payments fixes
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
         }
+<<<<<<< HEAD
         
         $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/';");
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 65240df... 107 various payments fixes
     }
 
     if (hideMainModal === true)
@@ -1863,7 +2271,23 @@ function DateToHumanReadable(date)
 {
     var date = new Date(date);
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     return (date.getUTCMonth() + 1) + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
+=======
+    return (date.getMonth() + 1) + "-" date.getDate() + "-" + date.getFullYear();
+>>>>>>> a9dcf37... 107 date
+=======
+    return (date.getMonth() + 1) + "-" + date.getDate() + "-" + date.getFullYear();
+>>>>>>> 204f14e... 107 syntax
+=======
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+>>>>>>> ed06b13... 107 update human readable date
+=======
+    return (date.getUTCMonth() + 1) + "/" + date.getUTCDate() + "/" + date.getUTCFullYear();
+>>>>>>> 64bd5e4... 107 admin fixes, portal fixes, front page addition, unit fixes
 }
 
 function LoadModal(event, which, enterDefault, btnText)
@@ -1934,6 +2358,10 @@ function CloseDetailsView()
     
     //location.hash = "";
     
+<<<<<<< HEAD
+=======
+    SubscribeSlideshowArrows();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 }
 
 function OpenExtrasView()
@@ -1975,8 +2403,6 @@ function CloseExtrasView()
 
 function CreateListing()
 {   
-    console.log("here");
-
     var data = listingData;
     
     try
@@ -2053,6 +2479,8 @@ function ProcessListing()
                         listingWaiting = false;
                         
                         listingData = {};
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                     }
                 }
             }
@@ -2186,6 +2614,7 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
+<<<<<<< HEAD
     PopulateAndOpenModal(null, 'modal-content-email');
     $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 }
@@ -2199,8 +2628,15 @@ function GetPayKey()
     data.Memo = data.Memo.replace("'", "");
     
     if (error != "Please Include<br>")
+=======
+    if ($(".navbar-login-btn").css("display") == "block")
+>>>>>>> a76a00b... 107 z index stuff
     {
+<<<<<<< HEAD
         SetError("MakePayment", error);
+=======
+        LoadModal(null, 'modal-content-login', 'login', 'Log In');
+>>>>>>> 39804cb... 107 latest fixes
     }
     else
     {
@@ -2306,6 +2742,14 @@ function SendEmail(listingId)
                 {
                     $("#common-modal").modal('hide');
                     $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Sent Email!", position: 'top-center'});
+<<<<<<< HEAD
+                }
+                else if (Contains(res, "Update"))
+                {
+                    $("#common-modal").modal('hide');
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: "Please Update Your Account!", position: 'top-center'});
+=======
+>>>>>>> 8faeed1... 107 email success message
                 }
                 else if (Contains(res, "Update"))
                 {
@@ -2641,4 +3085,8 @@ $(window).on('resize', function() {
     
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit

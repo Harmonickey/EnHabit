@@ -4,8 +4,16 @@
     
     if (!isset($_SESSION["userId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["tenant"]))

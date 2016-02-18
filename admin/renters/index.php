@@ -4,8 +4,16 @@
     
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["admin"]))
@@ -88,11 +96,36 @@
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UsersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Users</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>Listings</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                         <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>  
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>  
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>                 
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
+=======
+                        <li id="login-function" class="menu-item scroll" href="/logout.php">
+>>>>>>> 7e845cc... 107 logout stuff
+=======
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>  
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>  
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f518129... 107 universities
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 12b3320... 115 added pricing location
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 64522a7... 115 percent to money
+                        <li id="login-function" class="menu-item scroll" onclick="Logout()">
+>>>>>>> 6d15b60... 107 revert to old logout
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                         </li>
                     </ul>
@@ -147,6 +180,8 @@
 							<span>Universities</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <li>
 						<a href="../pricing">
 							<i class="fa fa-money"></i>
@@ -159,6 +194,16 @@
 							<span>Logs</span>
 						</a>	    				
 					</li>
+=======
+>>>>>>> f518129... 107 universities
+=======
+                    <li>
+						<a href="../pricing">
+							<i class="fa fa-money"></i>
+							<span>Pricing</span>
+						</a>	    				
+					</li>
+>>>>>>> 12b3320... 115 added pricing location
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->	

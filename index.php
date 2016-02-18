@@ -76,6 +76,11 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         Post Listing Now!
                     </a>
                 </div>
+                <div class="nav navbar-nav navbar-left" style="margin-left: 15px; margin-top: 6px;" >
+                    <a id="powerk-kiosk-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PowerKioskModal(event);">
+                        Save Money on Energy Now!
+                    </a>
+                </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -106,9 +111,22 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>Listings</a></li>
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li> 
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                                 <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+=======
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li> 
+>>>>>>> f518129... 107 universities
+=======
+                                <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 12b3320... 115 added pricing location
+=======
+                                <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 64522a7... 115 percent to money
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listing</a></li>
                                 <li class='rental-nav' style='display: none;'><a style='cursor: pointer;' href='/PaymentsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>
@@ -116,6 +134,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/EnergyPortal.php"><i class="fa fa-bolt" style="margin-right: 5px;"></i>Save on Energy</a></li>
+=======
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
+                                <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listing</a></li>
+                                <li class='rental-nav' style='display: none;'><a style='cursor: pointer;' href='/PaymentsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>My Account</a></li>
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ApplicantsPortal.php"><i class="fa fa-copy" style="margin-right: 5px;"></i>My Applicants</a></li>                               
+                                <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                                 <li class="landlord-nav" style="display: none;"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>My Renters</a></li>
                                 <li id="login-function" class="menu-item scroll" onclick="LogoutUser()">
                                     <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
@@ -157,8 +183,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             <select id="Bedrooms-filter" class="form-control">
                                 <option value="studio">Studio</option>
                                 <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
                                 <option value="3">3+</option>
                             </select>
                         </div>
@@ -197,14 +223,24 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div>
                     <!--<div class="item-content list-view-button">
                         <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
                     </div>-->
+=======
+                <div class="double-item-content">
+                    <!--<div class="item-content list-view-button">
+                        <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
+                    </div>-->
+                    <div class="item-content extra-filter-button">
+                        <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
+                    </div>
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                 </div>
                 <ul id="action-menu">
-                    <li class="menu-item scroll" onclick="OpenExtrasView();">
-                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Open Extra Filters</a>
+                    <li class="menu-item scroll">
+                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" onclick="OpenExtrasView()">Open Extra Filters</a>
                     </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                         <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
@@ -247,6 +283,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             </div>
                         </div>
                     </div>
+                    <!--
                     <div class="item-content type-content">
                         <label>Rental or Sublet</label>
                         <div class="styled-select">
@@ -257,6 +294,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             </select>
                         </div>
                     </div>
+                    -->
                     <div class="item-content type-content">
                         <label>Apartment or House</label>
                         <div class="styled-select">
@@ -303,6 +341,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <p>Welcome to Enhabit! You can set up our service with your credit or debit card to pay your monthly bills, and even list your apartment when you plan on moving out!</p>
             </div>
             <!-- #modal-content-register-success -->
+<<<<<<< HEAD
             <!-- Speedy Payment -->
             <div class="content-to-populate-in-modal" id="modal-content-payment">
                 <h1>Pay Rent Now</h1>
@@ -345,8 +384,27 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+<<<<<<< HEAD
                         <label>Phone Number (optional)</label>
                         <input type="text" class="form-control email-phone-number" />
+=======
+                        <input type="button" class="btn btn-outline-inverse btn-sm apply-btn" value="Apply" style="width: 75px; margin-top: 10px;"/>
+                    </div>
+                </div>
+                <!-- end application view-->
+            </div>
+            <!-- End Application -->
+=======
+>>>>>>> 013afa8... 107 emailing
+            <!-- Email -->
+            <div class="content-to-populate-in-modal" id="modal-content-email">
+                <!-- placeholder for details view -->
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <div class="row row-centered" style="margin-top: 10px;">
+                    <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+                        <label>Message</label>
+                        <textarea rows='10' class="form-control email-message">I would like to meet up with you to view this listing!</textarea>
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                     </div>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
@@ -393,6 +451,63 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             
             </div>
             <!-- #modal-content-owl-carousel -->
+            <!-- Power Kiosk Popup -->
+            <div class="content-to-populate-in-modal" id="modal-content-power-kiosk">
+                <div class="inner cover">       
+                    <p class="small">We're going help you save money on your Supplier while keeping your Provider.  When you sign up for electricity or gas you are always given a provider and supplier but they are often with the same company!  Change to a most cost effective Supplier today!</p>
+                    <div class="row row-centered">
+                        <div class="serviceTypesContainer col-md-6 col-sm-6 col-lg-6 col-centered">
+                            <img class="loader1" src="Libraries/Styles/images/AjaxLoader.gif" style="display: none;">  
+                            <ul class="serviceTypes nav nav-pills nav-justified">
+              
+                            </ul>
+                        </div>
+                    </div>      
+                    <p class="lead">Start By Entering Your Zip Code!</p>            
+                    <div class="row row-centered">              
+                        <div class="zipContainer col-md-4 col-centered" style="float: none; margin: 0 auto;">        
+                            <input class="zipCode form-control input-lg text-center" type="text" placeholder="#####" />
+                        </div>
+                    </div>
+                    <div class="row row-centered">
+                        <div class="utilityAlert alert alert-danger" style="display: none;"></div>
+                        <div class="utilitiesContainer col-centered dropdown" style="display: none; float: none; margin: 10px auto;">
+                            <label for="utilitiesDropdown">Select Your Current Provider</label>
+                            <div class="styled-select" style="width: 230px !important;">
+                                <select role="menu" class="utilities form-control text-capitalize" style="color: white; border: 1px solid white !important; border-radius: 10px !important;">                     
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-centered">
+                        <div class="zoneAlert alert alert-danger" style="display: none;"></div>
+                        <div class="zonesContainer col-centered dropdown" style="display: none; float: none; margin: 10px auto;">
+                            <label for="zonesDropdown">Select Your Zone</label>
+                            <p class="small" style="margin-top: 0">If you don't know, just use the first one.</p>
+                            <div class="styled-select" style="width: 230px !important;">
+                                <select role="menu" class="zones form-control text-capitalize" style="color: white; border: 1px solid white !important; border-radius: 10px !important;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-centered">
+                        <div class="submitContainer col-md-4 col-centered" style="display: none; float: none; margin: 0 auto;">
+                            <button type="button" class="submit btn btn-outline-inverse btn-lg" onclick="SubmitQuery();"><i class="fa fa-usd"></i> Save Money Now!</button>
+                        </div>
+                    </div>
+                    <form class="data-submit hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
+                        <input type="hidden" name="directAgentID" class="directAgentId" value="Enhabit">
+                        <input type="hidden" name="stateID" class="stateID" value="">
+                        <input type="hidden" name="serviceTypeID" class="serviceTypeID" value="">
+                        <input type="hidden" name="zipCode" class="zipCodeID" value="">
+                        <input type="hidden" name="utilityID" class="utilityID" value="">
+                        <input type="hidden" name="zone" class="zoneID" value="">
+                        <input type="submit" name="residential" class="getRates">
+                    </form>
+                </form>
+              </div>
+            </div>
+            <!-- #modal-content-powerk-kiosk -->
             <!-- end: Left Sidebar -->    
         </div>
         <!-- end: Outer Container -->
@@ -560,7 +675,11 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <!-- DO NOT MOVE, EDIT OR REMOVE - this is needed in order for popup content to be populated in it -->
         <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
+<<<<<<< HEAD
                 <div class="modal-content" style="margin-top: 100px; border-radius: 10px;">
+=======
+                <div class="modal-content" style="margin-top: 100px;">
+>>>>>>> a76a00b... 107 z index stuff
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <div class="modal-body clearfix">
                     </div>
@@ -614,14 +733,19 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <!-- fancy scrollbars -->
         <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>  
         <!-- PayPal -->
-        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>        
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script> 
+        <!-- PowerKiosk -->
+        <script src="Libraries/Javascript/powerkiosk_front.js"></script>
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
         <?php 
             if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']) || isset($_SESSION['admin']))
             {
+<<<<<<< HEAD
                 
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                 $res = "";
                 if (isset($_SESSION['tenant']))
                 {
@@ -631,7 +755,11 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     }
                     else
                     {
+<<<<<<< HEAD
                         $res = "Tenant" . (isset($_SESSION["hasRental"]) ? ":HasRental" : "");
+=======
+                        $res = "Tenant";
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                     }
                 }
                 else if (isset($_SESSION['landlord']))
@@ -665,8 +793,66 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 
           ga('create', 'UA-64824617-1', 'auto');
           ga('send', 'pageview');
+          
+          //http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+          $(document).unbind('keydown').bind('keydown', function (event) {
+            var doPrevent = false;
+            if (event.keyCode === 8) {
+                var d = event.srcElement || event.target;
+                if ((d.tagName.toUpperCase() === 'INPUT' && 
+                     (
+                         d.type.toUpperCase() === 'TEXT' ||
+                         d.type.toUpperCase() === 'PASSWORD' || 
+                         d.type.toUpperCase() === 'FILE' || 
+                         d.type.toUpperCase() === 'SEARCH' || 
+                         d.type.toUpperCase() === 'EMAIL' || 
+                         d.type.toUpperCase() === 'NUMBER' || 
+                         d.type.toUpperCase() === 'DATE' )
+                     ) || 
+                     d.tagName.toUpperCase() === 'TEXTAREA') {
+                    doPrevent = d.readOnly || d.disabled;
+                }
+                else {
+                    doPrevent = true;
+                }
+            }
+
+            if (doPrevent) {
+                event.preventDefault();
+            }
+          });
 
         </script>
+<<<<<<< HEAD
         
+=======
+        <!-- placeholder for details view -->
+        <div id="details-view" style="display: none;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
+            <!-- top section -->
+            <div id="details-view-slideshow-section" class="row">
+                
+            </div>
+            <div id="details-items" class="row">
+                <!-- left section -->
+                <div id="details-view-listing-details" class="col-lg-8 col-md-8 col-sm-8">
+                
+                </div>
+                <div id="details-view-actions" class="col-lg-4 col-md-4 col-sm-4">
+                
+                </div>
+                <!-- right section -->
+                <!--
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    
+                    bottom section
+                    <div id="details-view-map-section" class="row">
+                    
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <!-- end details view -->
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     </body>
 </html>

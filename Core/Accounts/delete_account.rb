@@ -79,7 +79,15 @@ begin
     id = data["id"] if not data["id"].nil? and not data["id"].empty? and isAdmin
     key = "_id" if isAdmin
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     if isAdmin || UserExists(id, key, data["Password"])
+=======
+    if UserExists(id, key, data["Password"]) || isAdmin
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    if isAdmin || UserExists(id, key, data["Password"])
+>>>>>>> 64bd5e4... 107 admin fixes, portal fixes, front page addition, unit fixes
         puts DeleteUser(id, key)
     else
         puts "Incorrect Password"

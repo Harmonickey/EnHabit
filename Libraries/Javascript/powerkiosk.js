@@ -23,20 +23,15 @@ $(function()
 {  
     InitZipCodeBox();
     
-    InitBusinessButton();
-    
     SetClickListeners();
     
     GetServiceTypes();
-    
-    SetInnerCoverHeight();
     
     var height = $("html").height();
     $("body").css("min-height", height + "px");
 });
 
 $(window).on("resize", function() {
-   SetInnerCoverHeight();
 
    // this magically fixes the screen rotate issue!
    $("#businessTypes").removeClass('nav-justified');
@@ -45,16 +40,6 @@ $(window).on("resize", function() {
        $("#businessTypes").addClass('nav-justified');
    }, 1);   
 });
-
-function InitBusinessButton()
-{
-    $('#businessTypes li').click(function(e) 
-    {
-        $("#businessTypes li").removeClass("active");
-        $(this).addClass("active");
-        e.preventDefault();
-    });
-}
 
 function InitZipCodeBox()
 {
@@ -118,21 +103,6 @@ function SetClickListeners()
             ResetFields();
         }
     });
-    
-    // update promo code upon enter
-    $(".promoCode").on("keyup", function(e) 
-    {
-        if (e.which == 13 || e.keyCode == 13)
-        {
-            ChangeAgentID();
-        }
-    })
-}
-
-function SetInnerCoverHeight()
-{
-    var offset = 20;
-    $(".inner.cover").css("min-height", ($("html").height() - ($(".masthead").height() + $(".mastfoot").height())) - offset);
 }
 
 function CloseList(element)
@@ -226,7 +196,7 @@ function GetUtilities()
         },
         error: function() 
         {
-            $("#utilityAlert").html("No Utilities Found For Your Territory!");
+            $("#utilityAlert").html("No Utilities Found For Your Area!");
             $("#utilityAlert").show();
             $("#zipCode").prop("disabled", false);
         }
@@ -259,7 +229,7 @@ function LoadUtilities(zipCode, serviceType)
             
             if (result.data.length == 0)
             {
-                $("#utilityAlert").html("No Utilities Found For Your Territory!");
+                $("#utilityAlert").html("No Utilities Found For Your Area!");
                 $("#utilityAlert").show();
             }
             else
@@ -401,22 +371,4 @@ function SetHiddenInputs()
 	$("#serviceTypeID").val($("#serviceTypes li.active a").attr("value")); //this sets utility service type!!!
 	$("#stateID").val(state);
 	$("#getRates").attr("name", $("#businessTypes li.active a").attr("value")); //this sets business type!!!
-}
-
-function OpenPromoCodeModal()
-{
-    $("#promoCodeModal").modal('show');
-}
-
-function ChangeAgentID()
-{
-	//take input from promocode box
-	var promoCode = $(".promoCode").val().trim();
-	$("#promoCodeModal").modal('hide');
-    
-	if (promoCode == "" || promoCode == null) return;
-	
-    // apply the promo code
-    $("#directAgentId").val(promoCode);
-    $("#promoCodeAlert").fadeIn().delay(2000).fadeOut();
 }

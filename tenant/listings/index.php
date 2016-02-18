@@ -4,8 +4,16 @@
     
     if (!isset($_SESSION["userId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["tenant"]))
@@ -260,9 +268,10 @@
                         <div class="modal-switch airConditioning-content">
                             <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
                         </div>
+                        <!--
                         <div class="modal-switch type-content">
                             <label>Lease Type</label><input type='checkbox' data-size='mini' />
-                        </div>
+                        </div>-->
                         <div class="modal-switch type-content">
                             <label>Building Type</label><input type='checkbox' data-size='mini' />
                         </div>
@@ -274,9 +283,25 @@
                         <select id="landlords-filter" class="form-control">
                         
                         </select>
+<<<<<<< HEAD
                     </div>
                 </div>
                 <div class="row">
+<<<<<<< HEAD
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <label>University</label>
+                        <select id="universities-filter" class="form-control">
+                        
+                        </select>
+=======
+>>>>>>> 9869d16... 107 can delete listing with pictures
+                    </div>
+                </div>
+                <div class="row">
+<<<<<<< HEAD
+=======
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <label>University</label>
                         <select id="universities-filter" class="form-control">
@@ -285,6 +310,7 @@
                     </div>
                 </div>
                 <div class="row">
+>>>>>>> b30758c... 107 universities
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
                     </div>
@@ -344,8 +370,24 @@ var universitiesList = [];
 $(function() 
 {  
     CreateDropzone("create", "#createListingModal form");
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     
     GetAllUniversities();
+=======
+
+    GetAllListings();
+    GetAllLandlords();
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    GetAllLandlords();
+    
+>>>>>>> 0dc8937... 107 updating deleting creating
+=======
+    
+    GetAllUniversities();
+>>>>>>> b30758c... 107 universities
     GetAccount(true);
 
     InitSpecialFields();

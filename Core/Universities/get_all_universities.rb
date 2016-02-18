@@ -12,7 +12,15 @@ begin
 
     documents = Array.new
     mongoSession.with(safe: true) do |session|
+<<<<<<< HEAD
+<<<<<<< HEAD
         documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1, Threshold: 1, WorldCoordinates: 1).to_a
+=======
+        documents = session[:universities].find().select(_id: 1, UniversityName: 1).to_a
+>>>>>>> f518129... 107 universities
+=======
+        documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1).to_a
+>>>>>>> cdca1eb... 107 university stuff
     end
     mongoSession.disconnect
 

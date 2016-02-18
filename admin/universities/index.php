@@ -1,12 +1,24 @@
 <?php
     session_start();
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
         header("Location: /#sessiontimeout", FALSE);
         return;
     }
     
+=======
+>>>>>>> f518129... 107 universities
+=======
+    if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
+    {
+        header("Location: /", FALSE);
+        return;
+    }
+    
+>>>>>>> 12b3320... 115 added pricing location
     if (!isset($_SESSION["admin"]))
     {
         header("Location: /admin/login.php", FALSE); // just redirect if the user isn't authorized to go here....
@@ -71,7 +83,11 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-cog"></i>
             </button>
+<<<<<<< HEAD
             <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+=======
+            <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+>>>>>>> f518129... 107 universities
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -88,8 +104,19 @@
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PaymentsPortal.php"><i class="fa fa-usd" style="margin-right: 5px;"></i>Payments</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>  
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+=======
+>>>>>>> f518129... 107 universities
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 12b3320... 115 added pricing location
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+>>>>>>> 64522a7... 115 percent to money
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                         </li>
@@ -145,6 +172,8 @@
 							<span>Universities</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <li>
 						<a href="../pricing">
 							<i class="fa fa-money"></i>
@@ -157,6 +186,16 @@
 							<span>Logs</span>
 						</a>	    				
 					</li>
+=======
+>>>>>>> f518129... 107 universities
+=======
+                    <li>
+						<a href="../pricing">
+							<i class="fa fa-money"></i>
+							<span>Pricing</span>
+						</a>	    				
+					</li>
+>>>>>>> 12b3320... 115 added pricing location
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->
@@ -170,7 +209,15 @@
       		<div class="widget stacked">
                 <div class="widget-header actions">
                     <h3>Registered Universities</h3>
+<<<<<<< HEAD
+<<<<<<< HEAD
 					<a class="btn btn-success" data-toggle="modal" href="#addUniversityModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
+=======
+					<a class="btn btn-success" data-toggle="modal" href="#createUserModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
+>>>>>>> f518129... 107 universities
+=======
+					<a class="btn btn-success" data-toggle="modal" href="#addUniversityModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Add New University</a>
+>>>>>>> 71a83e9... 107 added libraries
 				</div> <!-- /widget-header -->
 				<div class="widget-content listings">
 					<!-- all the listings go here -->
@@ -193,11 +240,21 @@
             </div>
             <div class="modal-body">
                 <div class="row"> <!-- this is used to get the display names -->
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <div class="col-lg-8 col-md-8 col-sm-8 required">
+=======
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+>>>>>>> f518129... 107 universities
+=======
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
+>>>>>>> 7c5f81b... 107 styles
                         <label>University Name: </label><input type="text" class="form-control" />
                     </div>
                 </div>
                 <div class="row"> <!-- address is used to get latitude and longitude -->
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <div class="col-lg-8 col-md-8 col-sm-8 required">
                         <label>Address: </label><input type='text' class='form-control' autocomplete="false" />
                     </div>
@@ -211,6 +268,23 @@
                 <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8">
+=======
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+=======
+                    <div class="col-lg-8 col-md-8 col-sm-8 required">
+>>>>>>> 7c5f81b... 107 styles
+                        <label>Address: </label><input type='text' class='form-control' autocomplete="false" />
+                    </div>
+                </div>
+                <!-- Lat, Long, Address Hidden fields -->
+                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
+                <div class="row">
+<<<<<<< HEAD
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+>>>>>>> f518129... 107 universities
+=======
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+>>>>>>> 7c5f81b... 107 styles
                         <button id="add-university-button" type="button" class="btn btn-success" onclick="AddUniversity()">Add University</button>
                     </div>
                 </div>
@@ -234,6 +308,9 @@
     
 <script src="../../Libraries/Javascript/jquery-1.9.1.min.js"></script>
 <script src="../../Libraries/Javascript/jquery-ui-1.10.0.custom.min.js"></script>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 <script src="//maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script src="../../Libraries/Javascript/bootstrap.min.js"></script>
 <script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
@@ -242,6 +319,23 @@
 <script src="../../Libraries/Javascript/jquery.autoNumeric.js"></script>
 <script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
 
+=======
+<script src="../../Libraries/Javascript/bootstrap.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
+
+>>>>>>> f518129... 107 universities
+=======
+<script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+=======
+<script src="//maps.googleapis.com/maps/api/js?libraries=places"></script>
+>>>>>>> 467b049... 107 remove sensor
+<script src="../../Libraries/Javascript/bootstrap.min.js"></script>
+<script src="../../Libraries/Javascript/bootstrap-switch.min.js"></script>
+
+<!-- jquery geocomplete api -->
+<script src="../../Libraries/Javascript/jquery.geocomplete.min.js"></script>
+
+>>>>>>> 71a83e9... 107 added libraries
 <script src="../../Libraries/Javascript/msgGrowl.js"></script>
 <script src="../../Libraries/Javascript/jquery.msgbox.min.js"></script>
 

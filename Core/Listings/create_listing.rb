@@ -16,7 +16,11 @@ require 'rmagick'
 
 Moped::BSON = BSON
 
+<<<<<<< HEAD
 def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold, isFeatured)
+=======
+def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures)
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -34,13 +38,16 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["HasLaundry"] = laundry.to_b
     listingObj["HasParking"] = parking.to_b
     listingObj["HasAirConditioning"] = airConditioning.to_b
-    listingObj["LeaseType"] = leaseType
+    listingObj["LeaseType"] = "rental" # leaseType
     listingObj["BuildingType"] = buildingType
     listingObj["Notes"] = (notes.nil? ? "" : notes)
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
     listingObj["IsRented"] = false
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD
     listingObj["IsPastThreshold"] = isPastThreshold
 <<<<<<< HEAD
@@ -53,6 +60,15 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
     listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
 >>>>>>> 2bc45ed... 116 fix create statement
+=======
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0)
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    listingObj["IsActive"] = false
+>>>>>>> 4e2c6fb... 107 active changes
+=======
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
+>>>>>>> b30758c... 107 universities
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -108,9 +124,13 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
                 # if we already had some listings, only grab the new one we just put in
                 retQueryObj["$and"].push({"_id" => {"$nin" => currListings.collect{|l| l["_id"]}}}) if currListings.count > 0
                 
+<<<<<<< HEAD
                 document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1, IsPastThreshold: 1).one
                 
                 document[:Threshold] = threshold
+=======
+                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1).one
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
             end
         end
     rescue Moped::Errors::OperationFailure => e
@@ -228,6 +248,7 @@ begin
         end
     end
     
+<<<<<<< HEAD
     university = GetUniversity(data["University"])
     
     if university.nil?
@@ -239,6 +260,11 @@ begin
 
         puts result.to_json
     end
+=======
+    result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"])
+
+    puts result.to_json
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

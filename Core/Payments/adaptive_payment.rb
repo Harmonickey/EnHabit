@@ -7,6 +7,8 @@ base = absPath.split("/").index("public_html")
 $: << "#{@deploymentBase}/Libraries"
 
 require 'net/http'
+<<<<<<< HEAD
+<<<<<<< HEAD
 require 'json'
 require 'moped'
 require 'bson'
@@ -179,3 +181,106 @@ end
 res = `curl -s #{headers}#{@uri.to_s} -d \"#{params}\"`
 
 puts JSON.parse(res).to_json
+=======
+=======
+require 'json'
+>>>>>>> 1c14a45... 107 return payment object
+
+@data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
+
+@rent = @data["Rent"]
+<<<<<<< HEAD
+@recipient = @data["Recipient"]
+
+@uri = URI('https://svcs.sandbox.paypal.com/AdaptivePayments/Pay')
+
+params =
+{
+    "actionType" => "PAY",    # Specify the payment action
+    "currencyCode" => "USD",  # The currency of the payment
+    "receiverList" => {
+        "receiver" => [{
+            "amount" => @rent,    # The payment amount
+            "email" => @recipient # The payment Receiver's email address
+        }]  
+    },
+
+    # Where the Sender is redirected to after approving a successful payment
+    "returnUrl" => "http://dev.enhabitlife.com/paymentSuccess",
+
+    # Where the Sender is redirected to upon a canceled payment
+    "cancelUrl" => "http://dev.enhabitlife.com/paymentCancelled",
+    "requestEnvelope" => {
+        "errorLanguage" => "en_US",    # Language used to display errors
+        "detailLevel" => "ReturnAll"   # Error detail level
+    }
+}
+
+@uri.query = URI.encode_www_form(params)
+
+res = Net::HTTP.start(@uri, @uri) {|http|
+
+  req = Net::HTTP::Get.new(@uri.query)
+  req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
+  req['X-PAYPAL-SECURITY-PASSWORD'] =  'G83KPXZFF7WJ79RH'
+  req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AzoDVGfo-Olt0X8dTEvq7my6ZsJoAYm67DkUBc8AHYKxQnhq0pIfIsEt'
+
+<<<<<<< HEAD
+res = Net::HTTP.start(@uri.hostname, @uri.port) {|http|
+  http.request(req)
+<<<<<<< HEAD
+}
+>>>>>>> 1a55107... 107 adaptive payments
+=======
+}
+=======
+  # Global Sandbox Application ID
+  req['X-PAYPAL-APPLICATION-ID'] = 'APP-80W284485P519543T'
+>>>>>>> 447ded3... 107 new way to do it
+
+  # Input and output formats
+  req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
+  req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
+
+<<<<<<< HEAD
+puts app_result.to_json
+>>>>>>> 1c14a45... 107 return payment object
+=======
+  response = http.request(req)
+  
+  puts response
+}
+>>>>>>> 447ded3... 107 new way to do it
+=======
+@recipient = @data["LandlordEmail"]
+
+@uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
+
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}]}, \"returnUrl\":\"http://dev.enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://dev.enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
+
+req = Hash.new
+req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
+req['X-PAYPAL-SECURITY-PASSWORD'] = 'DVWC6FTKRG7WYWFY'
+req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AWjlrRdzrtV5-PSI427csM4fUlCsA3Y.solWILTwvYm8VyPRKVxsqXFZ'
+
+# Global Sandbox Application ID
+req['X-PAYPAL-APPLICATION-ID'] = 'APP-1GK94644F85169934'
+
+# Input and output formats
+req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'
+req['X-PAYPAL-RESPONSE-DATA-FORMAT'] =  'JSON'
+
+headers = ""
+
+req.each do |key, value|
+  headers += "-H \"#{key.chomp}: #{value.chomp}\" "
+end
+
+res = `curl -s #{headers}#{@uri.to_s} -d \"#{params}\"`
+
+<<<<<<< HEAD
+puts JSON.parse(res)
+>>>>>>> 28b14d3... 107 finally got the request working
+=======
+puts JSON.parse(res).to_json
+>>>>>>> a1b5329... 107 payment key

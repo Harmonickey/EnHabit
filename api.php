@@ -21,7 +21,7 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     // if we're running commands off of the front page, we don't want to filter
     // on user or landlord in the back end
     $no_user_filter = no_user_filter();
-    if ($no_user_filter && $_POST["command"] != "add_applicant" && $_POST["command"] != "send_email")
+    if ($no_user_filter && $_POST["command"] != "add_applicant" && $_POST["command"] != "send_email" && $_POST["command"] != "create_listing")
     {
         $id = NULL;
         $key = NULL;
@@ -83,6 +83,10 @@ else if (isset($_POST["command"]))
             }
             else
             {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 65240df... 107 various payments fixes
                 if (strpos($result, "true") !== false) // I don't wanna talk about it
                 {
                     echo "Okay:Tenant:HasRental";
@@ -92,6 +96,12 @@ else if (isset($_POST["command"]))
                     echo "Okay:Tenant";
                 }
                 
+<<<<<<< HEAD
+=======
+                echo "Okay:Tenant";
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 65240df... 107 various payments fixes
             }
         }
         else 

@@ -163,8 +163,12 @@ def GetApplicantData(applicantId)
         else
             applicantData = applicantData.merge({ :Address => listing[0]["Address"], 
                                                   :Unit => listing[0]["Unit"], 
+<<<<<<< HEAD
                                                   :Rent => listing[0]["Price"],
                                                   :UniversityName => listing[0]["University"]})
+=======
+                                                  :Rent => listing[0]["Price"] })
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
                                 
             return nil if applicantData[:Address].nil? || applicantData[:Rent].nil?
         end

@@ -4,8 +4,16 @@
     
     if (!isset($_SESSION["userId"]))
     {
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
+=======
+        header("Location: /", FALSE);
+<<<<<<< HEAD
+>>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> 5c2c6d3... 115 returns
     }
     
     if (!isset($_SESSION["tenant"]))
@@ -296,9 +304,15 @@
 <?php
     if ($resultmsg == "success")
     {
+<<<<<<< HEAD
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});InsertPayment(uid, landlordEmail, rent);</script>\n";
     }
     else if ($resultmsg == "cancel")
+=======
+        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
+    }
+    else if ($resultmsg == "cancelled")
+>>>>>>> 343d257... 107 make sure the user is redirected if the session logs out
     {
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'error', title: 'Error', text: 'Cancelled Payment', position: 'top-center'});</script>\n";
     }
@@ -307,9 +321,17 @@
 
 $(function() 
 {  
+<<<<<<< HEAD
+<<<<<<< HEAD
     GetRenter();
     
     GetAllTransactions();
+=======
+    GetPayKey();
+>>>>>>> 268c466... 107 flip flow
+=======
+    GetRenter();
+>>>>>>> 20627ba... 107 what the heck
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
