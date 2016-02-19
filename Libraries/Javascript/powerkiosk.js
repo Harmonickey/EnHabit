@@ -23,8 +23,6 @@ $(function()
 {  
     InitZipCodeBox();
     
-    InitBusinessButton();
-    
     SetClickListeners();
     
     GetServiceTypes();
@@ -43,16 +41,6 @@ $(window).on("resize", function() {
        $("#businessTypes").addClass('nav-justified');
    }, 1);   
 });
-
-function InitBusinessButton()
-{
-    $('#businessTypes li').click(function(e) 
-    {
-        $("#businessTypes li").removeClass("active");
-        $(this).addClass("active");
-        e.preventDefault();
-    });
-}
 
 function InitZipCodeBox()
 {
