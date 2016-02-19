@@ -23,8 +23,6 @@ function InitializePowerKiosk()
 {  
     InitZipCodeBox();
     
-    InitBusinessButton();
-    
     SetClickListeners();
     
     GetServiceTypes();
@@ -43,16 +41,6 @@ $(window).on("resize", function() {
        $("#common-modal .businessTypes").addClass('nav-justified');
    }, 1);   
 });
-
-function InitBusinessButton()
-{
-    $('#common-modal .businessTypes li').click(function(e) 
-    {
-        $("#common-modal .businessTypes li").removeClass("active");
-        $(this).addClass("active");
-        e.preventDefault();
-    });
-}
 
 function InitZipCodeBox()
 {
@@ -84,6 +72,11 @@ function SetClickListeners()
     // update utilities upon click
     $("#common-modal .utilities").change(function(e) 
     {
+        var zones = $("#common-modal .zones");
+        zones.empty();
+        $("#common-modal .zoneID").val("");
+        zone = "";
+        
         $("#common-modal .submitContainer").hide(); // hide the submit button for now
         $("#common-modal .zonesContainer").hide();
         utility = $(this).val(); // set global
@@ -99,6 +92,11 @@ function SetClickListeners()
     
     $('#common-modal .serviceTypes').on("click", "li", function(e) 
     {
+        var zones = $("#common-modal .zones");
+        zones.empty();
+        $("#common-modal .zoneID").val("");
+        zone = "";
+        
         $("#common-modal .serviceTypes li").removeClass("active");
         $(this).addClass("active");
         e.preventDefault();
@@ -207,7 +205,7 @@ function GetUtilities()
 }
 
 function LoadUtilities(zipCode, serviceType)
-{
+{   
     $.ajax(
     {
         type: 'POST',
@@ -353,5 +351,4 @@ function SetHiddenInputs()
 	$("#common-modal .zipCodeID").val($("#common-modal .zipCode").val());
 	$("#common-modal .serviceTypeID").val($("#common-modal .serviceTypes li.active a").attr("value")); //this sets utility service type!!!
 	$("#common-modal .stateID").val(state);
-	$("#common-modal .getRates").attr("name", $("#common-modal .businessTypes li.active a").attr("value")); //this sets business type!!!
 }

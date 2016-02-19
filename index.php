@@ -449,7 +449,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <input type="hidden" name="zipCode" class="zipCodeID" value="">
                         <input type="hidden" name="utilityID" class="utilityID" value="">
                         <input type="hidden" name="zone" class="zoneID" value="">
-                        <input type="submit" name="rfq" class="getRates">
+                        <input type="submit" name="residential" class="getRates">
                     </form>
                 </form>
               </div>
