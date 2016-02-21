@@ -197,7 +197,7 @@ function GetUtilities()
         },
         error: function() 
         {
-            $("#common-modal .utilityAlert").html("No Utilities Found For Your Territory!");
+            $("#common-modal .utilityAlert").html("No Utilities Found For Your Area!");
             $("#common-modal .utilityAlert").show();
             $("#common-modal .zipCode").prop("disabled", false);
         }
@@ -230,7 +230,7 @@ function LoadUtilities(zipCode, serviceType)
             
             if (result.data.length == 0)
             {
-                $("#common-modal .utilityAlert").html("No Utilities Found For Your Territory!");
+                $("#common-modal .utilityAlert").html("No Utilities Found For Your Area!");
                 $("#common-modal .utilityAlert").show();
             }
             else
