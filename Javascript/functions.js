@@ -72,7 +72,6 @@ function SubscribeSlideshowArrows()
 {
     $('body').on('click', '.slider-arrow img', function() 
     {
-        console.log("here");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -1984,8 +1983,6 @@ function CloseExtrasView()
 
 function CreateListing()
 {   
-    console.log("here");
-
     var data = listingData;
     
     try
