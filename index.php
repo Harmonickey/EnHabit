@@ -208,7 +208,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>-->
                 </div>
                 <ul id="action-menu">
-                    <li class="menu-item scroll" onclick="OpenExtrasView();">
+                    <li class="menu-item scroll">
                         <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Open Extra Filters</a>
                     </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
