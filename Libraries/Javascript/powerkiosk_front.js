@@ -170,7 +170,7 @@ function GetServiceTypes()
 
 function GetUtilities()
 {
-    //$("#common-modal .zipCode").prop("disabled", true);
+    $("#common-modal .zipCode").prop("disabled", true);
     // clear out all fields
     ResetFields();
     

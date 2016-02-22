@@ -414,6 +414,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="row row-centered">              
                         <div class="zipContainer col-md-4 col-centered" style="float: none; margin: 0 auto;">        
                             <input class="zipCode form-control input-lg text-center" type="text" placeholder="#####" />
+                            <input 
                         </div>
                     </div>
                     <div class="row row-centered">
@@ -729,6 +730,34 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 
           ga('create', 'UA-64824617-1', 'auto');
           ga('send', 'pageview');
+          
+          //http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+          $(document).unbind('keydown').bind('keydown', function (event) {
+            var doPrevent = false;
+            if (event.keyCode === 8) {
+                var d = event.srcElement || event.target;
+                if ((d.tagName.toUpperCase() === 'INPUT' && 
+                     (
+                         d.type.toUpperCase() === 'TEXT' ||
+                         d.type.toUpperCase() === 'PASSWORD' || 
+                         d.type.toUpperCase() === 'FILE' || 
+                         d.type.toUpperCase() === 'SEARCH' || 
+                         d.type.toUpperCase() === 'EMAIL' || 
+                         d.type.toUpperCase() === 'NUMBER' || 
+                         d.type.toUpperCase() === 'DATE' )
+                     ) || 
+                     d.tagName.toUpperCase() === 'TEXTAREA') {
+                    doPrevent = d.readOnly || d.disabled;
+                }
+                else {
+                    doPrevent = true;
+                }
+            }
+
+            if (doPrevent) {
+                event.preventDefault();
+            }
+          });
 
         </script>
         
