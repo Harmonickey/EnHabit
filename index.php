@@ -209,7 +209,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <ul id="action-menu">
                     <li class="menu-item scroll">
-                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Open Extra Filters</a>
+                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" onclick="OpenExtrasView()">Open Extra Filters</a>
                     </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                         <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
@@ -443,7 +443,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </div>
                     </div>
                     <form class="data-submit hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
-                        <input type="hidden" name="directAgentID" class="directAgentId" value="energetic">
+                        <input type="hidden" name="directAgentID" class="directAgentId" value="Enhabit">
                         <input type="hidden" name="stateID" class="stateID" value="">
                         <input type="hidden" name="serviceTypeID" class="serviceTypeID" value="">
                         <input type="hidden" name="zipCode" class="zipCodeID" value="">

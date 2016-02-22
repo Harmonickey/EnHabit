@@ -32,8 +32,6 @@ function InitializePowerKiosk()
 }
 
 $(window).on("resize", function() {
-   SetInnerCoverHeight();
-
    // this magically fixes the screen rotate issue!
    $("#common-modal .businessTypes").removeClass('nav-justified');
    setTimeout(function()
