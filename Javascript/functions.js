@@ -1086,6 +1086,8 @@ function InsertMarkers(res)
                     }
                 }
                 
+                entry.reverse(); // reverse for now since we need to display the featured ones first
+                
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
                     'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
