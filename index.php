@@ -414,7 +414,6 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="row row-centered">              
                         <div class="zipContainer col-md-4 col-centered" style="float: none; margin: 0 auto;">        
                             <input class="zipCode form-control input-lg text-center" type="text" placeholder="#####" />
-                            <input 
                         </div>
                     </div>
                     <div class="row row-centered">
