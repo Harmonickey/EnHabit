@@ -72,7 +72,6 @@ function SubscribeSlideshowArrows()
 {
     $('body').on('click', '.slider-arrow img', function() 
     {
-        console.log("here");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -1087,6 +1086,8 @@ function InsertMarkers(res)
                     }
                 }
                 
+                entry.reverse(); // reverse for now since we need to display the featured ones first
+                
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
                     'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
@@ -1517,6 +1518,15 @@ function PostListingModal(event)
     InitSpecialFields();
 }
 
+function PowerKioskModal(event)
+{
+    // loading the power kiosk modal
+    LoadModal(event, 'modal-content-power-kiosk', 'power-kiosk', 'Power Kiosk');
+    
+    // make sure the picture dropzone is created
+    InitializePowerKiosk();
+}
+
 /* Just a proxy method for handling the special listing creation mechanism... */
 function PendingListingCreation()
 {
@@ -1929,8 +1939,6 @@ function CloseExtrasView()
 
 function CreateListing()
 {   
-    console.log("here");
-
     var data = listingData;
     
     try

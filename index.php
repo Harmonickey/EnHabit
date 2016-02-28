@@ -76,6 +76,11 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         Post Listing Now!
                     </a>
                 </div>
+                <div class="nav navbar-nav navbar-left" style="margin-left: 15px; margin-top: 6px;" >
+                    <a id="powerk-kiosk-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PowerKioskModal(event);">
+                        Save Money on Energy Now!
+                    </a>
+                </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -203,8 +208,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>-->
                 </div>
                 <ul id="action-menu">
-                    <li class="menu-item scroll" onclick="OpenExtrasView();">
-                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Open Extra Filters</a>
+                    <li class="menu-item scroll">
+                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" onclick="OpenExtrasView()">Open Extra Filters</a>
                     </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                         <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
@@ -393,6 +398,63 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             
             </div>
             <!-- #modal-content-owl-carousel -->
+            <!-- Power Kiosk Popup -->
+            <div class="content-to-populate-in-modal" id="modal-content-power-kiosk">
+                <div class="inner cover">       
+                    <p class="small">We're going help you save money on your Supplier while keeping your Provider.  When you sign up for electricity or gas you are always given a provider and supplier but they are often with the same company!  Change to a most cost effective Supplier today!</p>
+                    <div class="row row-centered">
+                        <div class="serviceTypesContainer col-md-6 col-sm-6 col-lg-6 col-centered">
+                            <img class="loader1" src="Libraries/Styles/images/AjaxLoader.gif" style="display: none;">  
+                            <ul class="serviceTypes nav nav-pills nav-justified">
+              
+                            </ul>
+                        </div>
+                    </div>      
+                    <p class="lead">Start By Entering Your Zip Code!</p>            
+                    <div class="row row-centered">              
+                        <div class="zipContainer col-md-4 col-centered" style="float: none; margin: 0 auto;">        
+                            <input class="zipCode form-control input-lg text-center" type="text" placeholder="#####" />
+                        </div>
+                    </div>
+                    <div class="row row-centered">
+                        <div class="utilityAlert alert alert-danger" style="display: none;"></div>
+                        <div class="utilitiesContainer col-centered dropdown" style="display: none; float: none; margin: 10px auto;">
+                            <label for="utilitiesDropdown">Select Your Current Provider</label>
+                            <div class="styled-select" style="width: 230px !important;">
+                                <select role="menu" class="utilities form-control text-capitalize" style="color: white; border: 1px solid white !important; border-radius: 10px !important;">                     
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-centered">
+                        <div class="zoneAlert alert alert-danger" style="display: none;"></div>
+                        <div class="zonesContainer col-centered dropdown" style="display: none; float: none; margin: 10px auto;">
+                            <label for="zonesDropdown">Select Your Zone</label>
+                            <p class="small" style="margin-top: 0">If you don't know, just use the first one.</p>
+                            <div class="styled-select" style="width: 230px !important;">
+                                <select role="menu" class="zones form-control text-capitalize" style="color: white; border: 1px solid white !important; border-radius: 10px !important;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-centered">
+                        <div class="submitContainer col-md-4 col-centered" style="display: none; float: none; margin: 0 auto;">
+                            <button type="button" class="submit btn btn-outline-inverse btn-lg" onclick="SubmitQuery();"><i class="fa fa-usd"></i> Save Money Now!</button>
+                        </div>
+                    </div>
+                    <form class="data-submit hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
+                        <input type="hidden" name="directAgentID" class="directAgentId" value="energetic">
+                        <input type="hidden" name="stateID" class="stateID" value="">
+                        <input type="hidden" name="serviceTypeID" class="serviceTypeID" value="">
+                        <input type="hidden" name="zipCode" class="zipCodeID" value="">
+                        <input type="hidden" name="utilityID" class="utilityID" value="">
+                        <input type="hidden" name="zone" class="zoneID" value="">
+                        <input type="submit" name="residential" class="getRates">
+                    </form>
+                </form>
+              </div>
+            </div>
+            <!-- #modal-content-powerk-kiosk -->
             <!-- end: Left Sidebar -->    
         </div>
         <!-- end: Outer Container -->
@@ -614,7 +676,9 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <!-- fancy scrollbars -->
         <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>  
         <!-- PayPal -->
-        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>        
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script> 
+        <!-- PowerKiosk -->
+        <script src="Libraries/Javascript/powerkiosk_front.js"></script>
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
@@ -665,6 +729,34 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 
           ga('create', 'UA-64824617-1', 'auto');
           ga('send', 'pageview');
+          
+          //http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+          $(document).unbind('keydown').bind('keydown', function (event) {
+            var doPrevent = false;
+            if (event.keyCode === 8) {
+                var d = event.srcElement || event.target;
+                if ((d.tagName.toUpperCase() === 'INPUT' && 
+                     (
+                         d.type.toUpperCase() === 'TEXT' ||
+                         d.type.toUpperCase() === 'PASSWORD' || 
+                         d.type.toUpperCase() === 'FILE' || 
+                         d.type.toUpperCase() === 'SEARCH' || 
+                         d.type.toUpperCase() === 'EMAIL' || 
+                         d.type.toUpperCase() === 'NUMBER' || 
+                         d.type.toUpperCase() === 'DATE' )
+                     ) || 
+                     d.tagName.toUpperCase() === 'TEXTAREA') {
+                    doPrevent = d.readOnly || d.disabled;
+                }
+                else {
+                    doPrevent = true;
+                }
+            }
+
+            if (doPrevent) {
+                event.preventDefault();
+            }
+          });
 
         </script>
         
