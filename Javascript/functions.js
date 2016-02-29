@@ -2015,6 +2015,8 @@ function ProcessListing()
                         listingWaiting = false;
                         
                         listingData = {};
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
                     }
                 }
             }
