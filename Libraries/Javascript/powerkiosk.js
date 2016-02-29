@@ -32,7 +32,6 @@ $(function()
 });
 
 $(window).on("resize", function() {
-   SetInnerCoverHeight();
 
    // this magically fixes the screen rotate issue!
    $("#businessTypes").removeClass('nav-justified');

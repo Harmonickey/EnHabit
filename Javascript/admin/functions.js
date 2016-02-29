@@ -796,8 +796,7 @@ function DeleteOldListings()
                 },
                 error: function(res, err)
                 {
-                    console.log(res);
-                    console.log(err);
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res + " " + err, position: 'top-center'});
                 },
                 complete: function()
                 {
@@ -2227,7 +2226,6 @@ function FormattedTime(time)
 
 function CreateAccordionView(oid, data)
 {
-    console.log(data);
     var landlords = "";
     $.each(landlordList, function(index, landlord) {
         landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
