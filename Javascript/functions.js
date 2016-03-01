@@ -602,8 +602,8 @@ function get_all_section_wrappers_in_page()
     return section_wrappers;
 }
 
-/*********** CUSTOM FUNCTIONS **************/
- 
+/*********** CUSTOM FUNCTIONS **************/ 
+
 // Init the facebook stuff
 window.fbAsyncInit = function() 
 {

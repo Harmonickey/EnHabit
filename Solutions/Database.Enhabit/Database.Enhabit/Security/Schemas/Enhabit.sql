@@ -1,0 +1,2 @@
+﻿CREATE SCHEMA [Enhabit]
+	AUTHORIZATION [dbo];

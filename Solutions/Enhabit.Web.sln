@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.Web", "Enhabit.Web\Enhabit.Web\Enhabit.Web.csproj", "{DEA35C57-0A6A-4638-81B4-7CBF3E452A47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adaptors", "Enhabit.Web\Adaptors", "{61E855FC-B14A-4A4C-9903-E42E4A918B19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Enhabit.Web\Models", "{E69BF61F-A13C-499D-8BE7-BD84E0F6D96E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presenter", "Enhabit.Web\Presenter", "{C52F3D81-1A26-4ED5-9C1D-CFBC125D6D6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Enhabit.Web\Repository", "{7CD997F0-F544-47FC-81E7-8A58A49DD86E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Enhabit.Web\Tests", "{155FAD83-4737-427E-BA73-C577FAF1A95B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.DataAdaptors", "Enhabit.Web\Enhabit.DataAdaptors\Enhabit.DataAdaptors.csproj", "{F4419627-C529-4658-9184-1D41958F0237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.Models", "Enhabit.Web\Enhabit.Models\Enhabit.Models.csproj", "{979BE35B-76C2-4038-B366-48723F2A6365}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.ViewModels", "Enhabit.Web\Enhabit.ViewModels\Enhabit.ViewModels.csproj", "{8042F393-F2D6-4629-A5A0-8B1DC43F2CAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.Presenter", "Enhabit.Web\Enhabit.Presenter\Enhabit.Presenter.csproj", "{4CAC1ABF-5635-4078-92FC-750F9117555F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.Repository.ADO", "Enhabit.Web\Enhabit.Repository.ADO\Enhabit.Repository.ADO.csproj", "{CCEFFBA5-A7FA-43E7-A864-F0782127C7B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.Repository.Contracts", "Enhabit.Web\Enhabit.Repository.Contracts\Enhabit.Repository.Contracts.csproj", "{792D693F-1061-4E99-8865-C2E28AE03340}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enhabit.Tests", "Enhabit.Web\Enhabit.Tests\Enhabit.Tests.csproj", "{554993D6-CB07-4F5A-B088-412F9A28C90E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEA35C57-0A6A-4638-81B4-7CBF3E452A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEA35C57-0A6A-4638-81B4-7CBF3E452A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEA35C57-0A6A-4638-81B4-7CBF3E452A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEA35C57-0A6A-4638-81B4-7CBF3E452A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4419627-C529-4658-9184-1D41958F0237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4419627-C529-4658-9184-1D41958F0237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4419627-C529-4658-9184-1D41958F0237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4419627-C529-4658-9184-1D41958F0237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979BE35B-76C2-4038-B366-48723F2A6365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979BE35B-76C2-4038-B366-48723F2A6365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979BE35B-76C2-4038-B366-48723F2A6365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979BE35B-76C2-4038-B366-48723F2A6365}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8042F393-F2D6-4629-A5A0-8B1DC43F2CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8042F393-F2D6-4629-A5A0-8B1DC43F2CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8042F393-F2D6-4629-A5A0-8B1DC43F2CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8042F393-F2D6-4629-A5A0-8B1DC43F2CAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CAC1ABF-5635-4078-92FC-750F9117555F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CAC1ABF-5635-4078-92FC-750F9117555F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CAC1ABF-5635-4078-92FC-750F9117555F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CAC1ABF-5635-4078-92FC-750F9117555F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCEFFBA5-A7FA-43E7-A864-F0782127C7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCEFFBA5-A7FA-43E7-A864-F0782127C7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCEFFBA5-A7FA-43E7-A864-F0782127C7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCEFFBA5-A7FA-43E7-A864-F0782127C7B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{792D693F-1061-4E99-8865-C2E28AE03340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792D693F-1061-4E99-8865-C2E28AE03340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792D693F-1061-4E99-8865-C2E28AE03340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792D693F-1061-4E99-8865-C2E28AE03340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554993D6-CB07-4F5A-B088-412F9A28C90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554993D6-CB07-4F5A-B088-412F9A28C90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554993D6-CB07-4F5A-B088-412F9A28C90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554993D6-CB07-4F5A-B088-412F9A28C90E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4419627-C529-4658-9184-1D41958F0237} = {61E855FC-B14A-4A4C-9903-E42E4A918B19}
+		{979BE35B-76C2-4038-B366-48723F2A6365} = {E69BF61F-A13C-499D-8BE7-BD84E0F6D96E}
+		{8042F393-F2D6-4629-A5A0-8B1DC43F2CAA} = {E69BF61F-A13C-499D-8BE7-BD84E0F6D96E}
+		{4CAC1ABF-5635-4078-92FC-750F9117555F} = {C52F3D81-1A26-4ED5-9C1D-CFBC125D6D6B}
+		{CCEFFBA5-A7FA-43E7-A864-F0782127C7B4} = {7CD997F0-F544-47FC-81E7-8A58A49DD86E}
+		{792D693F-1061-4E99-8865-C2E28AE03340} = {7CD997F0-F544-47FC-81E7-8A58A49DD86E}
+		{554993D6-CB07-4F5A-B088-412F9A28C90E} = {155FAD83-4737-427E-BA73-C577FAF1A95B}
+	EndGlobalSection
+EndGlobal

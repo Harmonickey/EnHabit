@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Database.Enhabit</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{25c26ec4-9b1d-426e-ae91-e7f3f113c9c4}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Database.Enhabit</RootNamespace>
+    <AssemblyName>Database.Enhabit</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="Scripts" />
+    <Folder Include="Programmability" />
+    <Folder Include="Security" />
+    <Folder Include="Programmability\Stored Procedures" />
+    <Folder Include="Programmability\Functions" />
+    <Folder Include="Programmability\Types" />
+    <Folder Include="Programmability\Types\User-Defined Table Types" />
+    <Folder Include="Scripts\Post-Deployment" />
+    <Folder Include="Scripts\Post-Deployment\Reference Data" />
+    <Folder Include="Scripts\Post-Deployment\Security" />
+    <Folder Include="Scripts\Post-Deployment\Security\Roles" />
+    <Folder Include="Scripts\Post-Deployment\Security\Users" />
+    <Folder Include="Security\Schemas" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Listings.sql" />
+    <Build Include="Tables\Users.sql" />
+    <Build Include="Tables\Payments.sql" />
+    <Build Include="Security\Schemas\Enhabit.sql" />
+    <Build Include="Tables\Renters.sql" />
+    <Build Include="Tables\PetOptions.sql" />
+    <Build Include="Tables\LaundryOptions.sql" />
+    <Build Include="Tables\ParkingOptions.sql" />
+    <Build Include="Tables\LeaseTypes.sql" />
+    <Build Include="Tables\BuildingTypes.sql" />
+    <Build Include="Tables\EnhabitCharges.sql" />
+    <Build Include="Tables\Universities.sql" />
+    <Build Include="Tables\AccountTypes.sql" />
+    <Build Include="Tables\Pictures.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllListings.sql" />
+    <Build Include="Programmability\Stored Procedures\SearchForListings.sql" />
+    <Build Include="Programmability\Stored Procedures\GetPriceRange.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllUniversities.sql" />
+    <Build Include="Programmability\Stored Procedures\LoginUser.sql" />
+    <Build Include="Programmability\Stored Procedures\CreateUser.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllUsers.sql" />
+    <Build Include="Programmability\Stored Procedures\SavePicture.sql" />
+    <Build Include="Programmability\Stored Procedures\GetListingPictures.sql" />
+    <Build Include="Programmability\Stored Procedures\CreateListing.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUser.sql" />
+    <Build Include="Programmability\Stored Procedures\UserHasRental.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUserRenters.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUserListings.sql" />
+    <Build Include="Programmability\Types\User-Defined Table Types\TT_PictureIds.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateUser.sql" />
+    <Build Include="Programmability\Stored Procedures\DeleteUser.sql" />
+    <Build Include="Programmability\Stored Procedures\GetListing.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\LeaseTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\BuildingTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\LaundryOptions.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\ParkingOptions.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\PetOptions.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\AccountTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\DefaultUniversities.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Database.Enhabit.publish.xml" />
+    <None Include="Database.Enhabit-localhost.publish.xml" />
+  </ItemGroup>
+</Project>

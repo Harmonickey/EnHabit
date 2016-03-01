@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{554993D6-CB07-4F5A-B088-412F9A28C90E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Enhabit.Tests</RootNamespace>
+    <AssemblyName>Enhabit.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Enhabit.DataAdaptors\Enhabit.DataAdaptors.csproj">
+      <Project>{f4419627-c529-4658-9184-1d41958f0237}</Project>
+      <Name>Enhabit.DataAdaptors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.Models\Enhabit.Models.csproj">
+      <Project>{979be35b-76c2-4038-b366-48723f2a6365}</Project>
+      <Name>Enhabit.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.Presenter\Enhabit.Presenter.csproj">
+      <Project>{4cac1abf-5635-4078-92fc-750f9117555f}</Project>
+      <Name>Enhabit.Presenter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.Repository.ADO\Enhabit.Repository.ADO.csproj">
+      <Project>{cceffba5-a7fa-43e7-a864-f0782127c7b4}</Project>
+      <Name>Enhabit.Repository.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.Repository.Contracts\Enhabit.Repository.Contracts.csproj">
+      <Project>{792d693f-1061-4e99-8865-c2e28ae03340}</Project>
+      <Name>Enhabit.Repository.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.ViewModels\Enhabit.ViewModels.csproj">
+      <Project>{8042f393-f2d6-4629-a5a0-8b1dc43f2caa}</Project>
+      <Name>Enhabit.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.Web\Enhabit.Web.csproj">
+      <Project>{dea35c57-0a6a-4638-81b4-7cbf3e452a47}</Project>
+      <Name>Enhabit.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
