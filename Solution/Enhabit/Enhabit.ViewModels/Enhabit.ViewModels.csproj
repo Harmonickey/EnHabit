@@ -40,13 +40,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountViewModel.cs" />
-    <Compile Include="ApplicantsViewModel.cs" />
-    <Compile Include="ListingsViewModel.cs" />
-    <Compile Include="PaymentsViewModel.cs" />
+    <Compile Include="ApplicantViewModel.cs" />
+    <Compile Include="ListingViewModel.cs" />
+    <Compile Include="PaymentViewModel.cs" />
     <Compile Include="PortalViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RentersViewModel.cs" />
-    <Compile Include="SearchViewModel.cs" />
+    <Compile Include="RenterViewModel.cs" />
+    <Compile Include="EnhabitMapViewModel.cs" />
+    <Compile Include="SearchResultViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Enhabit.Models\Enhabit.Models.csproj">
+      <Project>{2bcf6763-e8ad-4c01-ab80-d31b82bb0d4a}</Project>
+      <Name>Enhabit.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

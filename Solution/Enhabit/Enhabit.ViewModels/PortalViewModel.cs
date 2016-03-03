@@ -9,7 +9,7 @@ namespace Enhabit.ViewModels
     public class PortalViewModel
     {
         // Tenant Portal View Model
-        public PortalViewModel(AccountViewModel avm, ListingsViewModel lvm, PaymentsViewModel pvm)
+        public PortalViewModel(AccountViewModel avm, ListingViewModel lvm, PaymentViewModel pvm)
         {
             Account = avm;
             Listings = lvm;
@@ -17,7 +17,7 @@ namespace Enhabit.ViewModels
         }
 
         // Landlord Portal View Model
-        public PortalViewModel(AccountViewModel avm, ListingsViewModel lvm, ApplicantsViewModel apvm, RentersViewModel rvm)
+        public PortalViewModel(AccountViewModel avm, ListingViewModel lvm, ApplicantViewModel apvm, RenterViewModel rvm)
         {
             Account = avm;
             Listings = lvm;
@@ -27,12 +27,12 @@ namespace Enhabit.ViewModels
 
         public AccountViewModel Account { get; set; }
 
-        public ListingsViewModel Listings { get; set; }
+        public ListingViewModel Listings { get; set; }
 
-        public PaymentsViewModel Payments { get; set; }
+        public PaymentViewModel Payments { get; set; }
 
-        public ApplicantsViewModel Applicants {get; set; }
+        public ApplicantViewModel Applicants {get; set; }
 
-        public RentersViewModel Renters {get ;set; }
+        public RenterViewModel Renters {get ;set; }
     }
 }

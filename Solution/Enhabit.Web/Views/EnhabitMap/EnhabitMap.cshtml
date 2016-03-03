@@ -1,0 +1,25 @@
+﻿@using Newtonsoft.Json
+@model Enhabit.ViewModels.EnhabitMapViewModel
+
+@{
+    ViewBag.Title = "EnhabitMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EnhabitMap</h2>
+
+
+@Html.Hidden("EnhabitMapViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))
+
+@Scripts.Render("~/Scripts/EnhabitMap")
+
+<script>
+    $(function () {
+
+        var enhabitMapData = JSON.parse($('#EnhabitMapViewModel').val());
+
+        ko.applyBindings(new EnhabitMapViewModel(enhabitMapData));
+
+    });
+
+</script>

@@ -39,9 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applicant.cs" />
+    <Compile Include="Listing.cs" />
+    <Compile Include="Payment.cs" />
     <Compile Include="PortalModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchModel.cs" />
+    <Compile Include="EnhabitMapModel.cs" />
+    <Compile Include="Renter.cs" />
+    <Compile Include="SearchQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

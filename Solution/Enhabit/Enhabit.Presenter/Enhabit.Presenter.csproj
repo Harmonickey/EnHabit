@@ -64,16 +64,20 @@
     <Compile Include="Commands\UpdateRenterToPaid.cs" />
     <Compile Include="Commands\UpdateUniversity.cs" />
     <Compile Include="Commands\UpgradeListingToFeatured.cs" />
+    <Compile Include="DataAdaptors\IConfigAdaptor.cs" />
+    <Compile Include="Extensions\EnhabitMapExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchPresenter.cs" />
+    <Compile Include="EnhabitMapPresenter.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Enhabit.Models\Enhabit.Models.csproj">
       <Project>{2bcf6763-e8ad-4c01-ab80-d31b82bb0d4a}</Project>
       <Name>Enhabit.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Enhabit.Repository.Contracts\Enhabit.Repository.Contracts.csproj">
+      <Project>{889ed30d-43ce-4135-a54d-a9f822c7f2c3}</Project>
+      <Name>Enhabit.Repository.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Enhabit.ViewModels\Enhabit.ViewModels.csproj">
       <Project>{93099fb6-e682-482d-86fc-dcb6d042b72d}</Project>
