@@ -69,11 +69,20 @@
     <Folder Include="Security\Schemas" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\Listing.sql" />
-    <Build Include="Tables\Account.sql" />
-    <Build Include="Tables\Payment.sql" />
+    <Build Include="Tables\Listings.sql" />
+    <Build Include="Tables\Users.sql" />
+    <Build Include="Tables\Payments.sql" />
     <Build Include="Security\Schemas\Enhabit.sql" />
-    <Build Include="Tables\Renter.sql" />
+    <Build Include="Tables\Renters.sql" />
+    <Build Include="Tables\PetOptions.sql" />
+    <Build Include="Tables\LaundryOptions.sql" />
+    <Build Include="Tables\ParkingOptions.sql" />
+    <Build Include="Tables\LeaseTypes.sql" />
+    <Build Include="Tables\BuildingTypes.sql" />
+    <Build Include="Tables\EnhabitCharges.sql" />
+    <Build Include="Tables\Universities.sql" />
+    <Build Include="Tables\AccountTypes.sql" />
+    <Build Include="Scripts\Post-Deployment\Security\Users\EnhabitSQLAgent.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
