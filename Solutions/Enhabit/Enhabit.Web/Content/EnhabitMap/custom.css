@@ -301,7 +301,7 @@
 
 .login-btn-facebook .facebook-icon-for-button 
 {
-    background: url('../assets/images/theme_images/facebook-button-transparent-background.png'); 
+    background: url('/Images/facebook-button-transparent-background.png'); 
     height: 25px; 
     width: 25px; 
     margin-right: 10px;
@@ -744,14 +744,14 @@
 #PriceRangeSlider .ui-widget-header
 {
     border: 1px solid #989797;
-	background: #989797 url("../Libraries/Styles/images/ui-bg_flat_0_989797_40x100.png") 50% 50% repeat-x;
+	background: #989797 url("../ThirdParty/Images/ui-bg_flat_0_989797_40x100.png") 50% 50% repeat-x;
 	color: #222222;
 }
 
 #PriceRangeSlider .ui-state-default
 {
     border: 1px solid #b7b7b7;
-    background: #b7b7b7 url("../Libraries/Styles/images/ui-bg_glass_75_b7b7b7_1x400.png") 50% 50% repeat-x;
+    background: #b7b7b7 url("../ThirdParty/Images/ui-bg_glass_75_b7b7b7_1x400.png") 50% 50% repeat-x;
 }
 
 #price-label
@@ -787,7 +787,7 @@
 .styled-select {
    overflow: hidden;
    width: 81%;
-   background: url(../Libraries/Styles/images/new_arrow.png) no-repeat right black;
+   background: url(../ThirdParty/Images/new_arrow.png) no-repeat right black;
    margin: 0 auto;
    border-radius: 10px;
 }

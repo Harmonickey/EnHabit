@@ -14,27 +14,30 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         
+        <!-- All of our layout css styles -->
         @Styles.Render("~/Content/ThirdParty")
-
-        <!-- leaflet styles -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-        <!-- map box styles -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" rel="stylesheet" />
         <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" >
 
-        @Styles.Render("~/Content/Enhabit")
-
+        <!-- All of our layout javascript files -->
         @Scripts.Render("~/Scripts/ThirdParty")
+        <script src="//maps.googleapis.com/maps/api/js?libraries=places" type="text/javascript"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js" type="text/javascript"></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js' type="text/javascript"></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.1.0/leaflet-pip.min.js' type="text/javascript"></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js' type="text/javascript"></script>
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
+
         @Scripts.Render("~/Scripts/Common")
-        @Scripts.Render("~/Scripts/EnhabitMap")
     </head>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56" /></a>
+                    <a class="logo" href="/"><img src='/Images/EnhabitLogo_Beta.png' height="56" /></a>
                 </div>
                 <!--
             <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >

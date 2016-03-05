@@ -9,8 +9,21 @@ namespace Enhabit
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/Scripts/ThirdParty").Include(
-                        "~/Scripts/ThirdParty/jquery-1.7.1.js",
-                        "~/Scripts/ThirdParty/jquery-ui-1.8.20.js",
+                        "~/Scripts/ThirdParty/jquery-1.11.2.js",
+                        "~/Scripts/ThirdParty/jquery-ui-1.10.0.custom.js",
+                        "~/Scripts/ThirdParty/bootstrap.js",
+                        "~/Scripts/ThirdParty/owl.carousel.js",
+                        "~/Scripts/ThirdParty/jquery.easing.1.3.js",
+                        "~/Scripts/ThirdParty/jquery.geocomplete.js",
+                        "~/Scripts/ThirdParty/detectmobilebrowser.js",
+                        "~/Scripts/ThirdParty/jquery.autoNumeric.js",
+                        "~/Scripts/ThirdParty/bootstrap-switch.js",
+                        "~/Scripts/ThirdParty/msgGrowl.js",
+                        "~/Scripts/ThirdParty/dropzone.js",
+                        "~/Scripts/ThirdParty/pickaday.js",
+                        "~/Scripts/ThirdParty/pickaday.jquery.js",
+                        "~/Scripts/ThirdParty/jquery.slimscroll.js",
+                        "~/Scripts/ThirdParty/powerkiosk_front.js",
                         "~/Scripts/ThirdParty/knockout-2.1.0.js"));
 
             bundles.Add(new ScriptBundle("~/Scripts/Common").Include(
@@ -20,7 +33,8 @@ namespace Enhabit
                         "~/Scripts/Portal/portal.js"));
 
             bundles.Add(new ScriptBundle("~/Scripts/EnhabitMap").Include(
-                        "~/Scripts/EnhabitMap/index.js"));
+                        "~/Scripts/EnhabitMap/index.js",
+                        "~/Scripts/EnhabitMap/initialize-functions"));
 
             bundles.Add(new StyleBundle("~/Content/ThirdParty").Include(
                         "~/Content/ThirdParty/bootstrap.css",
@@ -33,7 +47,7 @@ namespace Enhabit
                         "~/Content/ThirdParty/pikaday.css",
                         "~/Content/ThirdParty/msgGrowl.css"));
 
-            bundles.Add(new StyleBundle("~/Content/Enhabit").Include(
+            bundles.Add(new StyleBundle("~/Content/EnhabitMap").Include(
                         "~/Content/EnhabitMap/main.css",
                         "~/Content/EnhabitMap/custom.css"));
 

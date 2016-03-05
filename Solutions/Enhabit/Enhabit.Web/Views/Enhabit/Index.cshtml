@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@Styles.Render("~/Content/EnhabitMap")
+
 <div id="map"></div>
 <!-- Outer Container -->
 <div id="outer-container">
@@ -16,7 +18,7 @@
     <div id="Filters">
         <div id="price-label" class="row">
             <span>Price Range</span>
-            <span id="amount"></span>
+            <span data-bind="text: SearchBar.AmountText"></span>
         </div>
         <div id="price-slider" class="row">
             <div id="PriceRangeSlider" class="slider-secondary" style="margin-top: 1em;"></div>
@@ -24,14 +26,14 @@
         <div id="datepicker-row" class="row">
             <div class="col-lg-8 col-md-8 col-sm-8" style="float: none; margin: 0 auto;">
                 <label>Available From</label>
-                <input id="datepicker-inline" type="button" class="form-control" value="MM/DD/YYYY" />
+                <input id="datepicker-inline" type="button" class="form-control" value="MM/DD/YYYY" data-bind="value: SearchBar.StartDate" />
             </div>
         </div>
         <div class="double-item-content">
             <div class="item-content">
                 <label>Bedrooms</label>
                 <div class="styled-select">
-                    <select id="Bedrooms-filter" class="form-control">
+                    <select id="Bedrooms-filter" class="form-control" data-bind="value: SearchBar.Bedrooms">
                         <option value="studio">Studio</option>
                         <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
                         <option value="1">1</option>
@@ -43,8 +45,8 @@
             <div class="item-content">
                 <label>Bathrooms</label>
                 <div class="styled-select">
-                    <select id="Bathrooms-filter" class="form-control">
-                        <option value="0" selected>0+</option> <!-- just don't include in ruby filter -->
+                    <select id="Bathrooms-filter" class="form-control" data-bind="value: SearchBar.Bathrooms">
+                        <option value="0" selected>0+</option>
                         <option value="1">1+</option>
                         <option value="2">2+</option>
                         <option value="3">3+</option>
@@ -56,17 +58,17 @@
             <div class="item-content parking-content">
                 <label>Parking</label>
                 <div class="styled-select">
-                    <select id="Parking-filter" class="form-control">
+                    <select id="Parking-filter" class="form-control" data-bind="value: SearchBar.Parking">
                         <option value="true">Yes</option>
                         <option value="false">No</option>
-                        <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
+                        <option value="both" selected>Yes &amp; No</option>
                     </select>
                 </div>
             </div>
             <div class="item-content animals-content">
                 <label>Animals</label>
                 <div class="styled-select">
-                    <select id="Animals-filter" class="form-control">
+                    <select id="Animals-filter" class="form-control" data-bind="value: SearchBar.Animals">
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                         <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
@@ -106,7 +108,7 @@
                 <div class="item-content laundry-content">
                     <label>In-Unit Laundry</label>
                     <div class="styled-select">
-                        <select id="Laundry-filter" class="form-control">
+                        <select id="Laundry-filter" class="form-control" data-bind="value: SearchBar.Laundry">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                             <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
@@ -116,7 +118,7 @@
                 <div class="item-content AirConditioning-content">
                     <label>AC Unit</label>
                     <div class="styled-select">
-                        <select id="AirConditioning-filter" class="form-control">
+                        <select id="AirConditioning-filter" class="form-control" data-bind="value: SearchBar.AirConditioning">
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                             <option value="both" selected>Yes &amp; No</option> <!-- just don't include in ruby filter -->
@@ -127,7 +129,7 @@
             <div class="item-content type-content">
                 <label>Rental or Sublet</label>
                 <div class="styled-select">
-                    <select id="LeaseType-filter" class="form-control">
+                    <select id="LeaseType-filter" class="form-control" data-bind="value: SearchBar.LeaseType">
                         <option value="both">Both</option>
                         <option value="rental">Rental</option>
                         <option value="sublet">Sublet</option>
@@ -137,7 +139,7 @@
             <div class="item-content type-content">
                 <label>Apartment or House</label>
                 <div class="styled-select">
-                    <select id="BuildingType-filter" class="form-control">
+                    <select id="BuildingType-filter" class="form-control" data-bind="value: SearchBar.BuildingType">
                         <option value="both">Both</option>
                         <option value="apartment">Apartment</option>
                         <option value="house">House</option>
@@ -276,7 +278,7 @@
             <p class="small">We're going help you save money on your Supplier while keeping your Provider.  When you sign up for electricity or gas you are always given a provider and supplier but they are often with the same company!  Change to a most cost effective Supplier today!</p>
             <div class="row row-centered">
                 <div class="serviceTypesContainer col-md-6 col-sm-6 col-lg-6 col-centered">
-                    <img class="loader1" src="Libraries/Styles/images/AjaxLoader.gif" style="display: none;">
+                    <img class="loader1" src="~/Content/ThirdParty/Images/AjaxLoader.gif" style="display: none;">
                     <ul class="serviceTypes nav nav-pills nav-justified"></ul>
                 </div>
             </div>
@@ -498,15 +500,61 @@
 <!-- placeholder for facebook objects -->
 <div id="fb-root" class="fb-reset"></div>
 
+@Html.Hidden("EnhabitMapViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))
+
+@Scripts.Render("~/Scripts/EnhabitMap")
+
 <script>
 
     $(function () {
+        InitSearchBar();
+        InitHiddenSidebars();
 
+        InitKnockoutBindings();
+        
+        InitBackStopEventHandler();
+
+        InitMapboxMap();
     });
 
+    function InitSearchBar()
+    {
+        InitSlider();
+        InitDatePicker();
+    }
+
+    function InitSlider()
+    {
+
+    }
+
+    function InitDatePicker()
+    {
+
+    }
+
+    function InitHiddenSidebars()
+    {
+        var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
+
+        $("#listings_list").css("left", listingsListWidth);
+        $("#extras_view").css("left", listingsListWidth);
+    }
+
+    function InitKnockoutBindings()
+    {
+        var enhabitMapData = JSON.parse($('#EnhabitMapViewModel').val());
+        ko.applyBindings(new EnhabitMapViewModel(enhabitMapData));
+    }
+
+    function InitMapboxMap()
+    {
+        L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
+        var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
+        new L.Control.Zoom({ position: 'topright' }).addTo(map);
+    }
 
     Dropzone.autoDiscover = false;
-
 
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -516,32 +564,33 @@
     ga('create', 'UA-64824617-1', 'auto');
     ga('send', 'pageview');
 
-    //http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
-    $(document).unbind('keydown').bind('keydown', function (event) {
-        var doPrevent = false;
-        if (event.keyCode === 8) {
-            var d = event.srcElement || event.target;
-            if ((d.tagName.toUpperCase() === 'INPUT' &&
-                    (
-                        d.type.toUpperCase() === 'TEXT' ||
-                        d.type.toUpperCase() === 'PASSWORD' ||
-                        d.type.toUpperCase() === 'FILE' ||
-                        d.type.toUpperCase() === 'SEARCH' ||
-                        d.type.toUpperCase() === 'EMAIL' ||
-                        d.type.toUpperCase() === 'NUMBER' ||
-                        d.type.toUpperCase() === 'DATE' )
-                    ) ||
-                    d.tagName.toUpperCase() === 'TEXTAREA') {
-                doPrevent = d.readOnly || d.disabled;
+    function InitBackStopEventHandler() {
+        $(document).unbind('keydown').bind('keydown', function (event) {
+            var doPrevent = false;
+            if (event.keyCode === 8) {
+                var d = event.srcElement || event.target;
+                if ((d.tagName.toUpperCase() === 'INPUT' &&
+                        (
+                            d.type.toUpperCase() === 'TEXT' ||
+                            d.type.toUpperCase() === 'PASSWORD' ||
+                            d.type.toUpperCase() === 'FILE' ||
+                            d.type.toUpperCase() === 'SEARCH' ||
+                            d.type.toUpperCase() === 'EMAIL' ||
+                            d.type.toUpperCase() === 'NUMBER' ||
+                            d.type.toUpperCase() === 'DATE' )
+                        ) ||
+                        d.tagName.toUpperCase() === 'TEXTAREA') {
+                    doPrevent = d.readOnly || d.disabled;
+                }
+                else {
+                    doPrevent = true;
+                }
             }
-            else {
-                doPrevent = true;
-            }
-        }
 
-        if (doPrevent) {
-            event.preventDefault();
-        }
-    });
+            if (doPrevent) {
+                event.preventDefault();
+            }
+        });
+    }
 
 </script>

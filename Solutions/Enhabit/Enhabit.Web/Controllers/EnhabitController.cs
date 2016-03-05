@@ -13,9 +13,25 @@ namespace Enhabit.Controllers
     {
         public ActionResult Index()
         {
-            //EnhabitMapViewModel vm = Presenter.GetEnhabitMap();
+            EnhabitMapViewModel vm = new EnhabitMapViewModel
+            {
+                Listings = new List<ListingViewModel>
+                {
+                    new ListingViewModel
+                    {
+                        Price = 1500,
+                        Address = "2615 Chestnut Ridge"
+                    }
+                },
+                PriceRange = new PriceRangeViewModel
+                {
+                    Low = 250,
+                    High = 900,
+                    Step = 5
+                }
+            }; // Presenter.GetEnhabitMap();
 
-            return View();
+            return View(vm);
         }
     }
 }
