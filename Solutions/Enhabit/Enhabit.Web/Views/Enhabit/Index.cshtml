@@ -506,31 +506,31 @@
 
 <script>
 
+    var enhabitViewModel;
+
     $(function () {
-        InitSearchBar();
+        InitDatePicker();
+
         InitHiddenSidebars();
 
         InitKnockoutBindings();
         
         InitBackStopEventHandler();
 
-        InitMapboxMap();
+        InitMouseEventHandlers();
+
+        InitSlideShowArrows();
+
+        $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo");
     });
-
-    function InitSearchBar()
-    {
-        InitSlider();
-        InitDatePicker();
-    }
-
-    function InitSlider()
-    {
-
-    }
 
     function InitDatePicker()
     {
-
+        $("#datepicker-inline").pikaday(
+        {
+            minDate: new Date(),
+            setDefaultDate: new Date()
+        });
     }
 
     function InitHiddenSidebars()
@@ -544,14 +544,60 @@
     function InitKnockoutBindings()
     {
         var enhabitMapData = JSON.parse($('#EnhabitMapViewModel').val());
-        ko.applyBindings(new EnhabitMapViewModel(enhabitMapData));
+        enhabitViewModel = ko.applyBindings(new EnhabitMapViewModel(enhabitMapData));
     }
 
     function InitMapboxMap()
     {
-        L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
-        var map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
+    }
+
+    function InitMouseEventHandlers()
+    {
+        // Disable map mouse features while we're in the sidebar
+        $("#left-sidebar, #extras_view, #listings_list").bind('mouseover',
+            function ()
+            {
+                enhabitViewModel.Map.dragging.disable();
+                enhabitViewModel.Map.scrollWheelZoom.disable();
+                enhabitViewModel.Map.doubleClickZoom.disable();
+            }
+        );
+
+        // Reenable map mouse features when the mouse is outside of the sidebar
+        $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
+            function ()
+            {
+                enhabitViewModel.Map.dragging.enable();
+                enhabitViewModel.Map.scrollWheelZoom.enable();
+                enhabitViewModel.Map.doubleClickZoom.enable();
+            }
+        );
+    }
+
+    function InitSlideShowArrows()
+    {
+        $('body').on('click', '.slider-arrow img', function () {
+            var $slideshow = $(this).closest('.slideshow');
+            var $newSlide;
+
+            if ($(this).hasClass('slider-arrow-left')) {
+                $newSlide = $slideshow.find('.image.active').prev();
+                if ($newSlide.index() < 2) {
+                    $newSlide = $slideshow.find('.image').last();
+                }
+            }
+            else if ($(this).hasClass('slider-arrow-right')) {
+                $newSlide = $slideshow.find('.image.active').next();
+                if ($newSlide.index() < 0) {
+                    $newSlide = $slideshow.find('.image').first();
+                }
+            }
+
+            $slideshow.find('.active').removeClass('active').hide();
+            $newSlide.addClass('active').show();
+            return false;
+        });
     }
 
     Dropzone.autoDiscover = false;

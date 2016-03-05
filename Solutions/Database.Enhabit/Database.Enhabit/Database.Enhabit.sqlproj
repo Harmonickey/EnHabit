@@ -83,8 +83,14 @@
     <Build Include="Tables\Universities.sql" />
     <Build Include="Tables\AccountTypes.sql" />
     <Build Include="Scripts\Post-Deployment\Security\Users\EnhabitSQLAgent.sql" />
+    <Build Include="Tables\Pictures.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
+    <None Include="Scripts\Post-Deployment\ReferenceData\LeaseTypes.sql" />
+    <None Include="Scripts\Post-Deployment\ReferenceData\BuildingTypes.sql" />
+    <None Include="Scripts\Post-Deployment\ReferenceData\LaundryOptions.sql" />
+    <None Include="Scripts\Post-Deployment\ReferenceData\ParkingOptions.sql" />
+    <None Include="Scripts\Post-Deployment\ReferenceData\PetOptions.sql" />
   </ItemGroup>
 </Project>

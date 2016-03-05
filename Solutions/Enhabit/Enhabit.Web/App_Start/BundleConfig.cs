@@ -7,10 +7,8 @@ namespace Enhabit
     {
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
-        {
+        { 
             bundles.Add(new ScriptBundle("~/Scripts/ThirdParty").Include(
-                        "~/Scripts/ThirdParty/jquery-1.11.2.js",
-                        "~/Scripts/ThirdParty/jquery-ui-1.10.0.custom.js",
                         "~/Scripts/ThirdParty/bootstrap.js",
                         "~/Scripts/ThirdParty/owl.carousel.js",
                         "~/Scripts/ThirdParty/jquery.easing.1.3.js",
@@ -34,7 +32,7 @@ namespace Enhabit
 
             bundles.Add(new ScriptBundle("~/Scripts/EnhabitMap").Include(
                         "~/Scripts/EnhabitMap/index.js",
-                        "~/Scripts/EnhabitMap/initialize-functions"));
+                        "~/Scripts/EnhabitMap/initialise-functions.js"));
 
             bundles.Add(new StyleBundle("~/Content/ThirdParty").Include(
                         "~/Content/ThirdParty/bootstrap.css",

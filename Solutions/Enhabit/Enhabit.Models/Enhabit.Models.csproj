@@ -40,6 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Applicant.cs" />
+    <Compile Include="Enums\PetOptions.cs" />
+    <Compile Include="Enums\BuildingType.cs" />
+    <Compile Include="Enums\LaundryOptions.cs" />
+    <Compile Include="Enums\LeaseType.cs" />
+    <Compile Include="Enums\ParkingOptions.cs" />
     <Compile Include="Listing.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="PortalModel.cs" />

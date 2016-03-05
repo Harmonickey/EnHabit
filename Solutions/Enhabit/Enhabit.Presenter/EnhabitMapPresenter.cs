@@ -15,8 +15,7 @@ namespace Enhabit.Presenter
     public sealed class EnhabitMapPresenter
     {
         private readonly IEnhabitMapRepository _enhabitMapRepo;
-
-
+        
         public EnhabitMapPresenter(IEnhabitMapRepository enhabitMapRepo)
         {
             _enhabitMapRepo = enhabitMapRepo;

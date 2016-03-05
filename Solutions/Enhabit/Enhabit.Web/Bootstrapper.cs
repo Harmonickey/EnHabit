@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Web;
-
-using Enhabit.Presenter;
+﻿using Enhabit.Presenter;
 using Enhabit.Presenter.DataAdaptors;
 using Enhabit.Repository.Contracts;
 using Enhabit.Repository;
-using Enhabit.Models;
-using Enhabit.ViewModels;
 using Enhabit.Adaptors;
+using Enhabit.Controllers;
 
 using Microsoft.Practices.Unity;
 
@@ -40,6 +36,7 @@ namespace Enhabit
         public static void RegisterControllers(IUnityContainer container)   
         {
             container.RegisterType<EnhabitMapPresenter, EnhabitMapPresenter>();
+            container.RegisterType<EnhabitController, EnhabitController>();
         }
 
         /// <summary>

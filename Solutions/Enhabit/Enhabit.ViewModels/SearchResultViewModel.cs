@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Enhabit.Models;
+﻿using System.Collections.Generic;
 
 namespace Enhabit.ViewModels
 {
     public class SearchResultViewModel
     {
-        IEnumerable<Listing> Listings { get; set; }
+        public IEnumerable<ListingViewModel> Listings { get; set; }
     }
 }

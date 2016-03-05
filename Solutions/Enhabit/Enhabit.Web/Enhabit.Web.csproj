@@ -190,6 +190,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="ControllerFactory\IocControllerFactory.cs" />
     <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\EnhabitController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -293,6 +294,7 @@
     <Content Include="Scripts\Common\custom_bindings.js" />
     <Content Include="Scripts\EnhabitMap\index.js" />
     <Content Include="Scripts\EnhabitMap\initialise-functions.js" />
+    <Content Include="Scripts\EnhabitMap\utilities.js" />
     <Content Include="Scripts\ThirdParty\bootstrap-switch.js" />
     <Content Include="Scripts\ThirdParty\bootstrap-tagsinput.js" />
     <Content Include="Scripts\ThirdParty\bootstrap.js" />

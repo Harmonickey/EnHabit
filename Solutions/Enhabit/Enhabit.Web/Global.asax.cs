@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using Enhabit.Web.ControllerFactory;
+using Microsoft.Practices.Unity;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -17,7 +14,15 @@ namespace Enhabit
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-            
+
+            var container = new UnityContainer();
+            Bootstrapper.RegisterControllers(container);
+            Bootstrapper.RegisterAdaptors(container);
+            Bootstrapper.RegisterRepositories(container);
+
+            var factory = new IocControllerFactory(container);
+            ControllerBuilder.Current.SetControllerFactory(factory);
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

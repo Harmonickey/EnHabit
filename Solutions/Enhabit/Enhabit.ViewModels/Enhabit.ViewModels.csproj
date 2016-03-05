@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="AccountViewModel.cs" />
     <Compile Include="ApplicantViewModel.cs" />
+    <Compile Include="LandlordViewModel.cs" />
     <Compile Include="ListingViewModel.cs" />
     <Compile Include="PaymentViewModel.cs" />
     <Compile Include="PortalViewModel.cs" />
@@ -48,7 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenterViewModel.cs" />
     <Compile Include="EnhabitMapViewModel.cs" />
+    <Compile Include="SearchQueryViewModel.cs" />
     <Compile Include="SearchResultViewModel.cs" />
+    <Compile Include="UniversityViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Enhabit.Models\Enhabit.Models.csproj">

@@ -17,6 +17,14 @@ namespace Enhabit.Adaptors
             }
         }
 
+        public string DefaultListingImage
+        {
+            get
+            {
+                return ReadAppSetting("DefaultListingPicture");
+            }
+        }
+
         private static string ReadConnectionSetting(string connStringKey)
         {
             var config = ConfigurationManager.ConnectionStrings[connStringKey];
