@@ -19,6 +19,6 @@
 	[StartDate] DATETIME NOT NULL,
 	[IsRented] BIT NOT NULL,
 	[IsFeatured] BIT NOT NULL,
-	CONSTRAINT [PK_Listings] PRIMARY KEY CLUSTERED ([ListingId]),
+	CONSTRAINT [PK_Listings] PRIMARY KEY CLUSTERED ([ListingId] ASC),
     CONSTRAINT [FK_ListingsUser_ToUsers] FOREIGN KEY ([UserId]) REFERENCES [Enhabit].[Users]([UserId])
 )

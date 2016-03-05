@@ -11,7 +11,7 @@
 	[Email] VARCHAR(250) NOT NULL,
 	[IsVerified] BIT NOT NULL,
 	[IsActive] BIT NOT NULL, 
-	CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([UserId]),
+	CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([UserId] ASC),
     CONSTRAINT [FK_Users_ToTable] FOREIGN KEY ([AccountTypeId]) REFERENCES [Enhabit].[AccountTypes]([AccountTypeId])
 )
 

@@ -7,5 +7,5 @@
 	[YCoordinate] VARCHAR(250) NOT NULL,
 	[MaxListingDistance] Decimal(3,2) NOT NULL,
 	[IsActive] BIT NOT NULL, 
-    CONSTRAINT [PK_Universities] PRIMARY KEY CLUSTERED ([UniversityId])
+    CONSTRAINT [PK_Universities] PRIMARY KEY CLUSTERED ([UniversityId] ASC)
 )
