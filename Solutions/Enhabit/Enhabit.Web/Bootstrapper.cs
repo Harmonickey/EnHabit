@@ -11,7 +11,7 @@ using Enhabit.Adaptors;
 
 using Microsoft.Practices.Unity;
 
-namespace Echo.Horizon.Web
+namespace Enhabit
 {
     public class Bootstrapper
     {
