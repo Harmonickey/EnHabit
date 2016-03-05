@@ -1,4 +1,6 @@
-﻿@model Enhabit.ViewModels.EnhabitMapViewModel
+﻿@using CloudinaryDotNet
+@using CloudinaryDotNet.Actions
+@model Enhabit.ViewModels.EnhabitMapViewModel
 
 @{
     ViewBag.Title = "Enhabit - Map";
@@ -83,7 +85,7 @@
         </div>
         <ul id="action-menu">
             <li class="menu-item scroll">
-                <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" onclick="OpenExtrasView()">Open Extra Filters</a>
+                <a href="#" id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" data-bind="click: OpenExtrasView">Open Extra Filters</a>
             </li>
             <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                 <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>

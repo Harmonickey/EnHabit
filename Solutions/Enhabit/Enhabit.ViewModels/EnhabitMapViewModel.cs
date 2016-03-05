@@ -13,5 +13,7 @@ namespace Enhabit.ViewModels
         public IEnumerable<LandlordViewModel> Landlords { get; set; }
 
         public PriceRangeViewModel PriceRange {get; set;}
+
+        public IEnumerable<NavLinkViewModel> NavLinks { get; set; }
     }
 }

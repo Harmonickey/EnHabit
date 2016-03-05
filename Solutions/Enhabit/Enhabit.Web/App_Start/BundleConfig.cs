@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace Enhabit
+namespace Enhabit.Web
 {
     public class BundleConfig
     {

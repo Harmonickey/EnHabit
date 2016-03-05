@@ -15,5 +15,6 @@ namespace Enhabit.Models
         public bool IsActive { get; set; }
         public string OwnerName { get; set; }
         public string LandlordName { get; set; }
+        public IEnumerable<string> Images { get; set; }
     }
 }

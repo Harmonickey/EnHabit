@@ -1,28 +1,37 @@
 ﻿using Enhabit.Repository.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Enhabit.Presenter.DataAdaptors;
 using Enhabit.Models;
 using System.Data.SqlClient;
 using System.Data;
 
-namespace Enhabit.Repository
+namespace Enhabit.Repository.ADO
 {
     public class EnhabitMapRepository : IEnhabitMapRepository
     {
         private readonly string _enhabitConnString;
 
+        private readonly IImageRepository _imageRepository;
+
         public SqlConnection SqlConn { get; set; }
 
-        public EnhabitMapRepository(IConfigAdaptor configAdaptor)
+        public EnhabitMapRepository(IConfigAdaptor configAdaptor, IImageRepository imageRepository)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
 
             _enhabitConnString = configAdaptor.EnhabitConnectionString;
+            _imageRepository = imageRepository;
+        }
+
+        public bool CreateListing(Listing listing)
+        {
+            IEnumerable<string> image = _imageRepository.SaveImages(listing.Images);
+
+            // save listing to the database
+
+            return true;
         }
 
         public IEnumerable<Listing> GetListings()

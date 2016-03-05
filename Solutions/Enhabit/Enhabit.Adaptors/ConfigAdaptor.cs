@@ -25,6 +25,30 @@ namespace Enhabit.Adaptors
             }
         }
 
+        public string CloudinaryCloudName
+        {
+            get
+            {
+                return ReadAppSetting("CloudinaryCloudName");
+            }
+        }
+
+        public string CloudinaryApiKey
+        {
+            get
+            {
+                return ReadAppSetting("CloudinaryApiKey");
+            }
+        }
+
+        public string CloudinaryApiSecret
+        {
+            get
+            {
+                return ReadAppSetting("CloudinaryApiSecret");
+            }
+        }
+
         private static string ReadConnectionSetting(string connStringKey)
         {
             var config = ConfigurationManager.ConnectionStrings[connStringKey];

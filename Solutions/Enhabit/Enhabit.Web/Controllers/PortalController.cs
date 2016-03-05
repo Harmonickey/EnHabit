@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Enhabit.Controllers
+namespace Enhabit.Web.Controllers
 {
     public class PortalController : Controller
     {

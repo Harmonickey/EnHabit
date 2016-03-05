@@ -43,6 +43,7 @@
     <Compile Include="ApplicantViewModel.cs" />
     <Compile Include="LandlordViewModel.cs" />
     <Compile Include="ListingViewModel.cs" />
+    <Compile Include="NavLinkViewModel.cs" />
     <Compile Include="PaymentViewModel.cs" />
     <Compile Include="PortalViewModel.cs" />
     <Compile Include="PriceRangeViewModel.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="SearchQueryViewModel.cs" />
     <Compile Include="SearchResultViewModel.cs" />
     <Compile Include="UniversityViewModel.cs" />
+    <Compile Include="UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Enhabit.Models\Enhabit.Models.csproj">

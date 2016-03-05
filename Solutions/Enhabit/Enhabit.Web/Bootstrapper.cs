@@ -1,13 +1,13 @@
 ﻿using Enhabit.Presenter;
 using Enhabit.Presenter.DataAdaptors;
+using Enhabit.Repository.ADO;
 using Enhabit.Repository.Contracts;
-using Enhabit.Repository;
 using Enhabit.Adaptors;
-using Enhabit.Controllers;
+using Enhabit.Web.Controllers;
 
 using Microsoft.Practices.Unity;
 
-namespace Enhabit
+namespace Enhabit.Web
 {
     public class Bootstrapper
     {
@@ -27,6 +27,9 @@ namespace Enhabit
         public static void RegisterRepositories(IUnityContainer container)
         {
             container.RegisterType<IEnhabitMapRepository, EnhabitMapRepository>();
+            container.RegisterType<IImageRepository, ImageRepository>();
+            container.RegisterType<IPortalRepository, PortalRepository>();
+            container.RegisterType<IUserRepository, UserRepository>();
         }
 
         /// <summary>
@@ -36,7 +39,10 @@ namespace Enhabit
         public static void RegisterControllers(IUnityContainer container)   
         {
             container.RegisterType<EnhabitMapPresenter, EnhabitMapPresenter>();
+            container.RegisterType<UserPresenter, UserPresenter>();
             container.RegisterType<EnhabitController, EnhabitController>();
+            container.RegisterType<PortalController, PortalController>();
+            container.RegisterType<UserController, UserController>();
         }
 
         /// <summary>

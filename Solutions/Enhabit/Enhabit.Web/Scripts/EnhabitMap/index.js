@@ -1,4 +1,27 @@
-﻿var SearchQueryViewModel = function(priceRange)
+﻿var UserViewModel = function(user)
+{
+    self = this;
+
+    self.Username = ko.observable();
+    self.Password = ko.observable();
+    self.ConfirmPassword = ko.observable();
+    self.Email = ko.observable();
+    self.PhoneNumber = ko.observable();
+    self.FirstName = ko.observable();
+    self.LastName = ko.observable();
+
+};
+
+var NavLinkViewModel = function (navLink)
+{
+    self = this;
+
+    self.LinkHref = navLink.Href;
+    self.LinkName = navLink.Name;
+    self.LinkClass = navLink.Class;
+};
+
+var SearchQueryViewModel = function (priceRange)
 {
     self = this;
 
@@ -52,6 +75,12 @@ var EnhabitMapViewModel = function (enhabitMapData)
     self.AddedFiles = ko.observable({});
     self.Markers = new L.FeatureGroup();
 
+    self.UserLoggedIn = ko.observable(true); // for now we'll init to true
+
+    self.User = new UserViewModel(enhabitMapData.User);
+
+    self.NavLinks = enhabitMapData.NavLinks;
+
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
     self.Map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
 
@@ -65,6 +94,15 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
         // initialize all the fields in the form
         InitSpecialFields();
+    };
+
+    self.OpenPowerKioskModal = function(data, event)
+    {
+        // loading the power kiosk modal
+        LoadModal(event, 'modal-content-power-kiosk', 'power-kiosk', 'Power Kiosk');
+
+        // make sure the picture dropzone is created
+        InitializePowerKiosk();
     };
 
     self.CreateDropzone = function(key, element, existingPics)
@@ -139,6 +177,64 @@ var EnhabitMapViewModel = function (enhabitMapData)
             }
         }
     }
+
+    self.LoginUser = function () 
+    {
+        var data = ko.toJSON({
+            Username: self.User.Username(),
+            Password: self.User.Password()
+        });
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "/Login",
+            data:
+            {
+                data: data,
+            },
+            beforeSend: function()
+            {
+                DisableModalSubmit('login');
+            },
+            success: function(res)
+            {
+                try
+                {
+                    if (Contains(res, "Okay"))
+                    {
+                        ShowLoginFeatures(hideMainModal, res);
+                        
+                        // session should be set, so the user will be attached to the listing
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                        }
+                    }
+                    else
+                    {
+                        throw new Error(res);
+                    }
+                }
+                catch(e)
+                {
+                    SetError('login', "Incorrect User/Password Combination.");
+                }
+            },
+            error: function(res, err)
+            {
+                SetError('login', res);
+            },
+            complete: function()
+            {
+                ResetModal("login", "Log In", false);
+            }
+        });
+    };
+
+    self.LogoutUser = function () {
+
+    };
 
 
 };
