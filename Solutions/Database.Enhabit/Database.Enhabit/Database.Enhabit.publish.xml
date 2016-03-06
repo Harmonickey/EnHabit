@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>Enhabit</TargetDatabaseName>
+    <DeployScriptFileName>Database.Enhabit.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=Enhabit.mssql.somee.com;Persist Security Info=True;User ID=EnhabitLife_SQLLogin_1;Pooling=False</TargetConnectionString>
+    <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+</Project>
