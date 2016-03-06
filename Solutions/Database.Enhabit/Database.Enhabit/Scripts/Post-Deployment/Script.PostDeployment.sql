@@ -9,3 +9,9 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
+
+:r .\"Reference Data\BuildingTypes.sql"
+:r .\"Reference Data\LaundryOptions.sql"
+:r .\"Reference Data\LeaseTypes.sql"
+:r .\"Reference Data\ParkingOptions.sql"
+:r .\"Reference Data\PetOptions.sql"

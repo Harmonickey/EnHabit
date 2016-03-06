@@ -62,7 +62,7 @@
     <Folder Include="Programmability\Types" />
     <Folder Include="Programmability\Types\User-Defined Table Types" />
     <Folder Include="Scripts\Post-Deployment" />
-    <Folder Include="Scripts\Post-Deployment\ReferenceData" />
+    <Folder Include="Scripts\Post-Deployment\Reference Data" />
     <Folder Include="Scripts\Post-Deployment\Security" />
     <Folder Include="Scripts\Post-Deployment\Security\Roles" />
     <Folder Include="Scripts\Post-Deployment\Security\Users" />
@@ -87,11 +87,11 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
-    <None Include="Scripts\Post-Deployment\ReferenceData\LeaseTypes.sql" />
-    <None Include="Scripts\Post-Deployment\ReferenceData\BuildingTypes.sql" />
-    <None Include="Scripts\Post-Deployment\ReferenceData\LaundryOptions.sql" />
-    <None Include="Scripts\Post-Deployment\ReferenceData\ParkingOptions.sql" />
-    <None Include="Scripts\Post-Deployment\ReferenceData\PetOptions.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\LeaseTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\BuildingTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\LaundryOptions.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\ParkingOptions.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\PetOptions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.Enhabit.publish.xml" />
