@@ -15,3 +15,5 @@ Post-Deployment Script Template
 :r .\"Reference Data\LeaseTypes.sql"
 :r .\"Reference Data\ParkingOptions.sql"
 :r .\"Reference Data\PetOptions.sql"
+:r .\"Reference Data\AccountTypes.sql"
+:r .\"Security\Users\EnhabitSQLAgent.sql"
