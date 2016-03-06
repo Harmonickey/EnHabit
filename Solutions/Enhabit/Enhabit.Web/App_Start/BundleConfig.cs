@@ -8,7 +8,7 @@ namespace Enhabit.Web
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         { 
-            bundles.Add(new ScriptBundle("~/Scripts/ThirdParty").Include(
+            bundles.Add(new ScriptBundle("~/Enhabit/ThirdParty").Include(
                         "~/Scripts/ThirdParty/bootstrap.js",
                         "~/Scripts/ThirdParty/owl.carousel.js",
                         "~/Scripts/ThirdParty/jquery.easing.1.3.js",
@@ -24,17 +24,17 @@ namespace Enhabit.Web
                         "~/Scripts/ThirdParty/powerkiosk_front.js",
                         "~/Scripts/ThirdParty/knockout-2.1.0.js"));
 
-            bundles.Add(new ScriptBundle("~/Scripts/Common").Include(
+            bundles.Add(new ScriptBundle("~/Enhabit/Common").Include(
                         "~/Scripts/Common/custom_bindings.js"));
 
-            bundles.Add(new ScriptBundle("~/Scripts/Portal").Include(
+            bundles.Add(new ScriptBundle("~/Enhabit/Portal").Include(
                         "~/Scripts/Portal/portal.js"));
 
-            bundles.Add(new ScriptBundle("~/Scripts/EnhabitMap").Include(
+            bundles.Add(new ScriptBundle("~/Enhabit/Map").Include(
                         "~/Scripts/EnhabitMap/index.js",
                         "~/Scripts/EnhabitMap/initialise-functions.js"));
 
-            bundles.Add(new StyleBundle("~/Content/ThirdParty").Include(
+            bundles.Add(new StyleBundle("~/Enhabit/Content/ThirdParty").Include(
                         "~/Content/ThirdParty/bootstrap.css",
                         "~/Content/ThirdParty/bootstrap-theme.css",
                         "~/Content/ThirdParty/owl.carousel.css",
@@ -45,11 +45,9 @@ namespace Enhabit.Web
                         "~/Content/ThirdParty/pikaday.css",
                         "~/Content/ThirdParty/msgGrowl.css"));
 
-            bundles.Add(new StyleBundle("~/Content/EnhabitMap").Include(
+            bundles.Add(new StyleBundle("~/Enhabit/Content/Map").Include(
                         "~/Content/EnhabitMap/main.css",
                         "~/Content/EnhabitMap/custom.css"));
-
-            
         }
     }
 }

@@ -16,7 +16,7 @@
         
         <!-- All of our layout css styles -->
         <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" >
-        @Styles.Render("~/Content/ThirdParty")
+        @Styles.Render("~/Enhabit/Content/ThirdParty")
         <link href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" rel="stylesheet" />
         <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
@@ -25,7 +25,7 @@
         <!-- All of our layout javascript files -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        @Scripts.Render("~/Scripts/ThirdParty")
+        @Scripts.Render("~/Enhabit/ThirdParty")
         <script src="~/Scripts/ThirdParty/pikaday.js"></script>
         <script src="~/Scripts/ThirdParty/pikaday.jquery.js"></script>
         <script src="//maps.googleapis.com/maps/api/js?libraries=places" type="text/javascript"></script>
@@ -35,7 +35,7 @@
         <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js' type="text/javascript"></script>
         <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
 
-        @Scripts.Render("~/Scripts/Common")
+        @Scripts.Render("~/Enhabit/Common")
     </head>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -84,7 +84,7 @@
                             <!-- /ko -->
                             <!-- ko ifnot: $root.userLoggedIn -->
                             <ul class="dropdown-menu">
-                                <li id="login-function" class="menu-item scroll" data-bind="click: LogoutUser">
+                                <li id="login-function" class="menu-item scroll" data-bind="click: $root.LogoutUser">
                                     <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                                 </li>
                             </ul>

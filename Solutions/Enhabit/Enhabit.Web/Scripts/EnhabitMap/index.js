@@ -79,6 +79,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.User = new UserViewModel(enhabitMapData.User);
 
+    self.ExtraFilterBtnText = ko.observable("Open Extra Filters");
+
     self.NavLinks = enhabitMapData.NavLinks;
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
@@ -103,6 +105,43 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
         // make sure the picture dropzone is created
         InitializePowerKiosk();
+    };
+
+    self.ToggleExtrasView = function ()
+    {
+        if (self.IsExtrasViewOpen())
+        {
+            $("#extras").fadeOut(200, function ()
+            {
+                $("#extras_view").animate(
+                {
+                    width: "0px",
+                    paddingLeft: "0px",
+                    paddingRight: "0px"
+                }, 300, function () {
+                    self.ExtraFiltersBtnText("Open Extra Filters");
+                });
+            });
+        }
+        else
+        {
+            $("#extras_view").animate(
+            {
+                width: parseFloat($("#left-sidebar").css("width")),
+                paddingLeft: "5px",
+                paddingRight: "5px"
+            },
+            {
+                duration: 300,
+                easing: 'easeInOutCubic',
+                done: function () {
+                    $("#extras").fadeIn(200);
+                    self.ExtraFiltersBtnText("Close Extra Filters");
+                }
+            });
+        }
+
+        self.IsExtrasViewOpen(!self.IsExtrasViewOpen());
     };
 
     self.CreateDropzone = function(key, element, existingPics)

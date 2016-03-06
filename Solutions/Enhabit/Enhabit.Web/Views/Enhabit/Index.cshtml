@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/EnhabitMap")
+@Styles.Render("~/Enhabit/Content/Map")
 
 <div id="map"></div>
 <!-- Outer Container -->
@@ -85,7 +85,7 @@
         </div>
         <ul id="action-menu">
             <li class="menu-item scroll">
-                <a href="#" id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" data-bind="click: OpenExtrasView">Open Extra Filters</a>
+                <a href="#" class="btn btn-outline-inverse btn-sm" type="button" data-bind="click: ToggleExtrasView, text: ExtraFiltersBtnText"></a>
             </li>
             <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                 <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
@@ -504,7 +504,7 @@
 
 @Html.Hidden("EnhabitMapViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))
 
-@Scripts.Render("~/Scripts/EnhabitMap")
+@Scripts.Render("~/Enhabit/Map")
 
 <script>
 
