@@ -1,6 +1,6 @@
 ﻿var UserViewModel = function(user)
 {
-    self = this;
+    var self = this;
 
     self.Username = ko.observable();
     self.Password = ko.observable();
@@ -14,7 +14,7 @@
 
 var NavLinkViewModel = function (navLink)
 {
-    self = this;
+    var self = this;
 
     self.LinkHref = navLink.Href;
     self.LinkName = navLink.Name;
@@ -23,8 +23,8 @@ var NavLinkViewModel = function (navLink)
 
 var SearchQueryViewModel = function (priceRange)
 {
-    self = this;
-
+    var self = this;
+    
     self.PriceRangeLow = ko.observable(priceRange.Low);
     self.PriceRangeHigh = ko.observable(priceRange.High);
     self.Step = priceRange.Step;
@@ -32,7 +32,7 @@ var SearchQueryViewModel = function (priceRange)
     self.AmountText = ko.computed(function ()
     {
         return "$" + self.PriceRangeLow() + " - $" + self.PriceRangeHigh();
-    }, self);
+    });
 
     self.StartDate = ko.observable("MM/DD/YYYY");
     self.Bedrooms = ko.observable();
@@ -43,7 +43,7 @@ var SearchQueryViewModel = function (priceRange)
     self.AirConditioning = ko.observable();
     self.LeaseType = ko.observable();
     self.BuildingType = ko.observable();
-
+    
     // Init the Price Range Slider
     $("#PriceRangeSlider").slider(
     {
@@ -57,29 +57,31 @@ var SearchQueryViewModel = function (priceRange)
             self.PriceRangeHigh(ui.values[1]);
         }
     });
+    
 };
 
 var EnhabitMapViewModel = function (enhabitMapData)
 {
-    self = this;
+    var self = this;
 
     self.DefaultPicture = enhabitMapData.DefaultListingPicture;
-
+    
     // search bar
     self.SearchBar = new SearchQueryViewModel(enhabitMapData.PriceRange);
-    self.Dropzones = ko.observable({});
+   
+    self.Dropzones = ko.observable();
     self.NumAdded = ko.observable(0);
     self.NumUploaded = ko.observable(0);
     self.PendingData = ko.observable(null);
-    self.Pictures = ko.observable({});
-    self.AddedFiles = ko.observable({});
+    self.Pictures = ko.observable();
+    self.AddedFiles = ko.observable();
     self.Markers = new L.FeatureGroup();
 
     self.UserLoggedIn = ko.observable(true); // for now we'll init to true
 
     self.User = new UserViewModel(enhabitMapData.User);
 
-    self.ExtraFilterBtnText = ko.observable("Open Extra Filters");
+    self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 
     self.NavLinks = enhabitMapData.NavLinks;
 
@@ -107,7 +109,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
         InitializePowerKiosk();
     };
 
-    self.ToggleExtrasView = function (data, event)
+    self.ToggleExtrasView = function ()
     {
         if (self.IsExtrasViewOpen())
         {
