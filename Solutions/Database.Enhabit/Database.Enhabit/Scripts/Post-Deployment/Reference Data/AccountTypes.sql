@@ -19,4 +19,4 @@ AS SOURCE([AccountTypeId], [AccountType])
 ON SOURCE.[AccountTypeId] = TARGET.[AccountTypeId]
 WHEN NOT MATCHED BY TARGET THEN
 	INSERT ([AccountTypeId], [AccountType])
-	VALUES ([BuildingTypeId], [BuildingType]);
+	VALUES ([AccountTypeId], [AccountType]);

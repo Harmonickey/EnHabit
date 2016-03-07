@@ -82,7 +82,6 @@
     <Build Include="Tables\EnhabitCharges.sql" />
     <Build Include="Tables\Universities.sql" />
     <Build Include="Tables\AccountTypes.sql" />
-    <Build Include="Scripts\Post-Deployment\Security\Users\EnhabitSQLAgent.sql" />
     <Build Include="Tables\Pictures.sql" />
   </ItemGroup>
   <ItemGroup>

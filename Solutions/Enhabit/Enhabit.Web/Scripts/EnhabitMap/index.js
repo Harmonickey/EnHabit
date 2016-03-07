@@ -107,7 +107,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
         InitializePowerKiosk();
     };
 
-    self.ToggleExtrasView = function ()
+    self.ToggleExtrasView = function (data, event)
     {
         if (self.IsExtrasViewOpen())
         {

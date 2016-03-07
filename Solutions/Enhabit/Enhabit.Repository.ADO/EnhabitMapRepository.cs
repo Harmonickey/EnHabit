@@ -13,22 +13,21 @@ namespace Enhabit.Repository.ADO
     {
         private readonly string _enhabitConnString;
 
-        private readonly IImageRepository _imageRepository;
+        private readonly IImageRepository _imageRepo;
 
         public SqlConnection SqlConn { get; set; }
 
-        public EnhabitMapRepository(IConfigAdaptor configAdaptor, IImageRepository imageRepository)
+        public EnhabitMapRepository(IConfigAdaptor configAdaptor, IImageRepository imageRepo)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
 
             _enhabitConnString = configAdaptor.EnhabitConnectionString;
-            _imageRepository = imageRepository;
+
+            _imageRepo = imageRepo;
         }
 
         public bool CreateListing(Listing listing)
         {
-            IEnumerable<string> image = _imageRepository.SaveImages(listing.Images);
-
             // save listing to the database
 
             return true;
@@ -44,25 +43,28 @@ namespace Enhabit.Repository.ADO
                 cmd.CommandText = "[Enhabit].[GetListings]";
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                if (reader.HasRows)
+                while (reader.HasRows && reader.Read())
                 {
-                    while (reader.Read())
+                    listings.Add(new Listing
                     {
-                        listings.Add(new Listing
-                        {
-                            Price = (int)reader["Price"],
-                            Address = reader["Address"].ToString(),
-                            AvailableStartDate = (DateTime)reader["StartDate"],
-                            IsFeatured = (bool)reader["IsFeatured"],
-                            IsActive = (bool)reader["IsActive"],
-                            OwnerName = reader["OwnerName"].ToString(),
-                            LandlordName = reader["LandlordName"].ToString()
-                        });
-                    }
+                        Price = (int)reader["Price"],
+                        Address = reader["Address"].ToString(),
+                        AvailableStartDate = (DateTime)reader["StartDate"],
+                        IsFeatured = (bool)reader["IsFeatured"],
+                        IsActive = (bool)reader["IsActive"],
+                        OwnerName = reader["OwnerName"].ToString(),
+                        LandlordName = reader["LandlordName"].ToString(),
+                        ImagesId = (Guid)reader["ImagesId"]
+                    });
                 }
-
-                return listings;
+                
+                foreach (Listing listing in listings)
+                {
+                    _imageRepo.GetAll(listing.ImagesId);
+                }    
             }
+
+            return listings;
         }
 
         public IEnumerable<Listing> SearchForListings(SearchQuery query)

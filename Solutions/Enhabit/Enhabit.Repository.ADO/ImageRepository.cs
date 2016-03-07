@@ -6,6 +6,9 @@ using Enhabit.Presenter.DataAdaptors;
 using Enhabit.Repository.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.SqlClient;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace Enhabit.Repository.ADO
 {
@@ -13,10 +16,16 @@ namespace Enhabit.Repository.ADO
     {
         private Cloudinary _cloudinary;
 
+        private readonly string _enhabitConnString;
+
+        public SqlConnection SqlConn { get; set; }
+
         public ImageRepository(IConfigAdaptor configAdaptor)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
-            
+
+            _enhabitConnString = configAdaptor.EnhabitConnectionString;
+
             Account account = new Account(
               configAdaptor.CloudinaryCloudName,
               configAdaptor.CloudinaryApiKey,
@@ -30,12 +39,12 @@ namespace Enhabit.Repository.ADO
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public IEnumerable<string> SaveImages(IEnumerable<string> filePaths)
+        public IEnumerable<string> Save(IEnumerable<string> filePaths)
         {
-            return filePaths.Select(SaveImage);
+            return filePaths.Select(Save);
         }
 
-        private string SaveImage(string filePath)
+        private string Save(string filePath)
         {
             var uploadParams = new ImageUploadParams()
             {
@@ -44,6 +53,26 @@ namespace Enhabit.Repository.ADO
             var uploadResult = _cloudinary.Upload(uploadParams);
 
             return uploadResult.JsonObj.Value<string>("secure_url");
+        }
+
+        public IEnumerable<string> GetAll(Guid imagesId)
+        {
+            var imageUrls = new List<string>();
+
+            using (var cmd = new SqlCommand())
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "[Enhabit].[GetPictures]";
+                cmd.Parameters.AddWithValue("@ImagesId", imagesId);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.HasRows && reader.Read())
+                {
+                    imageUrls.Add(reader["CloudinaryUrl"].ToString());
+                }
+            }
+
+            return imageUrls;
         }
     }
 }

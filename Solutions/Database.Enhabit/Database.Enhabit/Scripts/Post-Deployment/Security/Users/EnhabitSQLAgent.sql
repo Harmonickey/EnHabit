@@ -1,6 +1,0 @@
-﻿CREATE USER [EnhabitSQLAgent]
-	WITHOUT LOGIN
-	WITH DEFAULT_SCHEMA = Enhabit
-GO
-
-GRANT CONNECT TO [EnhabitSQLAgent]

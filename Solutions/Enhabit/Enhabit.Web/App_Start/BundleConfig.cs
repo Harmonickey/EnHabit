@@ -31,6 +31,7 @@ namespace Enhabit.Web
                         "~/Scripts/Portal/portal.js"));
 
             bundles.Add(new ScriptBundle("~/Enhabit/Map").Include(
+                        "~/Scripts/EnhabitMap/utilities.js",
                         "~/Scripts/EnhabitMap/index.js",
                         "~/Scripts/EnhabitMap/initialise-functions.js"));
 
