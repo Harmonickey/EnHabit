@@ -10,7 +10,7 @@ namespace Enhabit.Presenter.Extensions
             return new UniversityViewModel
             {
                 Name = university.Name,
-                Threshold = university.Threshold
+                MaxListingDistance = university.MaxListingDistance
             };
         }
     }

@@ -15,7 +15,7 @@ namespace Enhabit.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoginUser(UserViewModel user)
+        public JsonResult Login(UserViewModel user)
         {
             var result = Presenter.LoginUser(user);
 

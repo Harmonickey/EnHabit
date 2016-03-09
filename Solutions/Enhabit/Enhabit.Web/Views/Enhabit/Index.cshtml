@@ -1,13 +1,9 @@
-﻿@using CloudinaryDotNet
-@using CloudinaryDotNet.Actions
-@model Enhabit.ViewModels.EnhabitMapViewModel
+﻿@model Enhabit.ViewModels.EnhabitMapViewModel
 
 @{
     ViewBag.Title = "Enhabit - Map";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@Styles.Render("~/Enhabit/Content/Map")
 
 <div id="map"></div>
 <!-- Outer Container -->
@@ -87,7 +83,7 @@
             <li class="menu-item scroll">
                 <a href="#" class="btn btn-outline-inverse btn-sm" type="button" data-bind="click: ToggleExtrasView, text: ExtraFiltersBtnText"></a>
             </li>
-            <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
+            <li id="search-function" class="menu-item scroll" data-bind="click: SearchForListings">
                 <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
             </li>
         </ul>
@@ -503,142 +499,3 @@
 <div id="fb-root" class="fb-reset"></div>
 
 @Html.Hidden("EnhabitMapViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))
-
-@Scripts.Render("~/Enhabit/Map")
-
-<script>
-
-    var enhabitViewModel;
-
-    $(function () {
-        InitDatePicker();
-
-        InitHiddenSidebars();
-
-        InitKnockoutBindings();
-        
-        InitBackStopEventHandler();
-
-        InitMouseEventHandlers();
-
-        InitSlideShowArrows();
-
-        $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo");
-    });
-
-    function InitDatePicker()
-    {
-        $("#datepicker-inline").pikaday(
-        {
-            minDate: new Date(),
-            setDefaultDate: new Date()
-        });
-    }
-
-    function InitHiddenSidebars()
-    {
-        var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
-
-        $("#listings_list").css("left", listingsListWidth);
-        $("#extras_view").css("left", listingsListWidth);
-    }
-
-    function InitKnockoutBindings()
-    {
-        var enhabitMapData = JSON.parse($('#EnhabitMapViewModel').val());
-        enhabitViewModel = ko.applyBindings(new EnhabitMapViewModel(enhabitMapData));
-    }
-
-    function InitMapboxMap()
-    {
-        new L.Control.Zoom({ position: 'topright' }).addTo(map);
-    }
-
-    function InitMouseEventHandlers()
-    {
-        // Disable map mouse features while we're in the sidebar
-        $("#left-sidebar, #extras_view, #listings_list").bind('mouseover',
-            function ()
-            {
-                enhabitViewModel.Map.dragging.disable();
-                enhabitViewModel.Map.scrollWheelZoom.disable();
-                enhabitViewModel.Map.doubleClickZoom.disable();
-            }
-        );
-
-        // Reenable map mouse features when the mouse is outside of the sidebar
-        $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
-            function ()
-            {
-                enhabitViewModel.Map.dragging.enable();
-                enhabitViewModel.Map.scrollWheelZoom.enable();
-                enhabitViewModel.Map.doubleClickZoom.enable();
-            }
-        );
-    }
-
-    function InitSlideShowArrows()
-    {
-        $('body').on('click', '.slider-arrow img', function () {
-            var $slideshow = $(this).closest('.slideshow');
-            var $newSlide;
-
-            if ($(this).hasClass('slider-arrow-left')) {
-                $newSlide = $slideshow.find('.image.active').prev();
-                if ($newSlide.index() < 2) {
-                    $newSlide = $slideshow.find('.image').last();
-                }
-            }
-            else if ($(this).hasClass('slider-arrow-right')) {
-                $newSlide = $slideshow.find('.image.active').next();
-                if ($newSlide.index() < 0) {
-                    $newSlide = $slideshow.find('.image').first();
-                }
-            }
-
-            $slideshow.find('.active').removeClass('active').hide();
-            $newSlide.addClass('active').show();
-            return false;
-        });
-    }
-
-    Dropzone.autoDiscover = false;
-
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-64824617-1', 'auto');
-    ga('send', 'pageview');
-
-    function InitBackStopEventHandler() {
-        $(document).unbind('keydown').bind('keydown', function (event) {
-            var doPrevent = false;
-            if (event.keyCode === 8) {
-                var d = event.srcElement || event.target;
-                if ((d.tagName.toUpperCase() === 'INPUT' &&
-                        (
-                            d.type.toUpperCase() === 'TEXT' ||
-                            d.type.toUpperCase() === 'PASSWORD' ||
-                            d.type.toUpperCase() === 'FILE' ||
-                            d.type.toUpperCase() === 'SEARCH' ||
-                            d.type.toUpperCase() === 'EMAIL' ||
-                            d.type.toUpperCase() === 'NUMBER' ||
-                            d.type.toUpperCase() === 'DATE' )
-                        ) ||
-                        d.tagName.toUpperCase() === 'TEXTAREA') {
-                    doPrevent = d.readOnly || d.disabled;
-                }
-                else {
-                    doPrevent = true;
-                }
-            }
-
-            if (doPrevent) {
-                event.preventDefault();
-            }
-        });
-    }
-
-</script>

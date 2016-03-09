@@ -18,6 +18,11 @@ namespace Enhabit.Web.Controllers
             Presenter = presenter;
         }
 
+        /// <summary>
+        ///     /Enhabit/Index
+        /// </summary>
+        /// <returns></returns>
+
         public ActionResult Index()
         {
             EnhabitMapViewModel vm = new EnhabitMapViewModel
@@ -43,10 +48,17 @@ namespace Enhabit.Web.Controllers
             // check session in presenter for the user's login status and what they are...
             // then perform the extension method to set the nav links
             // for now we can just control here if they are admin, tenant, or landlord
-            vm.NavLinks = GetAdminNavLinks(); 
-            
+            vm.NavLinks = GetAdminNavLinks();
+            vm.UserLoggedIn = true;
+
             return View(vm);
         }
+
+        /// <summary>
+        /// /Enhabit/SearchForListings
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
 
         [HttpPost]
         public JsonResult SearchForListings(SearchQueryViewModel query)

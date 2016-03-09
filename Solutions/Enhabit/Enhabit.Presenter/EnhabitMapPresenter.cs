@@ -4,6 +4,8 @@ using Enhabit.Presenter.Commands;
 using Enhabit.Presenter.DataAdaptors;
 
 using Enhabit.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Enhabit.Presenter
 {
@@ -13,7 +15,12 @@ namespace Enhabit.Presenter
         private readonly IPricingRepository _pricingRepo;
         private readonly IUniversityRepository _universityRepo;
         private readonly IConfigAdaptor _configAdaptor;
-        
+
+        private IEnumerable<ListingViewModel> _listings;
+        private PriceRangeViewModel _priceRange;
+        private IEnumerable<UniversityViewModel> _universities;
+
+
         public EnhabitMapPresenter(IConfigAdaptor configAdaptor, 
             IListingRepository enhabitMapRepo,
             IPricingRepository pricingRepo,
@@ -27,16 +34,17 @@ namespace Enhabit.Presenter
 
         public EnhabitMapViewModel GetEnhabitMap()
         {
-            var listings = Listings.GetAll(_enhabitMapRepo);
-            var priceRange = Prices.GetRange(_pricingRepo);
-            var universities = Universities.GetAll(_universityRepo);
+            Parallel.Invoke(() => _listings = Listings.GetAll(_enhabitMapRepo),
+                            () => _priceRange = Prices.GetRange(_pricingRepo),
+                            () => _universities = Universities.GetAll(_universityRepo));
+
             var defaultListingPicture = _configAdaptor.DefaultListingImage;
 
             return new EnhabitMapViewModel
             {
-                Listings = listings,
-                PriceRange = priceRange,
-                Universities = universities,
+                Listings = _listings,
+                PriceRange = _priceRange,
+                Universities = _universities,
                 DefaultListingPicture = defaultListingPicture
             };
         }

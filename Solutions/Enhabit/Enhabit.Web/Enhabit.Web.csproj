@@ -329,7 +329,6 @@
     <Content Include="Scripts\ThirdParty\jquery.payment.js" />
     <Content Include="Scripts\ThirdParty\jquery.slimscroll.js" />
     <Content Include="Scripts\ThirdParty\jquery.ui.touch-punch.js" />
-    <Content Include="Scripts\ThirdParty\knockout-2.1.0.js" />
     <Content Include="Scripts\ThirdParty\msgGrowl.js" />
     <Content Include="Scripts\ThirdParty\owl.carousel.js" />
     <Content Include="Scripts\ThirdParty\pikaday.jquery.js" />
@@ -351,6 +350,7 @@
     <Content Include="Views\Portal\Tenant.cshtml" />
     <Content Include="Views\Portal\Landlord.cshtml" />
     <Content Include="Views\Enhabit\Index.cshtml" />
+    <Content Include="Scripts\ThirdParty\knockout-3.4.0.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

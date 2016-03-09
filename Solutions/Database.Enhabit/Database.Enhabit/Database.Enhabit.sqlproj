@@ -83,6 +83,10 @@
     <Build Include="Tables\Universities.sql" />
     <Build Include="Tables\AccountTypes.sql" />
     <Build Include="Tables\Pictures.sql" />
+    <Build Include="Programmability\Stored Procedures\GetListings.sql" />
+    <Build Include="Programmability\Stored Procedures\SearchForListings.sql" />
+    <Build Include="Programmability\Stored Procedures\GetPriceRange.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUniversities.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

@@ -15,5 +15,7 @@ namespace Enhabit.ViewModels
         public PriceRangeViewModel PriceRange {get; set;}
 
         public IEnumerable<NavLinkViewModel> NavLinks { get; set; }
+
+        public bool UserLoggedIn { get; set; }
     }
 }

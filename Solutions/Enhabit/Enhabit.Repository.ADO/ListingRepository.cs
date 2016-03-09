@@ -28,6 +28,14 @@ namespace Enhabit.Repository.ADO
 
         public bool CreateListing(Listing listing)
         {
+            using (SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+
+                }
+            }
             // save listing to the database
 
             return true;
@@ -37,49 +45,16 @@ namespace Enhabit.Repository.ADO
         {
             var listings = new List<Listing>();
 
-            using (var cmd = new SqlCommand())
+            using (SqlConn = new SqlConnection(_enhabitConnString))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[Enhabit].[GetListings]";
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.HasRows && reader.Read())
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
                 {
-                    listings.Add(new Listing
-                    {
-                        Price = (int)reader["Price"],
-                        Address = reader["Address"].ToString(),
-                        AvailableStartDate = (DateTime)reader["StartDate"],
-                        IsFeatured = (bool)reader["IsFeatured"],
-                        IsActive = (bool)reader["IsActive"],
-                        TenantName = reader["OwnerName"].ToString(),
-                        LandlordName = reader["LandlordName"].ToString(),
-                        ImagesId = (Guid)reader["ImagesId"]
-                    });
-                }
-                
-                foreach (Listing listing in listings)
-                {
-                    _imageRepo.GetAll(listing.ImagesId);
-                }    
-            }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetListings]";
+                    SqlDataReader reader = cmd.ExecuteReader();
 
-            return listings;
-        }
-
-        public IEnumerable<Listing> SearchForListings(SearchQuery query)
-        {
-            var listings = new List<Listing>();
-
-            using (var cmd = new SqlCommand())
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[Enhabit].[GetListings]";
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
+                    while (reader.HasRows && reader.Read())
                     {
                         listings.Add(new Listing
                         {
@@ -89,8 +64,49 @@ namespace Enhabit.Repository.ADO
                             IsFeatured = (bool)reader["IsFeatured"],
                             IsActive = (bool)reader["IsActive"],
                             TenantName = reader["OwnerName"].ToString(),
-                            LandlordName = reader["LandlordName"].ToString()
+                            LandlordName = reader["LandlordName"].ToString(),
+                            ImagesId = (Guid)reader["ImagesId"]
                         });
+                    }
+
+                    foreach (Listing listing in listings)
+                    {
+                        _imageRepo.GetAll(listing.ImagesId);
+                    }
+                } 
+            }
+
+            return listings;
+        }
+
+        public IEnumerable<Listing> SearchForListings(SearchQuery query)
+        {
+            var listings = new List<Listing>();
+
+            using (SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[SearchForListings]";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            listings.Add(new Listing
+                            {
+                                Price = (int)reader["Price"],
+                                Address = reader["Address"].ToString(),
+                                AvailableStartDate = (DateTime)reader["StartDate"],
+                                IsFeatured = (bool)reader["IsFeatured"],
+                                IsActive = (bool)reader["IsActive"],
+                                TenantName = reader["OwnerName"].ToString(),
+                                LandlordName = reader["LandlordName"].ToString()
+                            });
+                        }
                     }
                 }
 

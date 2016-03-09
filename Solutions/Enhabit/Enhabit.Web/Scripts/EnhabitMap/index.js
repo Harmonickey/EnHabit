@@ -19,6 +19,9 @@ var NavLinkViewModel = function (navLink)
     self.LinkHref = navLink.Href;
     self.LinkName = navLink.Name;
     self.LinkClass = navLink.Class;
+    self.GetClass = ko.pureComputed(function () {
+        return self.LinkClass;
+    });
 };
 
 var SearchQueryViewModel = function (priceRange)
@@ -77,13 +80,15 @@ var EnhabitMapViewModel = function (enhabitMapData)
     self.AddedFiles = ko.observable();
     self.Markers = new L.FeatureGroup();
 
-    self.UserLoggedIn = ko.observable(true); // for now we'll init to true
+    self.UserLoggedIn = ko.observable(enhabitMapData.UserLoggedIn); // for now we'll init to true
 
     self.User = new UserViewModel(enhabitMapData.User);
 
     self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 
-    self.NavLinks = enhabitMapData.NavLinks;
+    self.NavLinks = ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
+        return new NavLinkViewModel(navLink);
+    });
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
     self.Map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
@@ -229,7 +234,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
         $.ajax(
         {
             type: "POST",
-            url: "/Login",
+            url: "/User/Login",
             data:
             {
                 data: data,
@@ -277,5 +282,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     };
 
+    self.SearchForListings = function () {
 
+    };
 };

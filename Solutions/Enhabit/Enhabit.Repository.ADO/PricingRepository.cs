@@ -1,10 +1,8 @@
 ﻿using Enhabit.Repository.Contracts;
 using Enhabit.Models;
 using System.Data.SqlClient;
-
 using Enhabit.Presenter.DataAdaptors;
 using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace Enhabit.Repository.ADO
@@ -26,16 +24,22 @@ namespace Enhabit.Repository.ADO
         {
             var priceRange = new PriceRange();
 
-            using (var cmd = new SqlCommand())
+            using (SqlConn = new SqlConnection(_enhabitConnString))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[Enhabit].[GetPriceRange]";
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.HasRows && reader.Read())
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
                 {
-                    priceRange.Low = (decimal)reader["Low"];
-                    priceRange.High = (decimal)reader["High"];
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetPriceRange]";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.HasRows && reader.Read())
+                    {
+                        if (reader["Low"] != DBNull.Value)
+                            priceRange.Low = (decimal)reader["Low"];
+                        if (reader["High"] != DBNull.Value)
+                            priceRange.High = (decimal)reader["High"];
+                    }
                 }
             }
 

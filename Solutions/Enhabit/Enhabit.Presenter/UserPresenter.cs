@@ -2,7 +2,7 @@
 
 namespace Enhabit.Presenter
 {
-    public class UserPresenter
+    public sealed class UserPresenter
     {
 
         public UserPresenter()
