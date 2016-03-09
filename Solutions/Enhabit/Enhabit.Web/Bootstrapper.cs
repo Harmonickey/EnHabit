@@ -26,7 +26,7 @@ namespace Enhabit.Web
         /// <param name="container"></param>
         public static void RegisterRepositories(IUnityContainer container)
         {
-            container.RegisterType<IEnhabitMapRepository, EnhabitMapRepository>();
+            container.RegisterType<IListingRepository, ListingRepository>();
             container.RegisterType<IImageRepository, ImageRepository>();
             container.RegisterType<IPortalRepository, PortalRepository>();
             container.RegisterType<IUserRepository, UserRepository>();

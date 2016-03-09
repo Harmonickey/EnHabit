@@ -15,7 +15,7 @@ namespace Enhabit.Presenter
 
         public IEnumerable<string> Save(IEnumerable<string> files)
         {
-            return SavePictures.Save(_imageRepo, files);
+            return Pictures.Save(_imageRepo, files);
         }
     }
 }

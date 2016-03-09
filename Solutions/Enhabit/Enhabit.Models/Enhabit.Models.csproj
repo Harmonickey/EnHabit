@@ -48,10 +48,12 @@
     <Compile Include="Listing.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="PortalModel.cs" />
+    <Compile Include="PriceRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EnhabitMapModel.cs" />
     <Compile Include="Renter.cs" />
     <Compile Include="SearchQuery.cs" />
+    <Compile Include="University.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

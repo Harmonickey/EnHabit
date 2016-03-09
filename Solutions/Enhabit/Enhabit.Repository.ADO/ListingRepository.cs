@@ -9,7 +9,7 @@ using System.Data;
 
 namespace Enhabit.Repository.ADO
 {
-    public class EnhabitMapRepository : IEnhabitMapRepository
+    public class ListingRepository : IListingRepository
     {
         private readonly string _enhabitConnString;
 
@@ -17,7 +17,7 @@ namespace Enhabit.Repository.ADO
 
         public SqlConnection SqlConn { get; set; }
 
-        public EnhabitMapRepository(IConfigAdaptor configAdaptor, IImageRepository imageRepo)
+        public ListingRepository(IConfigAdaptor configAdaptor, IImageRepository imageRepo)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
 
@@ -52,7 +52,7 @@ namespace Enhabit.Repository.ADO
                         AvailableStartDate = (DateTime)reader["StartDate"],
                         IsFeatured = (bool)reader["IsFeatured"],
                         IsActive = (bool)reader["IsActive"],
-                        OwnerName = reader["OwnerName"].ToString(),
+                        TenantName = reader["OwnerName"].ToString(),
                         LandlordName = reader["LandlordName"].ToString(),
                         ImagesId = (Guid)reader["ImagesId"]
                     });
@@ -88,7 +88,7 @@ namespace Enhabit.Repository.ADO
                             AvailableStartDate = (DateTime)reader["StartDate"],
                             IsFeatured = (bool)reader["IsFeatured"],
                             IsActive = (bool)reader["IsActive"],
-                            OwnerName = reader["OwnerName"].ToString(),
+                            TenantName = reader["OwnerName"].ToString(),
                             LandlordName = reader["LandlordName"].ToString()
                         });
                     }

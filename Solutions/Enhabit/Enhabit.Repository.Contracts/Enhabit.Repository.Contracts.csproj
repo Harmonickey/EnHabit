@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IEnhabitMapRepository.cs" />
+    <Compile Include="IListingRepository.cs" />
     <Compile Include="IImageRepository.cs" />
     <Compile Include="IPortalRepository.cs" />
+    <Compile Include="IPricingRepository.cs" />
+    <Compile Include="IUniversityRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

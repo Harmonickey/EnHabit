@@ -37,7 +37,8 @@ namespace Enhabit.Web.Controllers
                     High = 900,
                     Step = 5
                 }
-            }; // Presenter.GetEnhabitMap();
+            };
+            vm = Presenter.GetEnhabitMap();
 
             // check session in presenter for the user's login status and what they are...
             // then perform the extension method to set the nav links

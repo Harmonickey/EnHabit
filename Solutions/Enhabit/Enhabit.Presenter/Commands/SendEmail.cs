@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Enhabit.Presenter.Commands
 {
-    class SendEmail
+    public class SendEmail
     {
     }
 }

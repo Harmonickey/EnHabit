@@ -8,10 +8,8 @@ using Enhabit.Models;
 
 namespace Enhabit.Repository.Contracts
 {
-    public interface IEnhabitMapRepository
+    public interface IUniversityRepository
     {
-        IEnumerable<Listing> GetListings();
-
-        IEnumerable<Listing> SearchForListings(SearchQuery query);
+        IEnumerable<University> GetAllUniversities();
     }
 }
