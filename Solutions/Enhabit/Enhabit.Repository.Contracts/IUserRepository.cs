@@ -1,12 +1,13 @@
 ﻿using Enhabit.Models;
+using System;
 
 namespace Enhabit.Repository.Contracts
 {
     public interface IUserRepository
     {
-        bool LoginUser(User user);
+        Guid LoginUser(User user);
 
-        bool CreateUser(User user);
+        Guid CreateUser(User user);
 
         bool DeleteUser(User user);
 
