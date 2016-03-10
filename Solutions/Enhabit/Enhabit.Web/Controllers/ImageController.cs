@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 
 using Enhabit.Presenter;
-using System.Web;
 using System.Linq;
 
 namespace Enhabit.Web.Controllers

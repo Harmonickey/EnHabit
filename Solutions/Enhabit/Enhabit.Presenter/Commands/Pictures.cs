@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-using Enhabit.Repository.Contracts;
+using Enhabit.Presenter.DataAdaptors;
 
 namespace Enhabit.Presenter.Commands
 {
     public static class Pictures
     {
-        public static IEnumerable<string> Save(IImageRepository repo, IEnumerable<string> fileNames)
+        public static IEnumerable<string> Save(ICloudinaryAdaptor cloudinary, IEnumerable<string> fileNames)
         {
-            return repo.Save(fileNames);
+            return cloudinary.Save(fileNames);
         }
     }
 }
