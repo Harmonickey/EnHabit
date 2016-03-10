@@ -87,6 +87,8 @@
     <Build Include="Programmability\Stored Procedures\SearchForListings.sql" />
     <Build Include="Programmability\Stored Procedures\GetPriceRange.sql" />
     <Build Include="Programmability\Stored Procedures\GetUniversities.sql" />
+    <Build Include="Programmability\Stored Procedures\LoginUser.sql" />
+    <Build Include="Programmability\Stored Procedures\CreateUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
