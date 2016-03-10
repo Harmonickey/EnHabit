@@ -1,5 +1,6 @@
 ﻿using Enhabit.Repository.Contracts;
 using Enhabit.Models;
+using Enhabit.Models.Enums;
 using System;
 using System.Data.SqlClient;
 using Enhabit.Presenter.DataAdaptors;
