@@ -18,6 +18,7 @@ namespace Enhabit.Web
         public static void RegisterAdaptors(IUnityContainer container)
         {
             container.RegisterType<IConfigAdaptor, ConfigAdaptor>();
+            container.RegisterType<ICloudinaryAdaptor, CloudinaryAdaptor>();
         }
 
         /// <summary>

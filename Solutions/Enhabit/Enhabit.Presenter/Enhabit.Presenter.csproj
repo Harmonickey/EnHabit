@@ -45,6 +45,7 @@
     <Compile Include="Commands\SendEmail.cs" />
     <Compile Include="Commands\Universities.cs" />
     <Compile Include="Commands\Users.cs" />
+    <Compile Include="DataAdaptors\ICloudinaryAdaptor.cs" />
     <Compile Include="DataAdaptors\IConfigAdaptor.cs" />
     <Compile Include="Extensions\ListingsExtensions.cs" />
     <Compile Include="Extensions\PricesExtensions.cs" />
