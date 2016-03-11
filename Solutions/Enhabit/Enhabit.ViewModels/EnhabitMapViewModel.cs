@@ -10,7 +10,7 @@ namespace Enhabit.ViewModels
 
         public IEnumerable<UniversityViewModel> Universities { get; set; }
 
-        public IEnumerable<LandlordViewModel> Landlords { get; set; }
+        public IEnumerable<UserViewModel> Landlords { get; set; }
 
         public PriceRangeViewModel PriceRange {get; set;}
 

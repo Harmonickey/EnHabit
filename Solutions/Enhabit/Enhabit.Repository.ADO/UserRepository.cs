@@ -7,6 +7,7 @@ using Enhabit.Presenter.DataAdaptors;
 using System.Data;
 using System.Transactions;
 using IsolationLevel = System.Transactions.IsolationLevel;
+using System.Collections.Generic;
 
 namespace Enhabit.Repository.ADO
 {
@@ -101,6 +102,37 @@ namespace Enhabit.Repository.ADO
         public bool UpdateUser(User user)
         {
             return true;
+        }
+
+        public IEnumerable<User> GetUsers(AccountType accountType)
+        {
+            var users = new List<User>();
+
+            using (SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetUsers]";
+                    cmd.Parameters.AddWithValue("@AccountTypeId", (int)accountType);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.HasRows && reader.Read())
+                    {
+                        users.Add(new User
+                        { 
+                           Username = reader["Username"].ToString(),
+                           FirstName = reader["FirstName"].ToString(),
+                           LastName = reader["LastName"].ToString(),
+                           Email = reader["Email"].ToString(),
+                           PhoneNumber = reader["PhoneNumber"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return users;
         }
     }
 }

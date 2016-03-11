@@ -5,10 +5,10 @@ namespace Enhabit.Models.Enums
     public enum AccountType
     {
         [Description("Admin")]
-        Apartment = 0,
+        Admin = 0,
 
         [Description("Landlord")]
-        House,
+        Landlord,
 
         [Description("Tenant")]
         Tenant

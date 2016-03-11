@@ -38,8 +38,9 @@ namespace Enhabit.Repository.ADO
                     {
                         universities.Add(new University
                         {
+                            UniversityId = (Guid)reader["UniversityId"],
                             Name = reader["Name"].ToString(),
-                            MaxListingDistance = (decimal)reader["MaxListingDistance"],
+                            MaxListingDistance = decimal.Parse(reader["MaxListingDistance"].ToString()),
                             Address = reader["Address"].ToString(),
                             XCoordinate = reader["XCoordinate"].ToString(),
                             YCoordinate = reader["YCoordinate"].ToString()

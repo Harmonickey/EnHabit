@@ -16,3 +16,4 @@ Post-Deployment Script Template
 :r .\"Reference Data\PetOptions.sql"
 :r .\"Reference Data\ParkingOptions.sql"
 :r .\"Reference Data\AccountTypes.sql"
+:r .\"Reference Data\DefaultUniversities.sql"

@@ -60,7 +60,36 @@ var SearchQueryViewModel = function (priceRange)
             self.PriceRangeHigh(ui.values[1]);
         }
     });
-    
+};
+
+var CreateListingViewModel = function (landlords, universities)
+{
+    var self = this;
+
+    self.Address = ko.observable();
+    self.Unit = ko.observable();
+    self.Rent = ko.observable();
+    self.StartDate = ko.observable();
+    self.Bedrooms = ko.observable();
+    self.Bathrooms = ko.observable();
+    self.Parking = ko.observable();
+    self.Animals = ko.observable();
+    self.Laundry = ko.observable();
+    self.AirConditioning = ko.observable();
+    self.LeaseType = ko.observable();
+    self.BuildingType = ko.observable();
+
+    self.Landlords = landlords;
+    self.Universities = universities;
+
+    self.Landlord = ko.observable();
+    self.University = ko.observable();
+    self.Notes = ko.observable();
+
+    self.PendingListingCreation = function ()
+    {
+
+    };
 };
 
 var EnhabitMapViewModel = function (enhabitMapData)
@@ -72,7 +101,9 @@ var EnhabitMapViewModel = function (enhabitMapData)
     // search bar
     self.SearchBar = new SearchQueryViewModel(enhabitMapData.PriceRange);
    
-    self.Dropzones = ko.observable();
+    
+
+    self.Dropzones = {};
     self.NumAdded = ko.observable(0);
     self.NumUploaded = ko.observable(0);
     self.PendingData = ko.observable(null);
@@ -80,7 +111,10 @@ var EnhabitMapViewModel = function (enhabitMapData)
     self.AddedFiles = ko.observable();
     self.Markers = new L.FeatureGroup();
 
-    self.UserLoggedIn = ko.observable(enhabitMapData.UserLoggedIn); // for now we'll init to true
+    self.Landlords = enhabitMapData.Landlords;
+    self.Universities = enhabitMapData.Universities;
+
+    self.UserLoggedIn = ko.observable(enhabitMapData.UserLoggedIn);
 
     self.User = new UserViewModel(enhabitMapData.User);
 
@@ -95,22 +129,15 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.OpenPostListingModal = function (data, event)
     {
-        // loading the listing modal
         LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
-
-        // make sure the picture dropzone is created
         self.CreateDropzone("create", "#common-modal form");
-
-        // initialize all the fields in the form
         InitSpecialFields();
+        ko.applyBindings(new CreateListingViewModel(self.Landlords, self.Universities), $("#common-modal")[0]);
     };
 
     self.OpenPowerKioskModal = function(data, event)
     {
-        // loading the power kiosk modal
         LoadModal(event, 'modal-content-power-kiosk', 'power-kiosk', 'Power Kiosk');
-
-        // make sure the picture dropzone is created
         InitializePowerKiosk();
     };
 
@@ -153,13 +180,13 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.CreateDropzone = function(key, element, existingPics)
     {
-        self.Dropzones()[key] = new Dropzone(element,
+        self.Dropzones[key] = new Dropzone(element,
         {
             addRemoveLinks: true,
             autoProcessQueue: false
         });
 
-        var myDropzone = self.Dropzones()[key];
+        var myDropzone = self.Dropzones[key];
 
         myDropzone.on("success", function (file) {
             if (numUploaded == numAdded - 1) {
@@ -286,3 +313,11 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     };
 };
+
+ko.bindingHandlers.stopBinding = {
+    init: function () {
+        return { controlsDescendantBindings: true };
+    }
+};
+
+ko.virtualElements.allowedBindings.stopBinding = true;

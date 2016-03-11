@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="AccountViewModel.cs" />
     <Compile Include="ApplicantViewModel.cs" />
-    <Compile Include="LandlordViewModel.cs" />
     <Compile Include="ListingViewModel.cs" />
     <Compile Include="NavLinkViewModel.cs" />
     <Compile Include="PaymentViewModel.cs" />

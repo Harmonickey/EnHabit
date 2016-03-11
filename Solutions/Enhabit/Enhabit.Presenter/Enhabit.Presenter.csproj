@@ -49,6 +49,7 @@
     <Compile Include="Extensions\ListingsExtensions.cs" />
     <Compile Include="Extensions\PricesExtensions.cs" />
     <Compile Include="Extensions\UniversitiesExtensions.cs" />
+    <Compile Include="Extensions\UsersExtensions.cs" />
     <Compile Include="ImagePresenter.cs" />
     <Compile Include="UserPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

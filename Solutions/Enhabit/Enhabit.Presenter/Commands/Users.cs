@@ -1,6 +1,11 @@
 ﻿using System;
 using Enhabit.Models;
 using Enhabit.Repository.Contracts;
+using System.Collections.Generic;
+using Enhabit.ViewModels;
+using Enhabit.Models.Enums;
+using System.Linq;
+using Enhabit.Presenter.Extensions;
 
 namespace Enhabit.Presenter.Commands
 {
@@ -14,6 +19,11 @@ namespace Enhabit.Presenter.Commands
         public static Guid Create(IUserRepository repo, User user)
         {
             return repo.CreateUser(user);
+        }
+
+        public static IEnumerable<UserViewModel> GetLandlords(IUserRepository repo)
+        {
+            return repo.GetUsers(AccountType.Landlord).Select(u => u.ToUserViewModel());
         }
     }
 }

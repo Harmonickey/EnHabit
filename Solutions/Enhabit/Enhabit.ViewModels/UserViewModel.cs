@@ -1,7 +1,10 @@
-﻿namespace Enhabit.ViewModels
+﻿using System;
+
+namespace Enhabit.ViewModels
 {
     public class UserViewModel
     {
+        public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }

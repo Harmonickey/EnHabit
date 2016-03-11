@@ -89,6 +89,7 @@
     <Build Include="Programmability\Stored Procedures\GetUniversities.sql" />
     <Build Include="Programmability\Stored Procedures\LoginUser.sql" />
     <Build Include="Programmability\Stored Procedures\CreateUser.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
@@ -98,6 +99,7 @@
     <None Include="Scripts\Post-Deployment\Reference Data\ParkingOptions.sql" />
     <None Include="Scripts\Post-Deployment\Reference Data\PetOptions.sql" />
     <None Include="Scripts\Post-Deployment\Reference Data\AccountTypes.sql" />
+    <None Include="Scripts\Post-Deployment\Reference Data\DefaultUniversities.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.Enhabit.publish.xml" />

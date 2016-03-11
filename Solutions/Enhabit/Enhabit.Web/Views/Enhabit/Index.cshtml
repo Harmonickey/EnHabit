@@ -148,6 +148,7 @@
     </div>
     <!-- #left-sidebar -->
     <!-- Login -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-login">
         <h1 style="margin-top: 0;">Log In</h1>
         <label>Username: </label><input type="text" class="form-control Username" />
@@ -159,8 +160,10 @@
         <div></div>
         <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');">Create an Account</a>
     </div>
+    <!-- /ko -->
     <!-- #modal-content-login -->
     <!-- Register -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-register">
         <h1>Create New Account</h1>
         <label>Username: </label><input type="text" class="form-control Username" />
@@ -173,6 +176,7 @@
         <input type="button" class="btn btn-outline-inverse btn-lg CreateAccount-btn" onclick="CreateAccount()" value="Create Account" style="margin-top: 15px;" />
         <p class="CreateAccount-error alert alert-danger" style="display: none;"></p>
     </div>
+    <!-- /ko -->
     <!-- #modal-content-register -->
     <!-- Register -->
     <div class="content-to-populate-in-modal" id="modal-content-register-success">
@@ -205,6 +209,7 @@
     </div>
     <!-- #modal-content-payment -->
     <!-- Email -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-email">
         <!-- placeholder for details view -->
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -234,8 +239,10 @@
         <p class="SendEmail-error alert alert-danger" style="display: none;"></p>
         <!-- end application view-->
     </div>
+    <!-- /ko -->
     <!-- End Email -->
     <!-- Pop Up Listing Modal -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-popup-listing">
         <div class="item-content listing">
             <div class="popup">
@@ -259,18 +266,24 @@
             <input class="owl-carousel-button btn btn-primary" type="button" value="View Larger" />
         </div>
     </div>
+    <!-- /ko -->
     <!-- #modal-content-popup-listing -->
     <!-- Multi-Listing -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-popup-multilisting">
 
     </div>
+    <!-- /ko -->
     <!-- #modal-content-popup-multilisting -->
     <!-- Owl Carousel Popup -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-owl-carousel">
 
     </div>
+    <!-- /ko -->
     <!-- #modal-content-owl-carousel -->
     <!-- Power Kiosk Popup -->
+    <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-power-kiosk">
         <div class="inner cover">
             <p class="small">We're going help you save money on your Supplier while keeping your Provider.  When you sign up for electricity or gas you are always given a provider and supplier but they are often with the same company!  Change to a most cost effective Supplier today!</p>
@@ -321,11 +334,13 @@
             </form>
         </div>
     </div>
+    <!-- /ko -->
     <!-- #modal-content-powerk-kiosk -->
     <!-- end: Left Sidebar -->
 </div>
 <!-- end: Outer Container -->
 <!-- placeholder for details view -->
+<!-- ko stopBinding: true -->
 <div id="details-view" style="display: none;">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="CloseDetailsView();">×</button>
     <!-- top section -->
@@ -351,8 +366,10 @@
         </div>-->
     </div>
 </div>
+<!-- /ko -->
 <!-- end details view -->
 <!-- Create Listing Modal -->
+<!-- ko stopBinding: true -->
 <div class="content-to-populate-in-modal" id="modal-content-listing">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -362,26 +379,26 @@
         <!-- Put all the fields to create a listing here -->
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" />
+                <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" data-bind="value: Address"/>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-6 col-md-6 col-sm-6">
-                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control Unit' />
+                <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control Unit' data-bind="value: Unit"/>
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-6">
-                <div style="font-weight: 700;">Rent/Month</div><input type='text' class='form-control Rent' />
+                <div style="font-weight: 700;">Rent/Month</div><input type='text' class='form-control Rent' data-bind="value: Rent"/>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <div style="font-weight: 700;">Start Date</div><input type='text' class='form-control Start' />
+                <div style="font-weight: 700;">Start Date</div><input type='text' class='form-control Start' data-bind="value: StartDate"/>
             </div>
 
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div style="font-weight: 700;">Bedrooms</div>
-                <select id="bedrooms-filter" class="form-control Bedrooms">
+                <select id="bedrooms-filter" class="form-control Bedrooms" data-bind="value: Bedrooms">
                     <option value="studio">Studio</option>
                     <option value="1" selected>1</option>
                     <option value="2">2</option>
@@ -397,7 +414,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div style="font-weight: 700;">Bathrooms</div>
-                <select id="bathrooms-filter" class="form-control Bathrooms">
+                <select id="bathrooms-filter" class="form-control Bathrooms" data-bind="value: Bathrooms">
                     <option value="1" selected>1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -414,54 +431,54 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch animals-content">
-                    <div style="font-weight: 700;">Animals</div><input class="Animals" type='checkbox' data-size='mini' />
+                    <div style="font-weight: 700;">Animals</div><input class="Animals" type='checkbox' data-size='mini' data-bind="value: Animals"/>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch laundry-content">
-                    <div style="font-weight: 700;">In-Unit Laundry</div><input class="Laundry" type='checkbox' data-size='mini' />
+                    <div style="font-weight: 700;">In-Unit Laundry</div><input class="Laundry" type='checkbox' data-size='mini' data-bind="value: Laundry"/>
                 </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch parking-content">
-                    <div style="font-weight: 700;">Parking</div><input class="Parking" type='checkbox' data-size='mini' />
+                    <div style="font-weight: 700;">Parking</div><input class="Parking" type='checkbox' data-size='mini' data-bind="value: Parking"/>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch airConditioning-content">
-                    <div style="font-weight: 700;">Air Conditioning</div><input class="AirConditioning" type='checkbox' data-size='mini' />
+                    <div style="font-weight: 700;">Air Conditioning</div><input class="AirConditioning" type='checkbox' data-size='mini' data-bind="value: AirConditioning"/>
                 </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch type-content">
-                    <div style="font-weight: 700;">Lease Type</div><input class="LeaseType" type='checkbox' data-size='mini' />
+                    <div style="font-weight: 700;">Lease Type</div><input class="LeaseType" type='checkbox' data-size='mini' data-bind="value: LeaseType"/>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch type-content">
-                    <div style="font-weight: 700;">Building Type</div><input class="BuildingType" type='checkbox' data-size='mini' />
+                    <div style="font-weight: 700;">Building Type</div><input class="BuildingType" type='checkbox' data-size='mini' data-bind="value: BuildingType"/>
                 </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                 <div style="font-weight: 700;">Landlord</div>
-                <select id="landlords-filter" class="form-control Landlord" style="font-size: 14px;"></select>
+                <select id="landlords-filter" class="form-control Landlord" style="font-size: 14px;" data-bind="options: Landlords, optionsText: 'Username', optionsValue: 'UserId', value: Landlord"></select>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                 <div style="font-weight: 700;">University</div>
-                <select id="universities-filter" class="form-control University" style="font-size: 14px;"></select>
+                <select id="universities-filter" class="form-control University" style="font-size: 14px;" data-bind="options: Universities, optionsText: 'Name', optionsValue: 'UniversityId', value: University"></select>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <label>Info</label><textarea rows='4' cols='50' class='form-control Notes'></textarea>
+                <label>Info</label><textarea rows='4' cols='50' class='form-control Notes' data-bind="value: Notes"></textarea>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -474,12 +491,13 @@
         <input type='hidden' class="Latitude" /><input type='hidden' class="Longitude" /><input type='hidden' class="SelectedAddress" />
         <div class="row" style="margin-top: 15px;">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PendingListingCreation()">Create Listing</button>
+                <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" data-bind="click: PendingListingCreation">Create Listing</button>
             </div>
         </div>
         <p class="create-listing-error alert alert-danger" style="display: none;"></p>
     </div>
 </div>
+<!-- /ko -->
 <!-- Modal -->
 <!-- DO NOT MOVE, EDIT OR REMOVE - this is needed in order for popup content to be populated in it -->
 <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">

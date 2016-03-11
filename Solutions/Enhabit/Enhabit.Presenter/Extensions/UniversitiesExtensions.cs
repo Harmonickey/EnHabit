@@ -9,6 +9,7 @@ namespace Enhabit.Presenter.Extensions
         {
             return new UniversityViewModel
             {
+                UniversityId = university.UniversityId,
                 Name = university.Name,
                 MaxListingDistance = university.MaxListingDistance
             };

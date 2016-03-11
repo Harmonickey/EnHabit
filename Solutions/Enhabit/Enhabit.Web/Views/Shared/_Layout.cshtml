@@ -121,6 +121,10 @@
                 InitSlideShowArrows();
 
                 $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo");
+
+                $('#common-modal').on('hidden.bs.modal', function () {
+                    ko.cleanNode($("#common-modal")[0]); // remove the view model binding from the popup
+                })
             });
 
             function InitDatePicker()
