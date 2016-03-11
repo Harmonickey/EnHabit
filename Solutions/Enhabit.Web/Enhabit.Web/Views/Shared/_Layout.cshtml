@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script>
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || screen.width <= 800){
+            window.location ="https://enhabitlife.com/mobile.html";}</script>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>@ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        
+        <!-- All of our layout css styles -->
+        <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" >
+        @Styles.Render("~/Enhabit/Content/ThirdParty")
+        <link href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" rel="stylesheet" />
+        <link href='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+        <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" >
+
+        @Styles.Render("~/Enhabit/Content/Map")
+
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <a class="logo" href="/"><img src='/Images/EnhabitLogo_Beta.png' height="56" /></a>
+                </div>
+                <!--
+            <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
+                <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium; display: none;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                    <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
+                </a>
+            </div>
+            -->
+                <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;">
+                    <a id="create-listing-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" data-bind="click: $root.OpenPostListingModal">
+                        Post Listing Now!
+                    </a>
+                </div>
+                <div class="nav navbar-nav navbar-left" style="margin-left: 15px; margin-top: 6px;">
+                    <a id="powerk-kiosk-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" data-bind="click: $root.OpenPowerKioskModal">
+                        Save Money on Energy Now!
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- ko ifnot: $root.UserLoggedIn -->
+                        <li class="navbar-login-btn" data-bind="click: function() { LoadModal(event, 'modal-content-login', 'login', 'Log In'); }">
+                            <i class="fa fa-sign-in" style="margin-right: 5px;"></i>Log In
+                        </li>
+                        <!-- /ko -->
+                        <!-- ko if: $root.UserLoggedIn -->
+                        <li class="account-nav dropdown">
+                            <a href="javascript:void()" class="dropdown-toggle" data-toggle="dropdown">
+                                Account
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- ko foreach: $root.NavLinks -->
+                                <li>
+                                    <a data-bind="attr: { href: LinkHref }">
+                                        <i data-bind="css: LinkClass" class="fa" style="margin-right: 5px;"></i>
+                                        <span data-bind="text: LinkName"></span>
+                                    </a>
+                                </li>
+                                <!-- /ko -->
+                                <li class="menu-item scroll" data-bind="click: $root.LogoutUser">
+                                    <a style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div> <!-- /.container -->
+        </nav>
+
+        @RenderBody();
+
+        <!-- All of our layout javascript files -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        @Scripts.Render("~/Enhabit/ThirdParty")
+        <script src="~/Scripts/ThirdParty/pikaday.js"></script>
+        <script src="~/Scripts/ThirdParty/pikaday.jquery.js"></script>
+        <script src="//maps.googleapis.com/maps/api/js?libraries=places" type="text/javascript"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js" type="text/javascript"></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js' type="text/javascript"></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.1.0/leaflet-pip.min.js' type="text/javascript"></script>
+        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js' type="text/javascript"></script>
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
+
+        @Scripts.Render("~/Enhabit/Common")
+
+        @Scripts.Render("~/Enhabit/Map")
+
+
+        <script>
+
+            var enhabitViewModel;
+
+            $(function () {
+                InitDatePicker();
+
+                InitHiddenSidebars();
+
+                InitKnockoutBindings();
+
+                InitBackStopEventHandler();
+
+                InitMouseEventHandlers();
+
+                InitSlideShowArrows();
+
+                $(".mapbox-logo").parent().removeClass("leaflet-left").addClass("leaflet-right").addClass("mblogo");
+
+                $('#common-modal').on('hidden.bs.modal', function () {
+                    ko.cleanNode($("#common-modal")[0]); // remove the view model binding from the popup
+                })
+            });
+
+            function InitDatePicker()
+            {
+                $("#datepicker-inline").pikaday(
+                {
+                    minDate: new Date(),
+                    setDefaultDate: new Date()
+                });
+            }
+
+            function InitHiddenSidebars()
+            {
+                var listingsListWidth = parseFloat($("#left-sidebar").css("left")) + parseFloat($("#left-sidebar").css("width"));
+
+                $("#listings_list").css("left", listingsListWidth);
+                $("#extras_view").css("left", listingsListWidth);
+            }
+
+            function InitKnockoutBindings()
+            {
+                var enhabitMapData = JSON.parse($('#EnhabitMapViewModel').val());
+                enhabitViewModel = ko.applyBindings(new EnhabitMapViewModel(enhabitMapData));
+            }
+
+            function InitMapboxMap()
+            {
+                new L.Control.Zoom({ position: 'topright' }).addTo(map);
+            }
+
+            function InitMouseEventHandlers()
+            {
+                // Disable map mouse features while we're in the sidebar
+                $("#left-sidebar, #extras_view, #listings_list").bind('mouseover',
+                    function ()
+                    {
+                        enhabitViewModel.Map.dragging.disable();
+                        enhabitViewModel.Map.scrollWheelZoom.disable();
+                        enhabitViewModel.Map.doubleClickZoom.disable();
+                    }
+                );
+
+                // Reenable map mouse features when the mouse is outside of the sidebar
+                $("#left-sidebar, #extras_view, #listings_list").bind('mouseout',
+                    function ()
+                    {
+                        enhabitViewModel.Map.dragging.enable();
+                        enhabitViewModel.Map.scrollWheelZoom.enable();
+                        enhabitViewModel.Map.doubleClickZoom.enable();
+                    }
+                );
+            }
+
+            function InitSlideShowArrows()
+            {
+                $('body').on('click', '.slider-arrow img', function () {
+                    var $slideshow = $(this).closest('.slideshow');
+                    var $newSlide;
+
+                    if ($(this).hasClass('slider-arrow-left')) {
+                        $newSlide = $slideshow.find('.image.active').prev();
+                        if ($newSlide.index() < 2) {
+                            $newSlide = $slideshow.find('.image').last();
+                        }
+                    }
+                    else if ($(this).hasClass('slider-arrow-right')) {
+                        $newSlide = $slideshow.find('.image.active').next();
+                        if ($newSlide.index() < 0) {
+                            $newSlide = $slideshow.find('.image').first();
+                        }
+                    }
+
+                    $slideshow.find('.active').removeClass('active').hide();
+                    $newSlide.addClass('active').show();
+                    return false;
+                });
+            }
+
+            Dropzone.autoDiscover = false;
+
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-64824617-1', 'auto');
+            ga('send', 'pageview');
+
+            function InitBackStopEventHandler() {
+                $(document).unbind('keydown').bind('keydown', function (event) {
+                    var doPrevent = false;
+                    if (event.keyCode === 8) {
+                        var d = event.srcElement || event.target;
+                        if ((d.tagName.toUpperCase() === 'INPUT' &&
+                                (
+                                    d.type.toUpperCase() === 'TEXT' ||
+                                    d.type.toUpperCase() === 'PASSWORD' ||
+                                    d.type.toUpperCase() === 'FILE' ||
+                                    d.type.toUpperCase() === 'SEARCH' ||
+                                    d.type.toUpperCase() === 'EMAIL' ||
+                                    d.type.toUpperCase() === 'NUMBER' ||
+                                    d.type.toUpperCase() === 'DATE' )
+                                ) ||
+                                d.tagName.toUpperCase() === 'TEXTAREA') {
+                            doPrevent = d.readOnly || d.disabled;
+                        }
+                        else {
+                            doPrevent = true;
+                        }
+                    }
+
+                    if (doPrevent) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+        </script>
+    </body>
+</html>
