@@ -315,6 +315,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 
+    self.IsExtrasViewOpen = ko.observable(false);
+
     self.NavLinks = ko.observableArray(ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
         return new NavLinkViewModel(navLink);
     }));
