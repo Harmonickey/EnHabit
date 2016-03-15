@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [Enhabit].[CreateUser]
+	@UserId uniqueidentifier,
 	@Username VARCHAR(250),
     @Password VARCHAR(250),
     @Email VARCHAR(250),
@@ -14,8 +15,6 @@ BEGIN
 
 SET NOCOUNT ON;
 
-	INSERT INTO Enhabit.Users([Username], [Password], [Email], [FirstName], [LastName], [PhoneNumber], [AccountTypeId], [IsActive], [IsVerified])
-	VALUES(@Username, @Password, @Email, @FirstName, @LastName, @PhoneNumber, @AccountTypeId, @IsActive, @IsVerified);
-
-	SELECT UserId FROM Enhabit.Users WHERE Username = @Username;
+	INSERT INTO Enhabit.Users([UserId], [Username], [Password], [Email], [FirstName], [LastName], [PhoneNumber], [AccountTypeId], [IsActive], [IsVerified])
+	VALUES(@UserId, @Username, @Password, @Email, @FirstName, @LastName, @PhoneNumber, @AccountTypeId, @IsActive, @IsVerified);
 END

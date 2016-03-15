@@ -44,6 +44,7 @@
     <Compile Include="EnhabitMapModel.cs" />
     <Compile Include="Enums\AccountType.cs" />
     <Compile Include="Enums\BuildingType.cs" />
+    <Compile Include="Enums\ErrorType.cs" />
     <Compile Include="Enums\LaundryOptions.cs" />
     <Compile Include="Enums\LeaseType.cs" />
     <Compile Include="Enums\ParkingOptions.cs" />

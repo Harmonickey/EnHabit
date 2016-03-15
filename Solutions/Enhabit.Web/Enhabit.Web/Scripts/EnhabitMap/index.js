@@ -1,4 +1,4 @@
-﻿var UserViewModel = function(user)
+﻿var UserViewModel = function(user, enhabitMapViewModel)
 {
     var self = this;
 
@@ -10,6 +10,149 @@
     self.FirstName = ko.observable();
     self.LastName = ko.observable();
 
+    self.LoginEnabled = ko.observable(true);
+    self.LoginError = ko.observable();
+    self.LoginErrorVisible = ko.observable(false);
+
+    self.CreateAccountEnabled = ko.observable(true);
+    self.CreateAccountError = ko.observable();
+    self.CreateAccountErrorVisible = ko.observable(false);
+
+    self.OpenRegisterModal = function () {
+        CleanModalViewModel();
+        enhabitMapViewModel.OpenRegisterModal();
+    };
+
+    self.LoginUser = function () {
+        var data = ko.toJSON({
+            Username: self.Username(),
+            Password: self.Password()
+        });
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "/User/Login",
+            data: data,
+            dataType: "json",
+            contentType: "application/json charset=utf-8",
+            beforeSend: function ()
+            {
+                self.LoginEnabled(false);
+                self.LoginErrorVisible(false);
+            },
+            success: function (res)
+            {
+                try
+                {
+                    if (res.Success == true)
+                    {
+                        enhabitMapViewModel.ShowLoginNav(true, res);
+
+                        // session should be set, so the user will be attached to the listing
+                        if (enhabitMapViewModel.PendingListingData() != undefined)
+                        {
+                            enhabitMapViewModel.CreateListing();
+                        }
+                    }
+                    else
+                    {
+                        throw new Error(res);
+                    }
+                }
+                catch (e)
+                {
+                    self.LoginError("Incorrect User/Password Combination.");
+                    self.LoginErrorVisible(true);
+                }
+            },
+            error: function (res, err)
+            {
+                self.LoginError(res);
+                self.LoginErrorVisible(true);
+            },
+            complete: function ()
+            {
+                self.LoginEnabled(false);
+            }
+        });
+    };
+
+    self.LoginFacebook = function ()
+    {
+        try
+        {
+            // this calls and responds to the facebook popup
+            FB.login(function (response)
+            {
+                if (response.status === 'connected')
+                {
+                    //we are good to login!
+                    var userId = response.authResponse.userID;
+                    var accessToken = response.authResponse.accessToken;
+                    self.Username(userId);
+                    self.Password(accessToken);
+                    self.LoginUser();
+                }
+            });
+        }
+        catch (e)
+        {
+            $.msgGrowl({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-center' });
+        }
+    };
+
+    self.CreateAccount = function()
+    {
+        var data = ko.toJSON({
+            Username: self.Username(),
+            Password: self.Password(),
+            ConfirmPassword: self.ConfirmPassword(),
+            FirstName: self.FirstName(),
+            LastName: self.LastName(),
+            Email: self.Email(),
+            PhoneNumber: self.PhoneNumber()
+        });
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "/User/Create",
+            data: data,
+            dataType: "json",
+            contentType: "application/json charset=utf-8",
+            beforeSend: function () {
+                self.CreateAccountEnabled(false);
+                self.CreateAccountErrorVisible(false);
+            },
+            success: function (res) {
+                try {
+                    if (res.Success == true) {
+                        enhabitMapViewModel.ShowLoginNav(true, res);
+
+                        // session should be set, so the user will be attached to the listing
+                        if (enhabitMapViewModel.PendingListingData() != undefined) {
+                            enhabitMapViewModel.CreateListing();
+                        }
+                    }
+                    else {
+                        throw new Error(res);
+                    }
+                }
+                catch (e) {
+                    self.CreateAccountError("Incorrect User/Password Combination.");
+                    self.CreateAccountErrorVisible(true);
+                }
+            },
+            error: function (res, err) {
+                self.CreateAccountError(res);
+                self.CreateAccountErrorVisible(true);
+            },
+            complete: function () {
+                self.CreateAccountEnabled(false);
+            }
+        });
+    };
 };
 
 var NavLinkViewModel = function (navLink)
@@ -62,33 +205,77 @@ var SearchQueryViewModel = function (priceRange)
     });
 };
 
-var CreateListingViewModel = function (landlords, universities)
+var CreateListingViewModel = function (landlords, universities, enhabitMapViewModel)
 {
     var self = this;
 
-    self.Address = ko.observable();
+    self.Address = ko.observable().extend({
+        required: true
+    });
     self.Unit = ko.observable();
-    self.Rent = ko.observable();
-    self.StartDate = ko.observable();
+    self.Rent = ko.observable().extend({
+        required: true
+    });
+    self.StartDate = ko.observable().extend({
+        required: true
+    });
     self.Bedrooms = ko.observable();
     self.Bathrooms = ko.observable();
     self.Parking = ko.observable();
     self.Animals = ko.observable();
     self.Laundry = ko.observable();
     self.AirConditioning = ko.observable();
-    self.LeaseType = ko.observable();
-    self.BuildingType = ko.observable();
-
+    self.LeaseTypes = ko.observable();
+    self.BuildingTypes = ko.observable();
     self.Landlords = landlords;
     self.Universities = universities;
 
     self.Landlord = ko.observable();
     self.University = ko.observable();
+    self.LeaseType = ko.computed(function () {
+        return self.LeaseTypes() == true ? "rental" : "sublet";
+    });
+    self.BuildingType = ko.computed(function () {
+        return self.BuildingTypes() == true ? "apartment" : "house";
+    });
+    self.FormattedAddress = ko.computed(function () {
+        return self.Address().split(",")[0];
+    });
+    self.FormattedStartDate = ko.computed(function () {
+        return $.datepicker.formatDate('mm/dd/yy', new Date(self.StartDate()));
+    });
+    self.Pictures = ko.observable();
+
     self.Notes = ko.observable();
 
     self.PendingListingCreation = function ()
     {
+        self.errors.showAllMessages();
 
+        if (self.errors().length == 0)
+        {
+            var data = ko.toJSON({
+                Address: self.FormattedAddress(),
+                Unit: self.Unit(),
+                Rent: self.Rent(),
+                StartDate: self.FormattedStartDate(),
+                Bedrooms: self.Bedrooms(),
+                Bathrooms: self.Bathrooms(),
+                Parking: self.Parking(),
+                Animals: self.Animals(),
+                Laundry: self.Laundry(),
+                AirConditioning: self.AirConditioning(),
+                LeaseType: self.LeaseType(),
+                BuildingType: self.BuildingType(),
+                Landlord: self.Landlord(),
+                University: self.University(),
+                Pictures: self.Pictures(),
+                Note: self.Notes()
+            });
+
+            // setup the listing data for pending 
+            enhabitMapViewModel.PendingListingData(data);
+        }
     };
 };
 
@@ -101,7 +288,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
     // search bar
     self.SearchBar = new SearchQueryViewModel(enhabitMapData.PriceRange);
    
-    
+    self.PendingListingData = ko.observable();
 
     self.Dropzones = {};
     self.NumAdded = ko.observable(0);
@@ -120,9 +307,9 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 
-    self.NavLinks = ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
+    self.NavLinks = ko.observableArray(ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
         return new NavLinkViewModel(navLink);
-    });
+    }));
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
     self.Map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
@@ -132,13 +319,25 @@ var EnhabitMapViewModel = function (enhabitMapData)
         LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
         self.CreateDropzone("create", "#common-modal form");
         InitSpecialFields();
-        ko.applyBindings(new CreateListingViewModel(self.Landlords, self.Universities), $("#common-modal")[0]);
+        ko.applyBindings(new CreateListingViewModel(self.Landlords, self.Universities, self), $("#common-modal")[0]);
     };
 
     self.OpenPowerKioskModal = function(data, event)
     {
         LoadModal(event, 'modal-content-power-kiosk', 'power-kiosk', 'Power Kiosk');
         InitializePowerKiosk();
+    };
+
+    self.OpenLoginModal = function (data, event)
+    {
+        LoadModal(event, 'modal-content-login', 'login', 'Log In');
+        ko.applyBindings(new UserViewModel(null, self), $("#common-modal")[0]);
+    };
+
+    self.OpenRegisterModal = function (data, event) 
+    {
+        LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
+        ko.applyBindings(new UserViewModel(null, self), $("#common-modal")[0]);
     };
 
     self.ToggleExtrasView = function ()
@@ -178,8 +377,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
         self.IsExtrasViewOpen(!self.IsExtrasViewOpen());
     };
 
-    self.CreateDropzone = function(key, element, existingPics)
-    {
+    self.CreateDropzone = function (key, element, existingPics) {
         self.Dropzones[key] = new Dropzone(element,
         {
             addRemoveLinks: true,
@@ -249,64 +447,28 @@ var EnhabitMapViewModel = function (enhabitMapData)
                 myDropzone.emit("complete", mockFile);
             }
         }
-    }
-
-    self.LoginUser = function () 
-    {
-        var data = ko.toJSON({
-            Username: self.User.Username(),
-            Password: self.User.Password()
-        });
-
-        $.ajax(
-        {
-            type: "POST",
-            url: "/User/Login",
-            data:
-            {
-                data: data,
-            },
-            beforeSend: function()
-            {
-                DisableModalSubmit('login');
-            },
-            success: function(res)
-            {
-                try
-                {
-                    if (Contains(res, "Okay"))
-                    {
-                        ShowLoginFeatures(hideMainModal, res);
-                        
-                        // session should be set, so the user will be attached to the listing
-                        if (listingWaiting)
-                        {
-                            CreateListing();
-                        }
-                    }
-                    else
-                    {
-                        throw new Error(res);
-                    }
-                }
-                catch(e)
-                {
-                    SetError('login', "Incorrect User/Password Combination.");
-                }
-            },
-            error: function(res, err)
-            {
-                SetError('login', res);
-            },
-            complete: function()
-            {
-                ResetModal("login", "Log In", false);
-            }
-        });
     };
 
-    self.LogoutUser = function () {
+    self.CreateListing = function ()
+    {
 
+    };
+
+    self.LogoutUser = function ()
+    {
+        
+    };
+
+    self.ShowLoginNav = function (hideLoginModal, res) {
+        self.UserLoggedIn(true);
+
+        self.NavLinks(ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
+            return new NavLinkViewModel(navLink);
+        }));
+
+        if (hideLoginModal) {
+            $("#common-modal").modal('hide');
+        }
     };
 
     self.SearchForListings = function () {

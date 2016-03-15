@@ -3,6 +3,7 @@
 using Enhabit.Presenter;
 using Enhabit.Models;
 using System;
+using Enhabit.Models.Enums;
 
 namespace Enhabit.Web.Controllers
 {
@@ -23,6 +24,7 @@ namespace Enhabit.Web.Controllers
             if (result != Guid.Empty)
             {
                 Session["UserGuid"] = result; // set the session with our user guid
+                Session.Timeout = 60; // minutes
                 return Json(true, JsonRequestBehavior.DenyGet);
             }
 
@@ -30,16 +32,33 @@ namespace Enhabit.Web.Controllers
         }
 
         [HttpPost]
+        public JsonResult Logout(User user)
+        {
+            Session.Clear();
+
+            return Json(true, JsonRequestBehavior.DenyGet);
+        }
+
+        [HttpPost]
         public JsonResult Create(User user)
         {
-            var result = Presenter.CreateUser(user);
+            //validate user here...
 
-            if (result != Guid.Empty)
+            try
             {
-                Session["UserGuid"] = result; // set the session with our user guid
-                return Json(true, JsonRequestBehavior.DenyGet);
-            }
+                var result = Presenter.CreateUser(user);
 
+                if (result != Guid.Empty)
+                {
+                    Session["UserGuid"] = result; // set the session with our user guid
+                    return Json(true, JsonRequestBehavior.DenyGet);
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.DenyGet);
+            }
+            
             return Json(false, JsonRequestBehavior.DenyGet);
         }
     }

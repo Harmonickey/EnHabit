@@ -13,7 +13,9 @@
 	[IsActive] BIT NOT NULL, 
 	CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([UserId] ASC),
     CONSTRAINT [FK_Users_ToTable] FOREIGN KEY ([AccountTypeId]) REFERENCES [Enhabit].[AccountTypes]([AccountTypeId]),
-    CONSTRAINT [UC_EnhabitUser] UNIQUE ([Username],[FacebookId],[Email])
+    CONSTRAINT [UC_EnhabitUsername] UNIQUE ([Username]),
+	CONSTRAINT [UC_EnhabitFacebookId] UNIQUE ([FacebookId]),
+	CONSTRAINT [UC_EnhabitEmail] UNIQUE ([Email])
 )
 
 

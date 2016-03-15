@@ -151,14 +151,14 @@
     <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-login">
         <h1 style="margin-top: 0;">Log In</h1>
-        <label>Username: </label><input type="text" class="form-control Username" />
-        <label>Password: </label><input type="password" class="form-control Password" />
-        <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" onclick="LoginUser(true);" style="margin-top: 15px;" />
+        <label>Username: </label><input type="text" class="form-control Username" data-bind="textInput: Username"/>
+        <label>Password: </label><input type="password" class="form-control Password" data-bind="textInput: Password"/>
+        <input type="button" class="btn btn-outline-inverse btn-lg login-btn" value="Log In" data-bind="click: LoginUser" style="margin-top: 15px;" />
         <p style="text-align: center;">Or</p>
-        <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" onclick="LoginFacebook();" style="margin-top: 15px"><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
-        <p class="login-error alert alert-danger" style="display: none;"></p>
+        <button type="button" class="btn btn-outline-inverse btn-lg login-btn-facebook" data-bind="click: LoginFacebook, enable: LoginEnabled" style="margin-top: 15px"><span class="facebook-icon-for-button"></span><span class="facebook-login-text">Log In using Facebook</span></button>
+        <p class="login-error alert alert-danger" data-bind="text: LoginError, visible: LoginErrorVisible" style="display: none;"></p>
         <div></div>
-        <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" onclick="LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');">Create an Account</a>
+        <label style="margin: 15px 15px 0 0;">Not a Member Yet?   </label><a style="cursor: pointer;" data-bind="click: OpenRegisterModal">Create an Account</a>
     </div>
     <!-- /ko -->
     <!-- #modal-content-login -->
@@ -166,15 +166,15 @@
     <!-- ko stopBinding: true -->
     <div class="content-to-populate-in-modal" id="modal-content-register">
         <h1>Create New Account</h1>
-        <label>Username: </label><input type="text" class="form-control Username" />
-        <label>Password: </label><input type="password" class="form-control Password" />
-        <label>Confirm Password: </label><input type="password" class="form-control Confirm" />
-        <label>First Name: </label><input type="text" class="form-control FirstName" />
-        <label>Last Name: </label><input type="text" class="form-control LastName" />
-        <label>Email: </label><input type="text" class="form-control Account Email" />
-        <label>Phone Number: </label><input type="text" class="form-control PhoneNumber" placeholder="xxx-xxx-xxxx" />
-        <input type="button" class="btn btn-outline-inverse btn-lg CreateAccount-btn" onclick="CreateAccount()" value="Create Account" style="margin-top: 15px;" />
-        <p class="CreateAccount-error alert alert-danger" style="display: none;"></p>
+        <label>Username: </label><input type="text" class="form-control Username" data-bind="textInput: Username"/>
+        <label>Password: </label><input type="password" class="form-control Password" data-bind="textInput: Password"/>
+        <label>Confirm Password: </label><input type="password" class="form-control Confirm" data-bind="textInput: ConfirmPassword"/>
+        <label>First Name: </label><input type="text" class="form-control FirstName" data-bind="textInput: FirstName"/>
+        <label>Last Name: </label><input type="text" class="form-control LastName" data-bind="textInput: LastName"/>
+        <label>Email: </label><input type="text" class="form-control Account Email" data-bind="textInput: Email"/>
+        <label>Phone Number: </label><input type="text" class="form-control PhoneNumber" placeholder="xxx-xxx-xxxx" data-bind="textInput: PhoneNumber"/>
+        <input type="button" class="btn btn-outline-inverse btn-lg CreateAccount-btn" data-bind="click: CreateAccount" value="Create Account" style="margin-top: 15px;" />
+        <p class="CreateAccount-error alert alert-danger" data-bind="text: CreateAccountError, visible: CreateAccountErrorVisible" style="display: none;"></p>
     </div>
     <!-- /ko -->
     <!-- #modal-content-register -->
@@ -455,12 +455,12 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch type-content">
-                    <div style="font-weight: 700;">Lease Type</div><input class="LeaseType" type='checkbox' data-size='mini' data-bind="value: LeaseType"/>
+                    <div style="font-weight: 700;">Lease Type</div><input class="LeaseType" type='checkbox' data-size='mini' data-bind="value: LeaseTypes"/>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="modal-switch type-content">
-                    <div style="font-weight: 700;">Building Type</div><input class="BuildingType" type='checkbox' data-size='mini' data-bind="value: BuildingType"/>
+                    <div style="font-weight: 700;">Building Type</div><input class="BuildingType" type='checkbox' data-size='mini' data-bind="value: BuildingTypes"/>
                 </div>
             </div>
         </div>

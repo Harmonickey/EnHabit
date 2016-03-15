@@ -18,6 +18,13 @@ namespace Enhabit.Presenter.Commands
 
         public static Guid Create(IUserRepository repo, User user)
         {
+            var userGuid = Guid.NewGuid();
+
+            user.UserId = userGuid;
+            user.AccountTypeId = (int)AccountType.Tenant;
+            user.IsActive = true;
+            user.IsVerified = true;
+
             return repo.CreateUser(user);
         }
 

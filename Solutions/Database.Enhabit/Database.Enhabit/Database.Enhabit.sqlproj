@@ -103,5 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.Enhabit.publish.xml" />
+    <None Include="Database.Enhabit-localhost.publish.xml" />
   </ItemGroup>
 </Project>

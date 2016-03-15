@@ -49,6 +49,7 @@
     <Compile Include="DataAdaptors\ICloudinaryAdaptor.cs" />
     <Compile Include="DataAdaptors\IConfigAdaptor.cs" />
     <Compile Include="EnhabitMapPresenter.cs" />
+    <Compile Include="Extensions\ErrorTypeExtensions.cs" />
     <Compile Include="Extensions\ListingsExtensions.cs" />
     <Compile Include="Extensions\PricesExtensions.cs" />
     <Compile Include="Extensions\UniversitiesExtensions.cs" />

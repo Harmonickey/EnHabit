@@ -25,31 +25,13 @@ namespace Enhabit.Web.Controllers
 
         public ActionResult Index()
         {
-            EnhabitMapViewModel vm = new EnhabitMapViewModel
-            {
-                DefaultListingPicture = "404ImageNotFound.png",
-                Listings = new List<ListingViewModel>
-                {
-                    new ListingViewModel
-                    {
-                        Price = 1500,
-                        Address = "2615 Chestnut Ridge"
-                    }
-                },
-                PriceRange = new PriceRangeViewModel
-                {
-                    Low = 250,
-                    High = 900,
-                    Step = 5
-                }
-            };
-            vm = Presenter.GetEnhabitMap();
+            var vm = Presenter.GetEnhabitMap();
 
             // check session in presenter for the user's login status and what they are...
             // then perform the extension method to set the nav links
             // for now we can just control here if they are admin, tenant, or landlord
             vm.NavLinks = GetAdminNavLinks();
-            vm.UserLoggedIn = true;
+            vm.UserLoggedIn = false;
 
             return View(vm);
         }

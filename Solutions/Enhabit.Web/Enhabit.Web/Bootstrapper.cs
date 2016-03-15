@@ -7,6 +7,11 @@ using Enhabit.Web.Controllers;
 
 using Microsoft.Practices.Unity;
 
+using log4net;
+using log4net.Config;
+using System.Configuration;
+using System.IO;
+
 namespace Enhabit.Web
 {
     public class Bootstrapper
@@ -41,6 +46,8 @@ namespace Enhabit.Web
         /// <param name="container"></param>
         public static void RegisterControllers(IUnityContainer container)   
         {
+            XmlConfigurator.Configure();
+            container.RegisterInstance(typeof(ILog), LogManager.GetLogger("EventLogger"));
             container.RegisterType<EnhabitMapPresenter, EnhabitMapPresenter>();
             container.RegisterType<UserPresenter, UserPresenter>();
             container.RegisterType<ImagePresenter, ImagePresenter>();

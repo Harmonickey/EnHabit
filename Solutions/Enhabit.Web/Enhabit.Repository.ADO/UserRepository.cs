@@ -8,20 +8,30 @@ using System.Data;
 using System.Transactions;
 using IsolationLevel = System.Transactions.IsolationLevel;
 using System.Collections.Generic;
+using log4net;
+using Enhabit.Presenter.Extensions;
 
 namespace Enhabit.Repository.ADO
 {
     public class UserRepository : IUserRepository
     {
         private readonly string _enhabitConnString;
+        private readonly TransactionScopeOption _transactionScopeOption;
+        private readonly TransactionOptions _transactionOptions;
+
+        private readonly ILog _logger;
 
         public SqlConnection SqlConn { get; set; }
 
-        public UserRepository(IConfigAdaptor configAdaptor)
+        public UserRepository(IConfigAdaptor configAdaptor, ILog logger)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
 
             _enhabitConnString = configAdaptor.EnhabitConnectionString;
+            _transactionScopeOption = TransactionScopeOption.Required;
+            _transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted };
+            _logger = logger;
+
         }
 
         public Guid LoginUser(User user)
@@ -52,9 +62,7 @@ namespace Enhabit.Repository.ADO
 
         public Guid CreateUser(User user)
         {
-            var userGuid = Guid.Empty;
-
-            using (var transactionScope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            using (var transactionScope = new TransactionScope(_transactionScopeOption, _transactionOptions))
             {
                 try
                 {
@@ -65,33 +73,47 @@ namespace Enhabit.Repository.ADO
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[Enhabit].[CreateUser]";
+                            cmd.Parameters.AddWithValue("@UserId", user.UserId);
                             cmd.Parameters.AddWithValue("@Username", user.Username);
                             cmd.Parameters.AddWithValue("@Password", user.Password);
                             cmd.Parameters.AddWithValue("@Email", user.Email);
                             cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                             cmd.Parameters.AddWithValue("@LastName", user.LastName);
                             cmd.Parameters.AddWithValue("@PhoneNumber", user.PhoneNumber);
-                            cmd.Parameters.AddWithValue("@AccountTypeId", (int)AccountType.Tenant);
-                            cmd.Parameters.AddWithValue("@IsActive", true);
-                            cmd.Parameters.AddWithValue("@IsVerified", false);
+                            cmd.Parameters.AddWithValue("@AccountTypeId", user.AccountTypeId);
+                            cmd.Parameters.AddWithValue("@IsActive", user.IsActive);
+                            cmd.Parameters.AddWithValue("@IsVerified", user.IsVerified);
 
-                            SqlDataReader reader = cmd.ExecuteReader();
-
-                            while (reader.HasRows && reader.Read())
-                            {
-                                if (reader["UserId"] != DBNull.Value)
-                                    userGuid = (Guid)reader["UserId"];
-                            }
+                            cmd.ExecuteNonQuery();
                         }
                     }
+
+                    transactionScope.Complete();
                 }
                 catch (Exception ex)
                 {
-                    throw new ApplicationException(string.Format("UserRepository.CreateUser({0}) Exception: {1}", user.Username, ex.Message));
+                    _logger.Error(string.Format("UserRepository.CreateUser({0}) Exception: {1}", user.Username, ex.Message));
+                    if (ex.Message.Contains("UC_EnhabitUsername"))
+                    {
+                        throw new Exception(ErrorType.UsernameAlreadyExists.GetDescription());
+                    }
+                    else if (ex.Message.Contains("UC_EnhabitFacebookId"))
+                    {
+                        throw new Exception(ErrorType.FacebookIdAlreadyExists.GetDescription());
+                    }
+                    else if (ex.Message.Contains("UC_EnhabitEmail"))
+                    {
+                        throw new Exception(ErrorType.EmailAlreadyExists.GetDescription());
+                    }
+                    else
+                    {
+                        throw new Exception(ErrorType.Unknown.GetDescription());
+                    }
+
                 }
             }
 
-            return userGuid;
+            return user.UserId;
         }
 
         public bool DeleteUser(User user)
