@@ -12,10 +12,7 @@ namespace Enhabit.Models.Enums
 
         [Description("Email Already Exists")]
         EmailAlreadyExists,
-
-        [Description("Facebook Account Already Exists")]
-        FacebookIdAlreadyExists,
-
+        
         [Description("Invalid Username Or Password")]
         InvalidUsernameOrPassword,
 

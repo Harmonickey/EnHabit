@@ -4,6 +4,7 @@ using Enhabit.Presenter.Extensions;
 using Enhabit.ViewModels;
 using Enhabit.Models;
 using Enhabit.Repository.Contracts;
+using System;
 
 namespace Enhabit.Presenter.Commands
 {
@@ -21,6 +22,15 @@ namespace Enhabit.Presenter.Commands
             var listings = repo.SearchForListings(query);
 
             return listings.Select(l => l.ToListingViewModel());
+        }
+
+        public static bool Create(IListingRepository repo, Listing listing)
+        {
+            listing.ListingId = Guid.NewGuid();
+            listing.IsFeatured = false;
+            listing.IsRented = false;
+
+            return repo.CreateListing(listing);
         }
     }
 }

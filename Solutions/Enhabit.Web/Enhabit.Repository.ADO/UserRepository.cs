@@ -97,10 +97,6 @@ namespace Enhabit.Repository.ADO
                     {
                         throw new Exception(ErrorType.UsernameAlreadyExists.GetDescription());
                     }
-                    else if (ex.Message.Contains("UC_EnhabitFacebookId"))
-                    {
-                        throw new Exception(ErrorType.FacebookIdAlreadyExists.GetDescription());
-                    }
                     else if (ex.Message.Contains("UC_EnhabitEmail"))
                     {
                         throw new Exception(ErrorType.EmailAlreadyExists.GetDescription());

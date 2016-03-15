@@ -2,7 +2,7 @@
 using Enhabit.Repository.Contracts;
 using Enhabit.Presenter.Commands;
 using Enhabit.Presenter.DataAdaptors;
-
+using System;
 using Enhabit.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -50,7 +50,8 @@ namespace Enhabit.Presenter
                 PriceRange = _priceRange,
                 Universities = _universities,
                 Landlords = _landlords,
-                DefaultListingPicture = defaultListingPicture
+                DefaultListingPicture = defaultListingPicture,
+                CreateListingPictureGuid = Guid.NewGuid()
             };
         }
 

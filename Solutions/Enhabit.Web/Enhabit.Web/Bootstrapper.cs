@@ -51,11 +51,13 @@ namespace Enhabit.Web
             container.RegisterType<EnhabitMapPresenter, EnhabitMapPresenter>();
             container.RegisterType<UserPresenter, UserPresenter>();
             container.RegisterType<ImagePresenter, ImagePresenter>();
+            container.RegisterType<ListingPresenter, ListingPresenter>();
 
             container.RegisterType<EnhabitController, EnhabitController>();
             container.RegisterType<PortalController, PortalController>();
             container.RegisterType<UserController, UserController>();
             container.RegisterType<ImageController, ImageController>();
+            container.RegisterType<ListingController, ListingController>();
         }
 
         /// <summary>

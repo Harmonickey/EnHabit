@@ -90,6 +90,9 @@
     <Build Include="Programmability\Stored Procedures\LoginUser.sql" />
     <Build Include="Programmability\Stored Procedures\CreateUser.sql" />
     <Build Include="Programmability\Stored Procedures\GetUsers.sql" />
+    <Build Include="Programmability\Stored Procedures\SavePicture.sql" />
+    <Build Include="Programmability\Stored Procedures\GetPictures.sql" />
+    <Build Include="Programmability\Stored Procedures\CreateListing.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

@@ -22,7 +22,8 @@ namespace Enhabit.Web
                         "~/Scripts/ThirdParty/pickaday.jquery.js",
                         "~/Scripts/ThirdParty/jquery.slimscroll.js",
                         "~/Scripts/ThirdParty/powerkiosk_front.js",
-                        "~/Scripts/ThirdParty/knockout-3.4.0.js"));
+                        "~/Scripts/ThirdParty/knockout-3.4.0.js",
+                        "~/Scripts/ThirdParty/knockout-2.0.3.validation.js"));
 
             bundles.Add(new ScriptBundle("~/Enhabit/Common").Include(
                         "~/Scripts/Common/custom_bindings.js"));

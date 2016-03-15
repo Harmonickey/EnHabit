@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace Enhabit.ViewModels
 {
@@ -17,5 +18,7 @@ namespace Enhabit.ViewModels
         public IEnumerable<NavLinkViewModel> NavLinks { get; set; }
 
         public bool UserLoggedIn { get; set; }
+
+        public Guid CreateListingPictureGuid { get; set; }
     }
 }

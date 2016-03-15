@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 using Enhabit.Presenter;
-using System.Linq;
+using System.Web;
+using System.IO;
+using System.Net;
 
 namespace Enhabit.Web.Controllers
 {
@@ -17,21 +18,33 @@ namespace Enhabit.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save()
+        public JsonResult Save(HttpPostedFileBase file)
         {
-            bool isSavedSuccessfully = true;
-            IEnumerable<string> imageUrls;
             try
             {
-                imageUrls = Presenter.Save(Request.Files.AllKeys.Select(f => Request.Files[f].FileName));
+                var path = Path.GetFileName(file.FileName);
+
+                var saveLocation = Server.MapPath("~/App_Data") + "\\" + path;
+
+                // save to temp
+                file.SaveAs(saveLocation);
+
+                // save to cloud
+                if (!Presenter.Save(saveLocation))
+                {
+                    throw new Exception("Unable to Save Picture");
+                }
+
+                // delete temp
+                System.IO.File.Delete(saveLocation);
             }
             catch (Exception ex)
             {
-                isSavedSuccessfully = false;
-                return Json(new { isSaved = isSavedSuccessfully, message = ex.Message }, JsonRequestBehavior.DenyGet);
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message, JsonRequestBehavior.DenyGet);
             }
 
-            return Json(new { isSaved = isSavedSuccessfully, imageUrls = imageUrls }, JsonRequestBehavior.DenyGet);
+            return Json(true, JsonRequestBehavior.DenyGet);
         }
     }
 }

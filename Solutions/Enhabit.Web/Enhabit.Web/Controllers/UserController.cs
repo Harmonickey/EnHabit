@@ -51,7 +51,7 @@ namespace Enhabit.Web.Controllers
                 if (result != Guid.Empty)
                 {
                     Session["UserGuid"] = result; // set the session with our user guid
-                    return Json(true, JsonRequestBehavior.DenyGet);
+                    return Json(result, JsonRequestBehavior.DenyGet);
                 }
             }
             catch(Exception ex)

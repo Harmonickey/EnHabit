@@ -55,6 +55,7 @@
     <Compile Include="Extensions\UniversitiesExtensions.cs" />
     <Compile Include="Extensions\UsersExtensions.cs" />
     <Compile Include="ImagePresenter.cs" />
+    <Compile Include="ListingPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserPresenter.cs" />
   </ItemGroup>

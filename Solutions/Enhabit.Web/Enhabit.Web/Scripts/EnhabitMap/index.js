@@ -45,15 +45,9 @@
             {
                 try
                 {
-                    if (res.Success == true)
+                    if (res != false)
                     {
-                        enhabitMapViewModel.ShowLoginNav(true, res);
-
-                        // session should be set, so the user will be attached to the listing
-                        if (enhabitMapViewModel.PendingListingData() != undefined)
-                        {
-                            enhabitMapViewModel.CreateListing();
-                        }
+                        enhabitMapViewModel.ShowLoginNav(true);
                     }
                     else
                     {
@@ -129,14 +123,15 @@
             {
                 try
                 {
-                    if (res == true)
+                    if (res != false)
                     {
-                        enhabitMapViewModel.ShowLoginNav(true, res);
+                        enhabitMapViewModel.ShowLoginNav(true);
 
                         // session should be set, so the user will be attached to the listing
+                        console.log("Pending Listing Data: " + enhabitMapViewModel.PendingListingData());
                         if (enhabitMapViewModel.PendingListingData() != undefined)
                         {
-                            enhabitMapViewModel.CreateListing();
+                            enhabitMapViewModel.CreateListing(res);
                         }
                     }
                     else
@@ -217,6 +212,8 @@ var CreateListingViewModel = function (landlords, universities, enhabitMapViewMo
 {
     var self = this;
 
+    self.errors = ko.validation.group(self, { deep: true, live: true });
+
     self.Address = ko.observable().extend({
         required: true
     });
@@ -247,10 +244,10 @@ var CreateListingViewModel = function (landlords, universities, enhabitMapViewMo
         return self.BuildingTypes() == true ? "apartment" : "house";
     });
     self.FormattedAddress = ko.computed(function () {
-        return self.Address().split(",")[0];
+        return (self.Address() ? self.Address().split(",")[0] : "");
     });
     self.FormattedStartDate = ko.computed(function () {
-        return $.datepicker.formatDate('mm/dd/yy', new Date(self.StartDate()));
+        return (self.StartDate() ? $.datepicker.formatDate('mm/dd/yy', new Date(self.StartDate())) : "");
     });
     self.Pictures = ko.observable();
 
@@ -262,7 +259,7 @@ var CreateListingViewModel = function (landlords, universities, enhabitMapViewMo
 
         if (self.errors().length == 0)
         {
-            var data = ko.toJSON({
+            var data = {
                 Address: self.FormattedAddress(),
                 Unit: self.Unit(),
                 Rent: self.Rent(),
@@ -279,10 +276,13 @@ var CreateListingViewModel = function (landlords, universities, enhabitMapViewMo
                 University: self.University(),
                 Pictures: self.Pictures(),
                 Note: self.Notes()
-            });
+            };
 
             // setup the listing data for pending 
             enhabitMapViewModel.PendingListingData(data);
+
+            CleanModalViewModel();
+            enhabitMapViewModel.OpenRegisterModal();
         }
     };
 };
@@ -292,7 +292,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
     var self = this;
 
     self.DefaultPicture = enhabitMapData.DefaultListingPicture;
-    
+    self.CreateListingPictureGuid = enhabitMapData.CreateListingPictureGuid;
+
     // search bar
     self.SearchBar = new SearchQueryViewModel(enhabitMapData.PriceRange);
    
@@ -301,9 +302,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
     self.Dropzones = {};
     self.NumAdded = ko.observable(0);
     self.NumUploaded = ko.observable(0);
-    self.PendingData = ko.observable(null);
-    self.Pictures = ko.observable();
-    self.AddedFiles = ko.observable();
+    self.Pictures = {};
+    self.AddedFiles = {};
     self.Markers = new L.FeatureGroup();
 
     self.Landlords = enhabitMapData.Landlords;
@@ -312,6 +312,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
     self.UserLoggedIn = ko.observable(enhabitMapData.UserLoggedIn);
 
     self.User = new UserViewModel(enhabitMapData.User);
+
+    self.CreateListingUserGuid = ko.observable();
 
     self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 
@@ -387,7 +389,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
         self.IsExtrasViewOpen(!self.IsExtrasViewOpen());
     };
 
-    self.CreateDropzone = function (key, element, existingPics) {
+    self.CreateDropzone = function (key, element, existingPics)
+    {
         self.Dropzones[key] = new Dropzone(element,
         {
             addRemoveLinks: true,
@@ -396,72 +399,160 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
         var myDropzone = self.Dropzones[key];
 
-        myDropzone.on("success", function (file) {
-            if (numUploaded == numAdded - 1) {
-                numUploaded = 0;
-                numAdded = 0;
+        myDropzone.on("success", function (file)
+        {
+            if (self.NumUploaded() == self.NumAdded() - 1)
+            {
+                self.NumUploaded(0);
+                self.NumAdded(0);
                 $(".dz-progress").remove();
                 self.ProcessListing();
             }
-            else {
-                numUploaded++;
+            else
+            {
+                self.NumUploaded(self.NumUploaded() + 1);
                 $(".dz-progress").remove();
             }
         });
 
-        myDropzone.on("addedfile", function (file) {
+        myDropzone.on("addedfile", function (file)
+        {
             var oid = $(this.element).data("pic-id");
-            if (pictures[oid] == null) {
-                pictures[oid] = [];
+            if (self.Pictures[oid] == null) {
+                self.Pictures[oid] = [];
             }
             var filename = (file.alreadyUploaded
                             ? file.name
-                            : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
-                                                                : Math.random().toString(36).slice(2) + "_" + file.name));
-            pictures[oid].push(filename);
+                            : self.CreateListingPictureGuid() + file.name);
 
-            if (!file.alreadyUploaded) {
+            self.Pictures[oid].push(filename);
+
+            if (!file.alreadyUploaded)
+            {
                 this.files[this.files.length - 1].serverFileName = filename;
             }
 
-            self.AddedFiles()[oid] = true;
+            self.AddedFiles[oid] = true;
 
             self.NumAdded(self.NumAdded() + 1);
         });
 
-        myDropzone.on("removedfile", function (file) {
+        myDropzone.on("removedfile", function (file)
+        {
             var index = this.files.indexOf(file);
 
             var oid = $(this.element).data("pic-id");
-            if (self.Pictures()[oid] == null) {
-                self.Pictures()[oid] = [];
+            if (self.Pictures[oid] == null) {
+                self.Pictures[oid] = [];
             }
 
-            self.Pictures()[oid].splice(index, 1);
+            self.Pictures[oid].splice(index, 1);
 
             self.NumAdded(self.NumAdded() - 1);
 
-            if (numAdded < 0) {
-                self.AddedFiles()[oid] = false;
+            if (self.NumAdded() < 0) {
+                self.AddedFiles[oid] = false;
                 self.NumAdded(0);
             }
         });
 
-        if (existingPics != null) {
-            for (var i = 0; i < existingPics.length; i++) {
+        if (existingPics != null)
+        {
+            for (var i = 0; i < existingPics.length; i++)
+            {
                 var mockFile = { name: existingPics[i], alreadyUploaded: true };
 
                 myDropzone.emit("addedfile", mockFile);
                 self.NumAdded(self.NumAdded() - 1);
-                myDropzone.emit("thumbnail", mockFile, "/images/enhabit/images/" + mockFile.name);
                 myDropzone.emit("complete", mockFile);
             }
         }
     };
 
-    self.CreateListing = function ()
+    self.ProcessListing = function()
     {
+        if (self.PendingListingData() == undefined)
+        {
+            return;
+        }
 
+        self.PendingListingData().PicturesId = self.CreateListingPictureGuid();
+        self.PendingListingData().UserId = self.CreateListingUserGuid();
+
+        var data = ko.toJSON(self.PendingListingData());
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "/Listing/Create",
+            data: data,
+            dataType: "json",
+            contentType: "application/json charset=utf-8",
+            success: function (res) {
+                try {
+                    if (!res) {
+                        throw new Error("Unable to Create Listing");
+                    }
+                    else {
+                        var listing = JSON.parse(res);
+
+                        if (listing["error"]) {
+                            throw new Error(listing["error"]);
+                        }
+                        else {
+                            ResetListings();
+
+                            LoadAllDefaultListings();
+
+                            numUploaded = 0;
+
+                            pendingData = null;
+
+                            listingWaiting = false;
+
+                            listingData = {};
+
+                            $.msgGrowl({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center' });
+                        }
+                    }
+                }
+                catch (e) {
+                    $.msgGrowl({ type: 'error', title: 'Error', text: e.message, position: 'top-center' });
+                }
+            },
+            error: function (res, err) {
+                $.msgGrowl({ type: 'error', title: 'Error', text: res, position: 'top-center' });
+            },
+            complete: function () {
+                $("#create-listing-button").prop("disabled", false);
+                $("#create-listing-button").text("Create Listing");
+
+                self.Dropzones["create"].destroy();
+
+                CreateDropzone("create", "#modal-content-listing form");
+            }
+        });
+    };
+
+    self.CreateListing = function (userGuid)
+    {
+        self.CreateListingUserGuid(userGuid);
+        try
+        {
+            // async call, caught in dropzone.success event handler
+            if (self.NumAdded() == 0)
+            {
+                self.ProcessListing();
+            }
+            else
+            {
+                self.Dropzones["create"].processQueue();
+            }
+        }
+        catch (e)
+        {
+            $.msgGrowl({ type: 'error', title: 'Error', text: e.message, position: 'top-center' });
+        }
     };
 
     self.LogoutUser = function ()
@@ -469,7 +560,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
         
     };
 
-    self.ShowLoginNav = function (hideLoginModal, res) {
+    self.ShowLoginNav = function (hideLoginModal) {
         self.UserLoggedIn(true);
 
         self.NavLinks(ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {

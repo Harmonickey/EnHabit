@@ -55,6 +55,7 @@
     <Compile Include="ControllerFactory\IocControllerFactory.cs" />
     <Compile Include="Controllers\EnhabitController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\ListingController.cs" />
     <Compile Include="Controllers\PortalController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -203,6 +204,7 @@
     <Content Include="Scripts\ThirdParty\jquery.slimscroll.js" />
     <Content Include="Scripts\ThirdParty\jquery.ui.touch-punch.js" />
     <Content Include="Scripts\ThirdParty\knockout-3.4.0.js" />
+    <Content Include="Scripts\ThirdParty\knockout-2.0.3.validation.js" />
     <Content Include="Scripts\ThirdParty\msgGrowl.js" />
     <Content Include="Scripts\ThirdParty\owl.carousel.js" />
     <Content Include="Scripts\ThirdParty\pikaday.jquery.js" />
@@ -225,6 +227,7 @@
     <Folder Include="Content\Portal\" />
     <Folder Include="Scripts\Tests\" />
     <Folder Include="Views\Image\" />
+    <Folder Include="Views\Listing\" />
     <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>

@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Applicant.cs" />
-    <Compile Include="EnhabitMapModel.cs" />
     <Compile Include="Enums\AccountType.cs" />
     <Compile Include="Enums\BuildingType.cs" />
     <Compile Include="Enums\ErrorType.cs" />
@@ -51,6 +50,7 @@
     <Compile Include="Enums\PetOptions.cs" />
     <Compile Include="Listing.cs" />
     <Compile Include="Payment.cs" />
+    <Compile Include="Picture.cs" />
     <Compile Include="PortalModel.cs" />
     <Compile Include="PriceRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

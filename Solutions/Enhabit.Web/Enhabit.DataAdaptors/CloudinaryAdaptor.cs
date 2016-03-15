@@ -26,12 +26,7 @@ namespace Enhabit.Adaptors
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public IEnumerable<string> Save(IEnumerable<string> filePaths)
-        {
-            return filePaths.Select(Save);
-        }
-
-        private string Save(string filePath)
+        public string Save(string filePath)
         {
             var uploadParams = new ImageUploadParams()
             {
