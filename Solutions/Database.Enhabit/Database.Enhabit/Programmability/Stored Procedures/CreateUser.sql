@@ -16,5 +16,5 @@ BEGIN
 SET NOCOUNT ON;
 
 	INSERT INTO Enhabit.Users([UserId], [Username], [Password], [Email], [FirstName], [LastName], [PhoneNumber], [AccountTypeId], [IsActive], [IsVerified])
-	VALUES(@UserId, @Username, @Password, @Email, @FirstName, @LastName, @PhoneNumber, @AccountTypeId, @IsActive, @IsVerified);
+	VALUES(@UserId, @Username, HASHBYTES('SHA1', @Password), @Email, @FirstName, @LastName, @PhoneNumber, @AccountTypeId, @IsActive, @IsVerified);
 END

@@ -52,7 +52,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="navbar-login-btn" data-bind="click: $root.OpenLoginModal, hidden: $root.UserLoggedIn">
+                        <li class="navbar-login-btn" data-bind="click: $root.OpenLoginModal, visible: !$root.UserLoggedIn()">
                             <i class="fa fa-sign-in" style="margin-right: 5px;"></i>Log In
                         </li>
                         <li class="account-nav dropdown" data-bind="visible: $root.UserLoggedIn" style="display: none;">

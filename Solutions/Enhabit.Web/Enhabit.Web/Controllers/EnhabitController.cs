@@ -31,7 +31,7 @@ namespace Enhabit.Web.Controllers
             // then perform the extension method to set the nav links
             // for now we can just control here if they are admin, tenant, or landlord
             vm.NavLinks = GetAdminNavLinks();
-            vm.UserLoggedIn = false;
+            vm.UserLoggedIn = Session["UserGuid"] != null;
 
             return View(vm);
         }

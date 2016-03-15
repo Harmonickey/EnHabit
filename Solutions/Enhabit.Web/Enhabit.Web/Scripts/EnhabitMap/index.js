@@ -125,30 +125,38 @@
                 self.CreateAccountEnabled(false);
                 self.CreateAccountErrorVisible(false);
             },
-            success: function (res) {
-                try {
-                    if (res.Success == true) {
+            success: function (res)
+            {
+                try
+                {
+                    if (res == true)
+                    {
                         enhabitMapViewModel.ShowLoginNav(true, res);
 
                         // session should be set, so the user will be attached to the listing
-                        if (enhabitMapViewModel.PendingListingData() != undefined) {
+                        if (enhabitMapViewModel.PendingListingData() != undefined)
+                        {
                             enhabitMapViewModel.CreateListing();
                         }
                     }
-                    else {
+                    else
+                    {
                         throw new Error(res);
                     }
                 }
-                catch (e) {
-                    self.CreateAccountError("Incorrect User/Password Combination.");
+                catch (e)
+                {
+                    self.CreateAccountError(e.message);
                     self.CreateAccountErrorVisible(true);
                 }
             },
-            error: function (res, err) {
+            error: function (res, err)
+            {
                 self.CreateAccountError(res);
                 self.CreateAccountErrorVisible(true);
             },
-            complete: function () {
+            complete: function ()
+            {
                 self.CreateAccountEnabled(false);
             }
         });

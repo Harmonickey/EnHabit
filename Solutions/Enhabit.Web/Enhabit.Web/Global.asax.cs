@@ -14,6 +14,13 @@ namespace Enhabit.Web
     {
         protected void Application_Start()
         {
+            if (!EventLog.SourceExists("Enhabit.Web"))
+            {
+                EventLog.CreateEventSource("Enhabit.Web", "EnhabitApplication");
+
+                return;
+            }
+
             AreaRegistration.RegisterAllAreas();
 
             var container = new UnityContainer();

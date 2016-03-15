@@ -209,7 +209,9 @@
     <Content Include="Scripts\ThirdParty\pikaday.js" />
     <Content Include="Scripts\ThirdParty\powerkiosk.js" />
     <Content Include="Scripts\ThirdParty\powerkiosk_front.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -347,6 +349,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_PortalLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Log.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
