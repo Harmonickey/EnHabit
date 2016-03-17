@@ -21,6 +21,5 @@
 	[IsRented] BIT NOT NULL,
 	[IsFeatured] BIT NOT NULL,
 	CONSTRAINT [PK_Listings] PRIMARY KEY CLUSTERED ([ListingId] ASC),
-    CONSTRAINT [FK_ListingsUser_ToUsers] FOREIGN KEY ([UserId]) REFERENCES [Enhabit].[Users]([UserId]), 
-    CONSTRAINT [FK_ListingsPictures_ToPictures] FOREIGN KEY ([PicturesId]) REFERENCES [Enhabit].[Pictures]([PicturesId])
+    CONSTRAINT [FK_ListingsUser_ToUsers] FOREIGN KEY ([UserId]) REFERENCES [Enhabit].[Users]([UserId])
 )

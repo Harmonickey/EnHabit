@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using Enhabit.Presenter;
 using Enhabit.Models;
+using Enhabit.ViewModels;
 
 namespace Enhabit.Web.Controllers
 {
@@ -16,7 +17,12 @@ namespace Enhabit.Web.Controllers
         [HttpPost]
         public JsonResult Create(Listing listing)
         {
-            var result = Presenter.CreateListing(listing);
+            ListingViewModel result = Presenter.CreateListing(listing);
+            
+            if (result == null)
+            {
+                return Json(false, JsonRequestBehavior.DenyGet);
+            }
 
             return Json(result, JsonRequestBehavior.DenyGet);
         }

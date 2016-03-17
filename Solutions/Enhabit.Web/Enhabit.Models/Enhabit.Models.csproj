@@ -51,7 +51,6 @@
     <Compile Include="Listing.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Picture.cs" />
-    <Compile Include="PortalModel.cs" />
     <Compile Include="PriceRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renter.cs" />

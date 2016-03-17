@@ -11,7 +11,9 @@ namespace Enhabit.Repository.Contracts
 
         Guid CreateUser(User user);
 
-        IEnumerable<User> GetUsers(AccountType accountType);
+        User GetUser(Guid userGuid);
+
+        IEnumerable<User> GetAllUsers(AccountType accountType);
 
         bool DeleteUser(User user);
 

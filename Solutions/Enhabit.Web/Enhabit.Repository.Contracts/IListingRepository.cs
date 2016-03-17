@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Enhabit.Models;
 
 namespace Enhabit.Repository.Contracts
@@ -7,7 +8,9 @@ namespace Enhabit.Repository.Contracts
     {
         bool CreateListing(Listing listing);
 
-        IEnumerable<Listing> GetListings();
+        IEnumerable<Listing> GetUserListings(Guid userGuid);
+
+        IEnumerable<Listing> GetAllListings();
 
         IEnumerable<Listing> SearchForListings(SearchQuery query);
     }

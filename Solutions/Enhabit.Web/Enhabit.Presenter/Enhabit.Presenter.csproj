@@ -40,22 +40,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Applicants.cs" />
     <Compile Include="Commands\Listings.cs" />
+    <Compile Include="Commands\Payments.cs" />
     <Compile Include="Commands\Pictures.cs" />
     <Compile Include="Commands\Prices.cs" />
+    <Compile Include="Commands\Renters.cs" />
     <Compile Include="Commands\SendEmail.cs" />
     <Compile Include="Commands\Universities.cs" />
     <Compile Include="Commands\Users.cs" />
     <Compile Include="DataAdaptors\ICloudinaryAdaptor.cs" />
     <Compile Include="DataAdaptors\IConfigAdaptor.cs" />
     <Compile Include="EnhabitMapPresenter.cs" />
+    <Compile Include="Extensions\ApplicantsExtensions.cs" />
     <Compile Include="Extensions\ErrorTypeExtensions.cs" />
+    <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\ListingsExtensions.cs" />
+    <Compile Include="Extensions\PaymentsExtensions.cs" />
     <Compile Include="Extensions\PricesExtensions.cs" />
+    <Compile Include="Extensions\RentersExtensions.cs" />
     <Compile Include="Extensions\UniversitiesExtensions.cs" />
     <Compile Include="Extensions\UsersExtensions.cs" />
     <Compile Include="ImagePresenter.cs" />
     <Compile Include="ListingPresenter.cs" />
+    <Compile Include="PortalPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserPresenter.cs" />
   </ItemGroup>

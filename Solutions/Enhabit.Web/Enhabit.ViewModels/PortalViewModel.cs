@@ -1,38 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Enhabit.ViewModels
 {
     public class PortalViewModel
     {
-        // Tenant Portal View Model
-        public PortalViewModel(AccountViewModel avm, ListingViewModel lvm, PaymentViewModel pvm)
+        public PortalViewModel(UserViewModel uvm, IEnumerable<ListingViewModel> lvm)
         {
-            Account = avm;
+            Account = uvm;
             Listings = lvm;
-            Payments = pvm;
         }
+        
+        public UserViewModel Account { get; set; }
 
-        // Landlord Portal View Model
-        public PortalViewModel(AccountViewModel avm, ListingViewModel lvm, ApplicantViewModel apvm, RenterViewModel rvm)
-        {
-            Account = avm;
-            Listings = lvm;
-            Applicants = apvm;
-            Renters = rvm;
-        }
+        public IEnumerable<ListingViewModel> Listings { get; set; }
+        
+        public IEnumerable<UniversityViewModel> Universities { get; set; }
 
-        public AccountViewModel Account { get; set; }
-
-        public ListingViewModel Listings { get; set; }
-
-        public PaymentViewModel Payments { get; set; }
-
-        public ApplicantViewModel Applicants {get; set; }
-
-        public RenterViewModel Renters {get ;set; }
+        public IEnumerable<UserViewModel> Landlords { get; set; }
     }
 }

@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountViewModel.cs" />
     <Compile Include="ApplicantViewModel.cs" />
     <Compile Include="EnhabitMapViewModel.cs" />
     <Compile Include="ListingViewModel.cs" />
@@ -52,6 +51,8 @@
     <Compile Include="RenterViewModel.cs" />
     <Compile Include="SearchQueryViewModel.cs" />
     <Compile Include="SearchResultViewModel.cs" />
+    <Compile Include="LandlordViewModel.cs" />
+    <Compile Include="TenantViewModel.cs" />
     <Compile Include="UniversityViewModel.cs" />
     <Compile Include="UserViewModel.cs" />
   </ItemGroup>

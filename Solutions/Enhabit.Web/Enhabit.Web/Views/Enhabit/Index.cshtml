@@ -488,7 +488,7 @@
             </div>
         </div>
         <!-- Lat, Long, Address Hidden fields -->
-        <input type='hidden' class="Latitude" /><input type='hidden' class="Longitude" /><input type='hidden' class="SelectedAddress" />
+        <input type='hidden' class="Latitude" data-bind="value: XCoordinate"/><input type='hidden' class="Longitude" data-bind="value: YCoordinate"/><input type='hidden' class="SelectedAddress" data-bind="value: SelectedAddress"/>
         <div class="row" style="margin-top: 15px;">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" data-bind="click: PendingListingCreation">Create Listing</button>

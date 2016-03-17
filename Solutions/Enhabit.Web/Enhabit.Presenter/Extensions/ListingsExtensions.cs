@@ -1,5 +1,6 @@
 ﻿using Enhabit.Models;
 using Enhabit.ViewModels;
+using System.Linq;
 
 namespace Enhabit.Presenter.Extensions
 {
@@ -17,8 +18,8 @@ namespace Enhabit.Presenter.Extensions
                 LeaseType = listing.LeaseType,
                 BuildingType = listing.BuildingType,
                 HasAirConditioning = listing.HasAirConditioning,
-                PicturesId = listing.PicturesId,
-                IsActive = listing.IsActive,
+                ImageUrls = listing.ImageUrls,
+                ThumbnailUrls = listing.ImageUrls.Select(u => u.ToThumbnail()),
                 IsFeatured = listing.IsFeatured,
                 IsTesting = listing.IsTesting,
                 LandlordName = listing.LandlordName,

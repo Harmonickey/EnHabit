@@ -11,7 +11,7 @@ namespace Enhabit.Presenter.Commands
 {
     public static class Users
     {
-        public static Guid Find(IUserRepository repo, User user)
+        public static Guid Login(IUserRepository repo, User user)
         {
             return repo.LoginUser(user);
         }
@@ -30,7 +30,17 @@ namespace Enhabit.Presenter.Commands
 
         public static IEnumerable<UserViewModel> GetLandlords(IUserRepository repo)
         {
-            return repo.GetUsers(AccountType.Landlord).Select(u => u.ToUserViewModel());
+            return repo.GetAllUsers(AccountType.Landlord).Select(u => u.ToUserViewModel());
+        }
+
+        public static IEnumerable<UserViewModel> GetTenants(IUserRepository repo)
+        {
+            return repo.GetAllUsers(AccountType.Tenant).Select(u => u.ToUserViewModel());
+        }
+
+        public static UserViewModel Get(IUserRepository repo, Guid userGuid)
+        {
+            return repo.GetUser(userGuid).ToUserViewModel();
         }
     }
 }

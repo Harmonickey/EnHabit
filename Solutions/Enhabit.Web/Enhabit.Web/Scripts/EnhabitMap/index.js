@@ -1,4 +1,18 @@
-﻿var UserViewModel = function(user, enhabitMapViewModel)
+﻿var ListingViewModel = function (listing) {
+    var self = this;
+
+    self.XCoordinate = listing.XCoordinate;
+    self.YCoordinate = listing.YCoordinate;
+    self.IsFeatured = listing.IsFeatured;
+    self.Testing = listing.Testing;
+    self.Address = listing.Address;
+    self.Unit = listing.Unit;
+    self.Price = listing.Price;
+    self.Images = listing.Images;
+    self.Thumbnails = listing.Thumbnails;
+};
+
+var UserViewModel = function (user, enhabitMapViewModel)
 {
     var self = this;
 
@@ -47,6 +61,8 @@
                 {
                     if (res != false)
                     {
+                        $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
+
                         enhabitMapViewModel.ShowLoginNav(true);
                     }
                     else
@@ -127,8 +143,10 @@
                     {
                         enhabitMapViewModel.ShowLoginNav(true);
 
+                        $.msgGrowl({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'top-center' });
+                        $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
+
                         // session should be set, so the user will be attached to the listing
-                        console.log("Pending Listing Data: " + enhabitMapViewModel.PendingListingData());
                         if (enhabitMapViewModel.PendingListingData() != undefined)
                         {
                             enhabitMapViewModel.CreateListing(res);
@@ -293,6 +311,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.DefaultPicture = enhabitMapData.DefaultListingPicture;
     self.CreateListingPictureGuid = enhabitMapData.CreateListingPictureGuid;
+    self.CreateListingUserGuid = ko.observable();
 
     // search bar
     self.SearchBar = new SearchQueryViewModel(enhabitMapData.PriceRange);
@@ -313,8 +332,6 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.User = new UserViewModel(enhabitMapData.User);
 
-    self.CreateListingUserGuid = ko.observable();
-
     self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 
     self.IsExtrasViewOpen = ko.observable(false);
@@ -328,6 +345,11 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.OpenPostListingModal = function (data, event)
     {
+        if (self.UserLoggedIn())
+        {
+            window.location = "/Portal#Listings";
+        }
+
         LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
         self.CreateDropzone("create", "#common-modal form");
         InitSpecialFields();
@@ -423,7 +445,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
             }
             var filename = (file.alreadyUploaded
                             ? file.name
-                            : self.CreateListingPictureGuid() + file.name);
+                            : self.CreateListingPictureGuid + "_" + file.name);
 
             self.Pictures[oid].push(filename);
 
@@ -476,7 +498,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
             return;
         }
 
-        self.PendingListingData().PicturesId = self.CreateListingPictureGuid();
+        self.PendingListingData().PicturesId = self.CreateListingPictureGuid;
         self.PendingListingData().UserId = self.CreateListingUserGuid();
 
         var data = ko.toJSON(self.PendingListingData());
@@ -494,26 +516,16 @@ var EnhabitMapViewModel = function (enhabitMapData)
                         throw new Error("Unable to Create Listing");
                     }
                     else {
-                        var listing = JSON.parse(res);
+                        
+                        var listing = new ListingViewModel(res);
 
-                        if (listing["error"]) {
-                            throw new Error(listing["error"]);
-                        }
-                        else {
-                            ResetListings();
+                        self.CreateMarker(listing);
 
-                            LoadAllDefaultListings();
+                        self.NumUploaded(0);
 
-                            numUploaded = 0;
+                        self.PendingListingData(undefined);
 
-                            pendingData = null;
-
-                            listingWaiting = false;
-
-                            listingData = {};
-
-                            $.msgGrowl({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center' });
-                        }
+                        $.msgGrowl({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center' }); 
                     }
                 }
                 catch (e) {
@@ -529,9 +541,66 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
                 self.Dropzones["create"].destroy();
 
-                CreateDropzone("create", "#modal-content-listing form");
+                self.CreateDropzone("create", "#modal-content-listing form");
             }
         });
+    };
+
+    self.CreateMarker = function(listing)
+    {
+        var marker = L.marker([listing.XCoordinate, entry[0].WorldCoordinates.y]).addTo(map);
+        marker.setIcon(L.mapbox.marker.icon({
+            'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+            'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
+            'marker-symbol': 'building'
+        }));
+
+        var slideshowContent = "";
+        var base = (entry[0].Testing ? "" : "/images/enhabit/images/");
+        var images = entry[0].Thumbnails;
+        if (!images || images.length === 0) {
+            images = [];
+            images.push(defaultPicture);
+        }
+        for (var i = 0; i < images.length; i++) {
+            var source = base + images[i];
+
+            slideshowContent +=
+                                '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+                                  '<img src="' + source + '" height="200" width="300"/>' +
+                                '</div>';
+        }
+
+        var popupContent =
+                    '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
+                    '<div id="' + entry[0]._id.$oid + '" class="popup">' +
+                        '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
+                            '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
+                            '<h3>$' + entry[0].Price + '</h3>' +
+                        '</div>' +
+                        '<div class="slideshow">';
+
+        if (images.length > 1) {
+            popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
+                            '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
+        }
+
+        entry[0].Thumbnails = ToStringFromList(entry[0].Thumbnails);
+
+        popupContent += slideshowContent +
+                        '</div>' +
+                    '</div>' +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "', '" + entry[0].Username + "', '" + entry[0].Landlord + "')\" />";
+
+        popupContent += '<div class="popup-background-shadow"></div>';
+
+        marker.bindPopup(popupContent,
+        {
+            closeButton: true,
+            minWidth: 320
+        });
+
+        markers.addLayer(marker);
     };
 
     self.CreateListing = function (userGuid)

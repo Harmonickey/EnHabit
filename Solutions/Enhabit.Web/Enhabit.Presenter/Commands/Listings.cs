@@ -10,9 +10,14 @@ namespace Enhabit.Presenter.Commands
 {
     public static class Listings
     {
+        public static IEnumerable<ListingViewModel> GetUserListings(IListingRepository repo, Guid userGuid)
+        {
+            return repo.GetUserListings(userGuid).Select(l => l.ToListingViewModel());
+        }
+
         public static IEnumerable<ListingViewModel> GetAll(IListingRepository repo)
         {
-            var listings = repo.GetListings();
+            var listings = repo.GetAllListings();
             
             return listings.Select(l => l.ToListingViewModel());
         }
@@ -24,13 +29,20 @@ namespace Enhabit.Presenter.Commands
             return listings.Select(l => l.ToListingViewModel());
         }
 
-        public static bool Create(IListingRepository repo, Listing listing)
+        public static ListingViewModel Create(IListingRepository repo, IImageRepository imageRepo, Listing listing)
         {
             listing.ListingId = Guid.NewGuid();
             listing.IsFeatured = false;
             listing.IsRented = false;
 
-            return repo.CreateListing(listing);
+            if (!repo.CreateListing(listing))
+            {
+                return null;
+            }
+
+            listing.ImageUrls = imageRepo.GetAll(listing.PicturesId);
+
+            return listing.ToListingViewModel();
         }
     }
 }

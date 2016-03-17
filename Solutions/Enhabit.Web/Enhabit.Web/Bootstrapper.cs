@@ -38,6 +38,9 @@ namespace Enhabit.Web
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IPricingRepository, PricingRepository>();
             container.RegisterType<IUniversityRepository, UniversityRepository>();
+            container.RegisterType<IApplicantRepository, ApplicantRepository>();
+            container.RegisterType<IPaymentRepository, PaymentRepository>();
+            container.RegisterType<IRenterRepository, RenterRepository>();
         }
 
         /// <summary>
@@ -52,6 +55,7 @@ namespace Enhabit.Web
             container.RegisterType<UserPresenter, UserPresenter>();
             container.RegisterType<ImagePresenter, ImagePresenter>();
             container.RegisterType<ListingPresenter, ListingPresenter>();
+            container.RegisterType<PortalPresenter, PortalPresenter>();
 
             container.RegisterType<EnhabitController, EnhabitController>();
             container.RegisterType<PortalController, PortalController>();

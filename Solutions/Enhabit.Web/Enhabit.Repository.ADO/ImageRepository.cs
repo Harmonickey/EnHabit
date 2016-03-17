@@ -67,7 +67,6 @@ namespace Enhabit.Repository.ADO
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[Enhabit].[SavePicture]";
                             cmd.Parameters.AddWithValue("@PicturesId", picture.PicturesId);
-                            cmd.Parameters.AddWithValue("@PictureName", picture.PictureName);
                             cmd.Parameters.AddWithValue("@CloudinaryUrl", picture.CloudinaryUrl);
 
                             cmd.ExecuteNonQuery();
@@ -78,7 +77,7 @@ namespace Enhabit.Repository.ADO
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(string.Format("ImageRepository.Save({0}) Exception: {1}", picture.PictureName, ex.Message));
+                    _logger.Error(string.Format("ImageRepository.Save({0}) Exception: {1}", picture.PicturesId, ex.Message));
                     return false;
                 }
             }

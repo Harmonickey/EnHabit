@@ -82,7 +82,7 @@ namespace Enhabit.Repository.ADO
             return true;
         }
 
-        public IEnumerable<Listing> GetListings()
+        public IEnumerable<Listing> GetAllListings()
         {
             var listings = new List<Listing>();
 
@@ -131,6 +131,42 @@ namespace Enhabit.Repository.ADO
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "[Enhabit].[SearchForListings]";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            listings.Add(new Listing
+                            {
+                                Price = (int)reader["Price"],
+                                Address = reader["Address"].ToString(),
+                                AvailableStartDate = (DateTime)reader["StartDate"],
+                                IsFeatured = (bool)reader["IsFeatured"],
+                                IsActive = (bool)reader["IsActive"],
+                                TenantName = reader["OwnerName"].ToString(),
+                                LandlordName = reader["LandlordName"].ToString()
+                            });
+                        }
+                    }
+                }
+
+                return listings;
+            }
+        }
+
+        public IEnumerable<Listing> GetUserListings(Guid userGuid)
+        {
+            var listings = new List<Listing>();
+
+            using (SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetUserListings]";
+                    cmd.Parameters.AddWithValue("@UserId", userGuid);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.HasRows)

@@ -31,7 +31,6 @@ namespace Enhabit.Repository.ADO
             _transactionScopeOption = TransactionScopeOption.Required;
             _transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted };
             _logger = logger;
-
         }
 
         public Guid LoginUser(User user)
@@ -122,7 +121,35 @@ namespace Enhabit.Repository.ADO
             return true;
         }
 
-        public IEnumerable<User> GetUsers(AccountType accountType)
+        public User GetUser(Guid userGuid)
+        {
+            var user = new User();
+
+            using (SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetUser]";
+                    cmd.Parameters.AddWithValue("@UserId", userGuid);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.HasRows && reader.Read())
+                    {
+                        user.Username = reader["Username"].ToString();
+                        user.FirstName = reader["FirstName"].ToString();
+                        user.LastName = reader["LastName"].ToString();
+                        user.Email = reader["Email"].ToString();
+                        user.PhoneNumber = reader["PhoneNumber"].ToString();
+                    }
+                }
+            }
+
+            return user;
+        }
+
+        public IEnumerable<User> GetAllUsers(AccountType accountType)
         {
             var users = new List<User>();
 
@@ -132,7 +159,7 @@ namespace Enhabit.Repository.ADO
                 using (var cmd = SqlConn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "[Enhabit].[GetUsers]";
+                    cmd.CommandText = "[Enhabit].[GetAllUsers]";
                     cmd.Parameters.AddWithValue("@AccountTypeId", (int)accountType);
                     SqlDataReader reader = cmd.ExecuteReader();
 

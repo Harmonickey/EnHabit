@@ -16,7 +16,7 @@ namespace Enhabit.Presenter
 
         public Guid LoginUser(User user)
         {
-            return Users.Find(_userRepo, user);
+            return Users.Login(_userRepo, user);
         }
 
         public Guid CreateUser(User user)
