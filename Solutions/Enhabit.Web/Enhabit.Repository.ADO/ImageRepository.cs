@@ -38,23 +38,26 @@ namespace Enhabit.Repository.ADO
         {
             var pictures = new List<Picture>();
 
-            var dtPictureIds = pictureIds.ToDataTablePictureIds(); 
-
-            using (var cmd = new SqlCommand())
+            var dtPictureIds = pictureIds.ToDataTablePictureIds();
+            using (SqlConn = new SqlConnection(_enhabitConnString))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[Enhabit].[GetListingPicturesUrls]";
-                cmd.Parameters.AddWithValue("@PicturesId", dtPictureIds);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.HasRows && reader.Read())
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
                 {
-                    pictures.Add(new Picture
-                    {
-                        CloudinaryUrl = reader["CloudinaryUrl"].ToString(),
-                        PicturesId = (Guid)reader["PicturesId"]
-                    });
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetListingPicturesUrls]";
+                    cmd.Parameters.AddWithValue("@PicturesId", dtPictureIds);
+                    SqlDataReader reader = cmd.ExecuteReader();
 
+                    while (reader.HasRows && reader.Read())
+                    {
+                        pictures.Add(new Picture
+                        {
+                            CloudinaryUrl = reader["CloudinaryUrl"].ToString(),
+                            PicturesId = (Guid)reader["PicturesId"]
+                        });
+
+                    }
                 }
             }
 
