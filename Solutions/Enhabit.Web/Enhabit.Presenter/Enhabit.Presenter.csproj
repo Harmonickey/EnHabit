@@ -53,6 +53,7 @@
     <Compile Include="DataAdaptors\IConfigAdaptor.cs" />
     <Compile Include="EnhabitMapPresenter.cs" />
     <Compile Include="Extensions\ApplicantsExtensions.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\ErrorTypeExtensions.cs" />
     <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\ListingsExtensions.cs" />

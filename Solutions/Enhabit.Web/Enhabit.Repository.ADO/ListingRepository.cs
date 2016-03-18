@@ -9,6 +9,7 @@ using Enhabit.Models;
 using System.Data.SqlClient;
 using System.Data;
 using log4net;
+using System.Linq;
 
 namespace Enhabit.Repository.ADO
 {
@@ -92,7 +93,7 @@ namespace Enhabit.Repository.ADO
                 using (var cmd = SqlConn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "[Enhabit].[GetListings]";
+                    cmd.CommandText = "[Enhabit].[GetAllListings]";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.HasRows && reader.Read())
@@ -110,9 +111,16 @@ namespace Enhabit.Repository.ADO
                         });
                     }
 
+                    var pictures = _imageRepo.GetListingPictures(listings.Select(l => l.PicturesId));
+
                     foreach (Listing listing in listings)
                     {
-                        _imageRepo.GetAll(listing.PicturesId);
+                        var matchingPictures = pictures.Where(p => p.PicturesId == listing.PicturesId);
+
+                        if (matchingPictures.Any())
+                        {
+                            listing.ImageUrls = matchingPictures.Select(p => p.CloudinaryUrl);
+                        }
                     }
                 } 
             }

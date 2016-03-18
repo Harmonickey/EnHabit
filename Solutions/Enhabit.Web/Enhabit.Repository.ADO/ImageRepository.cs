@@ -10,6 +10,7 @@ using log4net;
 using Enhabit.Models;
 using System.Transactions;
 using IsolationLevel = System.Transactions.IsolationLevel;
+using Enhabit.Presenter.Extensions;
 
 namespace Enhabit.Repository.ADO
 {
@@ -33,24 +34,31 @@ namespace Enhabit.Repository.ADO
             _logger = logger;
         }
 
-        public IEnumerable<string> GetAll(Guid picturesId)
+        public IEnumerable<Picture> GetListingPictures(IEnumerable<Guid> pictureIds)
         {
-            var imageUrls = new List<string>();
+            var pictures = new List<Picture>();
+
+            var dtPictureIds = pictureIds.ToDataTablePictureIds(); 
 
             using (var cmd = new SqlCommand())
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[Enhabit].[GetPictures]";
-                cmd.Parameters.AddWithValue("@PicturesId", picturesId);
+                cmd.CommandText = "[Enhabit].[GetListingPicturesUrls]";
+                cmd.Parameters.AddWithValue("@PicturesId", dtPictureIds);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.HasRows && reader.Read())
                 {
-                    imageUrls.Add(reader["CloudinaryUrl"].ToString());
+                    pictures.Add(new Picture
+                    {
+                        CloudinaryUrl = reader["CloudinaryUrl"].ToString(),
+                        PicturesId = (Guid)reader["PicturesId"]
+                    });
+
                 }
             }
 
-            return imageUrls;
+            return pictures;
         }
 
         public bool Save(Picture picture)

@@ -31,7 +31,7 @@ namespace Enhabit.Repository.ADO
                 using (var cmd = SqlConn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "[Enhabit].[GetUniversities]";
+                    cmd.CommandText = "[Enhabit].[GetAllUniversities]";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.HasRows && reader.Read())

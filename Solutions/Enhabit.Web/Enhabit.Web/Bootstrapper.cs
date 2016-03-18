@@ -34,7 +34,6 @@ namespace Enhabit.Web
         {
             container.RegisterType<IListingRepository, ListingRepository>();
             container.RegisterType<IImageRepository, ImageRepository>();
-            container.RegisterType<IPortalRepository, PortalRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IPricingRepository, PricingRepository>();
             container.RegisterType<IUniversityRepository, UniversityRepository>();

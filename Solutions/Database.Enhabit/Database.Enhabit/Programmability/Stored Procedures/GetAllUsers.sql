@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Enhabit].[GetUsers]
+﻿CREATE PROCEDURE [Enhabit].[GetAllUsers]
 	@AccountTypeId INT
 AS
 BEGIN

@@ -83,16 +83,21 @@
     <Build Include="Tables\Universities.sql" />
     <Build Include="Tables\AccountTypes.sql" />
     <Build Include="Tables\Pictures.sql" />
-    <Build Include="Programmability\Stored Procedures\GetListings.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllListings.sql" />
     <Build Include="Programmability\Stored Procedures\SearchForListings.sql" />
     <Build Include="Programmability\Stored Procedures\GetPriceRange.sql" />
-    <Build Include="Programmability\Stored Procedures\GetUniversities.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllUniversities.sql" />
     <Build Include="Programmability\Stored Procedures\LoginUser.sql" />
     <Build Include="Programmability\Stored Procedures\CreateUser.sql" />
-    <Build Include="Programmability\Stored Procedures\GetUsers.sql" />
+    <Build Include="Programmability\Stored Procedures\GetAllUsers.sql" />
     <Build Include="Programmability\Stored Procedures\SavePicture.sql" />
-    <Build Include="Programmability\Stored Procedures\GetPictures.sql" />
+    <Build Include="Programmability\Stored Procedures\GetListingPictures.sql" />
     <Build Include="Programmability\Stored Procedures\CreateListing.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUser.sql" />
+    <Build Include="Programmability\Stored Procedures\UserHasRental.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUserRenters.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUserListings.sql" />
+    <Build Include="Programmability\Types\User-Defined Table Types\TT_PictureIds.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

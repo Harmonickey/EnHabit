@@ -44,7 +44,6 @@
     <Compile Include="IImageRepository.cs" />
     <Compile Include="IListingRepository.cs" />
     <Compile Include="IPaymentRepository.cs" />
-    <Compile Include="IPortalRepository.cs" />
     <Compile Include="IPricingRepository.cs" />
     <Compile Include="IRenterRepository.cs" />
     <Compile Include="IUniversityRepository.cs" />

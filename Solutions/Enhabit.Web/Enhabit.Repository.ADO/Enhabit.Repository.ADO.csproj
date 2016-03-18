@@ -49,7 +49,6 @@
     <Compile Include="ImageRepository.cs" />
     <Compile Include="ListingRepository.cs" />
     <Compile Include="PaymentRepository.cs" />
-    <Compile Include="PortalRepository.cs" />
     <Compile Include="PricingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenterRepository.cs" />

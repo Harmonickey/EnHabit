@@ -40,7 +40,12 @@ namespace Enhabit.Presenter.Commands
                 return null;
             }
 
-            listing.ImageUrls = imageRepo.GetAll(listing.PicturesId);
+            var pictures = imageRepo.GetListingPictures(new List<Guid> { listing.PicturesId });
+
+            if (pictures.Any())
+            {
+                listing.ImageUrls = pictures.Select(p => p.CloudinaryUrl);
+            }
 
             return listing.ToListingViewModel();
         }
