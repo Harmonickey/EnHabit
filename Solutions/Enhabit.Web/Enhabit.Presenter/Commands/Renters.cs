@@ -15,5 +15,9 @@ namespace Enhabit.Presenter.Commands
             return repo.GetUserRenters(userGuid).Select(r => r.ToRenterViewModel());
         }
 
+        public static bool UserHasRental(IRenterRepository repo, Guid userGuid)
+        {
+            return repo.UserHasRental(userGuid);
+        }
     }
 }

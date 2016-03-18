@@ -142,6 +142,7 @@ namespace Enhabit.Repository.ADO
                         user.LastName = reader["LastName"].ToString();
                         user.Email = reader["Email"].ToString();
                         user.PhoneNumber = reader["PhoneNumber"].ToString();
+                        user.AccountTypeId = (int)reader["AccountTypeId"];
                     }
                 }
             }

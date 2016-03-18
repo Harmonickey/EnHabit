@@ -8,5 +8,7 @@ namespace Enhabit.Repository.Contracts
     public interface IRenterRepository
     {
         IEnumerable<Renter> GetUserRenters(Guid userGuid);
+
+        bool UserHasRental(Guid userGuid);
     }
 }

@@ -11,5 +11,7 @@ namespace Enhabit.ViewModels
         }
 
         public IEnumerable<PaymentViewModel> Payments { get; set; }
+
+        public bool HasRental { get; set; }
     }
 }

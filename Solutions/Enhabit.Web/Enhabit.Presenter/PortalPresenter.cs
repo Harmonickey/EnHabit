@@ -25,6 +25,7 @@ namespace Enhabit.Presenter
         private IEnumerable<RenterViewModel> _renters;
         private IEnumerable<ApplicantViewModel> _applicants;
         private UserViewModel _user;
+        private bool _hasRental;
 
         public PortalPresenter(IUniversityRepository universityRepo, IUserRepository userRepo, IListingRepository listingRepo, IPaymentRepository paymentRepo, IRenterRepository renterRepo, IApplicantRepository applicantRepo)
         {
@@ -43,12 +44,14 @@ namespace Enhabit.Presenter
                             () => _listings = Listings.GetUserListings(_listingRepo, userGuid),
                             () => _payments = Payments.GetUserPayments(_paymentRepo, userGuid),
                             () => _landlords = Users.GetLandlords(_userRepo),
-                            () => _universities = Universities.GetAll(_universityRepo));
+                            () => _universities = Universities.GetAll(_universityRepo),
+                            () => _hasRental = Renters.UserHasRental(_renterRepo, userGuid));
 
             return new TenantViewModel(_user, _listings, _payments)
             {
                 Universities = _universities,
-                Landlords = _landlords
+                Landlords = _landlords,
+                HasRental = _hasRental
             };
         }
 
@@ -67,6 +70,11 @@ namespace Enhabit.Presenter
                 Universities = _universities,
                 Landlords = _landlords
             };
+        }
+
+        public UserViewModel GetUser(Guid userGuid)
+        {
+            return _user = Users.Get(_userRepo, userGuid);
         }
     }
 }
