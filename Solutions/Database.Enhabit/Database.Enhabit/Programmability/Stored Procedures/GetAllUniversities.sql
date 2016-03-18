@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Enhabit].[GetUniversities]
+﻿CREATE PROCEDURE [Enhabit].[GetAllUniversities]
 AS
 BEGIN
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [Enhabit].[GetListings]
+﻿CREATE PROCEDURE [Enhabit].[GetAllListings]
 
 AS
 BEGIN
