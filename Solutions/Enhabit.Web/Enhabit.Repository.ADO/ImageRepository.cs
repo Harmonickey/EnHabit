@@ -45,8 +45,8 @@ namespace Enhabit.Repository.ADO
                 using (var cmd = SqlConn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "[Enhabit].[GetListingPicturesUrls]";
-                    cmd.Parameters.AddWithValue("@PicturesId", dtPictureIds);
+                    cmd.CommandText = "[Enhabit].[GetListingPictures]";
+                    cmd.Parameters.AddWithValue("@PictureIds", dtPictureIds);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.HasRows && reader.Read())
