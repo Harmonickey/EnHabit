@@ -11,7 +11,7 @@ namespace Enhabit.Presenter.Commands
 {
     public static class Users
     {
-        public static Guid Login(IUserRepository repo, User user)
+        public static User Login(IUserRepository repo, User user)
         {
             return repo.LoginUser(user);
         }

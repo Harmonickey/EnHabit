@@ -5,64 +5,305 @@
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 }
 
-<div class="subnavbar">
-    <div class="subnavbar-inner">
-        <div class="container">
-            <a href="javascript:;" class="subnav-toggle" data-toggle="collapse" data-target=".subnav-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="collapse subnav-collapse">
-                <ul class="mainnav">
-                    <li>
-                        <a href="../account">
-                            <i class="fa fa-book"></i>
-                            <span>Account</span>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="./">
-                            <i class="fa fa-th-list"></i>
-                            <span>Listing</span>
-                        </a>
-                    </li>
-                    <?php
-                    if ($_SESSION["hasRental"] == true)
-                    {
-                    echo "
-                    <li>
-                        " .
-                        "  <a href='../payments'>
-                            " .
-                            "<i class='fa fa-usd'></i>" .
-                            "<span>Payments</span>" .
-                            "
-                        </a>" .
-                        "
-                    </li>";
-                    }
-                    ?>
-                </ul>
-            </div> <!-- /.subnav-collapse -->
-        </div> <!-- /container -->
-    </div> <!-- /subnavbar-inner -->
-</div> <!-- /subnavbar -->
+<!-- ko with: Account -->
+<div class="main" data-bind="visible: TabActive">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="widget stacked">
+                    <div class="widget-header actions">
+                        <i class="fa fa-user"></i>
+                        <h3>Your Account Info</h3>
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content account">
+                        <!-- Account info goes here -->
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 required">
+                                <label>Username: </label><input type="text" class="form-control" data-bind="value: Username"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 required">
+                                <label>Email: </label><input type="text" class="form-control" data-bind="value: Email" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 required">
+                                <label>First Name: </label><input type="text" class="form-control" data-bind="value: FirstName" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 required">
+                                <label>Last Name: </label><input type="text" class="form-control" data-bind="value: LastName" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" data-bind="value: PhoneNumber" />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <label>New Password: </label><input type="password" class="form-control" data-bind="value: NewPassword" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <label>Confirm: </label><input type="password" class="form-control" data-bind="value: ConfirmPassword" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <button class='btn btn-primary btn-success' data-bind="click: UpdateAccount">Update Account</button>
+                                <button class='btn btn-danger' data-bind="click: DeleteAccount">Delete Account</button>
+                            </div>
+                        </div>
+                    </div> <!-- /widget-content -->
+                </div> <!-- /widget -->
+            </div> <!-- /col-md-8 -->
+            <div class="col-md-4">
+                <div class="well">
+                    <h4>Did You Know?</h4>
+                    <p>You use your account to access everything with Enhabit, including your transactions!</p>
+                    <p>You are <b>not</b> required to change your password every time you make a change to other pieces of your account here.</p>
+                </div>  <!-- /well -->
+            </div>  <!-- /col-md-4 -->
+        </div> <!-- /row -->
+    </div> <!-- /container -->
+</div> <!-- /main -->
+<!-- /ko -->
 
-<div class="main">
+<!-- ko with: Listings -->
+<div class="main" data-bind="visible: TabActive">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="widget stacked">
                     <div class="widget-header actions">
                         <h3>Registered Listing</h3>
-                        <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px; display: none;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
-                        <p id="create-listing-warning" class="pull-right" style="color: red; display: none;">Update your account to create a listing!</p>
+                        <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;" data-bind="visible: ShowCreateListing"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+                        <p id="create-listing-warning" class="pull-right" style="color: red;" data-bind="visible: ShowUpdateAccountMessage">Update your account to create a listing!</p>
                     </div> <!-- /widget-header -->
                     <div class="widget-content listings">
-                        <label class="listings-message" style="display: none;">Click the listing below to update and see more details</label>
+                        <label class="listings-message" data-bind="visible: ShowListingMessage" style="display: none;">Click the listing below to update and see more details</label>
                         <!-- all the listings go here -->
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: Listings">
+                            <div class='panel panel-default'>
+                                <div class='panel-heading' role='tab'>
+                                    <h4 class='panel-title'>
+                                        <a role='button' data-toggle='collapse' data-parent='#accordion' data-bind="attr: { href: '#' + ListingId }" aria-expanded='false' aria-controls='" + oid + "'>
+                                            <label>Address: " + data.Address + "</label>
+                                            <!-- ko if: Unit() != null -->
+                                            <label>Unit: <span data-bind="text: Unit"></span></label>
+                                            <!-- /ko -->
+                                            <label>Rent: <span data-bind="text: FormattedPrice"></span></label>
+                                            <label>Start Date: <span data-bind="text: FormattedStart"></span></label>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div data-bind="attr: { id: ListingId }" class='panel-collapse collapse' role='tabpanel'>
+                                    <div class='panel-body'>                                      
+                                        <div class='row'>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Address</label><input type='text' class='form-control' data-bind="value: Address" />
+                                            </div>
+                                            <!-- ko if: Unit() != null -->
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Unit</label><input type='text' class='form-control' data-bind="value: Unit" />
+                                            </div>
+                                            <!-- /ko -->
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Start Date</label><input type='text' class='form-control' value='" + FormattedDate(data.Start) + "' />
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Bedrooms</label>
+                                                <select class='form-control' data-bind="value: Bedrooms">
+                                                    <option value="studio">Studio</option>
+                                                    <option value="1" selected>1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10+</option>
+                                                </select>
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Bathrooms</label>
+                                                <select class='form-control' data-bind="value: Bathrooms">
+                                                    <option value="1" selected>1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10+</option>
+                                                </select>
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>University</label>
+                                                <select class='form-control' data-bind="options: Universities, optionsText: 'Name', optionsValue: 'UniversityId', value: University"></select>
+                                            </div>
+                                        </div>
+                                        <div class='row' style='margin-top: 10px'>
+                                            <div class='col-lg-2 col-md-2 col-sm-2'>
+                                                <label>Animals</label><input type='checkbox' data-size='mini' data-bind="value: Animals" />
+                                            /div>
+                                            <div class='col-lg-2 col-md-2 col-sm-2'>
+                                                <label>Laundry</label><input type='checkbox' data-bind="value: Laundry" data-size='mini' />
+                                            </div>
+                                            <div class='col-lg-2 col-md-2 col-sm-2'>
+                                                <label>Parking</label><input type='checkbox' data-bind="value: Parking" data-size='mini' />
+                                            </div>
+                                            <div class='col-lg-2 col-md-2 col-sm-2'>
+                                                <label>AC</label><input type='checkbox' data-bind="value: AirConditioning" data-size='mini' />
+                                            </div>
+                                        </div>
+                                        <div class='row' style='margin-top: 10px'>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Is Rented</label><input type='checkbox' data-bind="value: IsRented" data-size='mini' />
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Lease Type</label><input type='checkbox' data-size='mini' data-bind="value: LeaseType" />
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Building Type</label><input type='checkbox' data-size='mini' data-bind="value: BuildingType" />    
+                                            </div>
+                                        </div>
+                                        <div class='row' style='margin-top: 10px'>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' data-bind="value: IsActive" />
+                                            </div>
+                                            <div class='col-lg-6 col-md-6 col-sm-6'>
+                                            <label style='color: red' class='activemsg' data-bind="visible: Images().length == 0">To Activate This Listing You Must Include Images!</label>
+                                            <label style='color: red' class='activemsg' data-bind="visible: IsPastThreshold()">To Activate This Listing, Please Choose an Address Within <span data-bind="text: Threshold"></span> miles of this University!</label>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-lg-6 col-md-6 col-sm-6'>
+                                                <label>Landlord</label>
+                                                <select class='form-control' data-bind="options: Landlords, optionsText: 'Username', optionsValue: 'UserId', value: Landlord"></select>                                                
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-lg-6 col-md-6 col-sm-6'>
+                                                <label>Info</label><textarea rows='4' cols='50' class='form-control' data-bind="text: Notes"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-lg-6 col-md-6 col-sm-6'>
+                                                <label>Images (Will Upload Upon Submit)</label>
+                                                <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone"></form>                                                
+                                            </div>
+                                        </div>
+                                        <div class='row' style='margin-top: 10px;'>
+                                            <div class='col-lg-6 col-md-6 col-sm-6'>
+                                                <button class='btn btn-primary btn-success' data-bind="click: UpdateListing">Update</button>
+                                                <button class='btn btn-danger' data-bind="click: DeleteListing">Delete</button>
+                                            </div>
+                                        </div>
+                                        <input type='hidden' data-bind="value: XCoordinate" /><input type='hidden' data-bind="value: YCoordinate" /><input type='hidden' data-bind="value: Address" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- /widget-content -->
+                </div> <!-- /widget -->
+                </div>
+            </div> <!-- /col-md-12 -->
+        </div> <!-- /row -->
+    </div> <!-- /container -->
+</div> <!-- /main -->
+<!-- /ko -->
 
+<!-- ko with: Payments -->
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="widget stacked">
+                    <div class="widget-header">
+                        <h3>Payment Status</h3>
+                    </div> <!-- /widget-header -->
+                    <div class="widget-content">
+                        <div class="row" id="payment" style="margin: 0;">
+                            <div class='panel panel-default'>
+                                <div id='" + oid + "' aria-labelledby='heading" + oid + "'>
+                                    <div class='panel-body'>
+                                        <div class='row'>            
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Address</label><p data-bind="text: Address"></p>
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <!-- ko if: Unit() != null -->
+                                                <label>Unit</label><p data-bind="text: Unit"></p>
+                                                <!-- /ko -->
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Rent Due</label><p class='rent' data-bind="text: FormattedRent"></p>
+                                            </div>
+                                            <div class='col-lg-3 col-md-3 col-sm-3'>
+                                                <label>Landlord Email</label><p class='landlordEmail' data-bind="text: LandlordEmail"></p>
+                                            </div>
+                                        </div>
+                                        <div class='row' style='margin-top: 10px;'>
+                                            <div class='col-lg-6 col-md-6 col-sm-6'>
+                                                <div class='row'>
+                                                    <div class='col-lg-7 col-md-7 col-sm-7'>
+                                                        <label>Optional Payment Note:</label>
+                                                        <input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' name='paymentNote' data-bind="value: PaymentNote, attr: { placeholder: NextMonth }" maxlength='100'>
+                                                    </div>
+                                                    <div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>
+                                                        <span id='charactersLeft' data-bind="text: CharactersLeft"></span> characters left
+                                                    </div>
+                                                </div>
+                                                <button class='btn btn-primary btn-success' id='GetPaymentKey'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>
+                                                <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
+                                                    <button class='hidden' id='submitBtn'></button>
+                                                    <input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' data-bind="value: PayKey">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row" id="paymentHistory" style="margin: 0;" data-bind="foreach: PastPayments">
+                            <div class='panel panel-default'>
+                                <div class='panel-heading' role='tab'>
+                                    <h4 class='panel-title'>
+                                        <a role='button' data-toggle='collapse' data-parent='#accordion' data-bind="attr: { href: '#' + PaymentId }" aria-expanded='false'>
+                                            <label>Paid Rent: <span data-bind="text: FormattedRent"></span></label>
+                                            <label>Month: <span data-bind="text: Month"></span></label>    
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id='" + oid + "' class='panel-collapse collapse' role='tabpanel'>
+                                    <div class='panel-body'>
+                                        <div class='row'>
+                                            <div class='col-lg-4 col-md-4 col-sm-4'>
+                                                <label>Rent</label><p class='rent' data-bind="text: FormattedRent"></p>    
+                                            </div>
+                                            <div class='col-lg-4 col-md-4 col-sm-4'>
+                                                <label>Month</label><p class='address' data-bind="text: Month"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div> <!-- /widget-content -->
                 </div> <!-- /widget -->
@@ -70,16 +311,8 @@
         </div> <!-- /row -->
     </div> <!-- /container -->
 </div> <!-- /main -->
+<!-- /ko -->
 
-<div class="footer">
-    <div class="container">
-        <div class="row">
-            <div id="footer-copyright" class="col-md-6">
-                &copy; Hyperion Group LLC & LbKStudios LLC. Designed &amp; Built by <a href="http://www.lbkstudios.net" target="_blank">LbKStudios LLC</a>
-            </div>
-        </div>
-    </div>
-</div>
 <div id="createListingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -91,28 +324,28 @@
                 <!-- Put all the fields to create a listing here -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
+                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" data-bind="value: CreateListing.Address" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' />
+                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control' data-bind="value: CreateListing.Unit" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Rent/Month</label><input type='text' class='form-control' />
+                        <label>Rent/Month</label><input type='text' class='form-control' data-bind="value: CreateListing.Rent" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 required">
-                        <label>Start Date</label><input type='text' class='form-control' />
+                        <label>Start Date</label><input type='text' class='form-control' data-bind="value: CreateListing.Start" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Bedrooms</label>
-                        <select id="bedrooms-filter" class="form-control">
+                        <select id="bedrooms-filter" class="form-control" data-bind="value: CreateListing.Bedrooms">
                             <option value="studio">Studio</option>
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
@@ -130,7 +363,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Bathrooms</label>
-                        <select id="bathrooms-filter" class="form-control">
+                        <select id="bathrooms-filter" class="form-control" data-bind="value: CreateListing.Bathrooms">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -147,56 +380,58 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="modal-switch animals-content">
-                            <label>Animals</label><input type='checkbox' data-size='mini' />
+                            <label>Animals</label><input type='checkbox' data-size='mini' data-bind="value: CreateListing.Animals" />
                         </div>
                         <div class="modal-switch laundry-content">
-                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' />
+                            <label>In-Unit Laundry</label><input type='checkbox' data-size='mini' data-bind="value: CreateListing.Laundry" />
                         </div>
                         <div class="modal-switch parking-content">
-                            <label>Parking</label><input type='checkbox' data-size='mini' />
+                            <label>Parking</label><input type='checkbox' data-size='mini' data-bind="value: CreateListing.Parking" />
                         </div>
                         <div class="modal-switch airConditioning-content">
-                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' />
+                            <label>Air Conditioning</label><input type='checkbox' data-size='mini' data-bind="value: CreateListing.AirConditioning" />
                         </div>
                         <div class="modal-switch type-content">
-                            <label>Lease Type</label><input type='checkbox' data-size='mini' />
+                            <label>Lease Type</label><input type='checkbox' data-size='mini' data-bind="value: CreateListing.LeaseType" />
                         </div>
                         <div class="modal-switch type-content">
-                            <label>Building Type</label><input type='checkbox' data-size='mini' />
+                            <label>Building Type</label><input type='checkbox' data-size='mini' data-bind="value: CreateListing.BuildingType" />
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <label>Landlord</label>
-                        <select id="landlords-filter" class="form-control"></select>
+                        <select id="landlords-filter" class="form-control" data-bind="options: Landlords, optionsText: 'Username', optionsValue: 'UserId', value: CreateListing.Landlord"></select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <label>University</label>
-                        <select id="universities-filter" class="form-control"></select>
+                        <select id="universities-filter" class="form-control" data-bind="options: Universities, optionsText: 'Name', optionsValue: 'UniversityId', value: CreateListing.University"></select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Info</label><textarea rows='4' cols='50' class='form-control'></textarea>
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control' data-bind="text: CreateListing.Notes"></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Images (Will Upload Upon Submit)</label>
-                        <form action="/images/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
+                        <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone"></form>
                     </div>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
-                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
+                <input type='hidden' class="Latitude" data-bind="value: XCoordinate" /><input type='hidden' class="Longitude" data-bind="value: YCoordinate" /><input type='hidden' class="SelectedAddress" data-bind="value: SelectedAddress" />
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-listing-button" type="button" class="btn btn-success" onclick="CreateListing()">Create Listing</button>
+                        <button id="create-listing-button" type="button" class="btn btn-success" data-bind=""onclick="CreateListing()">Create Listing</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@Html.Hidden("TenantViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))

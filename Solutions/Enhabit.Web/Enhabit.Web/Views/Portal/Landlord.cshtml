@@ -26,3 +26,5 @@
       </div> <!-- /row -->
     </div> <!-- /container -->
 </div> <!-- /main -->
+
+@Html.Hidden("LandlordViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))

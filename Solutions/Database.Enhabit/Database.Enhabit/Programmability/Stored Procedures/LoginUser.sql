@@ -6,7 +6,9 @@ BEGIN
 
 SET NOCOUNT ON;
 
-	SELECT UserId
+	SELECT 
+		UserId,
+		AccountTypeId
 	FROM Enhabit.Users
 	WHERE [Username] = @Username
 	AND   [Password] = HASHBYTES('SHA1', @Password)

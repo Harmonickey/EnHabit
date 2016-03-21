@@ -6,6 +6,7 @@ using System;
 using Enhabit.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Enhabit.Models.Enums;
 
 namespace Enhabit.Presenter
 {
@@ -21,6 +22,7 @@ namespace Enhabit.Presenter
         private PriceRangeViewModel _priceRange;
         private IEnumerable<UniversityViewModel> _universities;
         private IEnumerable<UserViewModel> _landlords;
+        private UserViewModel _user;
 
         public EnhabitMapPresenter(IConfigAdaptor configAdaptor, 
             IListingRepository listingRepo,
@@ -35,12 +37,13 @@ namespace Enhabit.Presenter
             _configAdaptor = configAdaptor;
         }
 
-        public EnhabitMapViewModel GetEnhabitMap()
+        public EnhabitMapViewModel GetEnhabitMap(object userGuid)
         {
             Parallel.Invoke(() => _listings = Listings.GetAll(_listingRepo),
                             () => _priceRange = Prices.GetRange(_pricingRepo),
                             () => _landlords = Users.GetLandlords(_userRepo),
-                            () => _universities = Universities.GetAll(_universityRepo));
+                            () => _universities = Universities.GetAll(_universityRepo),
+                            () => _user = (userGuid != null ? Users.Get(_userRepo, new Guid((string)userGuid)) : null));
 
             var defaultListingPicture = _configAdaptor.DefaultListingImage;
 
@@ -51,7 +54,8 @@ namespace Enhabit.Presenter
                 Universities = _universities,
                 Landlords = _landlords,
                 DefaultListingPicture = defaultListingPicture,
-                CreateListingPictureGuid = Guid.NewGuid()
+                CreateListingPictureGuid = Guid.NewGuid(),
+                User = _user
             };
         }
 
@@ -60,6 +64,20 @@ namespace Enhabit.Presenter
             var listings = Listings.Search(_listingRepo, query);
             
             return new SearchResultViewModel();
+        }
+
+        public IEnumerable<NavLinkViewModel> GetNavLinks(AccountType accountType)
+        {
+            if (accountType == AccountType.Admin)
+            {
+                return NavLinks.Admin();
+            }
+            else if (accountType == AccountType.Landlord)
+            {
+                return NavLinks.Landlord();
+            }
+
+            return NavLinks.Tenant();
         }
     }
 }

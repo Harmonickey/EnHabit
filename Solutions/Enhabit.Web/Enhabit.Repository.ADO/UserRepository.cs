@@ -35,8 +35,6 @@ namespace Enhabit.Repository.ADO
 
         public Guid LoginUser(User user)
         {
-            var userGuid = Guid.Empty;
-
             using (SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
@@ -51,12 +49,18 @@ namespace Enhabit.Repository.ADO
                     while (reader.HasRows && reader.Read())
                     {
                         if (reader["UserId"] != DBNull.Value)
-                            userGuid = (Guid)reader["UserId"];
+                        {
+                            user.UserId = (Guid)reader["UserId"];
+                        }
+                        if (reader["AccountTypeId"] != DBNull.Value)
+                        {
+                            user.AccountTypeId = (int)reader["AccountTypeId"];
+                        }
                     }
                 }
             }
 
-            return userGuid;
+            return user;
         }
 
         public Guid CreateUser(User user)

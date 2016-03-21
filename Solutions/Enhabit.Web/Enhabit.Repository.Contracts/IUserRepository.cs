@@ -7,7 +7,7 @@ namespace Enhabit.Repository.Contracts
 {
     public interface IUserRepository
     {
-        Guid LoginUser(User user);
+        User LoginUser(User user);
 
         Guid CreateUser(User user);
 

@@ -1,7 +1,10 @@
 ﻿using Enhabit.Models;
+using Enhabit.Models.Enums;
 using Enhabit.Repository.Contracts;
 using Enhabit.Presenter.Commands;
 using System;
+using System.Collections.Generic;
+using Enhabit.ViewModels;
 
 namespace Enhabit.Presenter
 {
@@ -14,7 +17,7 @@ namespace Enhabit.Presenter
             _userRepo = userRepo;
         }
 
-        public Guid LoginUser(User user)
+        public User LoginUser(User user)
         {
             return Users.Login(_userRepo, user);
         }
@@ -22,6 +25,20 @@ namespace Enhabit.Presenter
         public Guid CreateUser(User user)
         {
             return Users.Create(_userRepo, user);
+        }
+
+        public IEnumerable<NavLinkViewModel> GetNavLinks(AccountType accountType)
+        {
+            if (accountType == AccountType.Admin)
+            {
+                return NavLinks.Admin();
+            }
+            else if (accountType == AccountType.Landlord)
+            {
+                return NavLinks.Landlord();
+            }
+
+            return NavLinks.Tenant();
         }
     }
 }

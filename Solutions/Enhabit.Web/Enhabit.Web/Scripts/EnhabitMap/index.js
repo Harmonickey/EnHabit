@@ -32,12 +32,14 @@ var UserViewModel = function (user, enhabitMapViewModel)
     self.CreateAccountError = ko.observable();
     self.CreateAccountErrorVisible = ko.observable(false);
 
-    self.OpenRegisterModal = function () {
+    self.OpenRegisterModal = function ()
+    {
         CleanModalViewModel();
         enhabitMapViewModel.OpenRegisterModal();
     };
 
-    self.LoginUser = function () {
+    self.LoginUser = function ()
+    {
         var data = ko.toJSON({
             Username: self.Username(),
             Password: self.Password()
@@ -63,6 +65,7 @@ var UserViewModel = function (user, enhabitMapViewModel)
                     {
                         $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
 
+                        enhabitMapViewModel.NavLinkData = res.NavLinks;
                         enhabitMapViewModel.ShowLoginNav(true);
                     }
                     else
@@ -336,9 +339,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.IsExtrasViewOpen = ko.observable(false);
 
-    self.NavLinks = ko.observableArray(ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
-        return new NavLinkViewModel(navLink);
-    }));
+    self.NavLinkData = ko.observableArray(enhabitMapData.NavLinks);
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
     self.Map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
@@ -629,19 +630,24 @@ var EnhabitMapViewModel = function (enhabitMapData)
         
     };
 
-    self.ShowLoginNav = function (hideLoginModal) {
+    self.ShowLoginNav = function (hideLoginModal, navLinks)
+    {
         self.UserLoggedIn(true);
 
-        self.NavLinks(ko.utils.arrayMap(enhabitMapData.NavLinks, function (navLink) {
-            return new NavLinkViewModel(navLink);
-        }));
-
-        if (hideLoginModal) {
+        if (hideLoginModal)
+        {
             $("#common-modal").modal('hide');
         }
     };
 
-    self.SearchForListings = function () {
+    self.NavLinks = ko.computed(function() { 
+        return ko.utils.arrayMap(self.NavLinkData, function (navLink) {
+            return new NavLinkViewModel(navLink);
+        });
+    });
+
+    self.SearchForListings = function ()
+    {
 
     };
 };

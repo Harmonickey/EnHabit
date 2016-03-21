@@ -19,13 +19,16 @@ namespace Enhabit.Web.Controllers
         [HttpPost]
         public JsonResult Login(User user)
         {
-            var result = Presenter.LoginUser(user);
+            User loggedInUser = Presenter.LoginUser(user);
 
-            if (result != Guid.Empty)
+            if (loggedInUser.UserId != Guid.Empty)
             {
-                Session["UserGuid"] = result; // set the session with our user guid
+                Session["UserGuid"] = loggedInUser.UserId; // set the session with our user guid
                 Session.Timeout = 60; // minutes
-                return Json(true, JsonRequestBehavior.DenyGet);
+
+                var navLinks = Presenter.GetNavLinks((AccountType)loggedInUser.AccountTypeId);
+
+                return Json(new { NavLinks = navLinks }, JsonRequestBehavior.DenyGet);
             }
 
             return Json(false, JsonRequestBehavior.DenyGet);
