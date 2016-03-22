@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Commands\Applicants.cs" />
     <Compile Include="Commands\Listings.cs" />
+    <Compile Include="Commands\NavLinks.cs" />
     <Compile Include="Commands\Payments.cs" />
     <Compile Include="Commands\Pictures.cs" />
     <Compile Include="Commands\Prices.cs" />

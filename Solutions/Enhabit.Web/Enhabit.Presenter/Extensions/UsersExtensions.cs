@@ -13,7 +13,8 @@ namespace Enhabit.Presenter.Extensions
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                AccountTypeId = user.AccountTypeId
             };
         }
     }

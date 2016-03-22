@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 }
 
-<!-- ko with: Account -->
-<div class="main" data-bind="visible: TabActive">
+<!-- ko with: AccountTab -->
+<div class="main" data-bind="visible: AccountActive">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -19,44 +19,44 @@
                         <!-- Account info goes here -->
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 required">
-                                <label>Username: </label><input type="text" class="form-control" data-bind="value: Username"/>
+                                <label>Username: </label><input type="text" class="form-control" data-bind="value: Account.Username"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 required">
-                                <label>Email: </label><input type="text" class="form-control" data-bind="value: Email" />
+                                <label>Email: </label><input type="text" class="form-control" data-bind="value: Account.Email" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 required">
-                                <label>First Name: </label><input type="text" class="form-control" data-bind="value: FirstName" />
+                                <label>First Name: </label><input type="text" class="form-control" data-bind="value: Account.FirstName" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 required">
-                                <label>Last Name: </label><input type="text" class="form-control" data-bind="value: LastName" />
+                                <label>Last Name: </label><input type="text" class="form-control" data-bind="value: Account.LastName" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" data-bind="value: PhoneNumber" />
+                                <label>Phone Number: </label><input type="text" class="form-control" placeholder="xxx-xxx-xxxx" data-bind="value: Account.PhoneNumber" />
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <label>New Password: </label><input type="password" class="form-control" data-bind="value: NewPassword" />
+                                <label>New Password: </label><input type="password" class="form-control" data-bind="value: Account.NewPassword" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <label>Confirm: </label><input type="password" class="form-control" data-bind="value: ConfirmPassword" />
+                                <label>Confirm: </label><input type="password" class="form-control" data-bind="value: Account.ConfirmPassword" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <button class='btn btn-primary btn-success' data-bind="click: UpdateAccount">Update Account</button>
-                                <button class='btn btn-danger' data-bind="click: DeleteAccount">Delete Account</button>
+                                <button class='btn btn-primary btn-success' data-bind="click: Account.UpdateAccount">Update Account</button>
+                                <button class='btn btn-danger' data-bind="click: Account.DeleteAccount">Delete Account</button>
                             </div>
                         </div>
                     </div> <!-- /widget-content -->
@@ -74,8 +74,8 @@
 </div> <!-- /main -->
 <!-- /ko -->
 
-<!-- ko with: Listings -->
-<div class="main" data-bind="visible: TabActive">
+<!-- ko with: ListingTab -->
+<div class="main" data-bind="visible: ListingsActive">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -92,8 +92,8 @@
                             <div class='panel panel-default'>
                                 <div class='panel-heading' role='tab'>
                                     <h4 class='panel-title'>
-                                        <a role='button' data-toggle='collapse' data-parent='#accordion' data-bind="attr: { href: '#' + ListingId }" aria-expanded='false' aria-controls='" + oid + "'>
-                                            <label>Address: " + data.Address + "</label>
+                                        <a role='button' data-toggle='collapse' data-parent='#accordion' data-bind="attr: { href: '#' + ListingId }" aria-expanded='false'>
+                                            <label>Address: <span data-bind="text: Address"></span></label>
                                             <!-- ko if: Unit() != null -->
                                             <label>Unit: <span data-bind="text: Unit"></span></label>
                                             <!-- /ko -->
@@ -114,10 +114,10 @@
                                             </div>
                                             <!-- /ko -->
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Rent/Month</label><input type='text' class='form-control' value='" + data.Price + "' />
+                                                <label>Rent/Month</label><input type='text' class='form-control' data-bind="value: Price" />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Start Date</label><input type='text' class='form-control' value='" + FormattedDate(data.Start) + "' />
+                                                <label>Start Date</label><input type='text' class='form-control' data-bind="value: Start)" />
                                             </div>
                                         </div>
                                         <div class='row'>
@@ -159,8 +159,8 @@
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Animals</label><input type='checkbox' data-size='mini' data-bind="value: Animals" />
-                                            /div>
+                                                <label>Animals</label><input type='checkbox' data-bind="value: Animals" data-size='mini' />
+                                            </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
                                                 <label>Laundry</label><input type='checkbox' data-bind="value: Laundry" data-size='mini' />
                                             </div>
@@ -221,15 +221,14 @@
                         </div>
                     </div> <!-- /widget-content -->
                 </div> <!-- /widget -->
-                </div>
             </div> <!-- /col-md-12 -->
         </div> <!-- /row -->
     </div> <!-- /container -->
 </div> <!-- /main -->
 <!-- /ko -->
 
-<!-- ko with: Payments -->
-<div class="main">
+<!-- ko with: PaymentTab -->
+<div class="main" data-bind="visible: PaymentsActive">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -240,7 +239,7 @@
                     <div class="widget-content">
                         <div class="row" id="payment" style="margin: 0;">
                             <div class='panel panel-default'>
-                                <div id='" + oid + "' aria-labelledby='heading" + oid + "'>
+                                <div>
                                     <div class='panel-body'>
                                         <div class='row'>            
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
@@ -280,7 +279,6 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
                         <div class="row" id="paymentHistory" style="margin: 0;" data-bind="foreach: PastPayments">
                             <div class='panel panel-default'>
                                 <div class='panel-heading' role='tab'>
@@ -291,7 +289,7 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <div id='" + oid + "' class='panel-collapse collapse' role='tabpanel'>
+                                <div data-bind="attr: { id: PaymentId }" class='panel-collapse collapse' role='tabpanel'>
                                     <div class='panel-body'>
                                         <div class='row'>
                                             <div class='col-lg-4 col-md-4 col-sm-4'>
@@ -423,10 +421,10 @@
                     </div>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
-                <input type='hidden' class="Latitude" data-bind="value: XCoordinate" /><input type='hidden' class="Longitude" data-bind="value: YCoordinate" /><input type='hidden' class="SelectedAddress" data-bind="value: SelectedAddress" />
+                <input type='hidden' class="Latitude" data-bind="value: CreateListing.XCoordinate" /><input type='hidden' class="Longitude" data-bind="value: CreateListing.YCoordinate" /><input type='hidden' class="SelectedAddress" data-bind="value: CreateListing.SelectedAddress" />
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <button id="create-listing-button" type="button" class="btn btn-success" data-bind=""onclick="CreateListing()">Create Listing</button>
+                        <button id="create-listing-button" type="button" class="btn btn-success" data-bind="click: CreateListing.PendingListingCreation">Create Listing</button>
                     </div>
                 </div>
             </div>
@@ -434,4 +432,4 @@
     </div>
 </div>
 
-@Html.Hidden("TenantViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))
+@Html.Hidden("PortalViewModel", @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))

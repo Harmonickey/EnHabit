@@ -1,0 +1,186 @@
+﻿/*------------------------------------------------------------------
+
+[Custom Stylesheet]
+
+
+Last change:	03/25/2013
+Assigned to:	You
+
+-------------------------------------------------------------------*/
+
+html, body
+{
+    height: 100%;
+}
+
+textarea
+{
+    resize:none;
+    word-wrap: normal;
+}
+
+.stats .stat
+{
+    width: 33%;
+    text-align: center;
+}
+
+.stat-value
+{
+    text-align: center;
+}
+
+.pac-container
+{
+    width: auto !important;
+    z-index: 1041 !important;
+}
+
+.modal-switch
+{
+    display: inline-block;
+    width: 24%;
+}
+
+.modal-switch label,
+.modal-switch .bootstrap-switch
+{
+    float: left;
+}
+
+.modal-switch .bootstrap-switch
+{
+    clear: left;
+}
+
+.collapse
+{
+    visibility: visible;
+}
+
+.panel-heading,
+.panel-title a label
+{
+    cursor: pointer;
+}
+
+.panel-title label
+{
+    width: 100%;
+}
+
+#accordion button
+{
+    margin-right: 10px;
+}
+
+#accordion .row label
+{
+    margin-right: 5px;
+}
+
+.navbar-header .logo
+{   
+    float: left;
+}
+
+.tenant-login-error
+{
+    display: inline-block;
+    width: 100%;
+}
+
+.account .row
+{
+    margin-top: 15px;
+}
+
+.account .row,
+.panel-body .row
+{
+    margin-left: -15px;
+}
+
+.actions a
+{
+    float: right;
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.form-control
+{
+    width: 96%;
+    display: inline-block;
+}
+
+.required:after 
+{ 
+    content: " *";
+    color: red;
+    display: inline-block;
+    position: relative;
+    top: -10px;
+}
+
+#create-listing-button
+{
+    margin-top: 10px;
+}
+
+#accordion img
+{
+    width: 120px;
+    height: 120px;
+}
+
+#accordion form
+{
+    margin-top: 10px;
+}
+
+.msgGrowl-container,
+.ui-autocomplete
+{
+    z-index: 1040; /* to be above the modal popups at least */
+}
+
+.ui-widget label
+{
+    font: 13px/1.7em 'Open Sans';
+    font-weight: bold;
+}
+
+#createListingModal .row,
+#createUserModal .row
+{
+    margin-left: 0;
+}
+
+.col-lg-2.required:after,
+.col-md-2.required:after,
+.col-sm-2.required:after
+{
+    margin-left: 20px;
+}
+
+.navbar.navbar-inverse 
+{
+    z-index: 2;
+    background-image: none;
+    border-bottom: none;
+    background-color: black !important;
+}
+
+.logo 
+{
+    position: absolute;
+}
+
+#create-listing-warning
+{
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-right: 25px;
+}

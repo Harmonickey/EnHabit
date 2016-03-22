@@ -4,6 +4,7 @@ using Enhabit.Presenter;
 using Enhabit.Models;
 using System;
 using Enhabit.Models.Enums;
+using System.Linq;
 
 namespace Enhabit.Web.Controllers
 {
@@ -26,8 +27,8 @@ namespace Enhabit.Web.Controllers
                 Session["UserGuid"] = loggedInUser.UserId; // set the session with our user guid
                 Session.Timeout = 60; // minutes
 
-                var navLinks = Presenter.GetNavLinks((AccountType)loggedInUser.AccountTypeId);
-
+                var navLinks = Presenter.GetNavLinks(loggedInUser.UserId, (AccountType)loggedInUser.AccountTypeId);
+                
                 return Json(new { NavLinks = navLinks }, JsonRequestBehavior.DenyGet);
             }
 

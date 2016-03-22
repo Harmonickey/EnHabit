@@ -1,197 +1,4 @@
-﻿var ListingViewModel = function (listing) {
-    var self = this;
-
-    self.XCoordinate = listing.XCoordinate;
-    self.YCoordinate = listing.YCoordinate;
-    self.IsFeatured = listing.IsFeatured;
-    self.Testing = listing.Testing;
-    self.Address = listing.Address;
-    self.Unit = listing.Unit;
-    self.Price = listing.Price;
-    self.Images = listing.Images;
-    self.Thumbnails = listing.Thumbnails;
-};
-
-var UserViewModel = function (user, enhabitMapViewModel)
-{
-    var self = this;
-
-    self.Username = ko.observable();
-    self.Password = ko.observable();
-    self.ConfirmPassword = ko.observable();
-    self.Email = ko.observable();
-    self.PhoneNumber = ko.observable();
-    self.FirstName = ko.observable();
-    self.LastName = ko.observable();
-
-    self.LoginEnabled = ko.observable(true);
-    self.LoginError = ko.observable();
-    self.LoginErrorVisible = ko.observable(false);
-
-    self.CreateAccountEnabled = ko.observable(true);
-    self.CreateAccountError = ko.observable();
-    self.CreateAccountErrorVisible = ko.observable(false);
-
-    self.OpenRegisterModal = function ()
-    {
-        CleanModalViewModel();
-        enhabitMapViewModel.OpenRegisterModal();
-    };
-
-    self.LoginUser = function ()
-    {
-        var data = ko.toJSON({
-            Username: self.Username(),
-            Password: self.Password()
-        });
-
-        $.ajax(
-        {
-            type: "POST",
-            url: "/User/Login",
-            data: data,
-            dataType: "json",
-            contentType: "application/json charset=utf-8",
-            beforeSend: function ()
-            {
-                self.LoginEnabled(false);
-                self.LoginErrorVisible(false);
-            },
-            success: function (res)
-            {
-                try
-                {
-                    if (res != false)
-                    {
-                        $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
-
-                        enhabitMapViewModel.NavLinkData = res.NavLinks;
-                        enhabitMapViewModel.ShowLoginNav(true);
-                    }
-                    else
-                    {
-                        throw new Error(res);
-                    }
-                }
-                catch (e)
-                {
-                    self.LoginError("Incorrect User/Password Combination.");
-                    self.LoginErrorVisible(true);
-                }
-            },
-            error: function (res, err)
-            {
-                self.LoginError(res);
-                self.LoginErrorVisible(true);
-            },
-            complete: function ()
-            {
-                self.LoginEnabled(false);
-            }
-        });
-    };
-
-    self.LoginFacebook = function ()
-    {
-        try
-        {
-            // this calls and responds to the facebook popup
-            FB.login(function (response)
-            {
-                if (response.status === 'connected')
-                {
-                    //we are good to login!
-                    var userId = response.authResponse.userID;
-                    var accessToken = response.authResponse.accessToken;
-                    self.Username(userId);
-                    self.Password(accessToken);
-                    self.LoginUser();
-                }
-            });
-        }
-        catch (e)
-        {
-            $.msgGrowl({ type: 'error', title: 'Error', text: "Problem with Logging In", position: 'top-center' });
-        }
-    };
-
-    self.CreateAccount = function()
-    {
-        var data = ko.toJSON({
-            Username: self.Username(),
-            Password: self.Password(),
-            ConfirmPassword: self.ConfirmPassword(),
-            FirstName: self.FirstName(),
-            LastName: self.LastName(),
-            Email: self.Email(),
-            PhoneNumber: self.PhoneNumber()
-        });
-
-        $.ajax(
-        {
-            type: "POST",
-            url: "/User/Create",
-            data: data,
-            dataType: "json",
-            contentType: "application/json charset=utf-8",
-            beforeSend: function () {
-                self.CreateAccountEnabled(false);
-                self.CreateAccountErrorVisible(false);
-            },
-            success: function (res)
-            {
-                try
-                {
-                    if (res != false)
-                    {
-                        enhabitMapViewModel.ShowLoginNav(true);
-
-                        $.msgGrowl({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'top-center' });
-                        $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
-
-                        // session should be set, so the user will be attached to the listing
-                        if (enhabitMapViewModel.PendingListingData() != undefined)
-                        {
-                            enhabitMapViewModel.CreateListing(res);
-                        }
-                    }
-                    else
-                    {
-                        throw new Error(res);
-                    }
-                }
-                catch (e)
-                {
-                    self.CreateAccountError(e.message);
-                    self.CreateAccountErrorVisible(true);
-                }
-            },
-            error: function (res, err)
-            {
-                self.CreateAccountError(res);
-                self.CreateAccountErrorVisible(true);
-            },
-            complete: function ()
-            {
-                self.CreateAccountEnabled(false);
-            }
-        });
-    };
-};
-
-var NavLinkViewModel = function (navLink)
-{
-    var self = this;
-
-    self.LinkHref = navLink.Href;
-    self.LinkName = navLink.Name;
-    self.LinkClass = navLink.Class;
-    self.GetClass = ko.pureComputed(function () {
-        return self.LinkClass;
-    });
-};
-
-var SearchQueryViewModel = function (priceRange)
+﻿var SearchQueryViewModel = function (priceRange)
 {
     var self = this;
     
@@ -227,85 +34,6 @@ var SearchQueryViewModel = function (priceRange)
             self.PriceRangeHigh(ui.values[1]);
         }
     });
-};
-
-var CreateListingViewModel = function (landlords, universities, enhabitMapViewModel)
-{
-    var self = this;
-
-    self.errors = ko.validation.group(self, { deep: true, live: true });
-
-    self.Address = ko.observable().extend({
-        required: true
-    });
-    self.Unit = ko.observable();
-    self.Rent = ko.observable().extend({
-        required: true
-    });
-    self.StartDate = ko.observable().extend({
-        required: true
-    });
-    self.Bedrooms = ko.observable();
-    self.Bathrooms = ko.observable();
-    self.Parking = ko.observable();
-    self.Animals = ko.observable();
-    self.Laundry = ko.observable();
-    self.AirConditioning = ko.observable();
-    self.LeaseTypes = ko.observable();
-    self.BuildingTypes = ko.observable();
-    self.Landlords = landlords;
-    self.Universities = universities;
-
-    self.Landlord = ko.observable();
-    self.University = ko.observable();
-    self.LeaseType = ko.computed(function () {
-        return self.LeaseTypes() == true ? "rental" : "sublet";
-    });
-    self.BuildingType = ko.computed(function () {
-        return self.BuildingTypes() == true ? "apartment" : "house";
-    });
-    self.FormattedAddress = ko.computed(function () {
-        return (self.Address() ? self.Address().split(",")[0] : "");
-    });
-    self.FormattedStartDate = ko.computed(function () {
-        return (self.StartDate() ? $.datepicker.formatDate('mm/dd/yy', new Date(self.StartDate())) : "");
-    });
-    self.Pictures = ko.observable();
-
-    self.Notes = ko.observable();
-
-    self.PendingListingCreation = function ()
-    {
-        self.errors.showAllMessages();
-
-        if (self.errors().length == 0)
-        {
-            var data = {
-                Address: self.FormattedAddress(),
-                Unit: self.Unit(),
-                Rent: self.Rent(),
-                StartDate: self.FormattedStartDate(),
-                Bedrooms: self.Bedrooms(),
-                Bathrooms: self.Bathrooms(),
-                Parking: self.Parking(),
-                Animals: self.Animals(),
-                Laundry: self.Laundry(),
-                AirConditioning: self.AirConditioning(),
-                LeaseType: self.LeaseType(),
-                BuildingType: self.BuildingType(),
-                Landlord: self.Landlord(),
-                University: self.University(),
-                Pictures: self.Pictures(),
-                Note: self.Notes()
-            };
-
-            // setup the listing data for pending 
-            enhabitMapViewModel.PendingListingData(data);
-
-            CleanModalViewModel();
-            enhabitMapViewModel.OpenRegisterModal();
-        }
-    };
 };
 
 var EnhabitMapViewModel = function (enhabitMapData)
@@ -627,13 +355,31 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.LogoutUser = function ()
     {
-        
+        $.ajax(
+        {
+            type: "POST",
+            url: "/User/Logout",
+            success: function (res)
+            {
+                if (res == true)
+                {
+                    $.msgGrowl({ type: 'warning', title: 'Warning', text: "User Logged Out Successfully.", position: 'top-center' });
+                    self.UserLoggedIn(false);
+                }
+                else
+                {
+                    $.msgGrowl({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'top-center' });
+                }
+            },
+            error: function() 
+            {
+                $.msgGrowl({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'top-center' });
+            }
+        });
     };
 
     self.ShowLoginNav = function (hideLoginModal, navLinks)
     {
-        self.UserLoggedIn(true);
-
         if (hideLoginModal)
         {
             $("#common-modal").modal('hide');
@@ -641,7 +387,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
     };
 
     self.NavLinks = ko.computed(function() { 
-        return ko.utils.arrayMap(self.NavLinkData, function (navLink) {
+        return ko.utils.arrayMap(self.NavLinkData(), function (navLink) {
             return new NavLinkViewModel(navLink);
         });
     });
@@ -651,11 +397,3 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     };
 };
-
-ko.bindingHandlers.stopBinding = {
-    init: function () {
-        return { controlsDescendantBindings: true };
-    }
-};
-
-ko.virtualElements.allowedBindings.stopBinding = true;

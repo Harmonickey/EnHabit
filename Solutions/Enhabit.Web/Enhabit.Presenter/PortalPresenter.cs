@@ -11,21 +11,22 @@ namespace Enhabit.Presenter
 {
     public sealed class PortalPresenter
     {
-        private readonly IUserRepository _userRepo;
-        private readonly IUniversityRepository _universityRepo;
-        private readonly IListingRepository _listingRepo;
-        private readonly IPaymentRepository _paymentRepo;
-        private readonly IRenterRepository _renterRepo;
-        private readonly IApplicantRepository _applicantRepo;
+        readonly IUserRepository _userRepo;
+        readonly IUniversityRepository _universityRepo;
+        readonly IListingRepository _listingRepo;
+        readonly IPaymentRepository _paymentRepo;
+        readonly IRenterRepository _renterRepo;
+        readonly IApplicantRepository _applicantRepo;
 
-        private IEnumerable<ListingViewModel> _listings;
-        private IEnumerable<UserViewModel> _landlords;
-        private IEnumerable<UniversityViewModel> _universities;
-        private IEnumerable<PaymentViewModel> _payments;
-        private IEnumerable<RenterViewModel> _renters;
-        private IEnumerable<ApplicantViewModel> _applicants;
-        private UserViewModel _user;
-        private bool _hasRental;
+        IEnumerable<ListingViewModel> _listings;
+        IEnumerable<UserViewModel> _landlords;
+        IEnumerable<UniversityViewModel> _universities;
+        IEnumerable<PaymentViewModel> _payments;
+        IEnumerable<RenterViewModel> _renters;
+        IEnumerable<ApplicantViewModel> _applicants;
+        UserViewModel _user;
+        IEnumerable<NavLinkViewModel> _navLinks;
+        bool _hasRental;
 
         public PortalPresenter(IUniversityRepository universityRepo, IUserRepository userRepo, IListingRepository listingRepo, IPaymentRepository paymentRepo, IRenterRepository renterRepo, IApplicantRepository applicantRepo)
         {
@@ -46,12 +47,11 @@ namespace Enhabit.Presenter
                             () => _landlords = Users.GetLandlords(_userRepo),
                             () => _universities = Universities.GetAll(_universityRepo),
                             () => _hasRental = Renters.UserHasRental(_renterRepo, userGuid));
-
-            return new TenantViewModel(_user, _listings, _payments)
+            
+            return new TenantViewModel(_user, _listings, NavLinks.Tenant(_hasRental), _payments, _hasRental)
             {
                 Universities = _universities,
-                Landlords = _landlords,
-                HasRental = _hasRental
+                Landlords = _landlords
             };
         }
 
@@ -63,9 +63,10 @@ namespace Enhabit.Presenter
                             () => _landlords = Users.GetLandlords(_userRepo),
                             () => _universities = Universities.GetAll(_universityRepo),
                             () => _applicants = Applicants.GetUserApplicants(_applicantRepo, userGuid),
-                            () => _renters = Renters.GetUserRenters(_renterRepo, userGuid));
+                            () => _renters = Renters.GetUserRenters(_renterRepo, userGuid),
+                            () => _navLinks = NavLinks.Landlord());
 
-            return new LandlordViewModel(_user, _listings, _applicants, _renters)
+            return new LandlordViewModel(_user, _listings, _navLinks, _applicants, _renters)
             {
                 Universities = _universities,
                 Landlords = _landlords

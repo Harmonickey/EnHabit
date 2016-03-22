@@ -11,9 +11,7 @@ namespace Enhabit.Repository.ADO
     public class UniversityRepository : IUniversityRepository
     {
         private readonly string _enhabitConnString;
-
-        public SqlConnection SqlConn { get; set; }
-
+        
         public UniversityRepository(IConfigAdaptor configAdaptor)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
@@ -25,7 +23,7 @@ namespace Enhabit.Repository.ADO
         {
             var universities = new List<University>();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())

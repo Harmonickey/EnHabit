@@ -14,20 +14,18 @@ namespace Enhabit.Repository.ADO
     public class RenterRepository : IRenterRepository
     {
         private readonly string _enhabitConnString;
-        private readonly TransactionScopeOption _transactionScopeOption;
-        private readonly TransactionOptions _transactionOptions;
+        //private readonly TransactionScopeOption _transactionScopeOption;
+        //private readonly TransactionOptions _transactionOptions;
 
         private readonly ILog _logger;
-
-        public SqlConnection SqlConn { get; set; }
-
+        
         public RenterRepository(IConfigAdaptor configAdaptor, ILog logger)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
 
             _enhabitConnString = configAdaptor.EnhabitConnectionString;
-            _transactionScopeOption = TransactionScopeOption.Required;
-            _transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted };
+            //_transactionScopeOption = TransactionScopeOption.Required;
+            //_transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted };
             _logger = logger;
         }
 
@@ -40,7 +38,7 @@ namespace Enhabit.Repository.ADO
         {
             var renters = new List<Renter>();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())
@@ -76,7 +74,7 @@ namespace Enhabit.Repository.ADO
         {
             bool hasRental = false;
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())

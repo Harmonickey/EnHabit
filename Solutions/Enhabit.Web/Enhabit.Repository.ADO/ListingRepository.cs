@@ -22,8 +22,6 @@ namespace Enhabit.Repository.ADO
         private readonly IImageRepository _imageRepo;
         private readonly ILog _logger;
 
-        public SqlConnection SqlConn { get; set; }
-
         public ListingRepository(IConfigAdaptor configAdaptor, IImageRepository imageRepo, ILog logger)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
@@ -41,7 +39,7 @@ namespace Enhabit.Repository.ADO
             {
                 try
                 {
-                    using (SqlConn = new SqlConnection(_enhabitConnString))
+                    using (var SqlConn = new SqlConnection(_enhabitConnString))
                     {
                         SqlConn.Open();
                         using (var cmd = SqlConn.CreateCommand())
@@ -87,7 +85,7 @@ namespace Enhabit.Repository.ADO
         {
             var listings = new List<Listing>();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())
@@ -132,7 +130,7 @@ namespace Enhabit.Repository.ADO
         {
             var listings = new List<Listing>();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())
@@ -167,7 +165,7 @@ namespace Enhabit.Repository.ADO
         {
             var listings = new List<Listing>();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())

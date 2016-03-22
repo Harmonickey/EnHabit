@@ -4,8 +4,8 @@ namespace Enhabit.ViewModels
 {
     public class LandlordViewModel : PortalViewModel
     {
-        public LandlordViewModel(UserViewModel uvm, IEnumerable<ListingViewModel> lvm, IEnumerable<ApplicantViewModel> apvm, IEnumerable<RenterViewModel> rvm)
-            :base(uvm, lvm)
+        public LandlordViewModel(UserViewModel uvm, IEnumerable<ListingViewModel> lvm, IEnumerable<NavLinkViewModel> nvm, IEnumerable<ApplicantViewModel> apvm, IEnumerable<RenterViewModel> rvm)
+            :base(uvm, lvm, nvm)
         {
             Applicants = apvm;
             Renters = rvm;

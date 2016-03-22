@@ -6,29 +6,38 @@ namespace Enhabit.Presenter.Commands
 {
     public static class NavLinks
     {
-        public static IEnumerable<NavLinkViewModel> Tenant()
+        public static IEnumerable<NavLinkViewModel> Tenant(bool hasRental)
         {
-            return new List<NavLinkViewModel>
+            var navLinks =  new List<NavLinkViewModel>
                 {
                     new NavLinkViewModel
                     {
                         Name = "Account",
                         Href = "Portal/Tenant#Account",
-                        Class = "fa-user"
+                        Class = "fa-user",
+                        Class2 = "fa-book"
                     },
                     new NavLinkViewModel
                     {
                         Name = "Listings",
                         Href = "Portal/Tenant#Listings",
-                        Class = "fa-home"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Payment",
-                        Href = "Portal/Tenant#Payments",
-                        Class = "fa-usd"
+                        Class = "fa-home",
+                        Class2 = "fa-th-list"
                     }
                 };
+
+            if (hasRental)
+            {
+                navLinks.Add(new NavLinkViewModel
+                {
+                    Name = "Payments",
+                    Href = "Portal/Tenant#Payments",
+                    Class = "fa-usd",
+                    Class2 = "fa-usd"
+                });
+            }
+
+            return navLinks;
         }
 
         public static IEnumerable<NavLinkViewModel> Landlord()
@@ -64,61 +73,6 @@ namespace Enhabit.Presenter.Commands
                         Name = "Renters",
                         Href = "Portal/Landlord#Renters",
                         Class = "fa-users"
-                    }
-                };
-        }
-
-        public static IEnumerable<NavLinkViewModel> Admin()
-        {
-            return new List<NavLinkViewModel>
-                {
-                    new NavLinkViewModel
-                    {
-                        Name = "Analytics",
-                        Href = "Portal/Admin#Analytics",
-                        Class = "fa-bar-chart"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Users",
-                        Href = "Portal/Admin#Users",
-                        Class = "fa-users"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Listings",
-                        Href = "Portal/Admin#Listings",
-                        Class = "fa-home"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Payments",
-                        Href = "Portal/Admin#Payments",
-                        Class = "fa-usd"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Renters",
-                        Href = "Portal/Admin#Renters",
-                        Class = "fa-users"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Universities",
-                        Href = "Portal/Admin#Universities",
-                        Class = "fa-bank"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Pricing",
-                        Href = "Portal/Admin#Pricing",
-                        Class = "fa-money"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Logs",
-                        Href = "Portal/Admin#Logs",
-                        Class = "fa-file-text"
                     }
                 };
         }

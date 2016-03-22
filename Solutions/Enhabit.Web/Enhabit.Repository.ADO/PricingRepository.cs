@@ -10,9 +10,7 @@ namespace Enhabit.Repository.ADO
     public class PricingRepository : IPricingRepository
     {
         private readonly string _enhabitConnString;
-
-        public SqlConnection SqlConn { get; set; }
-
+        
         public PricingRepository(IConfigAdaptor configAdaptor)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
@@ -24,7 +22,7 @@ namespace Enhabit.Repository.ADO
         {
             var priceRange = new PriceRange();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())

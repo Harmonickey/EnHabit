@@ -28,11 +28,6 @@ namespace Enhabit.Web.Controllers
             EnhabitMapViewModel vm = Presenter.GetEnhabitMap(Session["UserGuid"]);          
             vm.UserLoggedIn = userLoggedIn;
 
-            if (vm.UserLoggedIn)
-            {
-                vm.NavLinks = Presenter.GetNavLinks((AccountType)vm.User.AccountTypeId);
-            }
-
             return View(vm);
         }
 

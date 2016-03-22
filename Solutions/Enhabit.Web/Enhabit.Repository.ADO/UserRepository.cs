@@ -20,9 +20,7 @@ namespace Enhabit.Repository.ADO
         private readonly TransactionOptions _transactionOptions;
 
         private readonly ILog _logger;
-
-        public SqlConnection SqlConn { get; set; }
-
+        
         public UserRepository(IConfigAdaptor configAdaptor, ILog logger)
         {
             if (configAdaptor == null) throw new ArgumentNullException("configAdaptor");
@@ -33,9 +31,9 @@ namespace Enhabit.Repository.ADO
             _logger = logger;
         }
 
-        public Guid LoginUser(User user)
+        public User LoginUser(User user)
         {
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())
@@ -69,7 +67,7 @@ namespace Enhabit.Repository.ADO
             {
                 try
                 {
-                    using (SqlConn = new SqlConnection(_enhabitConnString))
+                    using (var SqlConn = new SqlConnection(_enhabitConnString))
                     {
                         SqlConn.Open();
                         using (var cmd = SqlConn.CreateCommand())
@@ -129,7 +127,7 @@ namespace Enhabit.Repository.ADO
         {
             var user = new User();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())
@@ -158,7 +156,7 @@ namespace Enhabit.Repository.ADO
         {
             var users = new List<User>();
 
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())

@@ -22,5 +22,7 @@ namespace Enhabit.ViewModels
         public Guid CreateListingPictureGuid { get; set; }
 
         public UserViewModel User { get; set; }
+
+        public bool HasRental { get; set; }
     }
 }

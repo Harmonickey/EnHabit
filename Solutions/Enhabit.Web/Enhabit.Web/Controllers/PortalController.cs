@@ -19,7 +19,7 @@ namespace Enhabit.Web.Controllers
         {
             if (Session["UserGuid"] != null)
             {
-                var userGuid = (string)Session["UserGuid"];
+                var userGuid = Session["UserGuid"].ToString();
 
                 var user = Presenter.GetUser(new Guid(userGuid));
 
@@ -27,14 +27,8 @@ namespace Enhabit.Web.Controllers
                 {
                     return RedirectToAction("Tenant");
                 }
-                else if ((AccountType)user.AccountTypeId == AccountType.Landlord)
-                {
-                    return RedirectToAction("Landlord");
-                }
-                else if ((AccountType)user.AccountTypeId == AccountType.Admin)
-                {
-                    return Redirect("/Admin");
-                }
+
+                return RedirectToAction("Landlord");
             }
 
             return RedirectToAction("Index", "Error");
@@ -44,10 +38,10 @@ namespace Enhabit.Web.Controllers
         {
             if (Session["UserGuid"] != null)
             {
-                var userGuid = (string)Session["UserGuid"];
+                var userGuid = Session["UserGuid"].ToString();
 
                 TenantViewModel vm = Presenter.GetTenantPortal(new Guid(userGuid));
-
+                
                 return View(vm);
             }
 
@@ -58,7 +52,7 @@ namespace Enhabit.Web.Controllers
         {
             if (Session["UserGuid"] != null)
             {
-                var userGuid = (string)Session["UserGuid"];
+                var userGuid = Session["UserGuid"].ToString();
 
                 LandlordViewModel vm = Presenter.GetLandlordPortal(new Guid(userGuid));
 

@@ -19,9 +19,7 @@ namespace Enhabit.Repository.ADO
         private readonly string _enhabitConnString;
         private readonly TransactionScopeOption _transactionScopeOption;
         private readonly TransactionOptions _transactionOptions;
-
-        public SqlConnection SqlConn { get; set; }
-
+        
         public readonly ILog _logger;
 
         public ImageRepository(ILog logger, IConfigAdaptor configAdaptor)
@@ -39,7 +37,7 @@ namespace Enhabit.Repository.ADO
             var pictures = new List<Picture>();
 
             var dtPictureIds = pictureIds.ToDataTablePictureIds();
-            using (SqlConn = new SqlConnection(_enhabitConnString))
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
             {
                 SqlConn.Open();
                 using (var cmd = SqlConn.CreateCommand())
@@ -70,7 +68,7 @@ namespace Enhabit.Repository.ADO
             {
                 try
                 {
-                    using (SqlConn = new SqlConnection(_enhabitConnString))
+                    using (var SqlConn = new SqlConnection(_enhabitConnString))
                     {
                         SqlConn.Open();
                         using (var cmd = SqlConn.CreateCommand())

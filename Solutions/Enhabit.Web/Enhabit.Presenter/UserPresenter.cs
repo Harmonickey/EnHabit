@@ -5,16 +5,19 @@ using Enhabit.Presenter.Commands;
 using System;
 using System.Collections.Generic;
 using Enhabit.ViewModels;
+using System.Linq;
 
 namespace Enhabit.Presenter
 {
     public sealed class UserPresenter
     {
-        private readonly IUserRepository _userRepo;
+        readonly IUserRepository _userRepo;
+        readonly IRenterRepository _renterRepo;
 
-        public UserPresenter(IUserRepository userRepo)
+        public UserPresenter(IUserRepository userRepo, IRenterRepository renterRepo)
         {
             _userRepo = userRepo;
+            _renterRepo = renterRepo;
         }
 
         public User LoginUser(User user)
@@ -27,18 +30,16 @@ namespace Enhabit.Presenter
             return Users.Create(_userRepo, user);
         }
 
-        public IEnumerable<NavLinkViewModel> GetNavLinks(AccountType accountType)
+        public IEnumerable<NavLinkViewModel> GetNavLinks(Guid userGuid, AccountType accountType)
         {
-            if (accountType == AccountType.Admin)
+            var hasRental = Renters.UserHasRental(_renterRepo, userGuid);
+            
+            if (accountType == AccountType.Tenant)
             {
-                return NavLinks.Admin();
-            }
-            else if (accountType == AccountType.Landlord)
-            {
-                return NavLinks.Landlord();
+                return NavLinks.Tenant(hasRental).ToList();
             }
 
-            return NavLinks.Tenant();
+            return NavLinks.Landlord().ToList();
         }
     }
 }

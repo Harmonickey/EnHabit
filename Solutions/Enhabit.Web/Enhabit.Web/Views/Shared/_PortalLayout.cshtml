@@ -7,17 +7,20 @@
     <title>Enhabit - Portal</title>
 
     <!-- favicon -->
-    <link rel="icon" type="image/jpg" href="../../favicon.png">
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     @Styles.Render("~/Portal/Content/ThirdParty")
+    <link href="~/Content/ThirdParty/bootstrap-responsive.css" rel="stylesheet">
+    <link href="~/Content/ThirdParty/base-admin-3-responsive.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+    @Styles.Render("~/Portal/Content/Tenant")
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
 <body>
-
-    @Scripts.Render("~/Portal/ThirdParty")
 
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
@@ -27,7 +30,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56" /></a>
+                <a class="logo" href="/"><img src='/Images/EnhabitLogo_Beta.png' height="56" /></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -38,11 +41,16 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="tenant-nav"><a style="cursor: pointer;" href="/Portal/Tenant#Account"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
-                            <li class="tenant-nav"><a style="cursor: pointer;" href="/Portal/Tenant#Listings"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listings</a></li>
-                            <li class='tenant-nav' data-bind="visible: HasRental"><a style='cursor: pointer;' href='/Portal/Tenant#Payments'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>";
-                            <li id="login-function" class="menu-item scroll" data-bind="click: Logout">
-                                <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
+                            <!-- ko foreach: $root.NavLinks -->
+                            <li>
+                                <a data-bind="click: $root.ChangeTab" style="cursor: pointer;">
+                                    <i data-bind="css: LinkClass" class="fa" style="margin-right: 5px;"></i>
+                                    <span data-bind="text: LinkName"></span>
+                                </a>
+                            </li>
+                            <!-- /ko -->
+                            <li class="menu-item scroll" data-bind="click: $root.Logout">
+                                <a style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                             </li>
                         </ul>
                     </li>
@@ -59,23 +67,11 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <div class="collapse subnav-collapse">
-                    <ul class="mainnav">
-                        <li>
-                            <a href="Portal/Tenant#Account">
-                                <i class="fa fa-book"></i>
-                                <span>Account</span>
-                            </a>
-                        </li>
-                        <li class="active">
-                            <a href="Portal/Tenant#Listings">
-                                <i class="fa fa-th-list"></i>
-                                <span>Listing</span>
-                            </a>
-                        </li>
-                        <li data-bind="visible: HasRental">
-                            <a href='Portal/Tenant#Payments'>
-                                <i class='fa fa-usd'></i>
-                                <span>Payments</span>
+                    <ul class="mainnav" data-bind="foreach: $root.NavLinks">
+                        <li data-bind="css: { 'active': Selected }">
+                            <a data-bind="click: $root.ChangeTab" style="cursor: pointer;">
+                                <i data-bind="css: LinkClass" class="fa"></i>
+                                <span data-bind="text: LinkName"></span>
                             </a>
                         </li>
                     </ul>
@@ -85,6 +81,36 @@
     </div> <!-- /subnavbar -->
 
     @RenderBody()
+
+    <!-- All of our layout javascript files -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @Scripts.Render("~/Portal/ThirdParty")
+    <script src="~/Scripts/ThirdParty/pikaday.js"></script>
+    <script src="~/Scripts/ThirdParty/pikaday.jquery.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js?libraries=places" type="text/javascript"></script>
+    <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>
+
+    @Scripts.Render("~/Enhabit/Common")
+
+    @Scripts.Render("~/Enhabit/Portal")
+
+    <script>
+
+            var portalViewModel;
+
+            $(function ()
+            {    
+                InitKnockoutBindings();
+            });
+
+            function InitKnockoutBindings()
+            {
+                var portalData = JSON.parse($('#PortalViewModel').val());
+                portalViewModel = ko.applyBindings(new PortalViewModel(portalData.Account, portalData.Listings, portalData.NavLinks, portalData.Landlords, portalData.Universities, portalData.Payments));
+            }
+
+    </script>
 
     <div class="footer">
 	    <div class="container">

@@ -49,8 +49,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="ControllerFactory\IocControllerFactory.cs" />
     <Compile Include="Controllers\EnhabitController.cs" />
@@ -66,14 +64,20 @@
   <ItemGroup>
     <Content Include="Content\EnhabitMap\custom.css" />
     <Content Include="Content\EnhabitMap\main.css" />
+    <Content Include="Content\Portal\Landlord\custom.css" />
+    <Content Include="Content\Portal\main.css" />
+    <Content Include="Content\Portal\Tenant\custom.css" />
     <Content Include="Content\ThirdParty\base-admin-3-responsive.css" />
     <Content Include="Content\ThirdParty\base-admin-3.css" />
+    <Content Include="Content\ThirdParty\bootstrap-responsive.css" />
     <Content Include="Content\ThirdParty\bootstrap-switch.css" />
     <Content Include="Content\ThirdParty\bootstrap-theme.css" />
     <Content Include="Content\ThirdParty\bootstrap-theme.min.css" />
     <Content Include="Content\ThirdParty\bootstrap.css" />
     <Content Include="Content\ThirdParty\bootstrap.min.css" />
+    <Content Include="Content\ThirdParty\dashboard.css" />
     <Content Include="Content\ThirdParty\dropzone.css" />
+    <Content Include="Content\ThirdParty\font-awesome.css" />
     <Content Include="Content\ThirdParty\fontsstylesheet.css" />
     <Content Include="Content\ThirdParty\Fonts\fontawesome-webfont.svg" />
     <Content Include="Content\ThirdParty\Fonts\glyphicons-halflings-regular.svg" />
@@ -180,7 +184,11 @@
     <Content Include="Images\more-plus-icon.png" />
     <Content Include="Images\pin.png" />
     <Content Include="Images\PKLogo.png" />
+    <Content Include="Scripts\Common\createListing.js" />
     <Content Include="Scripts\Common\custom_bindings.js" />
+    <Content Include="Scripts\Common\listings.js" />
+    <Content Include="Scripts\Common\navLinks.js" />
+    <Content Include="Scripts\Common\users.js" />
     <Content Include="Scripts\EnhabitMap\index.js" />
     <Content Include="Scripts\EnhabitMap\initialise-functions.js" />
     <Content Include="Scripts\EnhabitMap\utilities.js" />
@@ -224,11 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Portal\" />
     <Folder Include="Scripts\Tests\" />
-    <Folder Include="Views\Image\" />
-    <Folder Include="Views\Listing\" />
-    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

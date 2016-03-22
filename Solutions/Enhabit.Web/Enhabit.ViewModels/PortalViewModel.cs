@@ -4,10 +4,11 @@ namespace Enhabit.ViewModels
 {
     public class PortalViewModel
     {
-        public PortalViewModel(UserViewModel uvm, IEnumerable<ListingViewModel> lvm)
+        public PortalViewModel(UserViewModel uvm, IEnumerable<ListingViewModel> lvm, IEnumerable<NavLinkViewModel> nvm)
         {
             Account = uvm;
             Listings = lvm;
+            NavLinks = nvm;
         }
         
         public UserViewModel Account { get; set; }
@@ -17,5 +18,7 @@ namespace Enhabit.ViewModels
         public IEnumerable<UniversityViewModel> Universities { get; set; }
 
         public IEnumerable<UserViewModel> Landlords { get; set; }
+
+        public IEnumerable<NavLinkViewModel> NavLinks { get; set; }
     }
 }
