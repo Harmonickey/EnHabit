@@ -28,6 +28,16 @@ namespace Enhabit.Presenter.Commands
             return repo.CreateUser(user);
         }
 
+        public static User Update(IUserRepository repo, User user)
+        {
+            return repo.UpdateUser(user);
+        }
+
+        public static bool Delete(IUserRepository repo, Guid userGuid, string password)
+        {
+            return repo.DeleteUser(userGuid, password);
+        }
+
         public static IEnumerable<UserViewModel> GetLandlords(IUserRepository repo)
         {
             return repo.GetAllUsers(AccountType.Landlord).Select(u => u.ToUserViewModel());

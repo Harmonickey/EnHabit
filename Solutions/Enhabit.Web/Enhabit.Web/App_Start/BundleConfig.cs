@@ -40,14 +40,14 @@ namespace Enhabit.Web
                         "~/Scripts/Common/listings.js",
                         "~/Scripts/Common/navLinks.js",
                         "~/Scripts/Common/users.js",
-                        "~/Scripts/Common/createListing.js"));
+                        "~/Scripts/Common/createListing.js",
+                        "~/Scripts/Common/utilities.js"));
 
             bundles.Add(new ScriptBundle("~/Enhabit/Portal").Include(
                         "~/Scripts/Portal/utilities.js",
                         "~/Scripts/Portal/portal.js"));
 
             bundles.Add(new ScriptBundle("~/Enhabit/Map").Include(
-                        "~/Scripts/EnhabitMap/utilities.js",
                         "~/Scripts/EnhabitMap/index.js",
                         "~/Scripts/EnhabitMap/initialise-functions.js"));
 

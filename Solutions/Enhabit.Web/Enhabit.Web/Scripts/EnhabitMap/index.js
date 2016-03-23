@@ -81,7 +81,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
         LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
         self.CreateDropzone("create", "#common-modal form");
-        InitSpecialFields();
+        InitSpecialFields("#common-modal");
         ko.applyBindings(new CreateListingViewModel(self.Landlords, self.Universities, self), $("#common-modal")[0]);
     };
 

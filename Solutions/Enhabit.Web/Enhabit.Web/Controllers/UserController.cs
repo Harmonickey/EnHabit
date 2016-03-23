@@ -65,5 +65,37 @@ namespace Enhabit.Web.Controllers
             
             return Json(false, JsonRequestBehavior.DenyGet);
         }
+
+        [HttpPost]
+        public JsonResult Update(User user)
+        {
+            try
+            {
+                user.UserId = (Guid)Session["UserGuid"];
+
+                var result = Presenter.UpdateUser(user);
+
+                return Json(result, JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Delete(string password)
+        {
+            try
+            {
+                var result = Presenter.DeleteUser(Session["UserGuid"], password);
+
+                return Json(result, JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.DenyGet);
+            }
+        }
     }
 }

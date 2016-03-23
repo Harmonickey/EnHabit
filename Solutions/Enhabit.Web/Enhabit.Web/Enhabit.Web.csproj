@@ -191,7 +191,7 @@
     <Content Include="Scripts\Common\users.js" />
     <Content Include="Scripts\EnhabitMap\index.js" />
     <Content Include="Scripts\EnhabitMap\initialise-functions.js" />
-    <Content Include="Scripts\EnhabitMap\utilities.js" />
+    <Content Include="Scripts\Common\utilities.js" />
     <Content Include="Scripts\Portal\portal.js" />
     <Content Include="Scripts\ThirdParty\bootstrap-switch.js" />
     <Content Include="Scripts\ThirdParty\bootstrap-tagsinput.js" />

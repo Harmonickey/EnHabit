@@ -113,14 +113,86 @@ namespace Enhabit.Repository.ADO
             return user.UserId;
         }
 
-        public bool DeleteUser(User user)
+        public bool DeleteUser(Guid userGuid, string password)
         {
-            return true;
+            var deleted = false;
+
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[DeleteUser]";
+                    cmd.Parameters.AddWithValue("@UserId", userGuid);
+                    cmd.Parameters.AddWithValue("@Password", password);
+                    int rows = cmd.ExecuteNonQuery();
+    
+                    deleted = rows > 0;                   
+                }
+            }
+
+            return deleted;
         }
 
-        public bool UpdateUser(User user)
+        public User UpdateUser(User user)
         {
-            return true;
+            var previousUserState = GetUser(user.UserId);
+
+            using (var transactionScope = new TransactionScope(_transactionScopeOption, _transactionOptions))
+            {
+                try
+                {
+                    using (var SqlConn = new SqlConnection(_enhabitConnString))
+                    {
+                        SqlConn.Open();
+                        using (var cmd = SqlConn.CreateCommand())
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = "[Enhabit].[UpdateUser]";
+                            cmd.Parameters.AddWithValue("@UserId", user.UserId);
+                            cmd.Parameters.AddWithValue("@Username", (user.Username != null ? user.Username : previousUserState.Username));
+                            cmd.Parameters.AddWithValue("@Password", (user.Password != null ? user.Password : previousUserState.Password));
+                            cmd.Parameters.AddWithValue("@Email", (user.Email != null ? user.Email : previousUserState.Email));
+                            cmd.Parameters.AddWithValue("@FirstName", (user.FirstName != null ? user.FirstName : previousUserState.FirstName));
+                            cmd.Parameters.AddWithValue("@LastName", (user.LastName != null ? user.LastName : previousUserState.LastName));
+                            cmd.Parameters.AddWithValue("@PhoneNumber", (user.PhoneNumber != null ? user.PhoneNumber : previousUserState.PhoneNumber));
+                            SqlDataReader reader = cmd.ExecuteReader();
+
+                            while (reader.HasRows && reader.Read())
+                            {
+                                user.Username = reader["Username"].ToString();
+                                user.FirstName = reader["FirstName"].ToString();
+                                user.LastName = reader["LastName"].ToString();
+                                user.Email = reader["Email"].ToString();
+                                user.PhoneNumber = reader["PhoneNumber"].ToString();
+                                user.AccountTypeId = (int)reader["AccountTypeId"];
+                            }
+                        }
+                    }
+
+                    transactionScope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(string.Format("UserRepository.CreateUser({0}) Exception: {1}", user.Username, ex.Message));
+                    if (ex.Message.Contains("UC_EnhabitUsername"))
+                    {
+                        throw new Exception(ErrorType.UsernameAlreadyExists.GetDescription());
+                    }
+                    else if (ex.Message.Contains("UC_EnhabitEmail"))
+                    {
+                        throw new Exception(ErrorType.EmailAlreadyExists.GetDescription());
+                    }
+                    else
+                    {
+                        throw new Exception(ErrorType.Unknown.GetDescription());
+                    }
+
+                }
+            }
+
+            return user;
         }
 
         public User GetUser(Guid userGuid)

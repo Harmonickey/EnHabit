@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace Enhabit.ViewModels
 {
@@ -9,6 +10,7 @@ namespace Enhabit.ViewModels
             Account = uvm;
             Listings = lvm;
             NavLinks = nvm;
+            CreateListingPictureGuid = new Guid();
         }
         
         public UserViewModel Account { get; set; }
@@ -20,5 +22,7 @@ namespace Enhabit.ViewModels
         public IEnumerable<UserViewModel> Landlords { get; set; }
 
         public IEnumerable<NavLinkViewModel> NavLinks { get; set; }
+
+        public Guid CreateListingPictureGuid { get; set; }
     }
 }

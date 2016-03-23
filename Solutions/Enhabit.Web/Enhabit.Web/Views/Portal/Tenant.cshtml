@@ -55,8 +55,8 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <button class='btn btn-primary btn-success' data-bind="click: Account.UpdateAccount">Update Account</button>
-                                <button class='btn btn-danger' data-bind="click: Account.DeleteAccount">Delete Account</button>
+                                <button class='btn btn-primary btn-success' data-bind="click: Account.UpdateAccount, enable: Account.UpdateAccountEnabled, text: Account.UpdateAccountText"></button>
+                                <button class='btn btn-danger' data-bind="click: Account.DeleteAccount, enable: Account.DeleteAccountEnabled, text: Account.DeleteAccountText">Delete Account</button>
                             </div>
                         </div>
                     </div> <!-- /widget-content -->

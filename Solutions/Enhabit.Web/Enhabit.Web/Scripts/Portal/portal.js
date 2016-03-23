@@ -42,16 +42,25 @@ var AccountTabViewModel = function (userViewModel)
     self.Account = new UserViewModel(userViewModel);
 };
 
-var PortalViewModel = function (userViewModel, listingViewModels, navLinkViewModel, landlords, universities, paymentViewModels)
+var PortalViewModel = function (portalViewModel)
 {
     var self = this;
+    
+    self.AccountTab = new AccountTabViewModel(portalViewModel.Account);
+    self.ListingTab = new ListingTabViewModel(portalViewModel.Listings);
+    self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
 
-    self.AccountTab = new AccountTabViewModel(userViewModel);
-    self.ListingTab = new ListingTabViewModel(listingViewModels);
-    self.PaymentTab = new PaymentTabViewModel(paymentViewModels);
+    self.CreateListingPictureGuid = portalViewModel.CreateListingPictureGuid;
+    self.CreateListingUserGuid = ko.observable();
+
+    self.Dropzones = {};
+    self.NumAdded = ko.observable(0);
+    self.NumUploaded = ko.observable(0);
+    self.Pictures = {};
+    self.AddedFiles = {};
 
     self.NavLinks = ko.computed(function () {
-        return ko.utils.arrayMap(navLinkViewModel, function (navLink) {
+        return ko.utils.arrayMap(portalViewModel.NavLinks, function (navLink) {
             return new NavLinkViewModel(navLink);
         });
     });
@@ -89,10 +98,10 @@ var PortalViewModel = function (userViewModel, listingViewModels, navLinkViewMod
         }
     };
 
-    self.Landlords = landlords;
-    self.Universities = universities;
+    self.Landlords = portalViewModel.Landlords;
+    self.Universities = portalViewModel.Universities;
 
-    self.CreateListing = new CreateListingViewModel(landlords, universities, self);
+    self.CreateListing = new CreateListingViewModel(self.Landlords, self.Universities, self);
 
     self.LogoutUser = function ()
     {
@@ -130,5 +139,85 @@ var PortalViewModel = function (userViewModel, listingViewModels, navLinkViewMod
             navLink.Selected(true);
         }
     });
+
+    self.CreateDropzone(key, element, existingPics)
+    {
+        self.Dropzones[key] = new Dropzone(element,
+        {
+            addRemoveLinks: true,
+            autoProcessQueue: false
+        });
+
+        var myDropzone = self.Dropzones[key];
+
+        myDropzone.on("success", function (file)
+        {
+            if (self.NumUploaded() == self.NumAdded() - 1)
+            {
+                self.NumUploaded(0);
+                self.NumAdded(0);
+                $(".dz-progress").remove();
+                self.ProcessListing();
+            }
+            else
+            {
+                self.NumUploaded(self.NumUploaded() + 1);
+                $(".dz-progress").remove();
+            }
+        });
+
+        myDropzone.on("addedfile", function (file) {
+            var oid = $(this.element).data("pic-id");
+            if (self.Pictures[oid] == null) {
+                self.Pictures[oid] = [];
+            }
+            var filename = (file.alreadyUploaded
+                            ? file.name
+                            : self.CreateListingPictureGuid + "_" + file.name);
+
+            self.Pictures[oid].push(filename);
+
+            if (!file.alreadyUploaded)
+            {
+                this.files[this.files.length - 1].serverFileName = filename;
+            }
+
+            self.AddedFiles[oid] = true;
+
+            self.NumAdded(self.NumAdded() + 1);
+        });
+
+        myDropzone.on("removedfile", function (file) {
+            var index = this.files.indexOf(file);
+
+            var oid = $(this.element).data("pic-id");
+            if (self.Pictures[oid] == null) {
+                self.Pictures[oid] = [];
+            }
+
+            self.Pictures[oid].splice(index, 1);
+
+            self.NumAdded(self.NumAdded() - 1);
+
+            if (self.NumAdded() < 0) {
+                self.AddedFiles[oid] = false;
+                self.NumAdded(0);
+            }
+        });
+
+        if (existingPics != null)
+        {
+            for (var i = 0; i < existingPics.length; i++)
+            {
+                var mockFile = { name: existingPics[i], alreadyUploaded: true };
+
+                myDropzone.emit("addedfile", mockFile);
+                self.NumAdded(self.NumAdded() - 1);
+                myDropzone.emit("complete", mockFile);
+            }
+        }
+    };
+
+    self.CreateDropzone("create", "#createListingModal form");
 };
 

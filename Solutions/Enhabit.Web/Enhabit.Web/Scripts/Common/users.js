@@ -11,6 +11,14 @@
     self.FirstName = ko.observable();
     self.LastName = ko.observable();
 
+    self.InitUser = function (user) {
+        self.Username(user ? user.Username : undefined);
+        self.Email(user ? user.Email : undefined);
+        self.PhoneNumber(user ? user.PhoneNumber : undefined);
+        self.FirstName(user ? user.FirstName : undefined);
+        self.LastName(user ? user.LastName : undefined);
+    };
+
     self.LoginEnabled = ko.observable(true);
     self.LoginError = ko.observable();
     self.LoginErrorVisible = ko.observable(false);
@@ -18,6 +26,12 @@
     self.CreateAccountEnabled = ko.observable(true);
     self.CreateAccountError = ko.observable();
     self.CreateAccountErrorVisible = ko.observable(false);
+
+    self.UpdateAccountEnabled = ko.observable(true);
+    self.UpdateAccountText = ko.observable("Update Account");
+
+    self.DeleteAccountEnabled = ko.observable(true);
+    self.DeleteAccountText = ko.observable("Delete Account");
 
     self.OpenRegisterModal = function () {
         CleanModalViewModel();
@@ -168,10 +182,114 @@
 
     self.UpdateAccount = function ()
     {
+        var data = ko.toJSON({
+            Username: self.Username(),
+            FirstName: self.FirstName(),
+            LastName: self.LastName(),
+            Email: self.Email(),
+            PhoneNumber: self.PhoneNumber()
+        });
 
+        $.ajax(
+        {
+            type: "POST",
+            url: "/User/Update",
+            data: data,
+            dataType: "json",
+            contentType: "application/json charset=utf-8",
+            beforeSend: function () {
+                self.UpdateAccountEnabled(false);
+                self.UpdateAccountText("Updating...");
+            },
+            success: function (res) {
+                try
+                {
+                    if (Contains(res, "Okay"))
+                    {
+                        self.InitUser(res);
+
+                        $.msgGrowl({ type: 'success', title: 'Success', text: "Successfully Updated Account", position: 'top-center' });
+                    }
+                    else
+                    {
+                        throw new Error("Problem Updating Account");
+                    }
+                }
+                catch (e)
+                {
+                    $.msgGrowl({ type: 'error', title: 'Error', text: e.message, position: 'top-center' });
+                }
+            },
+            error: function (res, err)
+            {
+                $.msgGrowl({ type: 'error', title: 'Error', text: res, position: 'top-center' });
+            },
+            complete: function ()
+            {
+                self.UpdateAccountEnabled(true);
+                self.UpdateAccountText("Update Account");
+            }
+        });
     };
 
-    self.DeleteAccount = function () {
+    self.DeleteAccount = function ()
+    {
+        //check if the user really wants to do so
+        $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", 
+        {
+            type    : "prompt",
+            inputs  : [
+              {type: "password", label: "Password:", required: true}
+            ],
+            buttons : [
+              {type: "submit", value: "OK"},
+              {type: "cancel", value: "Cancel"}
+            ]
+        }, function(password) 
+        {
+            var data = ko.toJSON({
+                Password: password,
+            });
 
+            $.ajax(
+            {
+                type: "POST",
+                url: "/User/Delete",
+                data: data,
+                dataType: "json",
+                contentType: "application/json charset=utf-8",
+                beforeSend: function () {
+                    self.DeleteAccountEnabled(false);
+                    self.DeleteAccountText("Deleting...");
+                },
+                success: function(res)
+                {
+                    try
+                    {
+                        if (res == true)
+                        {
+                            enhabitMapViewModel.Logout();
+                        }
+                        else
+                        {
+                            throw new Error(res);
+                        }
+                    }
+                    catch(e)
+                    {
+                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                    }
+                },
+                error: function(res, err)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+                },
+                complete: function()
+                {
+                    self.DeleteAccountEnabled(true);
+                    self.DeleteAccountText("Delete");
+                }
+            });
+        }
     };
 };

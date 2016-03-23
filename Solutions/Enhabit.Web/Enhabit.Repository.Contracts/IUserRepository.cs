@@ -15,8 +15,8 @@ namespace Enhabit.Repository.Contracts
 
         IEnumerable<User> GetAllUsers(AccountType accountType);
 
-        bool DeleteUser(User user);
+        bool DeleteUser(Guid userGuid, string password);
 
-        bool UpdateUser(User user);
+        User UpdateUser(User user);
     }
 }

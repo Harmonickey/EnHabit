@@ -30,6 +30,16 @@ namespace Enhabit.Presenter
             return Users.Create(_userRepo, user);
         }
 
+        public User UpdateUser(User user)
+        {
+            return Users.Update(_userRepo, user);
+        }
+
+        public bool DeleteUser(object userGuid, string password)
+        {
+            return Users.Delete(_userRepo, (Guid)userGuid, password);
+        }
+
         public IEnumerable<NavLinkViewModel> GetNavLinks(Guid userGuid, AccountType accountType)
         {
             var hasRental = Renters.UserHasRental(_renterRepo, userGuid);
