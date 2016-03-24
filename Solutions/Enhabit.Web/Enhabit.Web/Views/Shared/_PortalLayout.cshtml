@@ -49,8 +49,8 @@
                                 </a>
                             </li>
                             <!-- /ko -->
-                            <li class="menu-item scroll" data-bind="click: $root.Logout">
-                                <a style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
+                            <li class="menu-item scroll">
+                                <a id="logout-btn" style="cursor: pointer;" href="/User/Logout?isFromPortal=true"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                             </li>
                         </ul>
                     </li>
@@ -84,6 +84,7 @@
 
     <!-- All of our layout javascript files -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="~/Scripts/ThirdParty/jquery-migrate.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     @Scripts.Render("~/Portal/ThirdParty")
     <script src="~/Scripts/ThirdParty/pikaday.js"></script>

@@ -31,6 +31,7 @@ namespace Enhabit.Web
                         "~/Scripts/ThirdParty/jquery.geocomplete.js",
                         "~/Scripts/ThirdParty/jquery.autoNumeric.js",
                         "~/Scripts/ThirdParty/msgGrowl.js",
+                        "~/Scripts/ThirdParty/jquery.msgbox.js",
                         "~/Scripts/ThirdParty/dropzone.js",
                         "~/Scripts/ThirdParty/knockout-3.4.0.js",
                         "~/Scripts/ThirdParty/knockout-2.0.3.validation.js"));
@@ -75,6 +76,7 @@ namespace Enhabit.Web
                         "~/Content/ThirdParty/dropzone.css",
                         "~/Content/ThirdParty/pikaday.css",
                         "~/Content/ThirdParty/msgGrowl.css",
+                        "~/Content/ThirdParty/jquery.msgbox.css",
                         "~/Content/ThirdParty/base-admin-3.css",
                         "~/Content/ThirdParty/base-admin-3-responseive.css",
                         "~/Content/ThirdParty/dashboard.css"));

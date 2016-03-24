@@ -107,6 +107,18 @@
     <Content Include="Content\ThirdParty\Images\msgGrowl_success.png" />
     <Content Include="Content\ThirdParty\Images\msgGrowl_warning.png" />
     <Content Include="Content\ThirdParty\Images\new_arrow.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\alert-32.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\alert-48.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\error-32.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\error-48.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\info-32.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\info-48.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\question-32.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\question-48.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\question-dark-32.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\question-dark-48.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\success-32.png" />
+    <Content Include="Content\ThirdParty\Images\Notifications\success-48.png" />
     <Content Include="Content\ThirdParty\Images\question.png" />
     <Content Include="Content\ThirdParty\Images\tiny_grid.png" />
     <Content Include="Content\ThirdParty\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
@@ -136,6 +148,7 @@
     <Content Include="Content\ThirdParty\Images\ui-icons_ef8c08_256x240.png" />
     <Content Include="Content\ThirdParty\Images\ui-icons_ffd27a_256x240.png" />
     <Content Include="Content\ThirdParty\Images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\ThirdParty\jquery.msgbox.css" />
     <Content Include="Content\ThirdParty\msgGrowl.css" />
     <Content Include="Content\ThirdParty\owl.carousel.css" />
     <Content Include="Content\ThirdParty\owl.theme.css" />
@@ -199,6 +212,7 @@
     <Content Include="Scripts\ThirdParty\detectmobilebrowser.js" />
     <Content Include="Scripts\ThirdParty\dropzone.js" />
     <Content Include="Scripts\ThirdParty\jquery-1.11.2.js" />
+    <Content Include="Scripts\ThirdParty\jquery-migrate.min.js" />
     <Content Include="Scripts\ThirdParty\jquery-ui-1.10.0.custom.js" />
     <Content Include="Scripts\ThirdParty\jquery.autoNumeric.js" />
     <Content Include="Scripts\ThirdParty\jquery.easing.1.3.js" />

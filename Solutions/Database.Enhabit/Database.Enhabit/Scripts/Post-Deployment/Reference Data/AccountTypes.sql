@@ -12,9 +12,8 @@ Post-Deployment Script Template
 
 MERGE INTO [Enhabit].[AccountTypes] AS TARGET
 USING (VALUES 
-	(0, 'Admin'),
-	(1, 'Landlord'),
-	(2, 'Tenant'))
+	(0, 'Landlord'),
+	(1, 'Tenant'))
 AS SOURCE([AccountTypeId], [AccountType])
 ON SOURCE.[AccountTypeId] = TARGET.[AccountTypeId]
 WHEN NOT MATCHED BY TARGET THEN

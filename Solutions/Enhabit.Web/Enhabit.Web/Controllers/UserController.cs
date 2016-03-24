@@ -5,16 +5,19 @@ using Enhabit.Models;
 using System;
 using Enhabit.Models.Enums;
 using System.Linq;
+using log4net;
 
 namespace Enhabit.Web.Controllers
 {
     public class UserController : Controller
     {
         private readonly UserPresenter Presenter;
+        private readonly ILog _logger;
 
-        public UserController(UserPresenter presenter)
+        public UserController(UserPresenter presenter, ILog logger)
         {
             Presenter = presenter;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -36,11 +39,18 @@ namespace Enhabit.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Logout(User user)
+        public JsonResult Logout()
+        {
+            Session.Clear();
+            
+            return Json(true, JsonRequestBehavior.DenyGet);
+        }
+
+        public ActionResult Logout(string isFromPortal)
         {
             Session.Clear();
 
-            return Json(true, JsonRequestBehavior.DenyGet);
+            return RedirectToAction("Index", "Enhabit");
         }
 
         [HttpPost]
@@ -55,15 +65,19 @@ namespace Enhabit.Web.Controllers
                 if (result != Guid.Empty)
                 {
                     Session["UserGuid"] = result; // set the session with our user guid
-                    return Json(result, JsonRequestBehavior.DenyGet);
+
+                    var navLinks = Presenter.GetNavLinks(result, AccountType.Tenant);
+                    return Json(new { NavLinks = navLinks}, JsonRequestBehavior.DenyGet);
                 }
+
+                return Json(false, JsonRequestBehavior.DenyGet);
             }
             catch(Exception ex)
             {
-                return Json(ex.Message, JsonRequestBehavior.DenyGet);
+                _logger.Error("UserController.Create", ex);
+
+                return Json(false, JsonRequestBehavior.DenyGet);
             }
-            
-            return Json(false, JsonRequestBehavior.DenyGet);
         }
 
         [HttpPost]
@@ -79,7 +93,9 @@ namespace Enhabit.Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex.Message, JsonRequestBehavior.DenyGet);
+                _logger.Error("UserController.Update", ex);
+
+                return Json(false, JsonRequestBehavior.DenyGet);
             }
         }
 
@@ -94,7 +110,9 @@ namespace Enhabit.Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex.Message, JsonRequestBehavior.DenyGet);
+                _logger.Error("UserController.Delete", ex);
+
+                return Json(false, JsonRequestBehavior.DenyGet);
             }
         }
     }

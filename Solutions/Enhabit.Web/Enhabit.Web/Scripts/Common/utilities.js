@@ -84,5 +84,49 @@ function LoadModal(event, which, enterDefault, btnText) {
 
 }
 
+function SetBootstrapSwitches(rowId)
+{
+    $("#" + rowId + " .yesno").bootstrapSwitch({ onText: "Yes", offText: "No" });
+    $("#" + rowId + " .leasetype").bootstrapSwitch({ onText: "Rental", offText: "Sublet" });
+    $("#" + rowId + " .buildingtype").bootstrapSwitch({ onText: "Apartment", offText: "House" });
+}
+
+function SetGeocompleteTextBox(rowId)
+{
+    var row = $("#" + rowId + " div input[type='text']");
+    var hidden = $("#" + rowId + " input[type='hidden']");
+
+    $(row[0]).geocomplete()
+        .bind("geocode:result", function (event, result)
+        {
+            var keys = Object.keys(result.geometry.location);
+            $(hidden[0]).val(result.geometry.location[keys[0]]);
+            $(hidden[1]).val(result.geometry.location[keys[1]]);
+            $(hidden[2]).val($(row[0]).val());
+        });
+}
+
+function SetTextBoxWithAutoNumeric(rowId)
+{
+    var row = $("#" + rowId + " input[type='text']");
+
+    $(row[2]).autoNumeric('init',
+    {
+        aSign: '$ ',
+        vMax: '999999.99',
+        wEmpty: 'sign',
+        lZero: 'deny'
+    });
+}
+
+function SetDatePickerTextBox(rowId)
+{
+    $($("#" + rowId + " input[type='text']")[3]).pikaday(
+    {
+        minDate: new Date(),  //today
+        setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[2]).val()) //current
+    });
+}
+
 
 

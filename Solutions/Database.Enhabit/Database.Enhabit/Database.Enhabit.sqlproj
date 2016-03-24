@@ -98,6 +98,8 @@
     <Build Include="Programmability\Stored Procedures\GetUserRenters.sql" />
     <Build Include="Programmability\Stored Procedures\GetUserListings.sql" />
     <Build Include="Programmability\Types\User-Defined Table Types\TT_PictureIds.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateUser.sql" />
+    <Build Include="Programmability\Stored Procedures\DeleteUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

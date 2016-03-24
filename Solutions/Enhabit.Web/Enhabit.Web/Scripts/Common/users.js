@@ -1,4 +1,4 @@
-﻿var UserViewModel = function (user, enhabitMapViewModel)
+﻿var UserViewModel = function (user, parentViewModel)
 {
     var self = this;
 
@@ -35,7 +35,7 @@
 
     self.OpenRegisterModal = function () {
         CleanModalViewModel();
-        enhabitMapViewModel.OpenRegisterModal();
+        parentViewModel.OpenRegisterModal();
     };
 
     self.LoginUser = function ()
@@ -65,9 +65,9 @@
                     {
                         $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
 
-                        enhabitMapViewModel.NavLinkData(res.NavLinks);
-                        enhabitMapViewModel.ShowLoginNav(true);
-                        enhabitMapViewModel.UserLoggedIn(true);
+                        parentViewModel.NavLinkData(res.NavLinks);
+                        parentViewModel.ShowLoginNav(true);
+                        parentViewModel.UserLoggedIn(true);
                     }
                     else
                     {
@@ -145,16 +145,17 @@
                 {
                     if (res != false)
                     {
-                        enhabitMapViewModel.ShowLoginNav(true);
-                        enhabitMapViewModel.UserLoggedIn(true);
+                        parentViewModel.ShowLoginNav(true);
+                        parentViewModel.UserLoggedIn(true);
+                        parentViewModel.NavLinkData(res.NavLinks);
 
                         $.msgGrowl({ type: 'success', title: 'Success', text: "User Created Successfully!", position: 'top-center' });
                         $.msgGrowl({ type: 'success', title: 'Success', text: "User Logged In Successfully!", position: 'top-center' });
 
                         // session should be set, so the user will be attached to the listing
-                        if (enhabitMapViewModel.PendingListingData() != undefined)
+                        if (parentViewModel.PendingListingData() != undefined)
                         {
-                            enhabitMapViewModel.CreateListing(res);
+                            parentViewModel.CreateListing(res);
                         }
                     }
                     else
@@ -204,7 +205,7 @@
             success: function (res) {
                 try
                 {
-                    if (Contains(res, "Okay"))
+                    if (res != false)
                     {
                         self.InitUser(res);
 
@@ -235,61 +236,67 @@
     self.DeleteAccount = function ()
     {
         //check if the user really wants to do so
-        $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>", 
+        $.msgbox("<p>Are you sure you want to delete your account?<br>Please Enter your Password to Confirm.</p>",
         {
-            type    : "prompt",
-            inputs  : [
-              {type: "password", label: "Password:", required: true}
+            type: "prompt",
+            inputs: [
+              { type: "password", label: "Password:", required: true }
             ],
-            buttons : [
-              {type: "submit", value: "OK"},
-              {type: "cancel", value: "Cancel"}
+            buttons: [
+              { type: "submit", value: "OK" },
+              { type: "cancel", value: "Cancel" }
             ]
-        }, function(password) 
+        }, function (password)
         {
-            var data = ko.toJSON({
-                Password: password,
-            });
-
-            $.ajax(
+            if (password != false)
             {
-                type: "POST",
-                url: "/User/Delete",
-                data: data,
-                dataType: "json",
-                contentType: "application/json charset=utf-8",
-                beforeSend: function () {
-                    self.DeleteAccountEnabled(false);
-                    self.DeleteAccountText("Deleting...");
-                },
-                success: function(res)
+                var data = ko.toJSON({
+                    Password: password
+                });
+
+                $.ajax(
                 {
-                    try
+                    type: "POST",
+                    url: "/User/Delete",
+                    data: data,
+                    dataType: "json",
+                    contentType: "application/json charset=utf-8",
+                    beforeSend: function ()
                     {
-                        if (res == true)
-                        {
-                            enhabitMapViewModel.Logout();
-                        }
-                        else
-                        {
-                            throw new Error(res);
-                        }
-                    }
-                    catch(e)
+                        self.DeleteAccountEnabled(false);
+                        self.DeleteAccountText("Deleting...");
+                    },
+                    success: function (res)
                     {
-                        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                        try
+                        {
+                            if (res == true)
+                            {
+                                window.location = $("#logout-btn").attr("href");
+                            }
+                            else
+                            {
+                                throw new Error(res);
+                            }
+                        }
+                        catch (e)
+                        {
+                            $.msgGrowl({ type: 'error', title: 'Error', text: e.message, position: 'top-center' });
+                        }
+                    },
+                    error: function (res, err)
+                    {
+                        $.msgGrowl({ type: 'error', title: 'Error', text: res, position: 'top-center' });
+                    },
+                    complete: function ()
+                    {
+                        self.DeleteAccountEnabled(true);
+                        self.DeleteAccountText("Delete Account");
                     }
-                },
-                error: function(res, err)
-                {
-                    $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
-                },
-                complete: function()
-                {
-                    self.DeleteAccountEnabled(true);
-                    self.DeleteAccountText("Delete");
-                }
-            });
-        }
+                });
+            }
+        });
     };
+
+    self.InitUser(user);
 };

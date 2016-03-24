@@ -1,4 +1,4 @@
-﻿var ListingTabViewModel = function(listingViewModels)
+﻿var ListingTabViewModel = function(listingViewModels, parentViewModel)
 {
     var self = this;
 
@@ -11,6 +11,16 @@
     self.ShowCreateListing = ko.observable(true);
     self.ShowUpdateAccountMessage = ko.observable(false);
     self.ShowListingMessage = ko.observable(true);
+
+    self.AfterListingRender = function (element, index, data)
+    {
+        parentViewModel.CreateDropzone(data.Id, "[id='" + data.Id + " form]", data.Images);
+
+        SetGeocompleteTextBox(data.Id);
+        SetTextBoxWithAutoNumeric(data.Id);
+        SetDatePickerTextBox(data.Id);
+        SetBootstrapSwitches(data.Id);
+    };
 };
 
 var PaymentTabViewModel = function (paymentViewModels)
@@ -33,13 +43,13 @@ var PaymentTabViewModel = function (paymentViewModels)
     }));
 };
 
-var AccountTabViewModel = function (userViewModel)
+var AccountTabViewModel = function (userViewModel, parentViewModel)
 {
     var self = this;
 
     self.AccountActive = ko.observable(false);
 
-    self.Account = new UserViewModel(userViewModel);
+    self.Account = new UserViewModel(userViewModel, parentViewModel);
 };
 
 var PortalViewModel = function (portalViewModel)
@@ -47,11 +57,14 @@ var PortalViewModel = function (portalViewModel)
     var self = this;
     
     self.AccountTab = new AccountTabViewModel(portalViewModel.Account);
-    self.ListingTab = new ListingTabViewModel(portalViewModel.Listings);
+    self.ListingTab = new ListingTabViewModel(portalViewModel.Listings, self);
     self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
 
     self.CreateListingPictureGuid = portalViewModel.CreateListingPictureGuid;
     self.CreateListingUserGuid = ko.observable();
+
+    self.CreateListingButtonEnabled = ko.observable(true);
+    self.CreateListingButtonText = ko.observable("Create Listing");
 
     self.Dropzones = {};
     self.NumAdded = ko.observable(0);
@@ -103,31 +116,6 @@ var PortalViewModel = function (portalViewModel)
 
     self.CreateListing = new CreateListingViewModel(self.Landlords, self.Universities, self);
 
-    self.LogoutUser = function ()
-    {
-        $.ajax(
-        {
-            type: "POST",
-            url: "/User/Logout",
-            success: function (res)
-            {
-                if (res == true)
-                {
-                    $.msgGrowl({ type: 'warning', title: 'Warning', text: "User Logged Out Successfully.", position: 'top-center' });
-                    self.UserLoggedIn(false);
-                }
-                else
-                {
-                    $.msgGrowl({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'top-center' });
-                }
-            },
-            error: function ()
-            {
-                $.msgGrowl({ type: 'error', title: 'Error', text: "Problem Logging Out", position: 'top-center' });
-            }
-        });
-    };
-
     self.InitHash = location.hash.replace("#", "");
 
     self.TabActive(self.InitHash);
@@ -140,7 +128,7 @@ var PortalViewModel = function (portalViewModel)
         }
     });
 
-    self.CreateDropzone(key, element, existingPics)
+    self.CreateDropzone = function(key, element, existingPics)
     {
         self.Dropzones[key] = new Dropzone(element,
         {
@@ -215,6 +203,127 @@ var PortalViewModel = function (portalViewModel)
                 self.NumAdded(self.NumAdded() - 1);
                 myDropzone.emit("complete", mockFile);
             }
+        }
+    };
+
+    self.ProcessListing = function ()
+    {
+        if (self.PendingListingData() == undefined && self.PendingUpdateListingData() == undefined)
+        {
+            return;
+        }
+
+        if (self.PendingListingData() != undefined)
+        {
+            self.PendingListingData().PicturesId = self.CreateListingPictureGuid;
+            self.PendingListingData().UserId = self.CreateListingUserGuid();
+
+            var data = ko.toJSON(self.PendingListingData());
+
+            $.ajax(
+            {
+                type: "POST",
+                url: "/Listing/Create",
+                data: data,
+                dataType: "json",
+                contentType: "application/json charset=utf-8",
+                beforeSend: function()
+                {
+                    self.CreateListingButtonEnabled(false);
+                    self.CreateListingButtonText("Creating...");
+                },
+                success: function (res)
+                {
+                    try
+                    {
+                        if (res != false)
+                        {
+                            throw new Error("Unable to Create Listing");
+                        }
+                        else
+                        {
+                            var listing = new ListingViewModel(res);
+
+                            self.ListingTab.Listings.push(listing);
+
+                            $("#createListingModal").modal('hide');
+
+                            self.NumUploaded(0);
+                            self.PendingListingData(undefined);
+                            self.ListingTab.ShowCreateListing(false);
+                            self.ListingTab.ShowListingMessage(true);
+
+                            $.msgGrowl({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center' });
+                        }
+                    }
+                    catch (e)
+                    {
+                        $.msgGrowl({ type: 'error', title: 'Error', text: e.message, position: 'top-center' });
+                    }
+                },
+                error: function (res, err)
+                {
+                    $.msgGrowl({ type: 'error', title: 'Error', text: res, position: 'top-center' });
+                },
+                complete: function ()
+                {
+                    self.CreateListingButtonEnabled(true);
+                    self.CreateListingButtonText("Create Listing");
+
+                    self.Dropzones["create"].destroy();
+
+                    self.CreateDropzone("create", "#modal-content-listing form");
+                }
+            });
+        }
+        else if (self.PendingUpdateListingData() != undefined)
+        {
+            $.ajax(
+            {
+                type: "POST",
+                url: "/Listing/Create",
+                data: data,
+                dataType: "json",
+                contentType: "application/json charset=utf-8",
+                beforeSend: function()
+                {
+                    self.PendingUpdateListingData.UpdateListingButtonEnabled(false);
+                    self.PendingUpdateListingData.UpdateListingButtonText("Updating...");
+                },
+                success: function (res)
+                {
+                    try
+                    {
+                        if (Contains(res, "Okay"))
+                        {
+                            // update the listing itself
+
+                            // then release the pending data
+                            self.PendingUpdateListingData(undefined);
+                        }
+                        else
+                        {
+                            throw new Error("Problem Updating Listing");
+                        }
+                    }
+                    catch (e)
+                    {
+                        $.msgGrowl({ type: 'error', title: 'Error', text: e.message, position: 'top-center' });
+                    }
+                },
+                error: function (res, err)
+                {
+                    $.msgGrowl({ type: 'error', title: 'Error', text: res, position: 'top-center' });
+                },
+                complete: function ()
+                {
+                    self.PendingUpdateListingData.UpdateListingButtonEnabled(true);
+                    self.PendingUpdateListingData.UpdateListingButtonText("Update");
+                    numUploaded = 0;
+                    addedFiles[id] = false;
+                    pendingUpdateData = null;
+                }
+            });
         }
     };
 

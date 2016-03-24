@@ -869,34 +869,34 @@ h6 {
   padding-left: 90px;
 }
 .jquery-msgbox-alert {
-  background: url(images/notifications/alert-48.png) no-repeat 21px 20px;
+  background: url(Images/Notifications/alert-48.png) no-repeat 21px 20px;
 }
 .jquery-msgbox-info {
-  background: url(images/notifications/info-48.png) no-repeat 21px 20px;
+  background: url(Images/Notifications/info-48.png) no-repeat 21px 20px;
 }
 .jquery-msgbox-error {
-  background: url(images/notifications/error-48.png) no-repeat 21px 20px;
+  background: url(Images/Notifications/error-48.png) no-repeat 21px 20px;
 }
 .jquery-msgbox-prompt {
-  background: url(images/notifications/question-dark-48.png) no-repeat 20px 20px;
+  background: url(Images/Notifications/question-dark-48.png) no-repeat 20px 20px;
 }
 .jquery-msgbox-confirm {
-  background: url(images/notifications/question-48.png) no-repeat 20px 20px;
+  background: url(Images/Notifications/question-48.png) no-repeat 20px 20px;
 }
 /*------------------------------------------------------------------
 [ Growl / .msgGrowl ]
 */
 .msgGrowl.success .msgGrowl-content {
-  background: url(images/notifications/success-32.png) no-repeat 7px 13px;
+  background: url(Images/Notifications/success-32.png) no-repeat 7px 13px;
 }
 .msgGrowl.error .msgGrowl-content {
-  background: url(images/notifications/error-32.png) no-repeat 7px 13px;
+  background: url(Images/Notifications/error-32.png) no-repeat 7px 13px;
 }
 .msgGrowl.info .msgGrowl-content {
-  background: url(images/notifications/info-32.png) no-repeat 7px 13px;
+  background: url(Images/Notifications/info-32.png) no-repeat 7px 13px;
 }
 .msgGrowl.warning .msgGrowl-content {
-  background: url(images/notifications/alert-32.png) no-repeat 7px 13px;
+  background: url(Images/Notifications/alert-32.png) no-repeat 7px 13px;
 }
 /*------------------------------------------------------------------
 [ Back to Top / #back-to-top ]

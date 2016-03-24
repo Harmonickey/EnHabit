@@ -88,7 +88,7 @@
                     <div class="widget-content listings">
                         <label class="listings-message" data-bind="visible: ShowListingMessage" style="display: none;">Click the listing below to update and see more details</label>
                         <!-- all the listings go here -->
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: Listings">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: { data: Listings, afterRender: AfterListingRender }">
                             <div class='panel panel-default'>
                                 <div class='panel-heading' role='tab'>
                                     <h4 class='panel-title'>
@@ -159,27 +159,27 @@
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Animals</label><input type='checkbox' data-bind="value: Animals" data-size='mini' />
+                                                <label>Animals</label><input class='yesno' type='checkbox' data-bind="value: Animals" data-size='mini' />
                                             </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Laundry</label><input type='checkbox' data-bind="value: Laundry" data-size='mini' />
+                                                <label>Laundry</label><input class='yesno' type='checkbox' data-bind="value: Laundry" data-size='mini' />
                                             </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Parking</label><input type='checkbox' data-bind="value: Parking" data-size='mini' />
+                                                <label>Parking</label><input  class='yesno' type='checkbox' data-bind="value: Parking" data-size='mini' />
                                             </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>AC</label><input type='checkbox' data-bind="value: AirConditioning" data-size='mini' />
+                                                <label>AC</label><input class='yesno' type='checkbox' data-bind="value: AirConditioning" data-size='mini' />
                                             </div>
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Is Rented</label><input type='checkbox' data-bind="value: IsRented" data-size='mini' />
+                                                <label>Is Rented</label><input class='yesno' type='checkbox' data-bind="value: IsRented" data-size='mini' />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Lease Type</label><input type='checkbox' data-size='mini' data-bind="value: LeaseType" />
+                                                <label>Lease Type</label><input class='leasType' type='checkbox' data-size='mini' data-bind="value: LeaseType" />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Building Type</label><input type='checkbox' data-size='mini' data-bind="value: BuildingType" />    
+                                                <label>Building Type</label><input class='buildingType' type='checkbox' data-size='mini' data-bind="value: BuildingType" />    
                                             </div>
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
