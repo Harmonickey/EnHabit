@@ -47,11 +47,12 @@ namespace Enhabit.Presenter
                             () => _landlords = Users.GetLandlords(_userRepo),
                             () => _universities = Universities.GetAll(_universityRepo),
                             () => _hasRental = Renters.UserHasRental(_renterRepo, userGuid));
-            
+
             return new TenantViewModel(_user, _listings, NavLinks.Tenant(_hasRental), _payments, _hasRental)
             {
                 Universities = _universities,
-                Landlords = _landlords
+                Landlords = _landlords,
+                CreateListingPictureGuid = Guid.NewGuid()
             };
         }
 

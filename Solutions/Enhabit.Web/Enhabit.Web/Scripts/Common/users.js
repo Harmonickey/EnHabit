@@ -2,6 +2,7 @@
 {
     var self = this;
 
+    self.Id = ko.observable();
     self.Username = ko.observable();
     self.Password = ko.observable();
     self.NewPassword = ko.observable();
@@ -11,7 +12,9 @@
     self.FirstName = ko.observable();
     self.LastName = ko.observable();
 
-    self.InitUser = function (user) {
+    self.InitUser = function (user)
+    {
+        self.Id(user ? user.UserId : undefined);
         self.Username(user ? user.Username : undefined);
         self.Email(user ? user.Email : undefined);
         self.PhoneNumber(user ? user.PhoneNumber : undefined);

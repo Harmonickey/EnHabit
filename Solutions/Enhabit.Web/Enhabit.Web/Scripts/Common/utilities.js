@@ -1,28 +1,6 @@
-﻿function InitSpecialFields(selector) {
+﻿function InitSpecialFields(selector)
+{
     var listingModal = $(selector + " input");
-
-    $(listingModal[0]).geocomplete()
-        .bind("geocode:result", function (event, result) {
-            var hiddenFields = $(selector + " input[type='hidden']");
-            var keys = Object.keys(result.geometry.location);
-            $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
-            $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
-            $(hiddenFields[2]).val($(listingModal[0]).val());
-        });
-
-    $(selector + " input[type='checkbox']").not(".type-content input").bootstrapSwitch({ onText: "Yes", offText: "No" });
-    $($(selector + " .type-content input")[0]).bootstrapSwitch({ onText: "Rental", offText: "Sublet", 'state': true, 'setState': true });
-    $($(selector + " .type-content input")[0]).prop("checked", true);
-    $($(selector + " .type-content input")[1]).bootstrapSwitch({ onText: "Apartment", offText: "House", 'state': true, 'setState': true });
-    $($(selector + " .type-content input")[1]).prop("checked", true);
-
-    $(listingModal[2]).autoNumeric('init',
-    {
-        aSign: '$ ',
-        vMax: '999999.99',
-        wEmpty: 'sign',
-        lZero: 'deny'
-    });
 
     $(listingModal[3]).pikaday(
     {
@@ -82,41 +60,6 @@ function LoadModal(event, which, enterDefault, btnText) {
         $(".Memo").attr("placeholder", nextMonth);
     }
 
-}
-
-function SetBootstrapSwitches(rowId)
-{
-    $("#" + rowId + " .yesno").bootstrapSwitch({ onText: "Yes", offText: "No" });
-    $("#" + rowId + " .leasetype").bootstrapSwitch({ onText: "Rental", offText: "Sublet" });
-    $("#" + rowId + " .buildingtype").bootstrapSwitch({ onText: "Apartment", offText: "House" });
-}
-
-function SetGeocompleteTextBox(rowId)
-{
-    var row = $("#" + rowId + " div input[type='text']");
-    var hidden = $("#" + rowId + " input[type='hidden']");
-
-    $(row[0]).geocomplete()
-        .bind("geocode:result", function (event, result)
-        {
-            var keys = Object.keys(result.geometry.location);
-            $(hidden[0]).val(result.geometry.location[keys[0]]);
-            $(hidden[1]).val(result.geometry.location[keys[1]]);
-            $(hidden[2]).val($(row[0]).val());
-        });
-}
-
-function SetTextBoxWithAutoNumeric(rowId)
-{
-    var row = $("#" + rowId + " input[type='text']");
-
-    $(row[2]).autoNumeric('init',
-    {
-        aSign: '$ ',
-        vMax: '999999.99',
-        wEmpty: 'sign',
-        lZero: 'deny'
-    });
 }
 
 function SetDatePickerTextBox(rowId)

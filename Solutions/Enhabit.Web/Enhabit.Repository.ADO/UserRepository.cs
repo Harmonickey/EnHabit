@@ -221,6 +221,8 @@ namespace Enhabit.Repository.ADO
                 }
             }
 
+            user.UserId = userGuid;
+
             return user;
         }
 

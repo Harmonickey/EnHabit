@@ -16,10 +16,7 @@
     {
         parentViewModel.CreateDropzone(data.Id, "[id='" + data.Id + " form]", data.Images);
 
-        SetGeocompleteTextBox(data.Id);
-        SetTextBoxWithAutoNumeric(data.Id);
         SetDatePickerTextBox(data.Id);
-        SetBootstrapSwitches(data.Id);
     };
 };
 
@@ -61,7 +58,7 @@ var PortalViewModel = function (portalViewModel)
     self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
 
     self.CreateListingPictureGuid = portalViewModel.CreateListingPictureGuid;
-    self.CreateListingUserGuid = ko.observable();
+    self.CreateListingUserGuid = self.AccountTab.Account.Id();
 
     self.CreateListingButtonEnabled = ko.observable(true);
     self.CreateListingButtonText = ko.observable("Create Listing");
@@ -71,6 +68,20 @@ var PortalViewModel = function (portalViewModel)
     self.NumUploaded = ko.observable(0);
     self.Pictures = {};
     self.AddedFiles = {};
+
+    self.Landlords = portalViewModel.Landlords;
+    self.Universities = portalViewModel.Universities;
+
+    self.CreateListing = new CreateListingViewModel(self.Landlords, self.Universities, self);
+
+    if (location.hash == "")
+    {
+        location.hash = "#Listings";
+    }
+
+    self.InitHash = location.hash.replace("#", "");
+
+    /****** Methods ******/
 
     self.NavLinks = ko.computed(function () {
         return ko.utils.arrayMap(portalViewModel.NavLinks, function (navLink) {
@@ -110,23 +121,6 @@ var PortalViewModel = function (portalViewModel)
                 break;
         }
     };
-
-    self.Landlords = portalViewModel.Landlords;
-    self.Universities = portalViewModel.Universities;
-
-    self.CreateListing = new CreateListingViewModel(self.Landlords, self.Universities, self);
-
-    self.InitHash = location.hash.replace("#", "");
-
-    self.TabActive(self.InitHash);
-
-    $.each(self.NavLinks(), function (index, navLink) {
-        var tab = navLink.LinkHref.split("#")[1];
-        if (tab == self.InitHash)
-        {
-            navLink.Selected(true);
-        }
-    });
 
     self.CreateDropzone = function(key, element, existingPics)
     {
@@ -294,7 +288,7 @@ var PortalViewModel = function (portalViewModel)
                 {
                     try
                     {
-                        if (Contains(res, "Okay"))
+                        if (res == true)
                         {
                             // update the listing itself
 
@@ -326,6 +320,17 @@ var PortalViewModel = function (portalViewModel)
             });
         }
     };
+
+    /****** Initialization Calls ******/
+
+    self.TabActive(self.InitHash);
+
+    $.each(self.NavLinks(), function (index, navLink) {
+        var tab = navLink.LinkHref.split("#")[1];
+        if (tab == self.InitHash) {
+            navLink.Selected(true);
+        }
+    });
 
     self.CreateDropzone("create", "#createListingModal form");
 };
