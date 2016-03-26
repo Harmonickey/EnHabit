@@ -67,10 +67,15 @@ function GetRenter(paykey)
                     else
                     {
                         var oid = data._id.$oid;
+<<<<<<< HEAD
                             
                         $("#payment").append(CreatePaymentView(oid, data, paykey));
                        
                         var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+=======
+                         
+                        GetPayKey(oid, data);
+>>>>>>> 014529f... 107 better flow
                     }                       
                 }
             }
@@ -991,17 +996,8 @@ function DeleteAccount()
     });
 }
 
-function GetPayKey()
+function GetPayKey(oid, data)
 {
-    var rent = $(".rent").text().replace("$", "");
-    var landlordEmail = $(".landlordEmail").text();
-    
-    var data = 
-    {
-        "Rent": rent,
-        "LandlordEmail": landlordEmail
-    };
-    
     $.ajax(
     {
         type: "POST",
@@ -1021,17 +1017,25 @@ function GetPayKey()
         {
             try
             {
-                var data = JSON.parse(res);
+                var payResponse = JSON.parse(res);
                 
-                if (data["error"])
+                if (payResponse["error"])
                 {
                    throw Error("Unable to Process Payment"); 
                 }
                 else
                 {
-                    var paykey = data["payKey"];
+                    var paykey = payResponse["payKey"];
                     
+<<<<<<< HEAD
                     GetRenter(paykey);
+=======
+                    $("#payment").append(CreatePaymentView(oid, data));
+                     
+                    $("#paykey").val(paykey);
+                    
+                    var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+>>>>>>> 014529f... 107 better flow
                 }
             }
             catch(e)
