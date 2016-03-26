@@ -281,7 +281,6 @@
 .Address, 
 .Bedrooms,
 .Bathrooms, 
-.Rent,
 .Unit,
 .Memo,
 .LandlordEmail,
@@ -290,6 +289,12 @@
 	text-align: center;
 	width: 50% !important;
 	margin: 0 auto;
+}
+
+.Rent
+{
+    text-align: center;
+    padding-right: 45px;
 }
 
 .Animals,

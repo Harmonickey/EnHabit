@@ -299,13 +299,13 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="content-to-populate-in-modal" id="modal-content-payment">
                 <h1>Pay Rent Now</h1>
                 <label class="required">First Name: </label><input type="text" class="form-control FirstName" />
-                <label class="required">Last Name: </label><input type="password" class="form-control LastName" />
+                <label class="required">Last Name: </label><input type="text" class="form-control LastName" />
                 <label class="required">Address: </label><input type="text" class="form-control Address" autocomplete="false" />
                 <label>Unit: </label><input type="text" class="form-control Unit" placeholder="Ex: 2E"/>
                 <label class="required">Rent Amount: </label>
                     <div class="input-group AmountWrapper">
                         <span class="input-group-addon">$</span>
-                        <input type="text" class="form-control Amount" placeholder="Ex: 500" />
+                        <input type="text" class="form-control Rent" placeholder="Ex: 500" />
                     </div>
                 <label>Payment Memo: </label><input type="text" class="form-control Memo" />
                 <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
@@ -441,7 +441,9 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <script src="Libraries/Javascript/pikaday.js"></script>
         <script src="Libraries/Javascript/pikaday.jquery.js"></script>
         <!-- fancy scrollbars -->
-        <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>       
+        <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>  
+        <!-- PayPal -->
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>        
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>
