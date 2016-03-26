@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 <<<<<<< HEAD
  
@@ -343,3 +344,11 @@ ga('send', 'pageview');
   </body>
 </html>
 >>>>>>> a155d99... 107 endpoints
+=======
+<!DOCTYPE html>
+<html lang="en"> 
+   <script type="text/javascript">
+    window.top.location = "/tenant/payments?result=success"
+   </script>
+</html>
+>>>>>>> 83f6113... 117 return for ruby

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en"> 
    <script type="text/javascript">
@@ -315,4 +316,11 @@ ga('send', 'pageview');
 </script>
   </body>
 >>>>>>> a155d99... 107 endpoints
+=======
+<!DOCTYPE html>
+<html lang="en"> 
+   <script type="text/javascript">
+    window.top.location = "/tenant/payments?result=cancel"
+   </script>
+>>>>>>> 83f6113... 117 return for ruby
 </html>

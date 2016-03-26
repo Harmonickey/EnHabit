@@ -164,11 +164,16 @@ def GetApplicantData(applicantId)
             applicantData = applicantData.merge({ :Address => listing[0]["Address"], 
                                                   :Unit => listing[0]["Unit"], 
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                   :Rent => listing[0]["Price"],
                                                   :UniversityName => listing[0]["University"]})
 =======
                                                   :Rent => listing[0]["Price"] })
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                                  :Rent => listing[0]["Price"],
+                                                  :UniversityName => listing[0]["University"]})
+>>>>>>> e60c8cd... 117 renters
                                 
             return nil if applicantData[:Address].nil? || applicantData[:Rent].nil?
         end
@@ -220,7 +225,15 @@ begin
     else #landlord endpoint only has access to the applicant object id
         applicantData = GetApplicantData(data["ApplicantId"])
         raise "No Applicant Data" if applicantData.nil?
+<<<<<<< HEAD
+<<<<<<< HEAD
         universityId = GetUniversityId(applicantData[:UniversityName])
+=======
+        universityId = GetUniversityId(listingData[:UniversityName])
+>>>>>>> b62e4b4... 117 parallel payments
+=======
+        universityId = GetUniversityId(applicantData[:UniversityName])
+>>>>>>> e60c8cd... 117 renters
         raise "No University Data" if universityId.nil?
         
         puts InsertRenter(applicantData[:UserId], applicantData[:LandlordId], universityId, applicantData[:Address], applicantData[:Unit], applicantData[:Rent], applicantData[:ListingId])

@@ -39,7 +39,15 @@ begin
         
         pricing = mongoSession[:pricing].find({"UniversityId" => document["UniversityId"]}).one
             
+<<<<<<< HEAD
+<<<<<<< HEAD
         document["ListingMarkup"] = ((document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f).round(2)
+=======
+        document["ListingMarkup"] = (document["Rent"] * (pricing["ListingMarkup"].to_f / 100)).to_i
+>>>>>>> b62e4b4... 117 parallel payments
+=======
+        document["ListingMarkup"] = (document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f
+>>>>>>> 01472a0... 117 float
         
         #we don't need to expose these to the front end
         document.delete("LandlordId") 

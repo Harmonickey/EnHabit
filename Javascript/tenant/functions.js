@@ -1320,6 +1320,7 @@ function GetPayKey(oid, data)
                 if (payResponse["error"])
                 {
                    throw Error("Unable to Get Payment Key"); 
+<<<<<<< HEAD
                 }
                 else
                 {
@@ -1343,6 +1344,8 @@ function GetPayKey(oid, data)
                 if (payResponse["error"])
                 {
                    throw Error("Unable to Process Payment"); 
+=======
+>>>>>>> e1e8f31... 117 renters 2
                 }
                 else
                 {

@@ -326,6 +326,7 @@ begin
                 doc.delete("LandlordId")
             end
 <<<<<<< HEAD
+<<<<<<< HEAD
         end
         
         documents.each do |doc|
@@ -348,6 +349,8 @@ begin
 =======
             doc["RentWithMarkup"] = (doc["Price"] * (pricing["ListingMarkup"].to_f / 100) + doc["Price"]).to_i
 >>>>>>> 1da2e91... 115 university name
+=======
+>>>>>>> b62e4b4... 117 parallel payments
         end
         
         puts documents.to_json

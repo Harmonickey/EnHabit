@@ -44,6 +44,7 @@ end
 @landlord = @data["LandlordEmail"]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @memo = "Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -253,10 +254,25 @@ puts app_result.to_json
 >>>>>>> 447ded3... 107 new way to do it
 =======
 @recipient = @data["LandlordEmail"]
+=======
+@enhabit = "alex@lbkstudios.net"
+>>>>>>> 2b66c1e... 117 modify payment center
+
+@isDev = `cat #{@deploymentBase}/enhabit.git/hooks/post-receive`.split("\n")[4].split(" ")[-2].include? 'dev'
+
+@returnLocation = @isDev ? "dev." : ""
 
 @uri = URI('https://svcs.paypal.com/AdaptivePayments/Pay')
 
-params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @recipient.to_s + '\"}]}, \"returnUrl\":\"http://dev.enhabitlife/tenant/payments?result=success\", \"cancelUrl\":\"http://dev.enhabitlife.com/tenant/payments?result=cancel\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
+@markup = @data["ListingMarkup"]
+
+@receiverList = []
+#enhabit gets markup
+@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\"}'
+#landlord gets rent
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\"}'
+
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}}'
 
 req = Hash.new
 req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'

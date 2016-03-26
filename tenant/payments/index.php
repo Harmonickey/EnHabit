@@ -311,8 +311,12 @@
 =======
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
     }
+<<<<<<< HEAD
     else if ($resultmsg == "cancelled")
 >>>>>>> 343d257... 107 make sure the user is redirected if the session logs out
+=======
+    else if ($resultmsg == "cancel")
+>>>>>>> 59954ee... 117 canclled to cancel
     {
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'error', title: 'Error', text: 'Cancelled Payment', position: 'top-center'});</script>\n";
     }
