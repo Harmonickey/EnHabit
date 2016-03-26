@@ -15,6 +15,12 @@ var entries = {};
 var multiPopup = {};
 var listingSlideshows = {};
 
+var listingWaiting = false;
+
+var pendingData = null;
+var numUploaded = 0;
+var numAdded = 0;
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -1392,6 +1398,12 @@ function LoginUser(hideMainModal)
                     if (Contains(res, "Okay"))
                     {
                         ShowLoginFeatures(hideMainModal, res);
+                        
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                            listingWaiting = false;
+                        }
                     }
                     else
                     {
@@ -1413,6 +1425,14 @@ function LoginUser(hideMainModal)
             }
         });
     }
+}
+
+/* Just a proxy method for setting the listing as waiting... */
+function PendingListingCreation()
+{
+    listingWaiting = true;
+    
+    LoadModal(event, 'modal-content-login', 'login', 'Log In');
 }
 
 function LoginFacebookUser(userID, accessToken)
@@ -1562,6 +1582,12 @@ function RemoveLoginFeatures()
 {
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
+<<<<<<< HEAD
+=======
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
+    $("#create-listing-button").attr("onclick", "LoginForListing()");
+>>>>>>> 8ba0f73... 136 most of the skeleton
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -1569,6 +1595,7 @@ function ShowLoginFeatures(hideMainModal, userType)
     $(".navbar-login-btn").hide();
     $(".account-nav .dropdown-menu li").not("#login-function").hide(); // reset menu
     $(".account-nav").show();
+    $("#create-listing-button").attr("onclick", "CreateListing()");
     
     if (Contains(userType, "Admin"))
     {
@@ -1785,6 +1812,205 @@ function CloseExtrasView()
             $(".extra-filter-button input").attr("onclick", "OpenExtrasView()");
         });
     });
+}
+
+function CreateListing()
+{   
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
+    
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildError(data);
+    
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    
+    try
+    {
+        if (error != "Please Include ")
+        {
+            throw new Error(error);
+        }
+        else
+        {
+            // need to put data into a saved state because uploading fileSize
+            // is asynchronous
+            pendingData = data;
+            
+            $("#create-listing-button").text("Creating...");
+            $("#create-listing-button").prop("disabled", true);
+            
+            // async call, caught in dropzone.success event handler below
+            if (numAdded == 0)
+            {
+                ProcessListing();
+            }
+            else
+            {
+                dropzones["create"].processQueue();
+            }
+        }
+    }
+    catch(e)
+    {
+        $("#create-listing-button").prop("disabled", false);
+        $("#create-listing-button").text("Create Listing");
+        $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+    }
+}
+
+function ProcessListing()
+{
+    if (pendingData == null)
+    {
+        return;
+    }
+    
+    // create listing
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "create_listing",
+            data: pendingData,
+            endpoint: "Listings"
+        },
+        success: function(res)
+        {    
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to Create Listing");
+                }
+                else
+                {
+                    var listing = JSON.parse(res);
+                        
+                    if (listing["error"])
+                    {
+                        throw new Error(listing["error"]);
+                    }
+                    else
+                    {
+                        ResetListings();
+                        
+                        LoadAllDefaultListings();
+                        
+                        numUploaded = 0;
+                        
+                        pendingData = null;
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#create-listing-button").prop("disabled", false);
+            $("#create-listing-button").text("Create Listing");
+            
+            dropzones["create"].destroy();
+            
+            CreateDropzone("create", "#modal-content-listing form");
+        }
+    });
+}
+
+function CreateDropzone(key, element, existingPics)
+{
+    dropzones[key] = new Dropzone(element,
+    {
+        addRemoveLinks: true,
+        autoProcessQueue: false
+    });
+    
+    var myDropzone = dropzones[key];
+    
+    myDropzone.on("success", function(file)
+    {   
+        if (numUploaded == numAdded - 1)
+        {
+            numUploaded = 0;
+            numAdded = 0;
+            $(".dz-progress").remove();
+            ProcessListing(); 
+        }
+        else
+        {
+            numUploaded++;
+            $(".dz-progress").remove();
+        }
+    });
+    
+    myDropzone.on("addedfile", function(file) 
+    {
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
+        {
+            pictures[oid] = [];
+        }
+        var filename = (file.alreadyUploaded 
+                        ? file.name
+                        : (file.name.split(".").length > 1 ? file.name.split(".")[0] + "_" + Math.random().toString(36).slice(2) + "." + file.name.split(".")[file.name.split(".").length - 1]
+                                                           : Math.random().toString(36).slice(2) + "_" + file.name));
+        pictures[oid].push(filename);
+        
+        if (!file.alreadyUploaded)
+        {
+            this.files[this.files.length - 1].serverFileName = filename;
+        }
+        
+        addedFiles[oid] = true;
+        
+        numAdded++;
+    });
+    
+    myDropzone.on("removedfile", function(file) 
+    {
+        var index = this.files.indexOf(file);
+        
+        var oid = $(this.element).data("pic-id");
+        if (pictures[oid] == null)
+        {
+            pictures[oid] = [];
+        }
+
+        pictures[oid].splice(index, 1); 
+        
+        numAdded--;
+        
+        if (numAdded < 0)
+        {
+            addedFiles[oid] = false;
+            numAdded = 0;
+        }
+    });
+    
+    if (existingPics != null)
+    {
+        for (var i = 0; i < existingPics.length; i++)
+        {
+            var mockFile = { name: existingPics[i], alreadyUploaded: true};
+
+            myDropzone.emit("addedfile", mockFile);
+            numAdded--;
+            myDropzone.emit("thumbnail", mockFile, "/images/enhabit/images/" + mockFile.name);
+            myDropzone.emit("complete", mockFile);
+        }
+    }
 }
 
 function SetDefaultButtonOnEnter(modal)
