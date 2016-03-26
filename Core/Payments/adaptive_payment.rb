@@ -83,8 +83,9 @@ end
 @receiverList = []
 <<<<<<< HEAD
 #enhabit gets the full rent amount and markup
-@receiverList.push '{\"amount\":\"' + (@markup.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
+@receiverList.push '{\"amount\":\"' + (@markup.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"false\"}'
 #landlord gets the full rent amount
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"false\"}'
@@ -107,6 +108,9 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 =======
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\"}'
 >>>>>>> 56c92b4... 121 omit the false
+=======
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\", \"primary\":\"true\"}'
+>>>>>>> 9494f64... 121 updated more
 
 @successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
 
