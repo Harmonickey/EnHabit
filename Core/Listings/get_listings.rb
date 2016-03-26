@@ -13,6 +13,7 @@ require 'mongoid'
 require 'tools'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 require 'date'
 =======
 =======
@@ -21,6 +22,12 @@ require 'date'
 
 <<<<<<< HEAD
 MAX_BEDROOMS_FOR_FILTER = 3
+=======
+require 'date'
+=======
+
+MAX_BATHROOMS_FOR_FILTER = 3
+>>>>>>> 91ff935... 118 move to if statement
 MIN_BEDROOMS_FOR_FILTER = 0
 >>>>>>> d1eed6e... 118 move to if statement
 
@@ -40,14 +47,24 @@ def setFilters
     else
         @bedroomFilter[:Bedrooms] = {}
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 91ff935... 118 move to if statement
         if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
             @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
         else
             @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
         end
+<<<<<<< HEAD
 =======
         @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
 >>>>>>> acc3e6e... 118 bathroom and bedroom are now searchable by plus
+=======
+        @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
+>>>>>>> e593a89... 118 we actually want equal
+=======
+>>>>>>> 91ff935... 118 move to if statement
     end
 
     if @bathrooms.nil? 
