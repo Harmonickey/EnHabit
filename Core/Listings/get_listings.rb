@@ -15,7 +15,7 @@ require 'tools'
 require 'date'
 =======
 
-MAX_BATHROOMS_FOR_FILTER = 3
+MAX_BEDROOMS_FOR_FILTER = 3
 MIN_BEDROOMS_FOR_FILTER = 0
 >>>>>>> d1eed6e... 118 move to if statement
 

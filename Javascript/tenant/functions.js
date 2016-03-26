@@ -21,16 +21,25 @@ $(function() {
        $('.ui-lightbox').lightbox();
    }
     
+<<<<<<< HEAD
    if (location.hash == "#successpayment")
+=======
+   if (location.hash == "successpayment")
+>>>>>>> 921ffff... 117 payment enhancement
    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
        location.hash = "";
    }      
+<<<<<<< HEAD
    else if (location.hash == "#cancelledpayment")
+=======
+   else if (location.hash == "cancelledpayment")
+>>>>>>> 921ffff... 117 payment enhancement
    {
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
    }
+<<<<<<< HEAD
     
    if (location.hash == "#success")
    {
@@ -38,6 +47,8 @@ $(function() {
        
        location.hash = "";
    }
+=======
+>>>>>>> 921ffff... 117 payment enhancement
 });
 
 $(document).on("keypress", function(e)
