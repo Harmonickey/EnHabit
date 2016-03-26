@@ -41,8 +41,13 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
     listingObj["IsRented"] = false
+<<<<<<< HEAD
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+=======
+    listingObj["IsFeatured"] = false
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
+>>>>>>> bc7c714... 116 default to not featured
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
