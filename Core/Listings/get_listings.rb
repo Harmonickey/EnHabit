@@ -11,7 +11,13 @@ require 'bson'
 require 'moped'
 require 'mongoid'
 require 'tools'
+<<<<<<< HEAD
 require 'date'
+=======
+
+MAX_BATHROOMS_FOR_FILTER = 3
+MIN_BEDROOMS_FOR_FILTER = 0
+>>>>>>> d1eed6e... 118 move to if statement
 
 def setFilters
     if @lower.nil? and @upper.nil? 
@@ -26,7 +32,11 @@ def setFilters
         @bedroomFilter = nil
     else
         @bedroomFilter[:Bedrooms] = {}
-        @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
+        if @bedrooms == MAX_BEDROOMS_FOR_FILTER || @bedrooms == MIN_BEDROOMS_FOR_FILTER
+            @bedroomFilter[:Bedrooms][:$gte] = @bedrooms
+        else
+            @bedroomFilter[:Bedrooms][:$eq] = @bedrooms
+        end
     end
 
     if @bathrooms.nil? 
