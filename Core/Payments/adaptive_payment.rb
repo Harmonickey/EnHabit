@@ -13,6 +13,7 @@ require 'json'
 
 @rent = @data["Rent"]
 @landlord = @data["LandlordEmail"]
+<<<<<<< HEAD
 @memo = "Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -24,6 +25,11 @@ require 'json'
 >>>>>>> 56fbc5c... 127 small  oid fix
 @enhabit = "marcel@lbkstudios.net"
 >>>>>>> 7f6a3f3... 127 payments tracking
+=======
+@memo = @data["Memo"] + "\n\nRent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
+@enhabit = "alex@lbkstudios.net"
+@uid = @data["_id"]["oid"]
+>>>>>>> f438910... 130 memo
 
 @isDev = `cat #{@deploymentBase}/enhabit.git/hooks/post-receive`.split("\n")[4].split(" ")[-2].include? 'dev'
 

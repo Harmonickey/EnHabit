@@ -107,9 +107,13 @@ function GetRenter()
                          
 =======
                         
+<<<<<<< HEAD
 >>>>>>> 1c87344... 107 redirect
                         GetPayKey(oid, data);
 >>>>>>> 014529f... 107 better flow
+=======
+                        $("#payment").append(CreatePaymentView(oid, data));
+>>>>>>> f438910... 130 memo
                     }                       
                 }
             }
@@ -1013,6 +1017,8 @@ function DeleteAccount()
 
 function GetPayKey(oid, data)
 {
+    data.Memo = $("#paymentNote").val();
+    
     $.ajax(
     {
         type: "POST",
@@ -1040,17 +1046,29 @@ function GetPayKey(oid, data)
                 }
                 else
                 {
+                    // get pay key
                     var paykey = payResponse["payKey"];
                     
+<<<<<<< HEAD
 <<<<<<< HEAD
                     GetRenter(paykey);
 =======
                     $("#payment").append(CreatePaymentView(oid, data));
                      
+=======
+                    // set it in the DOM
+>>>>>>> f438910... 130 memo
                     $("#paykey").val(paykey);
                     
+                    // init the PayPal popup object
                     var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+<<<<<<< HEAD
 >>>>>>> 014529f... 107 better flow
+=======
+                    
+                    // programmatically submit
+                    $("#submitBtn").click();
+>>>>>>> f438910... 130 memo
                 }
             }
             catch(e)
@@ -1481,9 +1499,47 @@ function CreateAccordionView(oid, data)
             "</div>";
 }
 
-/* Rent, HasPaidRent, Address,  */
-function CreatePaymentView(oid, data, paykey)
+function GetNextMonth(today)
 {
+    today.setMonth(today.getMonth() + 1);
+    
+    var monthNum = today.getMonth() + 1;
+    
+    switch(monthNum)
+    {
+        case 1:
+            return "January";
+        case 2:
+            return "February";
+        case 3:
+            return "March";
+        case 4:
+            return "April";
+        case 5:
+            return "May";
+        case 6:
+            return "June";
+        case 7: 
+            return "July";
+        case 8:
+            return "August";
+        case 9:
+            return "September";
+        case 10:
+            return "October";
+        case 11:
+            return "November";
+        case 12:
+            return "December";
+    }
+}
+
+/* Rent, HasPaidRent, Address,  */
+function CreatePaymentView(oid, data)
+{
+    var today = new Date();
+    var nextMonth = GetNextMonth(today);
+    
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +
@@ -1504,8 +1560,11 @@ function CreatePaymentView(oid, data, paykey)
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                             "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
-                                "<button class='btn btn-primary btn-success' id='submitBtn'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
-                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value='" + paykey + "'>" +
+                                "<label>Payment Note:</label>" + 
+                                "<input type='text' class='form-control' style='margin-right: 15px;' id='paymentNote' value='' name='paymentNote' placeholder='" + thisMonth + "\'s Rent'>" +
+                                "<button class='btn btn-primary btn-success' id='PayKey' onclick='GetPayKey('" + oid + "', '" + data + "')'><i class='fa fa-cc-paypal'></i>Pay Rent</button>" +
+                                "<button class='hidden' id='submitBtn'></button>" +
+                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
                             "</form>" +
                             "</div>" +
                         "</div>" +
