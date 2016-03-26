@@ -169,11 +169,6 @@
     width: 100%;
 }
 
-.type-content .bootstrap-switch
-{
-    float: left;
-}
-
 #datepicker-inline
 {
     font-weight: bold;
@@ -276,12 +271,13 @@
 .Confirm,
 .FirstName, 
 .LastName,
-.Email, 
+.Payment.Email, 
+.Account.Email,
 .PhoneNumber,
-.Address, 
-.Bedrooms,
-.Bathrooms, 
-.Unit,
+.Payment.Address, 
+.Payment.Bedrooms,
+.Payment.Bathrooms, 
+.Payment.Unit,
 .Memo,
 .LandlordEmail,
 .input-group.AmountWrapper
@@ -291,7 +287,7 @@
 	margin: 0 auto;
 }
 
-.Rent
+.Payment.Rent
 {
     text-align: center;
     padding-right: 45px;
@@ -629,7 +625,8 @@
 #Filters input,
 #Filters select,
 #extras_view input,
-#extras_view select
+#extras_view select,
+#extra-filters-btn
 {
     background-color: black;
     border-radius: 10px;
@@ -795,7 +792,7 @@
    border-radius: 10px;
 }
 
-#Filters #action-menu
+#action-menu
 {
     width: 85%;
     margin: 0 auto;
@@ -803,7 +800,8 @@
     padding: 0;
 }
 
-#search-function
+#search-function,
+#extra-filters-btn
 {
     margin: 10px 0 !important;
     clear: left;
@@ -824,14 +822,20 @@
     background-color: darkgreen;
 }
 
+#extra-filters-btn:hover
+{
+    color: white !important;
+    background-color: #333;
+}
+
+#action-menu 
+{
+    list-style-type: none;
+}
+
 #action-menu li a
 {
     font-size: 18px;
-}
-
-#Filters .btn-outline-inverse
-{
-    border-color: #5259e3;
 }
 
 #Filters .btn-primary
@@ -839,15 +843,13 @@
     background-color: #5259e3;
 }
 
-.list-view-button input,
-.extra-filter-button input
+.list-view-button input
 {
     width: 80%;
     margin: 0 auto;
 }
 
-.list-view-button input:hover,
-.extra-filter-button input:hover
+.list-view-button input:hover
 {
     background: #222;
 }
