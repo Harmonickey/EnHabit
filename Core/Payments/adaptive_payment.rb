@@ -11,7 +11,7 @@ require 'json'
 require 'moped'
 require 'bson'
 
-def GetMarkup(rent)
+def GetMarkup()
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -31,11 +31,13 @@ def GetMarkup(rent)
     end
     
 	mongoSession.disconnect
-    return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
+    #return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
+    return pricing[0]["ListingMarkup"].to_f
 end
 
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
 
+<<<<<<< HEAD
 @rent = @data["Rent"]
 @landlord = @data["LandlordEmail"]
 <<<<<<< HEAD
@@ -63,6 +65,10 @@ end
 >>>>>>> f438910... 130 memo
 =======
 =======
+=======
+@rent = @data["Rent"]
+@landlord = @data["LandlordEmail"]
+>>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
 @enhabit = "enhabitlife@gmail.com"
 >>>>>>> 7252721... 121 add actual enhabit user
 @uid = @data["_id"]["oid"] if not @data["_id"].nil? and not @data["_id"]["oid"].nil?
@@ -77,8 +83,12 @@ end
 @markup = @data["ListingMarkup"]
 
 if @markup.nil?
-  @markup = GetMarkup(@rent)
+  @markup = GetMarkup()
 end
+
+@markupTotal = (@markup / 100) * @rent.to_f
+
+@memo = @markup.to_s + "% convenience charge through Enhabit.\\r\\n" + @data["Memo"] + " -- \\r\\nRent payment for: " + @data["Address"] + " Unit: " + @data["Unit"]
 
 @receiverList = []
 <<<<<<< HEAD
@@ -114,10 +124,14 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 >>>>>>> 9494f64... 121 updated more
 =======
 #enhabit gets the markup amount
-@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+@receiverList.push '{\"amount\":\"' + @markupTotal.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
 #landlord gets the rent plus markup amount
+<<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + (@rent.to_f + @markup).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
 >>>>>>> 7f47e16... 121 minor changes
+=======
+@receiverList.push '{\"amount\":\"' + (@rent.to_f + @markupTotal ).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
+>>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
 
 @successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
 

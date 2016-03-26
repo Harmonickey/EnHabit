@@ -64,7 +64,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
-                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium; display: none;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
                         <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
                     </a>
                 </div>
@@ -242,7 +242,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="item-content type-content">
                         <label>Rental or Sublet</label>
                         <div class="styled-select">
-                            <select id="leaseType-filter" class="form-control">
+                            <select id="LeaseType-filter" class="form-control">
                                 <option value="both">Both</option>
                                 <option value="rental">Rental</option>
                                 <option value="sublet">Sublet</option>
@@ -252,7 +252,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="item-content type-content">
                         <label>Apartment or House</label>
                         <div class="styled-select">
-                            <select id="buildingType-filter" class="form-control">
+                            <select id="BuildingType-filter" class="form-control">
                                 <option value="both">Both</option>
                                 <option value="apartment">Apartment</option>
                                 <option value="house">House</option>
