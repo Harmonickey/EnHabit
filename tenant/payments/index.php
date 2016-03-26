@@ -155,6 +155,9 @@
                     <div class="row" id="payment" style="margin: 0;">
                         
                     </div>
+                    <div class="row" id="paymentHistory" style="margin: 0;">
+                        
+                    </div>
 				</div> <!-- /widget-content -->
 			</div> <!-- /widget -->					
 	    </div> <!-- /col-md-12 -->     	
@@ -293,7 +296,7 @@
 <?php
     if ($resultmsg == "success")
     {
-        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
+        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});InsertPayment(uid, landlordEmail, rent);</script>\n";
     }
     else if ($resultmsg == "cancel")
     {
@@ -305,6 +308,8 @@
 $(function() 
 {  
     GetRenter();
+    
+    GetAllTransactions();
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

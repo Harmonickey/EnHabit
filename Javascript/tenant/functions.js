@@ -13,14 +13,15 @@ var pendingUpdateData = null;
 var threshold = 0.000;
 
 $(function() {
-   var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
+    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
    
-   $(".main").css("min-height", height + "px");
+    $(".main").css("min-height", height + "px");
    
-   if ($.fn.lightbox) {
+    if ($.fn.lightbox) {
        $('.ui-lightbox').lightbox();
-   }
+    }
     
+<<<<<<< HEAD
 <<<<<<< HEAD
    if (location.hash == "#successpayment")
 =======
@@ -40,15 +41,31 @@ $(function() {
        location.hash = "";
    }
 <<<<<<< HEAD
+=======
+    if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
+>>>>>>> ef00d00... 130 memo
     
-   if (location.hash == "#success")
-   {
+    if (location.hash == "#success")
+    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
        location.hash = "";
+<<<<<<< HEAD
    }
 =======
 >>>>>>> 921ffff... 117 payment enhancement
+=======
+    }
+>>>>>>> ef00d00... 130 memo
 });
 
 $(document).on("keypress", function(e)
@@ -98,7 +115,17 @@ function GetRenter()
                     {
                         var oid = data._id.$oid;
                         
-                        GetPayKey(oid, data);
+                        $("#payment").append(CreatePaymentView(oid, data));
+                        
+                        $("#paymentNote").keyup(function() {
+                            var charactersLeft = 100 - $("#paymentNote").val().length;
+                            
+                            $("#charactersLeft").text(charactersLeft);
+                        });
+                        
+                        $("#GetPaymentKey").click(function() {
+                            GetPayKey(oid, data);
+                        });
                     }                       
                 }
             }
@@ -309,6 +336,66 @@ function GetAccount(isListingPage)
         complete: function()
         {
             $(".account .fa-spinner").remove();
+        }
+    });
+}
+
+function GetAllTransactions()
+{  
+    var data = { "TenantPaymentHistory": true };
+
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "get_all_transactions",
+            data: data,
+            endpoint: "Payments"
+        },
+        success: function(res) 
+        {
+            try
+            {
+                if (!res)
+                {
+                    throw new Error("Unable to retrieve payments");
+                    $("#paymentHistory").html("<p>No Payments Yet</p>");
+                }
+                else if (Contains(res, "No Payments"))
+                {
+                    $("#paymentHistory").html("<p>No Payments Yet</p>");
+                }
+                else
+                {
+                    $("#paymentHistory").html("");
+
+                    var data = JSON.parse(res);
+                    
+                    if (Contains(res, "Error"))
+                    {
+                        throw new Error(res);
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            var oid = data[i]._id.$oid;
+                            
+                            $("#paymentHistory").append(CreatePaymentHistoryView(oid, data[i]));
+                        }
+                    }
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }    
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
 }
@@ -552,11 +639,11 @@ function CreateListing()
 {   
     var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
     
-    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     var error = BuildError(data);
     
-    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -1002,14 +1089,16 @@ function DeleteAccount()
 
 function GetPayKey(oid, data)
 {
+    data.Memo = $("#paymentNote").val();
+    
     $.ajax(
     {
         type: "POST",
         url: "/api.php",
         beforeSend: function()
         {
-            $(".adaptive-payment button").prop("disabled", true);
-            $($(".adaptive-payment button")[1]).text("Deleting...");
+            $("#GetPaymentKey").prop("disabled", true);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
         },
         data:
         {
@@ -1029,13 +1118,17 @@ function GetPayKey(oid, data)
                 }
                 else
                 {
+                    // get pay key
                     var paykey = payResponse["payKey"];
                     
-                    $("#payment").append(CreatePaymentView(oid, data));
-                     
+                    // set it in the DOM
                     $("#paykey").val(paykey);
                     
+                    // init the PayPal popup object
                     var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                    
+                    // programmatically submit
+                    $("#submitBtn").click();
                 }
             }
             catch(e)
@@ -1049,8 +1142,8 @@ function GetPayKey(oid, data)
         },
         complete: function()
         {
-            $(".adaptive-payment button").prop("disabled", false);
-            $($(".adaptive-payment button")[1]).text("Delete");
+            $("#GetPaymentKey").prop("disabled", false);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
         }
     });
 }
@@ -1102,10 +1195,10 @@ function InitSpecialFields()
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    //$($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
-    //$($("#createListingModal .type-content input")[0]).prop("checked", true);
-    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
     $($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[1]).prop("checked", true);
     
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -1466,9 +1559,47 @@ function CreateAccordionView(oid, data)
             "</div>";
 }
 
-/* Rent, HasPaidRent, Address,  */
-function CreatePaymentView(oid, data, paykey)
+function GetNextMonth(today)
 {
+    today.setMonth(today.getMonth() + 1);
+    
+    var monthNum = today.getMonth() + 1;
+    
+    switch(monthNum)
+    {
+        case 1:
+            return "January";
+        case 2:
+            return "February";
+        case 3:
+            return "March";
+        case 4:
+            return "April";
+        case 5:
+            return "May";
+        case 6:
+            return "June";
+        case 7: 
+            return "July";
+        case 8:
+            return "August";
+        case 9:
+            return "September";
+        case 10:
+            return "October";
+        case 11:
+            return "November";
+        case 12:
+            return "December";
+    }
+}
+
+/* Rent, HasPaidRent, Address,  */
+function CreatePaymentView(oid, data)
+{
+    var today = new Date();
+    var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
+    
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +
@@ -1488,14 +1619,50 @@ function CreatePaymentView(oid, data, paykey)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
+                            "<div class='row'>" +
+                                "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
+                                    "<label>Optional Payment Note:</label>" + 
+                                    "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\" maxlength='100'>" +
+                                "</div>" +
+                                "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
+                                    "<span id='charactersLeft'>100</span> characters left" +
+                                "</div>" +
+                            "</div>" +
+                            "<button class='btn btn-primary btn-success' id='GetPaymentKey')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
                             "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
-                                "<button class='btn btn-primary btn-success' id='submitBtn'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
-                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value='" + paykey + "'>" +
+                                "<button class='hidden' id='submitBtn'></button>" +
+                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
                             "</form>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
                   "</div>" +
+                "</div>" +
+            "</div>";
+}
+
+function CreatePaymentHistoryView(oid, data)
+{
+    return "<div class='panel panel-default'>" +
+                "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
+                    "<h4 class='panel-title'>" +
+                        "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+                            "<label>Paid Rent: $" + data.Rent + "</label>" +
+                            "<label>Month: " + data.Month + "</label>" +
+                        "</a>" +
+                    "</h4>" +
+                "</div>" +
+                "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
+                    "<div class='panel-body'>" +   
+                        "<div class='row'>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Rent</label><p class='rent'>$" + data.Rent + "</p>" +
+                            "</div>" +
+                            "<div class='col-lg-4 col-md-4 col-sm-4'>" +
+                                "<label>Month</label><p class='address'>" + data.Month + "</p>" + 
+                            "</div>" +                           
+                        "</div>" +
+                    "</div>" +
                 "</div>" +
             "</div>";
 }

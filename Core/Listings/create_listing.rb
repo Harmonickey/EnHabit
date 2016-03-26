@@ -34,15 +34,20 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["HasLaundry"] = laundry.to_b
     listingObj["HasParking"] = parking.to_b
     listingObj["HasAirConditioning"] = airConditioning.to_b
-    listingObj["LeaseType"] = "rental" # leaseType
+    listingObj["LeaseType"] = leaseType
     listingObj["BuildingType"] = buildingType
     listingObj["Notes"] = (notes.nil? ? "" : notes)
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize
     listingObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
     listingObj["University"] = university
     listingObj["IsRented"] = false
+<<<<<<< HEAD
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+=======
+    listingObj["IsFeatured"] = false
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
+>>>>>>> bc7c714... 116 default to not featured
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0

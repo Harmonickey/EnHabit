@@ -22,7 +22,6 @@ def InsertPayment(userId, landlordId, rent, month)
     renterObj["RenterId"] = userId
     renterObj["LandlordId"] = landlordId
     renterObj["Rent"] = rent
-    renterObj["Month"] = month
  
     retVal = ""
  
@@ -67,16 +66,14 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     
-    renterId = data["RenterId"]
+    renterId = ARGV[1].split(",")[0] if not ARGV[1].empty?
     raise "No RenterId" if renterId.nil?
     landlordId = GetLandlordIdFromEmail(data["LandlordEmail"])
     raise "No LandlordId" if landlordId.nil?
     rent = data["Rent"]
     raise "No Rent" if rent.nil?
-    month = data["Month"]
-    raise "No Month" if month.nil?
     
-    puts InsertPayment(renterId, landlordId, rent, month)
+    puts InsertPayment(renterId, landlordId, rent)
 rescue Exception => e
     puts e.inspect
 end

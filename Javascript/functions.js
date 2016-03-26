@@ -889,8 +889,8 @@ function InsertMarkers(res)
             {
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
-                    'marker-color': '#000',
-                    'marker-size': 'medium',
+                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
                     'marker-symbol': 'building'
                 }));
                 
@@ -952,8 +952,8 @@ function InsertMarkers(res)
             {   
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
-                    'marker-color': '#000',
-                    'marker-size': 'medium',
+                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
                     'marker-symbol': 'building'
                 }));
                 
@@ -1012,7 +1012,7 @@ function InsertMarkers(res)
     }
     
     //map.fitBounds(markers.getBounds());
-    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 0] });
+    map.fitBounds(markers.getBounds(), { paddingTopLeft: [250, 75] });
     //map.setZoom(map.getZoom() - 1); 
     clearInterval(intervalVal);
 }
@@ -1209,13 +1209,13 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     
     var actionsContent =
     "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-        "<div class='row'>" +
-            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
-        "</div>" +
+        //"<div class='row'>" +
+            //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
+        //"</div>" +
         //"<div class='row'>" +
         //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
         //"</div>" +
-        //"<div class='row'>" +
+        "<div class='row'>" +
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
@@ -1708,15 +1708,8 @@ function SetDefaultButtonOnEnter(modal)
 
 function CreateEmailMessage(listingId)
 {
-    if ($(".navbar-login-btn").css("display") == "block")
-    {
-        LoadModal(null, 'modal-content-login', 'login', 'Log In');
-    }
-    else
-    {
-        PopulateAndOpenModal(null, 'modal-content-email');
-        $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
-    }
+    PopulateAndOpenModal(null, 'modal-content-email');
+    $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 }
 
 function SendEmail(listingId)
@@ -1724,12 +1717,19 @@ function SendEmail(listingId)
     var data =
     {
         Message: $("#common-modal .email-message").val(),
+        EmailAddress: $("#common-modal .email-address").val(),
+        PhoneNumber: $("#common-modal .email-phone-number").val(),
         ListingId: listingId
     };
 
     if (data.Message == null || data.Message == "")
     {
         SetError("SendEmail", "Please Include Message");
+        return;
+    }
+    if (data.EmailAddress == null || data.EmailAddress == "" || !IsValidEmail(data.EmailAddress))
+    {
+        SetError("SendEmail", "Please Include a Valid Email Address");
         return;
     }
     

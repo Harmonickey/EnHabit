@@ -15,23 +15,12 @@ require 'tools'
 
 Moped::BSON = BSON
 
-def GetEmailDetails(userId, listingId)
+def GetEmailDetails(listingId)
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
     begin
-        accountQueryObj = Hash.new
-        accountQueryObj["UserId"] = userId
-        
-        account = Array.new
-        mongoSession.with(safe: true) do |session|
-            account = session[:accounts].find(accountQueryObj).to_a
-        end
-        
-        if account.count == 0
-            return nil
-        end 
         
         listingQueryObj = Hash.new
         listingQueryObj["_id"] = Moped::BSON::ObjectId.from_string(listingId.to_s)
@@ -57,7 +46,7 @@ def GetEmailDetails(userId, listingId)
             return nil
         end
         
-        return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"]), "Name" => account[0]["FirstName"] + " " + account[0]["LastName"], "PhoneNumber" => (account[0]["PhoneNumber"].nil? ? "" : account[0]["PhoneNumber"]), "Username" => account[0]["Username"]}
+        return {"To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"])}
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
@@ -68,29 +57,28 @@ begin
 
     userId = ARGV[1].split(",")[0] if not ARGV[0].nil?
     
+    emailAddress = data["EmailAddress"] if not data["EmailAddress"].nil?
+    phoneNumber = data["PhoneNumber"] if not data["PhoneNumber"].nil?
     listingId = data["ListingId"] if not data["ListingId"].nil?
+    message = data["Message"] if not data["Message"].nil?
     
     raise "Could not Find Listing" if listingId.nil?
+    raise "No Email Address" if emailAddress.nil?
+    raise "No Message" if message.nil?
     
-    @details = GetEmailDetails(userId, listingId) unless listingId.nil?
+    @details = GetEmailDetails(listingId) unless listingId.nil?
     
     raise "Could not Get Details" if @details.nil?
     
     @to = @details["To"]
-    @message = data["Message"]
-    @name = @details["Name"]
+    @message = message
     @listing = @details["Listing"]
-    @from = @details["From"]
-    @username = @details["Username"]
-    @phone = @details["PhoneNumber"] if not @details["PhoneNumber"].nil?
-    
-    puts "Could Not Find User" if @from.nil? 
-    puts "Please Update Your Account" if @username.include? "Facebook"
+    @from = emailAddress
     
     if not @from.nil?
         `chmod 775 #{@deploymentBase}/Core/Accounts/mail.rb`
-        `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
-        puts "#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'"
+        `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@listing}' '#{@from}' '#{@phone}'`
+        puts "#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@listing}' '#{@from}' '#{@phone}'"
 
         puts "Okay"
     end
