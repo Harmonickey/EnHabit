@@ -13,14 +13,15 @@ var pendingUpdateData = null;
 var threshold = 0.000;
 
 $(function() {
-   var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
+    var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
    
-   $(".main").css("min-height", height + "px");
+    $(".main").css("min-height", height + "px");
    
-   if ($.fn.lightbox) {
+    if ($.fn.lightbox) {
        $('.ui-lightbox').lightbox();
-   }
+    }
     
+<<<<<<< HEAD
 <<<<<<< HEAD
    if (location.hash == "#successpayment")
 =======
@@ -40,15 +41,31 @@ $(function() {
        location.hash = "";
    }
 <<<<<<< HEAD
+=======
+    if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
+>>>>>>> ef00d00... 130 memo
     
-   if (location.hash == "#success")
-   {
+    if (location.hash == "#success")
+    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
        location.hash = "";
+<<<<<<< HEAD
    }
 =======
 >>>>>>> 921ffff... 117 payment enhancement
+=======
+    }
+>>>>>>> ef00d00... 130 memo
 });
 
 $(document).on("keypress", function(e)
@@ -113,7 +130,16 @@ function GetRenter()
 >>>>>>> 014529f... 107 better flow
 =======
                         $("#payment").append(CreatePaymentView(oid, data));
+<<<<<<< HEAD
 >>>>>>> f438910... 130 memo
+=======
+                        
+                        $("#paymentNote").keyup(function() {
+                            var charactersLeft = 100 - $("#paymentNote").val().length;
+                            
+                            $("#charactersLeft").text(charactersLeft);
+                        });
+>>>>>>> ef00d00... 130 memo
                     }                       
                 }
             }
@@ -1538,7 +1564,7 @@ function GetNextMonth(today)
 function CreatePaymentView(oid, data)
 {
     var today = new Date();
-    var nextMonth = GetNextMonth(today);
+    var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
     
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
@@ -1560,9 +1586,16 @@ function CreatePaymentView(oid, data)
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                             "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
-                                "<label>Payment Note:</label>" + 
-                                "<input type='text' class='form-control' style='margin-right: 15px;' id='paymentNote' value='' name='paymentNote' placeholder='" + thisMonth + "\'s Rent'>" +
-                                "<button class='btn btn-primary btn-success' id='PayKey' onclick='GetPayKey('" + oid + "', '" + data + "')'><i class='fa fa-cc-paypal'></i>Pay Rent</button>" +
+                                "<div class='row'>" +
+                                    "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
+                                        "<label>Optional Payment Note:</label>" + 
+                                        "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\">" +
+                                    "</div>" +
+                                    "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
+                                        "<span id='charactersLeft'>100</span> characters left" +
+                                    "</div>" +
+                                "</div>" +
+                                "<button class='btn btn-primary btn-success' id='PayKey' onclick='GetPayKey('" + oid + "', '" + data + "')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
                                 "<button class='hidden' id='submitBtn'></button>" +
                                 "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
                             "</form>" +
