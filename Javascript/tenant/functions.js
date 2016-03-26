@@ -139,7 +139,14 @@ function GetRenter()
                             
                             $("#charactersLeft").text(charactersLeft);
                         });
+<<<<<<< HEAD
 >>>>>>> ef00d00... 130 memo
+=======
+                        
+                        $("#GetPaymentKey").click(function() {
+                            GetPayKey(oid, data);
+                        });
+>>>>>>> 33588c5... 130 payments
                     }                       
                 }
             }
@@ -356,7 +363,7 @@ function GetAccount(isListingPage)
 
 function GetAllTransactions()
 {  
-    var data = { TenantPaymentHistory: true };
+    var data = { "TenantPaymentHistory": true };
 
     $.ajax(
     {
@@ -1111,8 +1118,8 @@ function GetPayKey(oid, data)
         url: "/api.php",
         beforeSend: function()
         {
-            $(".adaptive-payment button").prop("disabled", true);
-            $($(".adaptive-payment button")[1]).text("Deleting...");
+            $("#GetPaymentKey").prop("disabled", true);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
         },
         data:
         {
@@ -1168,8 +1175,8 @@ function GetPayKey(oid, data)
         },
         complete: function()
         {
-            $(".adaptive-payment button").prop("disabled", false);
-            $($(".adaptive-payment button")[1]).text("Delete");
+            $("#GetPaymentKey").prop("disabled", false);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
         }
     });
 }
@@ -1645,17 +1652,17 @@ function CreatePaymentView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px;' >" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                            "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
-                                "<div class='row'>" +
-                                    "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
-                                        "<label>Optional Payment Note:</label>" + 
-                                        "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\">" +
-                                    "</div>" +
-                                    "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
-                                        "<span id='charactersLeft'>100</span> characters left" +
-                                    "</div>" +
+                            "<div class='row'>" +
+                                "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
+                                    "<label>Optional Payment Note:</label>" + 
+                                    "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\">" +
                                 "</div>" +
-                                "<button class='btn btn-primary btn-success' id='PayKey' onclick='GetPayKey('" + oid + "', '" + data + "')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
+                                "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
+                                    "<span id='charactersLeft'>100</span> characters left" +
+                                "</div>" +
+                            "</div>" +
+                            "<button class='btn btn-primary btn-success' id='GetPaymentKey')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
+                            "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
                                 "<button class='hidden' id='submitBtn'></button>" +
                                 "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
                             "</form>" +
