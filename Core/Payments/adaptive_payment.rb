@@ -15,9 +15,13 @@ require 'json'
 @landlord = @data["LandlordEmail"]
 @memo = "Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
+<<<<<<< HEAD
 @enhabit = "alex@lbkstudios.net"
 =======
 @uid = @data["_id"]["$oid"]
+=======
+@uid = @data["_id"]["oid"]
+>>>>>>> 56fbc5c... 127 small  oid fix
 @enhabit = "marcel@lbkstudios.net"
 >>>>>>> 7f6a3f3... 127 payments tracking
 
@@ -30,6 +34,7 @@ require 'json'
 @markup = @data["ListingMarkup"]
 
 @receiverList = []
+<<<<<<< HEAD
 #enhabit gets the full rent amount and markup
 @receiverList.push '{\"amount\":\"' + (@markup.to_f + @rent.to_f).to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"true\"}'
 #landlord gets the full rent amount
@@ -40,6 +45,14 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 =======
 params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/?uid=' + @uid + '&landlordEmail=' + @landlord + '&rent=' + @rent +'\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\"}'
 >>>>>>> 7f6a3f3... 127 payments tracking
+=======
+#enhabit gets markup
+@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\"}'
+#landlord gets rent
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\"}'
+
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/?uid=' + @uid + '&landlordEmail=' + @landlord + '&rent=' + @rent + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\"}'
+>>>>>>> 56fbc5c... 127 small  oid fix
 
 req = Hash.new
 req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
