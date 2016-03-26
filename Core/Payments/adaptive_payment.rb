@@ -30,12 +30,16 @@ require 'json'
 @memo = @data["Memo"] + "\n\nRent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 =======
 @memo = @data["Memo"] + " -- Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
+<<<<<<< HEAD
 >>>>>>> daa50ba... 130 fix
 @enhabit = "alex@lbkstudios.net"
 <<<<<<< HEAD
 @uid = @data["_id"]["oid"]
 >>>>>>> f438910... 130 memo
 =======
+=======
+@enhabit = "enhabitlife@gmail.com"
+>>>>>>> 7252721... 121 add actual enhabit user
 @uid = @data["_id"]["oid"] if not @data["_id"].nil? and not @data["_id"]["oid"].nil?
 >>>>>>> f1f855f... 121 adapt
 
