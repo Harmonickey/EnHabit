@@ -1704,11 +1704,15 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 <<<<<<< HEAD
+<<<<<<< HEAD
         $("#create-listing-btn").attr("onclick", "/admin/listings");
 >>>>>>> 2f38a31... 136 fix flow a bit
 =======
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/;'");
 >>>>>>> a896d67... 136 window.location
+=======
+        $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
+>>>>>>> 5a6323a... 136 semicolon
     }
     if (Contains(userType, "Landlord"))
     {
@@ -1717,11 +1721,15 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").hide(); // landlords don't pay rent!!
 <<<<<<< HEAD
+<<<<<<< HEAD
         $("#create-listing-btn").attr("onclick", "/landlord/listings");
 >>>>>>> 2f38a31... 136 fix flow a bit
 =======
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/;'");
 >>>>>>> a896d67... 136 window.location
+=======
+        $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
+>>>>>>> 5a6323a... 136 semicolon
     }
     if (Contains(userType, "Tenant"))
     {
@@ -1731,7 +1739,7 @@ function ShowLoginFeatures(hideMainModal, userType)
             $(".rental-nav").show();
         }
         
-        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/;'");
+        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/';");
     }
 
     if (hideMainModal === true)
