@@ -1110,7 +1110,7 @@ function DeleteAccount()
 
 function GetPayKey(oid, data)
 {
-    data.Memo = $("#paymentNote").val();
+    data.Memo = $("#paymentNote").val().replace("'", "");
     
     $.ajax(
     {
