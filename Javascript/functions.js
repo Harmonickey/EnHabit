@@ -1159,6 +1159,7 @@ function InsertMarkers(res)
             }
             else if (entry.length > 1) // multi listings
             {   
+<<<<<<< HEAD
                 var isMarkerFeatured = false;
                 for (var i = 0; i < entry.length; i++)
                 {
@@ -1170,6 +1171,9 @@ function InsertMarkers(res)
                 
                 entry.reverse(); // reverse for now since we need to display the featured ones first
                 
+=======
+                console.log(entry[0].WorldCoordinates);
+>>>>>>> 33457ff... 119 getting distance calculations
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
 <<<<<<< HEAD

@@ -16,10 +16,14 @@ require 'tools'
 Moped::BSON = BSON
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def UpdateUniversity(id, universityName, address, threshold, latitude, longitude)
 =======
 def UpdateUniversity(id, universityName, address, latitude, longitude)
 >>>>>>> f518129... 107 universities
+=======
+def UpdateUniversity(id, universityName, address, threshold, latitude, longitude)
+>>>>>>> 33457ff... 119 getting distance calculations
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -29,9 +33,13 @@ def UpdateUniversity(id, universityName, address, latitude, longitude)
     univObj["Address"] = address
     univObj["WorldCoordinates"] = {"x" => latitude.to_f, "y" => longitude.to_f}
 <<<<<<< HEAD
+<<<<<<< HEAD
     univObj["Threshold"] = threshold
 =======
 >>>>>>> f518129... 107 universities
+=======
+    univObj["Threshold"] = threshold
+>>>>>>> 33457ff... 119 getting distance calculations
     
     queryObj = Hash.new
     queryObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
@@ -58,10 +66,14 @@ begin
     data = JSON.parse(ARGV[0].delete('\\')) unless ARGV[0].empty?
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     puts UpdateUniversity(data["id"], data["UniversityName"], data["Address"], data["Threshold"], data["Latitude"], data["Longitude"])
 =======
     puts UpdateUniversity(data["id"], data["UniversityName"], data["Address"], data["Latitude"], data["Longitude"])
 >>>>>>> f518129... 107 universities
+=======
+    puts UpdateUniversity(data["id"], data["UniversityName"], data["Address"], data["Threshold"], data["Latitude"], data["Longitude"])
+>>>>>>> 33457ff... 119 getting distance calculations
 rescue Exception => e
     puts e.inspect
 end

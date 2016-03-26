@@ -205,12 +205,41 @@ def GetUniversity(universityName)
         if university.count == 0
             return nil
         else
+<<<<<<< HEAD
+<<<<<<< HEAD
             return {:X => university[0]["WorldCoordinates"]["x"], :Y => university[0]["WorldCoordinates"]["y"], :Threshold => university[0]["Threshold"]}
+=======
+            return {"X": university[0]["WorldCoordinates"]["x"], "Y": university[0]["WorldCoordinates"]["y"], "Threshold": university[0]["Threshold"]}
+>>>>>>> 615f1c4... 119 distance from university
+=======
+            return {:X => university[0]["WorldCoordinates"]["x"], :Y => university[0]["WorldCoordinates"]["y"], :Threshold => university[0]["Threshold"]}
+>>>>>>> f7415c1... 119 ruby syntax fix
         end
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
 end
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+def ComputeDistance(lat1, lon1, lat2, lon2)
+
+    phi1 = lat1.to_rad
+    phi2 = lat2.to_rad
+    deltaphi = (lat2-lat1).to_rad
+    deltalamba = (lon2-lon1).to_rad
+
+    a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+
+    d = 6371000 * c # meters
+    
+    return d * 0.000621371; # to miles
+end
+>>>>>>> 615f1c4... 119 distance from university
+=======
+>>>>>>> 6d6307e... 119 move to tools.rb
 
 begin
     # when user updates a listing they only input a landlord (optional)
@@ -236,10 +265,19 @@ begin
     
     university = GetUniversity(data["University"])
     
+<<<<<<< HEAD
     if university.nil?
         puts "Unable to get university"
     else
         isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
+=======
+    raise "Unable to get university" if university.nil?
+<<<<<<< HEAD
+    raise "Listing is too far from campus" if ComputeDistance(university["X"], university["Y"], data["Latitude"], data["Longitude"]) > university["Threshold"]
+>>>>>>> 615f1c4... 119 distance from university
+=======
+    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold]
+>>>>>>> f7415c1... 119 ruby syntax fix
     
 <<<<<<< HEAD
 <<<<<<< HEAD

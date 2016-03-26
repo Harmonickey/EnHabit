@@ -220,12 +220,46 @@ def GetUniversity(universityName)
         if university.count == 0
             return nil
         else
+<<<<<<< HEAD
+<<<<<<< HEAD
             return {:X => university[0]["WorldCoordinates"]["x"], :Y => university[0]["WorldCoordinates"]["y"], :Threshold => university[0]["Threshold"]}
+=======
+            return {"X": university[0]["WorldCoordinates"]["x"], "Y": university[0]["WorldCoordinates"]["y"], "Threshold": university[0]["Threshold"]}
+>>>>>>> 33457ff... 119 getting distance calculations
+=======
+            return {:X => university[0]["WorldCoordinates"]["x"], :Y => university[0]["WorldCoordinates"]["y"], :Threshold => university[0]["Threshold"]}
+>>>>>>> f7415c1... 119 ruby syntax fix
         end
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
+<<<<<<< HEAD
+<<<<<<< HEAD
 end
+=======
+end
+
+def ComputeDistance(lat1, lon1, lat2, lon2)
+
+    phi1 = lat1.to_rad
+    phi2 = lat2.to_rad
+    deltaphi = (lat2-lat1).to_rad
+    deltalamba = (lon2-lon1).to_rad
+
+    a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+
+    d = 6371000 * c # meters
+    
+    return d * 0.000621371; # to miles
+<<<<<<< HEAD
+}
+>>>>>>> 33457ff... 119 getting distance calculations
+=======
+=======
+>>>>>>> 6d6307e... 119 move to tools.rb
+end
+>>>>>>> 615f1c4... 119 distance from university
 
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
@@ -249,6 +283,7 @@ begin
     end
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     university = GetUniversity(data["University"])
     
     if university.nil?
@@ -261,6 +296,13 @@ begin
         puts result.to_json
     end
 =======
+=======
+    university = GetUniversity(data["University"])
+    
+    raise "Unable to get university" if university.nil?
+    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold]
+        
+>>>>>>> 33457ff... 119 getting distance calculations
     result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"])
 
     puts result.to_json
