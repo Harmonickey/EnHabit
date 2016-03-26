@@ -293,7 +293,7 @@
 <?php
     if ($resultmsg == "success")
     {
-        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
+        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});InsertPayment(uid, landlordEmail, rent);</script>\n";
     }
     else if ($resultmsg == "cancel")
     {
