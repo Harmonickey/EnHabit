@@ -4,7 +4,11 @@
     
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
+<<<<<<< HEAD
         header("Location: /", FALSE);
+=======
+        header("Location: /#loggedout", FALSE);
+>>>>>>> fd415d1... 119 better session logout UX
         return;
     }
     
