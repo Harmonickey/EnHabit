@@ -57,6 +57,7 @@ require 'json'
 @receiverList.push '{\"amount\":\"' + (@markup.to_f + @rent.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
 #landlord gets the full rent amount
 <<<<<<< HEAD
+<<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"false\"}'
 
 <<<<<<< HEAD
@@ -74,6 +75,9 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 >>>>>>> 56fbc5c... 127 small  oid fix
 =======
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+=======
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\"}'
+>>>>>>> 56c92b4... 121 omit the false
 
 @successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
 
