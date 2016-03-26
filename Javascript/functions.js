@@ -1440,6 +1440,7 @@ function LoginUser(hideMainModal)
                     {
                         ShowLoginFeatures(hideMainModal, res);
                         
+                        // session should be set, so the user will be attached to the listing
                         if (listingWaiting)
                         {
                             CreateListing();
@@ -1695,6 +1696,7 @@ function RemoveLoginFeatures()
     $(".navbar-login-btn").show();
     $(".account-nav").hide();
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
@@ -1706,6 +1708,8 @@ function RemoveLoginFeatures()
     $("#create-listing-button").attr("onclick", "PendingListingCreation()");
 >>>>>>> bf5781f... 136 inits and function call fix
 =======
+=======
+>>>>>>> 118cf11... 136 create listing with user id
     $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
 >>>>>>> 2f38a31... 136 fix flow a bit
 }
@@ -1720,6 +1724,7 @@ function ShowLoginFeatures(hideMainModal, userType)
     {
         $(".admin-nav").show();
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 <<<<<<< HEAD
@@ -1730,12 +1735,15 @@ function ShowLoginFeatures(hideMainModal, userType)
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/;'");
 >>>>>>> a896d67... 136 window.location
 =======
+=======
+>>>>>>> 118cf11... 136 create listing with user id
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
 >>>>>>> 5a6323a... 136 semicolon
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
         $("#payment-btn").hide(); // landlords don't pay rent!!
@@ -1747,6 +1755,8 @@ function ShowLoginFeatures(hideMainModal, userType)
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/;'");
 >>>>>>> a896d67... 136 window.location
 =======
+=======
+>>>>>>> 118cf11... 136 create listing with user id
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
 >>>>>>> 5a6323a... 136 semicolon
     }
@@ -1824,11 +1834,6 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
-                        
-                        if (listingWaiting)
-                        {
-                            CreateListing();
-                        }
                     }
                     else
                     {
