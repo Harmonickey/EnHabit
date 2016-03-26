@@ -2122,7 +2122,12 @@ $(function ()
     
     if (location.hash == "#loggedout")
     {
-        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
+        location.hash = "";
+    }
+    else if (location.hash == "#sessiontimeout")
+    {
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Session Timed Out", position: 'top-center'});
         location.hash = "";
     }
     else if (location.hash == "#successpayment")

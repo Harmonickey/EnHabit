@@ -5,10 +5,14 @@
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         header("Location: /", FALSE);
 =======
         header("Location: /#loggedout", FALSE);
 >>>>>>> fd415d1... 119 better session logout UX
+=======
+        header("Location: /#sessiontimeout", FALSE);
+>>>>>>> c667221... 121 change logout methods, update payment
         return;
     }
     
