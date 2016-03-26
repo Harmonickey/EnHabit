@@ -118,11 +118,16 @@
 =======
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>                        
 >>>>>>> 12b3320... 115 added pricing location
 =======
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>                        
 >>>>>>> 64522a7... 115 percent to money
+=======
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li> 
+                        <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>                        
+>>>>>>> d3d46cc... 120 add necessary files
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
 >>>>>>> 6d15b60... 107 revert to old logout
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
@@ -202,7 +207,16 @@
 							<span>Pricing</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
 >>>>>>> 12b3320... 115 added pricing location
+=======
+                    <li>
+						<a href="../logs">
+							<i class="fa fa-file-text"></i>
+							<span>Logs</span>
+						</a>	    				
+					</li>
+>>>>>>> d3d46cc... 120 add necessary files
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->

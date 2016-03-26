@@ -12,8 +12,12 @@ require 'moped'
 require 'mongoid'
 require 'tools'
 <<<<<<< HEAD
+<<<<<<< HEAD
 require 'date'
 =======
+=======
+require 'date'
+>>>>>>> c414386... 120 actually do it right
 
 <<<<<<< HEAD
 MAX_BEDROOMS_FOR_FILTER = 3
@@ -269,7 +273,15 @@ begin
     combineFiltersIntoQuery
     
     File.open("output.log", "a") do |output|
+<<<<<<< HEAD
+<<<<<<< HEAD
         output.puts "[" + DateTime.now.to_s + "] " + @mainFilter.inspect
+=======
+        output.puts "[" + Date.now + "] " + @mainFilter.inspect
+>>>>>>> 0b13f36... 120 added common message with date
+=======
+        output.puts "[" + DateTime.now.to_s + "] " + @mainFilter.inspect
+>>>>>>> c414386... 120 actually do it right
     end
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local

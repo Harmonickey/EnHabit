@@ -112,12 +112,15 @@
 <<<<<<< HEAD
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+<<<<<<< HEAD
 =======
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-percent" style="margin-right: 5px;"></i>Pricing</a></li>
 >>>>>>> 12b3320... 115 added pricing location
 =======
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
 >>>>>>> 64522a7... 115 percent to money
+=======
+>>>>>>> d3d46cc... 120 add necessary files
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
                             <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
                         </li>
@@ -187,6 +190,7 @@
 							<span>Logs</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
 =======
 							<i class="fa fa-percent"></i>
 =======
@@ -196,6 +200,8 @@
 						</a>	    				
 					</li>
 >>>>>>> 12b3320... 115 added pricing location
+=======
+>>>>>>> d3d46cc... 120 add necessary files
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->

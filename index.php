@@ -116,6 +116,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li> 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                                 <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
 =======
@@ -127,6 +128,10 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 =======
                                 <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
 >>>>>>> 64522a7... 115 percent to money
+=======
+                                <li class="admin-nav" style="display: none;"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
+                                <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+>>>>>>> d3d46cc... 120 add necessary files
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/AccountPortal.php"><i class="fa fa-user" style="margin-right: 5px;"></i>Edit Account</a></li>
                                 <li class="tenant-nav" style="display: none;"><a style="cursor: pointer;" href="/ListingsPortal.php"><i class="fa fa-home" style="margin-right: 5px;"></i>My Listing</a></li>
                                 <li class='rental-nav' style='display: none;'><a style='cursor: pointer;' href='/PaymentsPortal.php'><i class='fa fa-usd' style='margin-right: 5px;'></i>My Payments</a></li>

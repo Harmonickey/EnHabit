@@ -6,6 +6,7 @@
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         header("Location: /", FALSE);
 =======
         header("Location: /#loggedout", FALSE);
@@ -14,6 +15,9 @@
         header("Location: /#sessiontimeout", FALSE);
 >>>>>>> c667221... 121 change logout methods, update payment
         return;
+=======
+        header("Location: /", FALSE);
+>>>>>>> 7226f8e... 120 add necessary files
     }
     
     if (!isset($_SESSION["admin"]))
@@ -80,7 +84,11 @@
                 <span class="sr-only">Toggle navigation</span>
                 <i class="fa fa-cog"></i>
             </button>
+<<<<<<< HEAD
             <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+=======
+            <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
+>>>>>>> 7226f8e... 120 add necessary files
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -175,11 +183,21 @@
 <div class="main">
     <div class="container">
       <div class="row">
+<<<<<<< HEAD
+<<<<<<< HEAD
       	<div class="col-md-12">
+=======
+      	<div class="col-md-6">
+>>>>>>> 7226f8e... 120 add necessary files
+=======
+      	<div class="col-md-12">
+>>>>>>> 435b78a... 120 move to rows
       		<div class="widget stacked">
       			<div class="widget-header">
 					<h3>Commands</h3>
 				</div> <!-- /widget-header -->
+<<<<<<< HEAD
+<<<<<<< HEAD
 				<div class="commands widget-content" style="max-height: 1000px; overflow-y: scroll;">
 					
 				</div>
@@ -194,6 +212,29 @@
 					<h3>Errors (some of these are not necessarily errors)</h3>
 				</div> <!-- /widget-header -->
 				<div class="errors widget-content" style="max-height: 1000px; overflow-y: scroll;">
+=======
+				<div class="commands widget-content">
+=======
+				<div class="commands widget-content" style="max-height: 1000px; overflow-y: scroll;">
+>>>>>>> b1467c5... 120 error and debug string logging with times
+					
+				</div>
+			</div> <!-- /widget -->					
+	    </div> <!-- /col-md-6 -->   
+      </div>
+      <div style="padding-top: 20px;">
+      <div class="row">
+        <div class="col-md-12">
+      		<div class="widget stacked">
+      			<div class="widget-header">
+					<h3>Errors (some of these are not necessarily errors)</h3>
+				</div> <!-- /widget-header -->
+<<<<<<< HEAD
+				<div class="errors widget-content">
+>>>>>>> 7226f8e... 120 add necessary files
+=======
+				<div class="errors widget-content" style="max-height: 1000px; overflow-y: scroll;">
+>>>>>>> b1467c5... 120 error and debug string logging with times
 					
 				</div>
 			</div> <!-- /widget -->					

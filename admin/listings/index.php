@@ -94,6 +94,7 @@
                     <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                     <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+<<<<<<< HEAD
 =======
                     <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>                 
 <<<<<<< HEAD
@@ -116,6 +117,8 @@
 =======
                     <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
 >>>>>>> 64522a7... 115 percent to money
+=======
+>>>>>>> d3d46cc... 120 add necessary files
                     <li id="login-function" class="menu-item scroll" onclick="Logout()">
 >>>>>>> 6d15b60... 107 revert to old logout
                         <a id="login" style="cursor: pointer;"><i class="fa fa-sign-out" style="margin-right: 5px;"></i>Log Out</a>
@@ -186,6 +189,7 @@
 							<span>Logs</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
 =======
 >>>>>>> f518129... 107 universities
 =======
@@ -196,6 +200,8 @@
 						</a>	    				
 					</li>
 >>>>>>> 12b3320... 115 added pricing location
+=======
+>>>>>>> d3d46cc... 120 add necessary files
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->

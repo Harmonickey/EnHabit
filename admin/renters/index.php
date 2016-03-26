@@ -102,11 +102,14 @@
                         <li class="admin-nav"><a style="cursor: pointer;" href="/UniversitiesPortal.php"><i class="fa fa-bank" style="margin-right: 5px;"></i>Universities</a></li>  
                         <li class="admin-nav"><a style="cursor: pointer;" href="/PricingPortal.php"><i class="fa fa-money" style="margin-right: 5px;"></i>Pricing</a></li>
                         <li class="admin-nav"><a style="cursor: pointer;" href="/LogsPortal.php"><i class="fa fa-file-text" style="margin-right: 5px;"></i>Logs</a></li>
+<<<<<<< HEAD
 =======
                         <li class="admin-nav"><a style="cursor: pointer;" href="/RentersPortal.php"><i class="fa fa-users" style="margin-right: 5px;"></i>Renters</a></li>                 
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> d3d46cc... 120 add necessary files
                         <li id="login-function" class="menu-item scroll" onclick="Logout()">
 =======
                         <li id="login-function" class="menu-item scroll" href="/logout.php">
@@ -203,7 +206,16 @@
 							<span>Pricing</span>
 						</a>	    				
 					</li>
+<<<<<<< HEAD
 >>>>>>> 12b3320... 115 added pricing location
+=======
+                    <li>
+						<a href="../logs">
+							<i class="fa fa-file-text"></i>
+							<span>Logs</span>
+						</a>	    				
+					</li>
+>>>>>>> d3d46cc... 120 add necessary files
 				</ul>
 			</div> <!-- /.subnav-collapse -->
 		</div> <!-- /container -->	

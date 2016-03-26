@@ -42,10 +42,20 @@ if ((isset($_SESSION["tenant"]) || isset($_SESSION["landlord"])) && isset($_POST
     else
     {
         // we can print out the errors though, in full
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b74a6ff... 120 don't log the command for getting logs to error logs
         if ($_POST["command"] != "get_output_data")
         {
             debug_error($result);
         }
+<<<<<<< HEAD
+=======
+        debug_error($result);
+>>>>>>> 1265133... 120 add some debugging
+=======
+>>>>>>> b74a6ff... 120 don't log the command for getting logs to error logs
         echo $result;
     }
 }
