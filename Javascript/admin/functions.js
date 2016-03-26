@@ -1015,7 +1015,7 @@ function UpdateUniversity(oid)
                             
                             $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Threshold: " + $(inputs[2]).val());
+                            $(headingInputs[2]).text("Listing Distance (miles): " + $(inputs[2]).val());
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
                             
@@ -1109,7 +1109,11 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's',
+<<<<<<< HEAD
         vMax: '99.99',
+=======
+        vMax: '100.00',
+>>>>>>> ce68029... 119 heading
         vMin: '0.00'
     });
     
@@ -1117,14 +1121,18 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's', 
+<<<<<<< HEAD
         vMax: '99.99',
+=======
+        vMax: '100.00',
+>>>>>>> ce68029... 119 heading
         vMin: '0.00'
     });
 }
 
 function SetDatePickerTextBox(rowId)
 {
-    $($("#" + rowId + " input[type='text']")[5]).pikaday(
+    $($("#" + rowId + " input[type='text']")[4]).pikaday(
     {
         minDate: new Date(),  //today
         setDefaultDate: new Date($($("#heading" + rowId + " input[type='text']")[3]).val()) //current
