@@ -16,6 +16,10 @@
     <script type="text/javascript">
     
         <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . rent . "')"; ?>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> ed916d6... 130 insert payment?
     </script>
 </html>
