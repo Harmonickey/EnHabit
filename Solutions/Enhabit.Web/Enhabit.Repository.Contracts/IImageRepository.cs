@@ -6,7 +6,7 @@ namespace Enhabit.Repository.Contracts
 {
     public interface IImageRepository
     {
-        IEnumerable<Picture> GetListingPictures(IEnumerable<Guid> pictureIds);
+        IEnumerable<Picture> GetListingsPictures(IEnumerable<Guid> pictureIds);
 
         bool Save(Picture picture);
     }

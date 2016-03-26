@@ -40,6 +40,8 @@
     self.FormattedStartDate = ko.computed(function () {
         return (self.StartDate() ? $.datepicker.formatDate('mm/dd/yy', new Date(self.StartDate())) : "");
     });
+    self.XCoordinate = ko.observable();
+    self.YCoordinate = ko.observable();
     self.Pictures = ko.observable();
 
     self.Notes = ko.observable();
@@ -81,9 +83,11 @@
         {
             var data = {
                 Address: self.FormattedAddress(),
+                XCoordinate: self.XCoordinate()(),
+                YCoordinate: self.YCoordinate()(),
                 Unit: self.Unit(),
                 Rent: self.Rent(),
-                StartDate: self.FormattedStartDate(),
+                AvailableStartDate: self.FormattedStartDate(),
                 Bedrooms: self.Bedrooms(),
                 Bathrooms: self.Bathrooms(),
                 Parking: self.Parking(),
@@ -92,9 +96,9 @@
                 AirConditioning: self.AirConditioning(),
                 LeaseType: self.LeaseType(),
                 BuildingType: self.BuildingType(),
-                Landlord: self.Landlord(),
-                University: self.University(),
-                Pictures: self.Pictures(),
+                LandlordId: self.Landlord(),
+                UniversityId: self.University(),
+                PicturesId: parentViewModel.CreateListingPictureGuid,
                 Note: self.Notes()
             };
 

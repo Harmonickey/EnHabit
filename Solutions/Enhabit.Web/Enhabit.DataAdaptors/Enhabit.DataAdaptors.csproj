@@ -58,6 +58,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Enhabit.Models\Enhabit.Models.csproj">
+      <Project>{979be35b-76c2-4038-b366-48723f2a6365}</Project>
+      <Name>Enhabit.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Enhabit.Presenter\Enhabit.Presenter.csproj">
       <Project>{4cac1abf-5635-4078-92fc-750f9117555f}</Project>
       <Name>Enhabit.Presenter</Name>

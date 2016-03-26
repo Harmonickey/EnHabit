@@ -16,9 +16,9 @@ namespace Enhabit.Presenter
             _cloudinaryAdaptor = cloudinaryAdaptor;
         }
 
-        public bool Save(string file)
+        public bool Save(string file, string publicId)
         {
-            return Pictures.Save(_imageRepo, _cloudinaryAdaptor, file);
+            return Pictures.Save(_imageRepo, _cloudinaryAdaptor, file, publicId);
         }
     }
 }

@@ -26,5 +26,18 @@ namespace Enhabit.Web.Controllers
 
             return Json(result, JsonRequestBehavior.DenyGet);
         }
+
+        [HttpPost]
+        public JsonResult Update(Listing listing)
+        {
+            ListingViewModel result = Presenter.UpdateListing(listing);
+
+            if (result == null)
+            {
+                return Json(false, JsonRequestBehavior.DenyGet);
+            }
+
+            return Json(result, JsonRequestBehavior.DenyGet);
+        }
     }
 }

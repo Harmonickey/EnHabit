@@ -32,7 +32,7 @@ namespace Enhabit.Repository.ADO
             _logger = logger;
         }
 
-        public IEnumerable<Picture> GetListingPictures(IEnumerable<Guid> pictureIds)
+        public IEnumerable<Picture> GetListingsPictures(IEnumerable<Guid> pictureIds)
         {
             var pictures = new List<Picture>();
 
@@ -43,7 +43,7 @@ namespace Enhabit.Repository.ADO
                 using (var cmd = SqlConn.CreateCommand())
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = "[Enhabit].[GetListingPictures]";
+                    cmd.CommandText = "[Enhabit].[GetListingsPictures]";
                     cmd.Parameters.AddWithValue("@PictureIds", dtPictureIds);
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -52,9 +52,9 @@ namespace Enhabit.Repository.ADO
                         pictures.Add(new Picture
                         {
                             CloudinaryUrl = reader["CloudinaryUrl"].ToString(),
-                            PicturesId = (Guid)reader["PicturesId"]
+                            PicturesId = (Guid)reader["PicturesId"],
+                            CloudinaryPublicId = reader["CloudinaryPublicId"].ToString()
                         });
-
                     }
                 }
             }
@@ -77,6 +77,7 @@ namespace Enhabit.Repository.ADO
                             cmd.CommandText = "[Enhabit].[SavePicture]";
                             cmd.Parameters.AddWithValue("@PicturesId", picture.PicturesId);
                             cmd.Parameters.AddWithValue("@CloudinaryUrl", picture.CloudinaryUrl);
+                            cmd.Parameters.AddWithValue("@CloudinaryPublicId", picture.CloudinaryPublicId);
 
                             cmd.ExecuteNonQuery();
                         }

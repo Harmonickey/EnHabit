@@ -4,6 +4,7 @@ using Enhabit.Presenter.Extensions;
 using Enhabit.ViewModels;
 using Enhabit.Models;
 using Enhabit.Repository.Contracts;
+using Enhabit.Presenter.DataAdaptors;
 using System;
 
 namespace Enhabit.Presenter.Commands
@@ -40,7 +41,31 @@ namespace Enhabit.Presenter.Commands
                 return null;
             }
 
-            var pictures = imageRepo.GetListingPictures(new List<Guid> { listing.PicturesId });
+            var pictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
+
+            if (pictures.Any())
+            {
+                listing.ImageUrls = pictures.Select(p => p.CloudinaryUrl);
+            }
+
+            return listing.ToListingViewModel();
+        }
+
+        public static ListingViewModel Update(IListingRepository repo, IImageRepository imageRepo, ICloudinaryAdaptor cloudinaryAdaptor, Listing listing)
+        {
+            // need to get the old PicturesId before the listing is updated in the db
+            var oldListing = repo.GetListing(listing.ListingId);
+            var oldPictures = imageRepo.GetListingsPictures(new List<Guid> { oldListing.PicturesId });
+
+            if (!repo.UpdateListing(listing))
+            {
+                return null;
+            }
+            
+            // now that update has succeeded, we can delete the old pictures from the cloud
+            cloudinaryAdaptor.Delete(oldPictures.Select(p => p.CloudinaryPublicId));
+
+            var pictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
 
             if (pictures.Any())
             {

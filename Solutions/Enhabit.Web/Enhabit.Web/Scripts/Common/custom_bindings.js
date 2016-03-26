@@ -74,12 +74,14 @@ ko.bindingHandlers.autoNumeric = {
 };
 
 ko.bindingHandlers.addressAutocomplete = {
-    init: function (element, valueAccessor, allBindingsAccessor)
+    init: function (element, valueAccessor, bindingsAccessor)
     {
-        var value = valueAccessor(), allBindings = allBindingsAccessor();
+        var value = valueAccessor(),
+            bindings = bindingsAccessor(),
+            location = bindings.location;
 
         var options = { types: ['geocode'] };
-        ko.utils.extend(options, allBindings.autocompleteOptions)
+        ko.utils.extend(options, bindings.autocompleteOptions)
 
         var autocomplete = new google.maps.places.Autocomplete(element, options);
 
@@ -87,10 +89,18 @@ ko.bindingHandlers.addressAutocomplete = {
         {
             result = autocomplete.getPlace();
 
+            // set the binding's Address field
             value(result.formatted_address);
+
+            // set the extra x and y coordinate fields
+            var keys = Object.keys(result.geometry.location);
+            location.X(result.geometry.location[keys[0]]);
+            location.Y(result.geometry.location[keys[1]]);
         });
+
+
     },
-    update: function (element, valueAccessor, allBindingsAccessor)
+    update: function (element, valueAccessor, bindingsAccessor)
     {
         ko.bindingHandlers.value.update(element, valueAccessor);
     }

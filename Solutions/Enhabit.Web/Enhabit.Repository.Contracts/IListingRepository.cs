@@ -8,9 +8,13 @@ namespace Enhabit.Repository.Contracts
     {
         bool CreateListing(Listing listing);
 
+        bool UpdateListing(Listing listing);
+
         IEnumerable<Listing> GetUserListings(Guid userGuid);
 
         IEnumerable<Listing> GetAllListings();
+
+        Listing GetListing(Guid listingId);
 
         IEnumerable<Listing> SearchForListings(SearchQuery query);
     }

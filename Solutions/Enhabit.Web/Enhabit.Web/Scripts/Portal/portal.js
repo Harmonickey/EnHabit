@@ -66,6 +66,7 @@ var PortalViewModel = function (portalViewModel)
     self.Dropzones = {};
     self.NumAdded = ko.observable(0);
     self.NumUploaded = ko.observable(0);
+
     self.Pictures = {};
     self.AddedFiles = {};
 
