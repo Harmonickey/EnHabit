@@ -33,6 +33,7 @@
 						<li><a runat="server" href="~/Renters.aspx">Renters</a></li>
 						<li><a runat="server" href="~/Universities.aspx">Universities</a></li>
 						<li><a runat="server" href="~/Pricing.aspx">Pricing</a></li>
+                        <li><a runat="server" href="~/System.aspx">System</a></li>
 						<li><a runat="server" href="~/Logs.aspx">Logs</a></li>
 					</ul>
 				</div>

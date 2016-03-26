@@ -6,11 +6,12 @@
 		<asp:Button ID="AddUserButton" runat="server" ClientIDMode="Static" OnClick="AddUserButton_Click" />
 		<asp:GridView ID="UsersGridView" ClientIDMode="Static" runat="server" AutoGenerateColumns="False" AllowPaging="true" PageSize="25" OnPageIndexChanging="UsersGridView_PageIndexChanging">
 			<Columns>
-				<asp:BoundField HeaderText="First Name" DataField="Name_First" />
-				<asp:BoundField HeaderText="Last Name" DataField="Name_Last" />
+				<asp:BoundField HeaderText="First Name" DataField="FirstName" />
+				<asp:BoundField HeaderText="Last Name" DataField="LastName" />
+                <asp:BoundField HeaderText="Account Type" DataField="AccountType" />
 				<asp:BoundField HeaderText="UserName" DataField="UserName" />
 				<asp:BoundField HeaderText="PhoneNumber" DataField="PhoneNumber" />
-				<asp:BoundField HeaderText="Email Address" DataField="EmailAddress" />
+				<asp:BoundField HeaderText="Email" DataField="Email" />
 				<asp:BoundField HeaderText="Is Verified" DataField="IsVerified" />
 				<asp:BoundField HeaderText="Is Active" DataField="IsActive" />
 				<asp:TemplateField>

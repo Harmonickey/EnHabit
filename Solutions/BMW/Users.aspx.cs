@@ -44,7 +44,10 @@ namespace BMW
 		private void SetUpUsersGrid()
 		{
 
-			string queryString = "SELECT ALL THE FUCKING USERS";
+            string queryString = "SELECT UserId, AccountType, FirstName, LastName, UserName, PhoneNumber, Email, IsVerified, IsActive " +
+                "FROM Users AS users" +
+                    "JOIN AccountTypes AS types ON users.AccountTypeId = types.AccountTypeId " +
+                "GROUP BY IsVerified;";
 
 			try
 			{
@@ -58,11 +61,12 @@ namespace BMW
 				UsersGridData user = new UsersGridData()
 				{
 					UserId = "",		//reader["UserId"].ToString()
-					Name_First = "",	//reader["Name_First"].ToString()
-					Name_Last = "",		//reader["Name_Last"].ToString()
+                    AccountType = "",   //int.Parse(reader["AccountType"]).ToString()
+                    FirstName = "",	    //reader["FirstName"].ToString()
+					LastName = "",		//reader["LastName"].ToString()
 					UserName = "",		//reader["UserName"].ToString()
 					PhoneNumber = "",	//reader["PhoneNumber"].ToString()
-					EmailAddress = "",	//reader["EmailAddress"].ToString()
+					Email = "",	        //reader["Email"].ToString()
 					IsVerified = "",	//reader["IsVerified"].ToString()
 					IsActive = "",		//reader["IsActive"].ToString()
 				};
@@ -90,11 +94,12 @@ namespace BMW
 		public class UsersGridData
 		{
 			public string UserId { get; set; }
-			public string Name_First { get; set; }
-			public string Name_Last { get; set; }
-			public string UserName { get; set; }
+            public string AccountType { get; set; }
+			public string FirstName { get; set; }
+			public string LastName { get; set; }
+            public string UserName { get; set; }
 			public string PhoneNumber { get; set; }
-			public string EmailAddress { get; set; }
+			public string Email { get; set; }
 			public string IsVerified { get; set; }
 			public string IsActive { get; set; }
 		}
