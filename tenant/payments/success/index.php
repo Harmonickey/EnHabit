@@ -26,6 +26,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  
     <meta charset="utf-8">
     <title>Tenant | Payments</title>
     
@@ -65,6 +66,12 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <script type="text/javascript">
+    if (window != top) {
+        top.location.replace(document.location);
+    }
+    </script>
+    
   </head>
 
 <body>

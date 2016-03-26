@@ -68,12 +68,16 @@ function GetRenter(paykey)
                     {
                         var oid = data._id.$oid;
 <<<<<<< HEAD
+<<<<<<< HEAD
                             
                         $("#payment").append(CreatePaymentView(oid, data, paykey));
                        
                         var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
 =======
                          
+=======
+                        
+>>>>>>> 1c87344... 107 redirect
                         GetPayKey(oid, data);
 >>>>>>> 014529f... 107 better flow
                     }                       
