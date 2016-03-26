@@ -16,7 +16,7 @@ require 'rmagick'
 
 Moped::BSON = BSON
 
-def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold)
+def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold, isFeatured)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -43,11 +43,16 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsRented"] = false
 <<<<<<< HEAD
     listingObj["IsPastThreshold"] = isPastThreshold
+<<<<<<< HEAD
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
 =======
     listingObj["IsFeatured"] = false
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
 >>>>>>> bc7c714... 116 default to not featured
+=======
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+    listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
+>>>>>>> 2bc45ed... 116 fix create statement
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -230,7 +235,7 @@ begin
     else
         isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
     
-        result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold)
+        result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold, data["IsFeatured"])
 
         puts result.to_json
     end

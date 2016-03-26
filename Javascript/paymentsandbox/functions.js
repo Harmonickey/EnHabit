@@ -175,6 +175,58 @@ function InsertPayment(uid, landlordEmail, rent)
     });
 }
 
+function UpdateToFeatured(uid, landlordEmail, amount)
+{
+    var data = {
+        uid: uid
+    };
+    
+    $.ajax({
+       type: "POST",
+       url: "/api.php",
+       data: 
+       {
+           endpoint: "Listings",
+           command: "update_to_featured",
+           data: data 
+       },
+       success: function(res) {
+           InsertFeaturedPayment(uid, landlordEmail, amount);
+       },
+       error: function(res) {
+           window.top.location = "/landlord/listings/#cancelledpayment";
+           window.location.reload();
+       }
+    });
+    
+function InsertFeaturedPayment(uid, landlordEmail, amount)    
+{   
+    var data = {
+      LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
+      Rent: amount,
+      RenterId: uid
+    };
+    
+    $.ajax({
+       type: "POST",
+       url: "/api.php",
+       data: 
+       {
+           endpoint: "Payments",
+           command: "insert_payment",
+           data: data 
+       },
+       success: function(res) {
+           window.top.location = "/landlord/listings/#successpayment";
+           window.location.reload();
+       },
+       error: function(res) {
+           window.top.location = "/landlord/listings/#cancelledpayment";
+           window.location.reload();
+       }
+    });
+}
+
 
 /********* UTILITY FUNCTIONS ******************/
 
