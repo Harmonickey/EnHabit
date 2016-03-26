@@ -5,6 +5,8 @@
 window.xs_screen_max = 767;
 window.sm_screen_max = 991;
 
+var currentUniversity = "Northwestern";
+
 var intervalVal;
 
 var whichModal = "";
@@ -618,6 +620,17 @@ function InitMainSidebar()
 {
     InitSlider();
     InitDatePicker();
+}
+
+function InitPaymentModal()
+{
+    GetLandlords(currentUniversity);
+    
+    $(".Address").geocomplete().bind("geocode:result", function(event, result){ });
+    
+    
+    
+    $(".Memo").attr("placeholder", nextMonth)
 }
 
 function InitSlider()
@@ -1712,6 +1725,76 @@ function CreateEmailMessage(listingId)
     $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 }
 
+function GetPayKey()
+{
+    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Amount", "Memo", "LandlordEmail"]);
+                                    
+    var error = BuildError(data);
+    
+    if (error != "Please Include<br>")
+    {
+        SetError("MakePayment", error);
+    }
+    else
+    {
+        $.ajax(
+        {
+            type: "POST",
+            url: "/api.php",
+            beforeSend: function()
+            {
+                $("#GetPaymentKey").prop("disabled", true);
+                $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
+            },
+            data:
+            {
+                command: "adaptive_payment",
+                data: data,
+                endpoint: "Payments"
+            },
+            success: function(res)
+            {
+                try
+                {
+                    var payResponse = JSON.parse(res);
+                    
+                    if (payResponse["error"])
+                    {
+                       throw Error("Unable to Make Payment"); 
+                    }
+                    else
+                    {
+                        // get pay key
+                        var paykey = payResponse["payKey"];
+                        
+                        // set it in the DOM
+                        $("#paykey").val(paykey);
+                        
+                        // init the PayPal popup object
+                        var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                        
+                        // programmatically submit
+                        $("#submitBtn").click();
+                    }
+                }
+                catch(e)
+                {
+                    $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+                }
+            },
+            error: function(res, err)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+            },
+            complete: function()
+            {
+                $("#GetPaymentKey").prop("disabled", false);
+                $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Make Payment");
+            }
+        });
+    }
+}
+
 function SendEmail(listingId)
 {   
     var data =
@@ -1931,6 +2014,8 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
+    
+    InitPaymentModal();
 
     $('#listings').slimScroll({
         height: '100%',
