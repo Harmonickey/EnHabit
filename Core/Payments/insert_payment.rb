@@ -19,7 +19,7 @@ def InsertPayment(userId, landlordId, rent, month)
     #landlords (giving a landlord id) is assigned by admins, or through special portal
     
     renterObj = Hash.new
-    renterObj["RenterId"] = userId
+    renterObj["RenterId"] = userId if not userId.nil?
     renterObj["LandlordId"] = landlordId
     renterObj["Rent"] = rent
  
@@ -66,8 +66,7 @@ end
 begin
     data = JSON.parse(ARGV[0].delete('\\'))
     
-    renterId = ARGV[1].split(",")[0] if not ARGV[1].empty?
-    raise "No RenterId" if renterId.nil?
+    renterId = ARGV[1].split(",")[0] if not ARGV[1].empty? # just grab it if it's there, if not, we're okay
     landlordId = GetLandlordIdFromEmail(data["LandlordEmail"])
     raise "No LandlordId" if landlordId.nil?
     rent = data["Rent"]

@@ -1,9 +1,13 @@
 <?php
  
-    $uid = $_GET["uid"];
+    $uid = "";
     $landlordEmail = $_GET["landlordEmail"];
     $rent = $_GET["rent"];
-    
+        
+    if (isset($_GET["uid"]))
+    {
+        $uid = $_GET["uid"];
+    }
 ?>
 
 <!DOCTYPE html>
