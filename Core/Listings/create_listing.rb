@@ -16,7 +16,7 @@ require 'rmagick'
 
 Moped::BSON = BSON
 
-def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold)
+def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold, isFeatured)
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
