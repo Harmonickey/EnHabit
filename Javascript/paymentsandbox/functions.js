@@ -141,6 +141,7 @@ function InsertPayment(uid, landlordEmail, rent)
 <<<<<<< HEAD
 =======
        success: function(res) {
+<<<<<<< HEAD
 >>>>>>> f1f855f... 121 adapt
            window.top.location = "/tenant/payments/#successpayment"
            window.location.reload();
@@ -153,6 +154,21 @@ function InsertPayment(uid, landlordEmail, rent)
            //window.top.location = "/tenant/payments/#successpayment"
 >>>>>>> ed916d6... 130 insert payment?
 =======
+=======
+           window.top.location = "/tenant/payments/#successpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#successpayment";
+           }
+           window.location.reload();
+       },
+       error: function(res) {
+           window.top.location = "/tenant/payments/#cancelledpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#cancelledpayment";
+           }
+>>>>>>> 2f7ba8a... 121 some payment flow
            window.location.reload();
 >>>>>>> f1f855f... 121 adapt
        }
