@@ -44,6 +44,15 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
     listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+=======
+    listingObj["IsFeatured"] = false
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
+>>>>>>> bc7c714... 116 default to not featured
+=======
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+    listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
+>>>>>>> 2bc45ed... 116 fix create statement
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
