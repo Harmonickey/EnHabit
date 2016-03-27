@@ -2,7 +2,11 @@
 // it would do very very well with knockout.js observables
 // and a PowerKioskServiceModel viewmodel controlling them
 
+<<<<<<< HEAD
 var apiUrl = "https://powerkioskapp.com/api";
+=======
+var apiUrl = "http://powerkioskapp.com/api";
+>>>>>>> d29f028... 131 powerkiosk plugin start
 var utility;
 var zone;
 var state;
@@ -15,7 +19,15 @@ $.ajaxSetup({
     },
     error: function()
     {
+<<<<<<< HEAD
+<<<<<<< HEAD
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Bad Connection to API - Try Again!", position: 'top-center'});
+=======
+        $.notify("Bad Connection to API - Try Again!", { position: "right", className: "error" });
+>>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Bad Connection to API - Try Again!", position: 'top-center'});
+>>>>>>> 6df57aa... 131 add msggrowl
     }
 });
 
@@ -23,15 +35,29 @@ $(function()
 {  
     InitZipCodeBox();
     
+<<<<<<< HEAD
+=======
+    InitBusinessButton();
+    
+>>>>>>> d29f028... 131 powerkiosk plugin start
     SetClickListeners();
     
     GetServiceTypes();
     
+<<<<<<< HEAD
+=======
+    SetInnerCoverHeight();
+    
+>>>>>>> d29f028... 131 powerkiosk plugin start
     var height = $("html").height();
     $("body").css("min-height", height + "px");
 });
 
 $(window).on("resize", function() {
+<<<<<<< HEAD
+=======
+   SetInnerCoverHeight();
+>>>>>>> d29f028... 131 powerkiosk plugin start
 
    // this magically fixes the screen rotate issue!
    $("#businessTypes").removeClass('nav-justified');
@@ -41,6 +67,19 @@ $(window).on("resize", function() {
    }, 1);   
 });
 
+<<<<<<< HEAD
+=======
+function InitBusinessButton()
+{
+    $('#businessTypes li').click(function(e) 
+    {
+        $("#businessTypes li").removeClass("active");
+        $(this).addClass("active");
+        e.preventDefault();
+    });
+}
+
+>>>>>>> d29f028... 131 powerkiosk plugin start
 function InitZipCodeBox()
 {
     $("#zipCode").autoNumeric('init', 
@@ -103,6 +142,24 @@ function SetClickListeners()
             ResetFields();
         }
     });
+<<<<<<< HEAD
+=======
+    
+    // update promo code upon enter
+    $(".promoCode").on("keyup", function(e) 
+    {
+        if (e.which == 13 || e.keyCode == 13)
+        {
+            ChangeAgentID();
+        }
+    })
+}
+
+function SetInnerCoverHeight()
+{
+    var offset = 20;
+    $(".inner.cover").css("min-height", ($("html").height() - ($(".masthead").height() + $(".mastfoot").height())) - offset);
+>>>>>>> d29f028... 131 powerkiosk plugin start
 }
 
 function CloseList(element)
@@ -152,9 +209,18 @@ function GetServiceTypes()
         {
             //create the tabs          
             var serviceIds = $("#serviceTypes");
+<<<<<<< HEAD
             for (var i = 0; i < result.data.length; i++) 
             {
                 serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + result.data[i].name + "</a></li>");
+=======
+            var electicity = "<i class='fa fa-bolt'></i> ";
+            var gas = "<i class='fa fa-industry'></i> ";
+            for (var i = 0; i < result.data.length; i++) 
+            {
+                var icon = (i === 0 ? electicity : gas);
+                serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + icon + result.data[i].name + "</a></li>");
+>>>>>>> d29f028... 131 powerkiosk plugin start
             }
             
             //setup the service tabs and their click events
@@ -196,7 +262,11 @@ function GetUtilities()
         },
         error: function() 
         {
+<<<<<<< HEAD
             $("#utilityAlert").html("No Utilities Found For Your Area!");
+=======
+            $("#utilityAlert").html("No Utilities Found For Your Territory!");
+>>>>>>> d29f028... 131 powerkiosk plugin start
             $("#utilityAlert").show();
             $("#zipCode").prop("disabled", false);
         }
@@ -229,7 +299,11 @@ function LoadUtilities(zipCode, serviceType)
             
             if (result.data.length == 0)
             {
+<<<<<<< HEAD
                 $("#utilityAlert").html("No Utilities Found For Your Area!");
+=======
+                $("#utilityAlert").html("No Utilities Found For Your Territory!");
+>>>>>>> d29f028... 131 powerkiosk plugin start
                 $("#utilityAlert").show();
             }
             else
@@ -371,4 +445,25 @@ function SetHiddenInputs()
 	$("#serviceTypeID").val($("#serviceTypes li.active a").attr("value")); //this sets utility service type!!!
 	$("#stateID").val(state);
 	$("#getRates").attr("name", $("#businessTypes li.active a").attr("value")); //this sets business type!!!
+<<<<<<< HEAD
+=======
+}
+
+function OpenPromoCodeModal()
+{
+    $("#promoCodeModal").modal('show');
+}
+
+function ChangeAgentID()
+{
+	//take input from promocode box
+	var promoCode = $(".promoCode").val().trim();
+	$("#promoCodeModal").modal('hide');
+    
+	if (promoCode == "" || promoCode == null) return;
+	
+    // apply the promo code
+    $("#directAgentId").val(promoCode);
+    $("#promoCodeAlert").fadeIn().delay(2000).fadeOut();
+>>>>>>> d29f028... 131 powerkiosk plugin start
 }
