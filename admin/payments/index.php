@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
         header("Location: /", FALSE);
+<<<<<<< HEAD
 =======
         header("Location: /#loggedout", FALSE);
 >>>>>>> fd415d1... 119 better session logout UX
@@ -18,6 +19,9 @@
 =======
         header("Location: /", FALSE);
 >>>>>>> 12b3320... 115 added pricing location
+=======
+        return;
+>>>>>>> b5e98b9... 115 payments needed a return
     }
     
     if (!isset($_SESSION["admin"]))

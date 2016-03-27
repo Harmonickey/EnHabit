@@ -1098,9 +1098,8 @@ function UpdatePricing(oid)
                             var inputs = $("#" + oid + " input");
                             var headingInputs = $("#heading" + oid + " label");
                             
-                            $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
-                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[1]).val() + "%");
-                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[2]).val() + "%");
+                            $(headingInputs[1]).text("Listing Markup: " + $(inputs[0]).val() + "%");
+                            $(headingInputs[2]).text("Featured Markup: " + $(inputs[1]).val() + "%");
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Pricing", position: 'top-center'});
                             
@@ -1573,10 +1572,15 @@ function SetTextBoxWithAutoNumericPricing(rowId)
         aSign: '%', 
         pSign: 's',
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         vMax: '99.99',
 =======
         vMax: '100.00',
 >>>>>>> ce68029... 119 heading
+=======
+        vMax: '99.99',
+>>>>>>> 25d12c8... 115 100 exclusive
         vMin: '0.00'
     });
     
@@ -1585,10 +1589,14 @@ function SetTextBoxWithAutoNumericPricing(rowId)
         aSign: '%', 
         pSign: 's', 
 <<<<<<< HEAD
+<<<<<<< HEAD
         vMax: '99.99',
 =======
         vMax: '100.00',
 >>>>>>> ce68029... 119 heading
+=======
+        vMax: '99.99',
+>>>>>>> 25d12c8... 115 100 exclusive
         vMin: '0.00'
 =======
     $(row[1]).autoNumeric('init', 
@@ -1600,15 +1608,24 @@ function SetTextBoxWithAutoNumericPricing(rowId)
         pSign: 's',
         vMax: '99',
         vMin: '0'
+=======
+        vMax: '100.00',
+        vMin: '0.00'
+>>>>>>> 1e9e699... 115 decimals
     });
     
     $(row[1]).autoNumeric('init', 
     {
         aSign: '%', 
         pSign: 's', 
+<<<<<<< HEAD
         vMax: '99',
         vMin: '0'
 >>>>>>> a1a8ea2... 115 autonumeric
+=======
+        vMax: '100.00',
+        vMin: '0.00'
+>>>>>>> 1e9e699... 115 decimals
     });
 }
 
@@ -2741,6 +2758,7 @@ function BuildData(inputs, elements)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         else if (elements[i] == "Rent" || elements[i] == "ListingMarkup" || elements[i] == "FeaturedMarkup")
 =======
         else if (elements[i] == "Latitude" || elements[i] == "Longitude" || elements[i] == "SelectedAddress" || elements[i] == "Notes" || elements[i] == "Landlord" || elements[i] == "University")
@@ -2754,6 +2772,9 @@ function BuildData(inputs, elements)
 >>>>>>> 2fdafcb... 115 frontend functions
         else if (elements[i] == "Rent")
 >>>>>>> 0dc8937... 107 updating deleting creating
+=======
+        else if (elements[i] == "Rent" || elements[i] == "ListingMarkup" || elements[i] == "FeaturedMarkup")
+>>>>>>> aeb5bbb... 115 fix for pricing update
         {
             data[elements[i]] = $(inputs[i]).autoNumeric('get');
         }

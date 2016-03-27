@@ -21,6 +21,7 @@ def UpdatePricing(id, listingMarkup, featuredMarkup)
     mongoSession.use("enhabit") # this is our current database
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     retMsg = ""
  
     begin
@@ -30,20 +31,18 @@ def UpdatePricing(id, listingMarkup, featuredMarkup)
     universityObj = Hash.new
     universityObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
     
+=======
+>>>>>>> aeb5bbb... 115 fix for pricing update
     retMsg = ""
  
     begin
-        university = Hash.new
-    
-        mongoSession.with(safe: true) do |session|
-            university = session[:universities].find(universityObj).one
-        end
-        
-        universityId = university["UniversityId"]
-    
         queryObj = Hash.new
+<<<<<<< HEAD
         queryObj["UniversityId"] = universityId
 >>>>>>> 34c5dec... 115 backend functions
+=======
+        queryObj["_id"] = Moped::BSON::ObjectId.from_string(id.to_s)
+>>>>>>> aeb5bbb... 115 fix for pricing update
     
         pricingObj = Hash.new
         pricingObj["ListingMarkup"] = listingMarkup
