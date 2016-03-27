@@ -170,6 +170,7 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .type-content .bootstrap-switch
 {
@@ -177,6 +178,8 @@
 }
 
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> cc5112a... 136 fix css
 #datepicker-inline
 {
     font-weight: bold;
@@ -280,13 +283,22 @@
 .FirstName, 
 .LastName,
 .Payment.Email, 
+<<<<<<< HEAD
+<<<<<<< HEAD
 .Account.Email,
 .PhoneNumber,
 <<<<<<< HEAD
+=======
+=======
+.Account.Email,
+>>>>>>> 831ce25... 136 listings styles
+.PhoneNumber,
+>>>>>>> a53d888... 136 css fixes
 .Payment.Address, 
 .Payment.Bedrooms,
 .Payment.Bathrooms, 
 .Payment.Unit,
+<<<<<<< HEAD
 .Memo,
 .LandlordEmail,
 .input-group.AmountWrapper
@@ -309,6 +321,8 @@
 =======
 >>>>>>> e2856dc... 121 minor changes
 .Unit,
+=======
+>>>>>>> a53d888... 136 css fixes
 .Memo,
 .LandlordEmail,
 .input-group.AmountWrapper
@@ -320,10 +334,14 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .Payment.Rent
 =======
 .Rent
 >>>>>>> e2856dc... 121 minor changes
+=======
+.Payment.Rent
+>>>>>>> 72e6cc3... 136 air conditioning
 {
     text-align: center;
     padding-right: 45px;
@@ -691,11 +709,16 @@
 #Filters select,
 #extras_view input,
 <<<<<<< HEAD
+<<<<<<< HEAD
 #extras_view select,
 #extra-filters-btn
 =======
 #extras_view select
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+#extras_view select,
+#extra-filters-btn
+>>>>>>> 4078a35... 136 trying style
 {
     background-color: black;
     border-radius: 10px;
@@ -891,22 +914,44 @@
     background-color: darkgreen;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #extra-filters-btn:hover
 {
     color: white !important;
     background-color: #333;
 }
 
+=======
+>>>>>>> 2015779... 136 filters
+=======
+#extra-filters-btn a:hover
+=======
+#extra-filters-btn:hover
+>>>>>>> 0c8f259... 136 actually select on right one
+{
+    color: white !important;
+    background-color: #333;
+}
+
+>>>>>>> 8b03f12... 136 color white
 #action-menu 
 {
     list-style-type: none;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2015779... 136 filters
 #action-menu li a
 {
     font-size: 18px;
 }
 
+=======
+>>>>>>> 4078a35... 136 trying style
 #Filters .btn-primary
 {
     background-color: #5259e3;

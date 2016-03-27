@@ -68,6 +68,7 @@ else if (isset($_POST["command"]))
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment" || $_POST["command"] === "get_all_users" || $_POST["command"] == "send_email" || $_POST["command"] === "get_all_universities")
 =======
     if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment")
@@ -78,6 +79,9 @@ else if (isset($_POST["command"]))
 =======
     if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment" || $_POST["command"] === "get_all_users" || $_POST["command"] == "send_email")
 >>>>>>> c7a77b3... 132 fix for api since no login is required
+=======
+    if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment" || $_POST["command"] === "get_all_users" || $_POST["command"] == "send_email" || $_POST["command"] === "get_all_universities")
+>>>>>>> 3f59b08... 136 post in api
     {
         debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' '' '' 'false'");
         

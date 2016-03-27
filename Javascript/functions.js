@@ -32,6 +32,20 @@ var addedFiles = {};
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
 
+var listingWaiting = false;
+var listingData = {};
+
+var pendingData = null;
+var numUploaded = 0;
+var numAdded = 0;
+
+var landlordList = [];
+var universitiesList = [];
+
+var pictures = {};
+var dropzones = {};
+var addedFiles = {};
+
 // page background default settings - to change, override them at the top of initialise-functions.js
 var background_settings = {
     change_on_mobile: false, // if true, bg changes on mobile devices
@@ -754,7 +768,14 @@ function GetAllLandlords()
                         if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
 >>>>>>> dd22ca4... 132 UserName to Username
                         {
+<<<<<<< HEAD
 >>>>>>> 29cb4d2... 121 landlords
+=======
+                            // create listing dropdown
+                            $("#landlords-filter").append("<option value='" + data[i].Username + "'>" + data[i].Username + "</option>");
+                            
+                            // payment modal dropdown
+>>>>>>> 3cd0ff4... 136 getting inits to work
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
                     }
@@ -775,6 +796,7 @@ function GetAllLandlords()
 =======
 }
 
+<<<<<<< HEAD
 >>>>>>> 29cb4d2... 121 landlords
 function InitPaymentModal()
 {
@@ -797,6 +819,8 @@ function InitPaymentModal()
 >>>>>>> 1114524... 121 geocomplete
 }
 
+=======
+>>>>>>> 3cd0ff4... 136 getting inits to work
 function InitSlider()
 {
     $.ajax(
@@ -1028,22 +1052,52 @@ function CreateQuery()
 
 function InitSpecialFields()
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
     var listingModal = $("#common-modal input");
     
     $(listingModal[0]).geocomplete()
         .bind("geocode:result", function(event, result){
             var hiddenFields = $("#common-modal input[type='hidden']");
+=======
+    var listingModal = $("#modal-content-listing input");
+    
+    $(listingModal[0]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            var hiddenFields = $("#modal-content-listing input[type='hidden']");
+>>>>>>> 495fd48... 136 inits and function call fix
+=======
+    var listingModal = $("#common-modal input");
+    
+    $(listingModal[0]).geocomplete()
+        .bind("geocode:result", function(event, result){
+            var hiddenFields = $("#common-modal input[type='hidden']");
+>>>>>>> 3cd0ff4... 136 getting inits to work
             var keys = Object.keys(result.geometry.location);
             $(hiddenFields[0]).val(result.geometry.location[keys[0]]);
             $(hiddenFields[1]).val(result.geometry.location[keys[1]]);
             $(hiddenFields[2]).val($(listingModal[0]).val());
         });
         
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3cd0ff4... 136 getting inits to work
     $("#common-modal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
     $($("#common-modal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
     $($("#common-modal .type-content input")[0]).prop("checked", true);
     $($("#common-modal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
     $($("#common-modal .type-content input")[1]).prop("checked", true);
+<<<<<<< HEAD
+=======
+    $("#modal-content-listing input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $($("#modal-content-listing .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#modal-content-listing .type-content input")[0]).prop("checked", true);
+    $($("#modal-content-listing .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#modal-content-listing .type-content input")[1]).prop("checked", true);
+>>>>>>> 495fd48... 136 inits and function call fix
+=======
+>>>>>>> 3cd0ff4... 136 getting inits to work
     
     $(listingModal[2]).autoNumeric('init', 
     {
@@ -1834,6 +1888,7 @@ function LoginUser(hideMainModal)
                     {
                         ShowLoginFeatures(hideMainModal, res);
 <<<<<<< HEAD
+<<<<<<< HEAD
                         
                         // session should be set, so the user will be attached to the listing
                         if (listingWaiting)
@@ -1842,6 +1897,13 @@ function LoginUser(hideMainModal)
                         }
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                        
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                        }
+>>>>>>> 42e1d4d... 136 most of the skeleton
                     }
                     else
                     {
@@ -1865,6 +1927,10 @@ function LoginUser(hideMainModal)
     }
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3cd0ff4... 136 getting inits to work
 function GetAllUniversities()
 {
     $.ajax(
@@ -1904,6 +1970,8 @@ function GetAllUniversities()
 
 function PostListingModal(event)
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
     // loading the listing modal
     LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
     
@@ -1929,6 +1997,8 @@ function PendingListingCreation()
     // wait for registering
     listingWaiting = true;
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     var input = $(".modal-dialog input, .modal-dialog select, .modal-dialog textarea");
     
     var data = BuildCreateListingData(input, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
@@ -1952,6 +2022,73 @@ function PendingListingCreation()
         // load the register modal
         LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
     }
+=======
+/* Just a proxy method for setting the listing as waiting... */
+=======
+=======
+    // loading the listing modal
+>>>>>>> 4f168e5... 136 fix flow a bit
+    LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');
+    
+    // make sure the picture dropzone is created
+    CreateDropzone("create", "#common-modal form");
+    
+    // initialize all the fields in the form
+    InitSpecialFields();
+}
+
+/* Just a proxy method for handling the special listing creation mechanism... */
+>>>>>>> 3cd0ff4... 136 getting inits to work
+function PendingListingCreation()
+{
+    // wait for registering
+    listingWaiting = true;
+    
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    LoadModal(event, 'modal-content-login', 'login', 'Log In');
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+    // load the register modal
+    LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
+>>>>>>> 4f168e5... 136 fix flow a bit
+=======
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
+    
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+=======
+    var data = BuildData(["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 22e6145... 136 error listing
+=======
+    var data = BuildCreateListingData(["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 45435b7... 136 new method of data
+=======
+    var input = $(".modal-dialog input, .modal-dialog select, .modal-dialog textarea");
+    
+    var data = BuildCreateListingData(input, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> 355bfc9... 136 relent and use original functions
+    
+    var error = BuildCreateListingError(data);
+    
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+    
+    if (error != "Please Include ")
+    {
+        SetError('create-listing', error);
+    }
+    else
+    {
+        listingData = data;
+        
+        // load the register modal
+        LoadModal(event, 'modal-content-register', 'CreateAccount', 'Create an Account');
+    }
+>>>>>>> b15938a... 136 listing creation
 }
 
 function LoginFacebookUser(userID, accessToken)
@@ -2234,6 +2371,7 @@ function RemoveLoginFeatures()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
@@ -2245,6 +2383,7 @@ function RemoveLoginFeatures()
     $("#create-listing-button").attr("onclick", "PendingListingCreation()");
 >>>>>>> bf5781f... 136 inits and function call fix
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> 118cf11... 136 create listing with user id
     $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
@@ -2255,6 +2394,24 @@ function RemoveLoginFeatures()
 >>>>>>> 02ef3a7... 121 handle logout scenario
 =======
 >>>>>>> 629c4d2... 116 admin fix
+=======
+=======
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
+<<<<<<< HEAD
+    $("#create-listing-button").attr("onclick", "LoginForListing()");
+>>>>>>> 8ba0f73... 136 most of the skeleton
+<<<<<<< HEAD
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+=======
+    $("#create-listing-button").attr("onclick", "PendingListingCreation()");
+>>>>>>> bf5781f... 136 inits and function call fix
+>>>>>>> 495fd48... 136 inits and function call fix
+=======
+    $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
+>>>>>>> 2f38a31... 136 fix flow a bit
+>>>>>>> 4f168e5... 136 fix flow a bit
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -2272,15 +2429,24 @@ function ShowLoginFeatures(hideMainModal, userType)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e96f51e... 136 window.location
+=======
+>>>>>>> b2c516f... 136 semicolon
         $("#create-listing-btn").attr("onclick", "/admin/listings");
 >>>>>>> 2f38a31... 136 fix flow a bit
 =======
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/;'");
 >>>>>>> a896d67... 136 window.location
+<<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 118cf11... 136 create listing with user id
@@ -2296,6 +2462,19 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> 21cb68d... 132 some small payment navigate fixes
 =======
 >>>>>>> 629c4d2... 116 admin fix
+=======
+=======
+        $("#payment-btn").hide(); // admins don't pay rent!!
+        $("#create-listing-btn").attr("onclick", "/admin/listings");
+>>>>>>> 2f38a31... 136 fix flow a bit
+>>>>>>> 4f168e5... 136 fix flow a bit
+=======
+>>>>>>> e96f51e... 136 window.location
+=======
+=======
+        $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
+>>>>>>> 5a6323a... 136 semicolon
+>>>>>>> b2c516f... 136 semicolon
     }
     if (Contains(userType, "Landlord"))
     {
@@ -2306,15 +2485,24 @@ function ShowLoginFeatures(hideMainModal, userType)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         $("#payment-btn").hide(); // landlords don't pay rent!!
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e96f51e... 136 window.location
+=======
+>>>>>>> b2c516f... 136 semicolon
         $("#create-listing-btn").attr("onclick", "/landlord/listings");
 >>>>>>> 2f38a31... 136 fix flow a bit
 =======
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/;'");
 >>>>>>> a896d67... 136 window.location
+<<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 118cf11... 136 create listing with user id
@@ -2330,6 +2518,19 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> 21cb68d... 132 some small payment navigate fixes
 =======
 >>>>>>> 629c4d2... 116 admin fix
+=======
+=======
+        $("#payment-btn").hide(); // landlords don't pay rent!!
+        $("#create-listing-btn").attr("onclick", "/landlord/listings");
+>>>>>>> 2f38a31... 136 fix flow a bit
+>>>>>>> 4f168e5... 136 fix flow a bit
+=======
+>>>>>>> e96f51e... 136 window.location
+=======
+=======
+        $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
+>>>>>>> 5a6323a... 136 semicolon
+>>>>>>> b2c516f... 136 semicolon
     }
     if (Contains(userType, "Tenant"))
     {
@@ -2350,12 +2551,25 @@ function ShowLoginFeatures(hideMainModal, userType)
             $(".rental-nav").show();
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/';");
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
 =======
 >>>>>>> 65240df... 107 various payments fixes
+=======
+        
+<<<<<<< HEAD
+<<<<<<< HEAD
+        $("#create-listing-btn").attr("onclick", "/tenant/listings");
+>>>>>>> 4f168e5... 136 fix flow a bit
+=======
+        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/;'");
+>>>>>>> e96f51e... 136 window.location
+=======
+        $("#create-listing-btn").attr("onclick", "window.location='/tenant/listings/';");
+>>>>>>> b2c516f... 136 semicolon
     }
 
     if (hideMainModal === true)
@@ -2421,6 +2635,11 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
+                        
+                        if (listingWaiting)
+                        {
+                            CreateListing();
+                        }
                     }
                     else
                     {
@@ -2585,6 +2804,8 @@ function CloseExtrasView()
 
 function CreateListing()
 {   
+<<<<<<< HEAD
+<<<<<<< HEAD
     var data = listingData;
     
     try
@@ -2604,6 +2825,61 @@ function CreateListing()
         else
         {
             dropzones["create"].processQueue();
+=======
+    var inputs = $("#createListingModal input, #createListingModal select, #createListingModal textarea");
+    
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildError(data);
+    
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
+    data.Address = data.Address.split(",")[0];
+    data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
+    data.Pictures = pictures["create"]; // global variable modified by dropzone.js, by my custom functions
+=======
+    console.log("here");
+
+    var data = listingData;
+>>>>>>> b15938a... 136 listing creation
+    
+    try
+    {
+        // need to put data into a saved state because uploading fileSize
+        // is asynchronous
+        pendingData = data;
+        
+        $("#create-listing-button").text("Creating...");
+        $("#create-listing-button").prop("disabled", true);
+        
+        // async call, caught in dropzone.success event handler below
+        if (numAdded == 0)
+        {
+            ProcessListing();
+        }
+        else
+        {
+<<<<<<< HEAD
+            // need to put data into a saved state because uploading fileSize
+            // is asynchronous
+            pendingData = data;
+            
+            $("#create-listing-button").text("Creating...");
+            $("#create-listing-button").prop("disabled", true);
+            
+            // async call, caught in dropzone.success event handler below
+            if (numAdded == 0)
+            {
+                ProcessListing();
+            }
+            else
+            {
+                dropzones["create"].processQueue();
+            }
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+            dropzones["create"].processQueue();
+>>>>>>> b15938a... 136 listing creation
         }
     }
     catch(e)
@@ -2657,12 +2933,21 @@ function ProcessListing()
                         numUploaded = 0;
                         
                         pendingData = null;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b15938a... 136 listing creation
                         
                         listingWaiting = false;
                         
                         listingData = {};
+<<<<<<< HEAD
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
+=======
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+>>>>>>> b15938a... 136 listing creation
                     }
                 }
             }
@@ -3264,12 +3549,26 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
+
+    GetAllUniversities();
+    GetAllLandlords();
+<<<<<<< HEAD
+<<<<<<< HEAD
     
-    InitPaymentModal();
+<<<<<<< HEAD
+    InitSpecialFields();
 
     GetAllUniversities();
     GetAllLandlords();
    
+=======
+>>>>>>> 3cd0ff4... 136 getting inits to work
+=======
+    console.log("here");
+>>>>>>> 1f41bf2... 136 console logs
+=======
+   
+>>>>>>> b15938a... 136 listing creation
     $('#listings').slimScroll({
         height: '100%',
         railVisible: true,

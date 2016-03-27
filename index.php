@@ -81,6 +81,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 -->
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
                     <a id="create-listing-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PostListingModal(event);">
+<<<<<<< HEAD
                         Post Listing Now!
                     </a>
                 </div>
@@ -106,7 +107,17 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 >>>>>>> 8ba4aa2... 121 setup popup
 =======
                 -->
+<<<<<<< HEAD
 >>>>>>> c7ffcb3... hotfix remove pay now
+=======
+                <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
+                    <a id="create-listing-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-listing', 'listing', 'Post Listing');">
+=======
+>>>>>>> 3cd0ff4... 136 getting inits to work
+                        Post Listing Now!
+                    </a>
+                </div>
+>>>>>>> 42e1d4d... 136 most of the skeleton
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -258,6 +269,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                 </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <div>
                     <!--<div class="item-content list-view-button">
                         <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
@@ -275,6 +287,29 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <ul id="action-menu">
                     <li class="menu-item scroll">
                         <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" onclick="OpenExtrasView()">Open Extra Filters</a>
+=======
+                <div>
+                    <!--<div class="item-content list-view-button">
+                        <input type="button" class="form-control" onclick="OpenListingsList();" value="List View" />
+                    </div>-->
+                </div>
+                <ul id="action-menu">
+<<<<<<< HEAD
+                    <li class="item-content extra-filter-button">
+                        <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
+>>>>>>> 079cde4... 136 extra filters and navbar
+=======
+                    <li class="menu-item scroll" onclick="OpenExtrasView();">
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        <a id="extra-filters-btn" type="button">Extra Filters</a>
+>>>>>>> 90bcdf1... 136 baseline for button
+=======
+                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Extra Filters</a>
+>>>>>>> 36629dd... 136 baseline for button
+=======
+                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Open Extra Filters</a>
+>>>>>>> 2015779... 136 filters
                     </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                         <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
@@ -400,14 +435,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <!-- Speedy Payment -->
             <div class="content-to-populate-in-modal" id="modal-content-payment">
                 <h1>Pay Rent Now</h1>
-                <label class="required">First Name: </label><input type="text" class="form-control FirstName" />
-                <label class="required">Last Name: </label><input type="text" class="form-control LastName" />
-                <label class="required">Address: </label><input type="text" class="form-control Address" autocomplete="false" />
-                <label>Unit: </label><input type="text" class="form-control Unit" placeholder="Ex: 2E"/>
+                <label class="required">First Name: </label><input type="text" class="form-control Payment FirstName" />
+                <label class="required">Last Name: </label><input type="text" class="form-control Payment LastName" />
+                <label class="required">Address: </label><input type="text" class="form-control Payment Address" autocomplete="false" />
+                <label>Unit: </label><input type="text" class="form-control Payment Unit" placeholder="Ex: 2E"/>
                 <label class="required">Rent Amount: </label>
                     <div class="input-group AmountWrapper">
                         <span class="input-group-addon">$</span>
-                        <input type="text" class="form-control Rent" placeholder="Ex: 500" />
+                        <input type="text" class="form-control Payment Rent" placeholder="Ex: 500" />
                     </div>
                 <label>Payment Memo: </label><input type="text" class="form-control Memo" />
                 <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
@@ -634,6 +669,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="modal-body">
                 <!-- Put all the fields to create a listing here -->
                 <div class="row">
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" />
                     </div>
@@ -655,6 +692,40 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <div class="col-lg-4 col-md-4 col-sm-4">
                         <div style="font-weight: 700;">Bedrooms</div>
                         <select id="bedrooms-filter" class="form-control Bedrooms">
+=======
+                    <div class="col-lg-12 col-md-12 col-sm-12 required">
+=======
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+<<<<<<< HEAD
+>>>>>>> 3cd0ff4... 136 getting inits to work
+                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control' autocomplete="false" />
+=======
+                        <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" />
+>>>>>>> 22e6145... 136 error listing
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div style="font-weight: 700;">Unit Number</div><input type='text' class='form-control Unit' />
+                    </div>
+                    
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div style="font-weight: 700;">Rent/Month</div><input type='text' class='form-control Rent' />
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div style="font-weight: 700;">Start Date</div><input type='text' class='form-control Start' />
+                    </div> 
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div style="font-weight: 700;">Bedrooms</div>
+<<<<<<< HEAD
+                        <select id="bedrooms-filter" class="form-control">
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+                        <select id="bedrooms-filter" class="form-control Bedrooms">
+>>>>>>> 22e6145... 136 error listing
                             <option value="studio">Studio</option>
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
@@ -668,9 +739,28 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             <option value="10">10+</option>
                         </select>
                     </div>
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <div class="col-lg-4 col-md-4 col-sm-4">
                         <div style="font-weight: 700;">Bathrooms</div>
                         <select id="bathrooms-filter" class="form-control Bathrooms">
+<<<<<<< HEAD
+=======
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+=======
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+<<<<<<< HEAD
+>>>>>>> 3cd0ff4... 136 getting inits to work
+                        <label>Bathrooms</label>
+=======
+                        <div style="font-weight: 700;">Bathrooms</div>
+>>>>>>> c53ec5b... 136 styling form
+                        <select id="bathrooms-filter" class="form-control">
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+>>>>>>> 22e6145... 136 error listing
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -684,10 +774,67 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </select>
                     </div>
                 </div>
+<<<<<<< HEAD
+<<<<<<< HEAD
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="modal-switch animals-content">
                             <div style="font-weight: 700;">Animals</div><input class="Animals" type='checkbox' data-size='mini' />
+<<<<<<< HEAD
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch laundry-content">
+                            <div style="font-weight: 700;">In-Unit Laundry</div><input class="Laundry" type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch parking-content">
+                            <div style="font-weight: 700;">Parking</div><input class="Parking" type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch airConditioning-content">
+                            <div style="font-weight: 700;">Air Conditioning</div><input class="AirConditioning" type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+<<<<<<< HEAD
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch type-content">
+                            <div style="font-weight: 700;">Lease Type</div><input class="LeaseType" type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="modal-switch type-content">
+                            <div style="font-weight: 700;">Building Type</div><input class="BuildingType" type='checkbox' data-size='mini' />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+<<<<<<< HEAD
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <div style="font-weight: 700;">Landlord</div>
+                        <select id="landlords-filter" class="form-control Landlord" style="font-size: 14px;">
+=======
+                <div class="row">
+=======
+                <div class="row" style="margin-top: 10px;">
+>>>>>>> c53ec5b... 136 styling form
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+=======
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+>>>>>>> 74a60df... 136 try something new
+=======
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+>>>>>>> 48a90eb... 136 move around
+                        <div class="modal-switch animals-content">
+                            <div style="font-weight: 700;">Animals</div><input type='checkbox' data-size='mini' />
+=======
+>>>>>>> 22e6145... 136 error listing
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -723,31 +870,85 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">Landlord</div>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        <select id="landlords-filter" class="form-control">
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+                        <select id="landlords-filter" class="form-control" style="font-size: 14px;">
+>>>>>>> 74a60df... 136 try something new
+=======
                         <select id="landlords-filter" class="form-control Landlord" style="font-size: 14px;">
+>>>>>>> 22e6145... 136 error listing
                         
                         </select>
                     </div>
+<<<<<<< HEAD
+<<<<<<< HEAD
                 </div>
+<<<<<<< HEAD
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
                         <div style="font-weight: 700;">University</div>
                         <select id="universities-filter" class="form-control University" style="font-size: 14px;">
+=======
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+=======
+                    <div class="col-lg-6 col-md-6 col-sm-6 ui-widget">
+>>>>>>> 3cd0ff4... 136 getting inits to work
+                        <label>University</label>
+=======
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12 ui-widget">
+                        <div style="font-weight: 700;">University</div>
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> c53ec5b... 136 styling form
+                        <select id="universities-filter" class="form-control">
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+                        <select id="universities-filter" class="form-control" style="font-size: 14px;">
+>>>>>>> 74a60df... 136 try something new
+=======
+                        <select id="universities-filter" class="form-control University" style="font-size: 14px;">
+>>>>>>> 22e6145... 136 error listing
                         
                         </select>
                     </div>
                 </div>
+<<<<<<< HEAD
+<<<<<<< HEAD
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Info</label><textarea rows='4' cols='50' class='form-control Notes'></textarea>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
+=======
+                <div class="row">
+=======
+                <div class="row" style="margin-top: 10px;">
+>>>>>>> c53ec5b... 136 styling form
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control Notes'></textarea>
+                    </div>
+                </div>
+<<<<<<< HEAD
+                <div class="row">
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+                <div class="row" style="margin-top: 10px;">
+>>>>>>> c53ec5b... 136 styling form
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Images (Will Upload Upon Submit)</label>
                         <form action="/images/enhabit/upload_file.php" data-pic-id="create" class="form-control dropzone"></form>
                     </div>
                 </div>
                 <!-- Lat, Long, Address Hidden fields -->
+<<<<<<< HEAD
+<<<<<<< HEAD
                 <input type='hidden' class="Latitude" /><input type='hidden' class="Longitude" /><input type='hidden' class="SelectedAddress" />
                 <div class="row" style="margin-top: 15px;">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -755,6 +956,21 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                 </div>
                 <p class="create-listing-error alert alert-danger" style="display: none;"></p>
+=======
+                <input type='hidden' class="latitude" /><input type='hidden' class="longitude" /><input type='hidden' class="selected_address" />
+=======
+                <input type='hidden' class="Latitude" /><input type='hidden' class="Longitude" /><input type='hidden' class="SelectedAddress" />
+>>>>>>> d743166... 136 geocomplete
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PendingListingCreation()">Create Listing</button>
+                    </div>
+                </div>
+<<<<<<< HEAD
+>>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+                <p class="create-listing-error alert alert-danger" style="display: none;"></p>
+>>>>>>> 22e6145... 136 error listing
             </div>
         </div>
         <!-- Modal -->
@@ -926,6 +1142,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 
         </script>
 <<<<<<< HEAD
+<<<<<<< HEAD
         
 =======
         <!-- placeholder for details view -->
@@ -956,5 +1173,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         </div>
         <!-- end details view -->
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        
+>>>>>>> 42e1d4d... 136 most of the skeleton
     </body>
 </html>
