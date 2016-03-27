@@ -40,19 +40,25 @@ $(function()
     InitZipCodeBox();
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     InitBusinessButton();
     
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
     SetClickListeners();
     
     GetServiceTypes();
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     SetInnerCoverHeight();
     
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+>>>>>>> f94ff32... 140 power kiosk on front page
     var height = $("html").height();
     $("body").css("min-height", height + "px");
 });
@@ -72,6 +78,7 @@ $(window).on("resize", function() {
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 function InitBusinessButton()
 {
@@ -84,6 +91,8 @@ function InitBusinessButton()
 }
 
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
 function InitZipCodeBox()
 {
     $("#zipCode").autoNumeric('init', 
@@ -147,6 +156,7 @@ function SetClickListeners()
         }
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     
     // update promo code upon enter
@@ -164,6 +174,8 @@ function SetInnerCoverHeight()
     var offset = 20;
     $(".inner.cover").css("min-height", ($("html").height() - ($(".masthead").height() + $(".mastfoot").height())) - offset);
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+>>>>>>> f94ff32... 140 power kiosk on front page
 }
 
 function CloseList(element)
@@ -273,10 +285,14 @@ function GetUtilities()
         error: function() 
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             $("#utilityAlert").html("No Utilities Found For Your Area!");
 =======
             $("#utilityAlert").html("No Utilities Found For Your Territory!");
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+            $("#utilityAlert").html("No Utilities Found For Your Area!");
+>>>>>>> 3129f4b... 140 territory to area
             $("#utilityAlert").show();
             $("#zipCode").prop("disabled", false);
         }
@@ -310,10 +326,14 @@ function LoadUtilities(zipCode, serviceType)
             if (result.data.length == 0)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 $("#utilityAlert").html("No Utilities Found For Your Area!");
 =======
                 $("#utilityAlert").html("No Utilities Found For Your Territory!");
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+                $("#utilityAlert").html("No Utilities Found For Your Area!");
+>>>>>>> 3129f4b... 140 territory to area
                 $("#utilityAlert").show();
             }
             else
@@ -456,6 +476,7 @@ function SetHiddenInputs()
 	$("#stateID").val(state);
 	$("#getRates").attr("name", $("#businessTypes li.active a").attr("value")); //this sets business type!!!
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 }
 
@@ -476,4 +497,6 @@ function ChangeAgentID()
     $("#directAgentId").val(promoCode);
     $("#promoCodeAlert").fadeIn().delay(2000).fadeOut();
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+>>>>>>> f94ff32... 140 power kiosk on front page
 }

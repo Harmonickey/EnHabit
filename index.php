@@ -86,11 +86,15 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </a>
                 </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f94ff32... 140 power kiosk on front page
                 <div class="nav navbar-nav navbar-left" style="margin-left: 15px; margin-top: 6px;" >
                     <a id="powerk-kiosk-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PowerKioskModal(event);">
                         Save Money on Energy Now!
                     </a>
                 </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 
@@ -118,6 +122,8 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </a>
                 </div>
 >>>>>>> 42e1d4d... 136 most of the skeleton
+=======
+>>>>>>> f94ff32... 140 power kiosk on front page
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -617,13 +623,25 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         </div>
                     </div>
                     <form class="data-submit hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
+<<<<<<< HEAD
                         <input type="hidden" name="directAgentID" class="directAgentId" value="Enhabit">
+=======
+                        <input type="hidden" name="directAgentID" class="directAgentId" value="energetic">
+>>>>>>> f94ff32... 140 power kiosk on front page
                         <input type="hidden" name="stateID" class="stateID" value="">
                         <input type="hidden" name="serviceTypeID" class="serviceTypeID" value="">
                         <input type="hidden" name="zipCode" class="zipCodeID" value="">
                         <input type="hidden" name="utilityID" class="utilityID" value="">
                         <input type="hidden" name="zone" class="zoneID" value="">
+<<<<<<< HEAD
+<<<<<<< HEAD
                         <input type="submit" name="residential" class="getRates">
+=======
+                        <input type="submit" name="rfq" class="getRates">
+>>>>>>> f94ff32... 140 power kiosk on front page
+=======
+                        <input type="submit" name="residential" class="getRates">
+>>>>>>> 87c0aa4... 140 zone fixes
                     </form>
                 </form>
               </div>
@@ -1040,12 +1058,18 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>  
         <!-- PayPal -->
 <<<<<<< HEAD
+<<<<<<< HEAD
         <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script> 
         <!-- PowerKiosk -->
         <script src="Libraries/Javascript/powerkiosk_front.js"></script>
 =======
         <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>        
 >>>>>>> e2856dc... 121 minor changes
+=======
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script> 
+        <!-- PowerKiosk -->
+        <script src="Libraries/Javascript/powerkiosk_front.js"></script>
+>>>>>>> f94ff32... 140 power kiosk on front page
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>

@@ -23,6 +23,14 @@ function InitializePowerKiosk()
 {  
     InitZipCodeBox();
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    InitBusinessButton();
+    
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
     SetClickListeners();
     
     GetServiceTypes();
@@ -32,6 +40,11 @@ function InitializePowerKiosk()
 }
 
 $(window).on("resize", function() {
+<<<<<<< HEAD
+=======
+   SetInnerCoverHeight();
+
+>>>>>>> bbd3fb3... 140 power kiosk on front page
    // this magically fixes the screen rotate issue!
    $("#common-modal .businessTypes").removeClass('nav-justified');
    setTimeout(function()
@@ -40,6 +53,22 @@ $(window).on("resize", function() {
    }, 1);   
 });
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+function InitBusinessButton()
+{
+    $('#common-modal .businessTypes li').click(function(e) 
+    {
+        $("#common-modal .businessTypes li").removeClass("active");
+        $(this).addClass("active");
+        e.preventDefault();
+    });
+}
+
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
 function InitZipCodeBox()
 {
     $("#common-modal .zipCode").autoNumeric('init', 
@@ -70,11 +99,20 @@ function SetClickListeners()
     // update utilities upon click
     $("#common-modal .utilities").change(function(e) 
     {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
         var zones = $("#common-modal .zones");
         zones.empty();
         $("#common-modal .zoneID").val("");
         zone = "";
         
+<<<<<<< HEAD
+=======
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
         $("#common-modal .submitContainer").hide(); // hide the submit button for now
         $("#common-modal .zonesContainer").hide();
         utility = $(this).val(); // set global
@@ -90,11 +128,20 @@ function SetClickListeners()
     
     $('#common-modal .serviceTypes').on("click", "li", function(e) 
     {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
         var zones = $("#common-modal .zones");
         zones.empty();
         $("#common-modal .zoneID").val("");
         zone = "";
         
+<<<<<<< HEAD
+=======
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
         $("#common-modal .serviceTypes li").removeClass("active");
         $(this).addClass("active");
         e.preventDefault();
@@ -195,7 +242,15 @@ function GetUtilities()
         },
         error: function() 
         {
+<<<<<<< HEAD
+<<<<<<< HEAD
             $("#common-modal .utilityAlert").html("No Utilities Found For Your Area!");
+=======
+            $("#common-modal .utilityAlert").html("No Utilities Found For Your Territory!");
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+            $("#common-modal .utilityAlert").html("No Utilities Found For Your Area!");
+>>>>>>> 3129f4b... 140 territory to area
             $("#common-modal .utilityAlert").show();
             $("#common-modal .zipCode").prop("disabled", false);
         }
@@ -203,7 +258,15 @@ function GetUtilities()
 }
 
 function LoadUtilities(zipCode, serviceType)
+<<<<<<< HEAD
+<<<<<<< HEAD
 {   
+=======
+{
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+{   
+>>>>>>> 87c0aa4... 140 zone fixes
     $.ajax(
     {
         type: 'POST',
@@ -228,7 +291,15 @@ function LoadUtilities(zipCode, serviceType)
             
             if (result.data.length == 0)
             {
+<<<<<<< HEAD
+<<<<<<< HEAD
                 $("#common-modal .utilityAlert").html("No Utilities Found For Your Area!");
+=======
+                $("#common-modal .utilityAlert").html("No Utilities Found For Your Territory!");
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+                $("#common-modal .utilityAlert").html("No Utilities Found For Your Area!");
+>>>>>>> 3129f4b... 140 territory to area
                 $("#common-modal .utilityAlert").show();
             }
             else
@@ -349,4 +420,11 @@ function SetHiddenInputs()
 	$("#common-modal .zipCodeID").val($("#common-modal .zipCode").val());
 	$("#common-modal .serviceTypeID").val($("#common-modal .serviceTypes li.active a").attr("value")); //this sets utility service type!!!
 	$("#common-modal .stateID").val(state);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	$("#common-modal .getRates").attr("name", $("#common-modal .businessTypes li.active a").attr("value")); //this sets business type!!!
+>>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+>>>>>>> 87c0aa4... 140 zone fixes
 }

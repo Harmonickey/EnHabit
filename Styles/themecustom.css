@@ -1335,6 +1335,9 @@ select::-ms-expand
     cursor: pointer;
     font: 16px/14px Tahoma, Verdana, sans-serif;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f94ff32... 140 power kiosk on front page
  }
  
 .serviceTypesContainer {
@@ -1345,6 +1348,7 @@ select::-ms-expand
 .serviceTypes li {
     border: 1px solid #ccc;
     border-radius: 5px;
+<<<<<<< HEAD
 }
 =======
  }
@@ -1355,3 +1359,6 @@ select::-ms-expand
 =======
  }
 >>>>>>> 461525b... 107 close leaflet popup, white x
+=======
+}
+>>>>>>> f94ff32... 140 power kiosk on front page

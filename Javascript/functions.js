@@ -128,7 +128,6 @@ function SubscribeSlideshowArrows()
 {
     $('body').on('click', '.slider-arrow img', function() 
     {
-        console.log("here");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -2831,6 +2830,7 @@ function CreateListing()
 {   
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     var data = listingData;
     
     try
@@ -2865,6 +2865,8 @@ function CreateListing()
 =======
     console.log("here");
 
+=======
+>>>>>>> 4b03363... 140 remove console logs
     var data = listingData;
 >>>>>>> b15938a... 136 listing creation
     
