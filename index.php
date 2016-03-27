@@ -301,6 +301,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <ul id="action-menu">
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <li class="item-content extra-filter-button">
                         <input type="button" class="form-control" onclick="OpenExtrasView();" value="Extra Filters" />
 >>>>>>> 079cde4... 136 extra filters and navbar
@@ -314,8 +315,15 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Extra Filters</a>
 >>>>>>> 36629dd... 136 baseline for button
 =======
+=======
+                    <li class="menu-item scroll">
+<<<<<<< HEAD
+>>>>>>> 65557e6... 137 not doubling up
                         <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button">Open Extra Filters</a>
 >>>>>>> 2015779... 136 filters
+=======
+                        <a id="extra-filters-btn" class="btn btn-outline-inverse btn-sm" type="button" onclick="OpenExtrasView()">Open Extra Filters</a>
+>>>>>>> a9fca4b... 137 final fix
                     </li>
                     <li id="search-function" class="menu-item scroll" onclick="SearchForListings();">
                         <a id="search" class="btn btn-outline-inverse btn-sm">Search</a>
@@ -624,10 +632,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     </div>
                     <form class="data-submit hidden" action="http://energy.enhabitlife.com/direct:home/remoteBegin" method="post" >
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <input type="hidden" name="directAgentID" class="directAgentId" value="Enhabit">
 =======
                         <input type="hidden" name="directAgentID" class="directAgentId" value="energetic">
 >>>>>>> f94ff32... 140 power kiosk on front page
+=======
+                        <input type="hidden" name="directAgentID" class="directAgentId" value="Enhabit">
+>>>>>>> a9fca4b... 137 final fix
                         <input type="hidden" name="stateID" class="stateID" value="">
                         <input type="hidden" name="serviceTypeID" class="serviceTypeID" value="">
                         <input type="hidden" name="zipCode" class="zipCodeID" value="">

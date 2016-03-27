@@ -3021,7 +3021,6 @@ function FormattedTime(time)
 
 function CreateAccordionView(oid, data)
 {
-    console.log(data);
     var landlords = "";
     $.each(landlordList, function(index, landlord) {
         landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";

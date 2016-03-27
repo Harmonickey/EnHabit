@@ -65,9 +65,12 @@ $(function()
 
 $(window).on("resize", function() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
    SetInnerCoverHeight();
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+>>>>>>> a9fca4b... 137 final fix
 
    // this magically fixes the screen rotate issue!
    $("#businessTypes").removeClass('nav-justified');

@@ -41,10 +41,13 @@ function InitializePowerKiosk()
 
 $(window).on("resize", function() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
    SetInnerCoverHeight();
 
 >>>>>>> bbd3fb3... 140 power kiosk on front page
+=======
+>>>>>>> a9fca4b... 137 final fix
    // this magically fixes the screen rotate issue!
    $("#common-modal .businessTypes").removeClass('nav-justified');
    setTimeout(function()

@@ -2974,12 +2974,17 @@ function ProcessListing()
                         
                         listingData = {};
 <<<<<<< HEAD
+<<<<<<< HEAD
                         
                         $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
 =======
 >>>>>>> 42e1d4d... 136 most of the skeleton
 =======
 >>>>>>> b15938a... 136 listing creation
+=======
+                        
+                        $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center'});
+>>>>>>> a9fca4b... 137 final fix
                     }
                 }
             }
