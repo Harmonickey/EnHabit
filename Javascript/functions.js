@@ -1160,6 +1160,7 @@ function InsertMarkers(res)
             else if (entry.length > 1) // multi listings
             {   
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var isMarkerFeatured = false;
                 for (var i = 0; i < entry.length; i++)
                 {
@@ -1174,6 +1175,8 @@ function InsertMarkers(res)
 =======
                 console.log(entry[0].WorldCoordinates);
 >>>>>>> 33457ff... 119 getting distance calculations
+=======
+>>>>>>> 1da153c... 119 removal of console log
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
 <<<<<<< HEAD
@@ -3055,6 +3058,7 @@ $(function ()
     
     if (location.hash == "#loggedout")
     {
+<<<<<<< HEAD
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
         location.hash = "";
         RemoveLoginFeatures();
@@ -3074,6 +3078,10 @@ $(function ()
     {
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
+=======
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
+        location.hash = "";
+>>>>>>> 4ab65f9... 119 better session logout UX
     }
 });
 

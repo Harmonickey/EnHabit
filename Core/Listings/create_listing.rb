@@ -17,10 +17,14 @@ require 'rmagick'
 Moped::BSON = BSON
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold, isFeatured)
 =======
 def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures)
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold)
+>>>>>>> da5fc3d... 119 hash usage
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -49,6 +53,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     listingObj["IsPastThreshold"] = isPastThreshold
 <<<<<<< HEAD
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
@@ -69,6 +74,10 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
 =======
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
 >>>>>>> b30758c... 107 universities
+=======
+    listingObj["IsPastThreshold"] = isPastThreshold
+    listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
+>>>>>>> da5fc3d... 119 hash usage
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -125,12 +134,21 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
                 retQueryObj["$and"].push({"_id" => {"$nin" => currListings.collect{|l| l["_id"]}}}) if currListings.count > 0
                 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1, IsPastThreshold: 1).one
                 
                 document[:Threshold] = threshold
 =======
                 document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1).one
+<<<<<<< HEAD
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+=======
+                document = session[:listings].find(retQueryObj).select(_id: 1, Username: 1, Price: 1, Address: 1, Unit: 1, Bedrooms: 1, Bathrooms: 1, HasAnimals: 1, HasLaundry: 1, HasParking: 1, HasAirConditioning: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Start: 1, WorldCoordinates: 1, Landlord: 1, University: 1, Pictures: 1, Thumbnails: 1, IsActive: 1, IsPastThreshold: 1).one
+>>>>>>> a3b63f0... 119 add ispastthreshold flag to get from creating listing
+                
+                document[:Threshold] = threshold
+>>>>>>> da5fc3d... 119 hash usage
             end
         end
     rescue Moped::Errors::OperationFailure => e
@@ -299,14 +317,26 @@ begin
 =======
     university = GetUniversity(data["University"])
     
+<<<<<<< HEAD
     raise "Unable to get university" if university.nil?
-    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold]
+    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f
         
 >>>>>>> 33457ff... 119 getting distance calculations
     result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"])
 
     puts result.to_json
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    if university.nil?
+        puts "Unable to get university"
+    else
+        isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
+    
+        result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold)
+
+        puts result.to_json
+    end
+>>>>>>> 29c0140... 119 better error message
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

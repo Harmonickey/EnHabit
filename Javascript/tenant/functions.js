@@ -10,7 +10,15 @@ var pendingData = null;
 var numUploaded = 0;
 var numAdded = 0;
 var pendingUpdateData = null;
+<<<<<<< HEAD
+<<<<<<< HEAD
 var threshold = 0.000;
+=======
+var threshold = 0;
+>>>>>>> da5fc3d... 119 hash usage
+=======
+var threshold = 0.000;
+>>>>>>> 97f4f82... 119 threshold set
 
 $(function() {
     var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
@@ -71,9 +79,35 @@ $(function() {
    $(".main").css("min-height", height + "px");
    
    if ($.fn.lightbox) {
+<<<<<<< HEAD
         $('.ui-lightbox').lightbox();
+<<<<<<< HEAD
     }
 >>>>>>> 1a55107... 107 adaptive payments
+=======
+=======
+       $('.ui-lightbox').lightbox();
+>>>>>>> 23c42f1... 119 switch
+   }
+    
+   if (location.hash == "#successpayment")
+   {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+   }      
+   else if (location.hash == "#cancelledpayment")
+   {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+   }
+    
+   if (location.hash == "#success")
+   {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+       
+       location.hash = "";
+   }
+>>>>>>> da5fc3d... 119 hash usage
 });
 
 $(document).on("keypress", function(e)
@@ -925,6 +959,7 @@ function ProcessListing()
                     if (Contains(res, "Okay"))
                     {
 <<<<<<< HEAD
+<<<<<<< HEAD
                         window.location = "/tenant/listings/#success"
                         window.location.reload();
 =======
@@ -955,6 +990,13 @@ function ProcessListing()
                         // close the div
                         $("#heading" + id + " a").click();
 >>>>>>> 1dc1327... 107 listing active after update
+=======
+                        window.location = "/tenant/listings/#success"
+<<<<<<< HEAD
+>>>>>>> da5fc3d... 119 hash usage
+=======
+                        location.reload();
+>>>>>>> 23c42f1... 119 switch
                     }
                     else
                     {
@@ -1823,10 +1865,11 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
+                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 || data.IsPastThreshold ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, Please Choose an Address Within " + threshold + " miles of this University!</label>" +
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 

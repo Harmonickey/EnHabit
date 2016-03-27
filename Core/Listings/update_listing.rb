@@ -17,6 +17,7 @@ Moped::BSON = BSON
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive, isPastThreshold, isFeatured)
 =======
 def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures)
@@ -24,6 +25,9 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
 =======
 def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive)
 >>>>>>> 4e2c6fb... 107 active changes
+=======
+def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive, isPastThreshold)
+>>>>>>> da5fc3d... 119 hash usage
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])
     mongoSession.use("enhabit")
 
@@ -50,6 +54,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["University"] = university
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = false
     listingObj["IsFeatured"] = isFeatured
@@ -64,11 +69,14 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     if not pictures.nil? and pictures.length > 0
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
 =======
+=======
+    listingObj["IsPastThreshold"] = isPastThreshold
+>>>>>>> da5fc3d... 119 hash usage
     listingObj["IsActive"] = false
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
-        listingObj["IsActive"] = isActive.to_b
+        listingObj["IsActive"] = isActive.to_b and isPastThreshold
         
 >>>>>>> 4e2c6fb... 107 active changes
         thumbnails = []
@@ -266,6 +274,7 @@ begin
     university = GetUniversity(data["University"])
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     if university.nil?
         puts "Unable to get university"
     else
@@ -273,11 +282,15 @@ begin
 =======
     raise "Unable to get university" if university.nil?
 <<<<<<< HEAD
+<<<<<<< HEAD
     raise "Listing is too far from campus" if ComputeDistance(university["X"], university["Y"], data["Latitude"], data["Longitude"]) > university["Threshold"]
 >>>>>>> 615f1c4... 119 distance from university
 =======
     raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold]
 >>>>>>> f7415c1... 119 ruby syntax fix
+=======
+    raise "Listing is too far from campus" if ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f
+>>>>>>> 004dc8e... 119 error fix
     
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -289,6 +302,15 @@ begin
 =======
     puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"])
 >>>>>>> 4e2c6fb... 107 active changes
+=======
+    if university.nil?
+        puts "Unable to get university"
+    else
+        isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
+    
+        puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"],isPastThreshold)
+    end
+>>>>>>> 29c0140... 119 better error message
 rescue Exception => e
     File.open("error.log", "a") do |output|
         output.puts e.message

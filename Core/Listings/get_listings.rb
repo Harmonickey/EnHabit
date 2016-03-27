@@ -226,10 +226,13 @@ def combineFiltersIntoQuery
     if not @isActiveFilter.nil?
         @mainFilter["$and"].push @isActiveFilter
     end
+<<<<<<< HEAD
     if @mainFilter["$and"].count == 0
         @mainFilter = {}
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
     end
+=======
+>>>>>>> b03d0eb... 119 remove array to hash
 end
 
 begin
@@ -306,6 +309,7 @@ begin
     
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1, IsPastThreshold: 1).to_a
 =======
     # get all the non featured ones first
@@ -331,6 +335,9 @@ begin
 =======
     documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1, IsPastThreshold: 1).to_a
+>>>>>>> 5ec30e2... 119 add to query
     
     mongoSession.disconnect
 
@@ -380,6 +387,12 @@ begin
 >>>>>>> 1da2e91... 115 university name
 =======
 >>>>>>> b62e4b4... 117 parallel payments
+        end
+        
+        documents.each do |doc|
+            university = mongoSession[:universities].find({"UniversityName" => doc["University"]}).one
+            
+            doc["Threshold"] = university["Threshold"]
         end
         
         puts documents.to_json

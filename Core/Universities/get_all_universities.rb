@@ -15,6 +15,7 @@ begin
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1, Threshold: 1, WorldCoordinates: 1).to_a
 =======
         documents = session[:universities].find().select(_id: 1, UniversityName: 1).to_a
@@ -25,6 +26,9 @@ begin
 =======
         documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1, Threshold: 1).to_a
 >>>>>>> 33457ff... 119 getting distance calculations
+=======
+        documents = session[:universities].find().select(_id: 1, UniversityName: 1, Address: 1, Threshold: 1, WorldCoordinates: 1).to_a
+>>>>>>> 1dc4dd0... 119 fix update
     end
     mongoSession.disconnect
 

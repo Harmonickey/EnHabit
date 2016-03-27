@@ -16,7 +16,11 @@ $(function() {
    
    $(".main").css("min-height", height + "px");
    
+<<<<<<< HEAD
    if (location.hash == "#success")
+=======
+   if (location.hash == "success")
+>>>>>>> da5fc3d... 119 hash usage
    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
@@ -241,6 +245,9 @@ function GetAllUniversities(isListingPage)
                             
                             SetGeocompleteTextBox(oid);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a9a7cb8... 119 distance limit
                             SetTextBoxWithAutoNumericUniversity(oid);
                         }
                     }
@@ -1183,7 +1190,7 @@ function UpdateUniversity(oid)
                             
                             $(headingInputs[0]).text("University Name: " + $(inputs[0]).val());
                             $(headingInputs[1]).text("Address: " + $(inputs[1]).val());
-                            $(headingInputs[2]).text("Threshold: " + $(inputs[2]).val());
+                            $(headingInputs[2]).text("Listing Distance (miles): " + $(inputs[2]).val());
                             
                             $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated University", position: 'top-center'});
                             
@@ -1548,11 +1555,16 @@ function SetTextBoxWithAutoNumeric(rowId)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a9a7cb8... 119 distance limit
 function SetTextBoxWithAutoNumericUniversity(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
     
     $(row[2]).autoNumeric('init', 
+<<<<<<< HEAD
+<<<<<<< HEAD
     { 
         vMax: '999.9999',
         vMin: '00.0000'
@@ -1561,6 +1573,26 @@ function SetTextBoxWithAutoNumericUniversity(rowId)
 
 =======
 >>>>>>> a1a8ea2... 115 autonumeric
+=======
+    {
+        aSign: '$ ', 
+        vMax: '999999.99', 
+        wEmpty: 'sign',
+        lZero: 'deny'
+=======
+    { 
+<<<<<<< HEAD
+        vMax: '999.99',
+        vMin: '00.00'
+>>>>>>> 5e5dc97... 119 autonumeric
+=======
+        vMax: '999.9999',
+        vMin: '00.0000'
+>>>>>>> 47ff52d... 119 more decimals
+    });
+}
+
+>>>>>>> a9a7cb8... 119 distance limit
 function SetTextBoxWithAutoNumericPricing(rowId)
 {
     var row = $("#" + rowId + " input[type='text']");
@@ -1574,13 +1606,19 @@ function SetTextBoxWithAutoNumericPricing(rowId)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5d7805a... 119 heading
         vMax: '99.99',
 =======
         vMax: '100.00',
 >>>>>>> ce68029... 119 heading
+<<<<<<< HEAD
 =======
         vMax: '99.99',
 >>>>>>> 25d12c8... 115 100 exclusive
+=======
+>>>>>>> 5d7805a... 119 heading
         vMin: '0.00'
     });
     
@@ -1588,6 +1626,7 @@ function SetTextBoxWithAutoNumericPricing(rowId)
     {
         aSign: '%', 
         pSign: 's', 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         vMax: '99.99',
@@ -1610,6 +1649,12 @@ function SetTextBoxWithAutoNumericPricing(rowId)
         vMin: '0'
 =======
         vMax: '100.00',
+=======
+        vMax: '99.99',
+=======
+        vMax: '100.00',
+>>>>>>> ce68029... 119 heading
+>>>>>>> 5d7805a... 119 heading
         vMin: '0.00'
 >>>>>>> 1e9e699... 115 decimals
     });
@@ -2078,6 +2123,7 @@ function ProcessListing()
                     if (Contains(res, "Okay"))
                     {
 <<<<<<< HEAD
+<<<<<<< HEAD
                         window.location = "/admin/listings/#success";
                         window.location.reload();
 =======
@@ -2109,6 +2155,9 @@ function ProcessListing()
                         // close the div
                         $("#heading" + id + " a").click();
 >>>>>>> 0dc8937... 107 updating deleting creating
+=======
+                        window.location = "/admin/listings/#success";
+>>>>>>> da5fc3d... 119 hash usage
                     }
                     else
                     {
@@ -3101,7 +3150,8 @@ function CreateAccordionView(oid, data)
                                 "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
-                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing You Must Include Images!</label>" + 
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, You Must Include Images!</label>" +
+                                "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, The Address Must Be Within the University Radius!</label>" +                    
                             "</div>" +
                         "</div>" +
                         "<div class='row'>" + 
@@ -3182,6 +3232,7 @@ function CreateAccordionUniversitiesView(oid, data)
                             "</div>" +
                         "</div>" +
 <<<<<<< HEAD
+<<<<<<< HEAD
                         "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
                     "</div>" +
                 "</div>" +
@@ -3217,6 +3268,9 @@ function CreateAccordionPricingView(oid, data)
                         "</div>" +
 =======
 >>>>>>> f518129... 107 universities
+=======
+                        "<input type='hidden' value='" + data.WorldCoordinates.x + "' /><input type='hidden' value='" + data.WorldCoordinates.y + "' /><input type='hidden' value='" + data.Address + "' />" +
+>>>>>>> 1dc4dd0... 119 fix update
                     "</div>" +
                 "</div>" +
             "</div>";

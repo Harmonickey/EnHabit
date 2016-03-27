@@ -4,6 +4,7 @@
     if (!isset($_SESSION["userId"]) && !isset($_SESSION["landlordId"]))
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         header("Location: /#sessiontimeout", FALSE);
         return;
 =======
@@ -11,6 +12,9 @@
 <<<<<<< HEAD
 >>>>>>> 12b3320... 115 added pricing location
 =======
+=======
+        header("Location: /#loggedout", FALSE);
+>>>>>>> 4ab65f9... 119 better session logout UX
         return;
 >>>>>>> 5c2c6d3... 115 returns
     }

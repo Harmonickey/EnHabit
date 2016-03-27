@@ -761,10 +761,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     else
                     {
 <<<<<<< HEAD
+<<<<<<< HEAD
                         $res = "Tenant" . (isset($_SESSION["hasRental"]) ? ":HasRental" : "");
 =======
                         $res = "Tenant";
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                        $res = "Tenant" . (isset($_SESSION["hasRental"]) ? ":HasRental" : "");
+>>>>>>> 5fc6698... 119 needed the has rental flag
                     }
                 }
                 else if (isset($_SESSION['landlord']))

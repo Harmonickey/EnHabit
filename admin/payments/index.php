@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         header("Location: /", FALSE);
 <<<<<<< HEAD
 =======
@@ -15,6 +16,12 @@
 =======
         header("Location: /#sessiontimeout", FALSE);
 >>>>>>> c667221... 121 change logout methods, update payment
+=======
+        header("Location: /", FALSE);
+=======
+        header("Location: /#loggedout", FALSE);
+>>>>>>> fd415d1... 119 better session logout UX
+>>>>>>> 4ab65f9... 119 better session logout UX
         return;
 =======
         header("Location: /", FALSE);
