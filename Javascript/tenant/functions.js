@@ -90,16 +90,25 @@ $(function() {
 >>>>>>> 23c42f1... 119 switch
    }
     
+<<<<<<< HEAD
    if (location.hash == "#successpayment")
+=======
+   if (location.hash == "successpayment")
+>>>>>>> 921ffff... 117 payment enhancement
    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
        location.hash = "";
    }      
+<<<<<<< HEAD
    else if (location.hash == "#cancelledpayment")
+=======
+   else if (location.hash == "cancelledpayment")
+>>>>>>> 921ffff... 117 payment enhancement
    {
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
    }
+<<<<<<< HEAD
     
    if (location.hash == "#success")
    {
@@ -107,7 +116,12 @@ $(function() {
        
        location.hash = "";
    }
+<<<<<<< HEAD
 >>>>>>> da5fc3d... 119 hash usage
+=======
+=======
+>>>>>>> 921ffff... 117 payment enhancement
+>>>>>>> dad3f6b... 117 payment enhancement
 });
 
 $(document).on("keypress", function(e)
