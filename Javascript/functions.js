@@ -128,6 +128,7 @@ function SubscribeSlideshowArrows()
 {
     $('body').on('click', '.slider-arrow img', function() 
     {
+        console.log("here");
         var $slideshow = $(this).closest('.slideshow');
         var $newSlide;
         
@@ -1829,8 +1830,11 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     //var detailsMap = L.mapbox.map('details-view-map-section', 'mapbox.streets').setView([parseFloat(x), parseFloat(y)], 17);
     //L.marker([parseFloat(x), parseFloat(y)], {icon: enhabitIcon}).addTo(detailsMap);
     
+<<<<<<< HEAD
     SubscribeSlideshowArrows();
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 948d71e... 134 fixed
 }
 
 /*
@@ -2708,9 +2712,13 @@ function LoadModal(event, which, enterDefault, btnText)
         $(".Memo").attr("placeholder", nextMonth);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     
 =======
 >>>>>>> 1114524... 121 geocomplete
+=======
+    
+>>>>>>> 948d71e... 134 fixed
 } 
 
 function OpenListingsList()
@@ -2760,9 +2768,12 @@ function CloseDetailsView()
     //location.hash = "";
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     SubscribeSlideshowArrows();
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 948d71e... 134 fixed
 }
 
 function OpenExtrasView()
