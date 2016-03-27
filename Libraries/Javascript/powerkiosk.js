@@ -3,10 +3,14 @@
 // and a PowerKioskServiceModel viewmodel controlling them
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 var apiUrl = "https://powerkioskapp.com/api";
 =======
 var apiUrl = "http://powerkioskapp.com/api";
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+var apiUrl = "https://powerkioskapp.com/api";
+>>>>>>> 8cb672d... 131 https
 var utility;
 var zone;
 var state;
@@ -210,6 +214,7 @@ function GetServiceTypes()
             //create the tabs          
             var serviceIds = $("#serviceTypes");
 <<<<<<< HEAD
+<<<<<<< HEAD
             for (var i = 0; i < result.data.length; i++) 
             {
                 serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + result.data[i].name + "</a></li>");
@@ -221,6 +226,11 @@ function GetServiceTypes()
                 var icon = (i === 0 ? electicity : gas);
                 serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + icon + result.data[i].name + "</a></li>");
 >>>>>>> d29f028... 131 powerkiosk plugin start
+=======
+            for (var i = 0; i < result.data.length; i++) 
+            {
+                serviceIds.append("<li role=\"presentation\"><a href=\"#\" value=\"" + result.data[i].serviceTypeID + "\">" + result.data[i].name + "</a></li>");
+>>>>>>> 03a1fb8... 131 logo and styles
             }
             
             //setup the service tabs and their click events
