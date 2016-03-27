@@ -309,11 +309,15 @@
     if ($resultmsg == "success")
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});InsertPayment(uid, landlordEmail, rent);</script>\n";
     }
     else if ($resultmsg == "cancel")
 =======
         echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});</script>\n";
+=======
+        echo "<script type='text/javascript'>$.msgGrowl ({ type: 'success', title: 'Success', text: 'Payment Success', position: 'top-center'});InsertPayment(uid, landlordEmail, rent);</script>\n";
+>>>>>>> 2cda3a2... 127 payments tracking
     }
 <<<<<<< HEAD
     else if ($resultmsg == "cancelled")

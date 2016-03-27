@@ -183,10 +183,14 @@
 					</li>
                     <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
 						<a href="./universities">
 =======
 						<a href="../universities">
 >>>>>>> f518129... 107 universities
+=======
+						<a href="./universities">
+>>>>>>> ee07112... 127 rounding error
 							<i class="fa fa-bank"></i>
 							<span>Universities</span>
 						</a>	    				
@@ -209,7 +213,7 @@
 >>>>>>> f518129... 107 universities
 =======
                     <li>
-						<a href="../pricing">
+						<a href="./pricing">
 							<i class="fa fa-money"></i>
 							<span>Pricing</span>
 						</a>	    				
@@ -218,7 +222,7 @@
 >>>>>>> 12b3320... 115 added pricing location
 =======
                     <li>
-						<a href="../logs">
+						<a href="./logs">
 							<i class="fa fa-file-text"></i>
 							<span>Logs</span>
 						</a>	    				

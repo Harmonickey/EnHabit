@@ -203,8 +203,12 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
 {   
     var data = {
       LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
+<<<<<<< HEAD
       Rent: amount,
       RenterId: uid
+=======
+      Rent: rent
+>>>>>>> 2cda3a2... 127 payments tracking
     };
     
     $.ajax({

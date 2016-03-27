@@ -41,6 +41,7 @@ begin
             
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         document["ListingMarkup"] = ((document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f).round(2)
 =======
         document["ListingMarkup"] = (document["Rent"] * (pricing["ListingMarkup"].to_f / 100)).to_i
@@ -48,6 +49,9 @@ begin
 =======
         document["ListingMarkup"] = (document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f
 >>>>>>> 01472a0... 117 float
+=======
+        document["ListingMarkup"] = ((document["Rent"].to_f * (pricing["ListingMarkup"].to_f / 100)).to_f).round(2)
+>>>>>>> ee07112... 127 rounding error
         
         #we don't need to expose these to the front end
         document.delete("LandlordId") 
