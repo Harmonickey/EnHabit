@@ -1903,6 +1903,7 @@ function LoginUser(hideMainModal)
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
 =======
                         
+                        // session should be set, so the user will be attached to the listing
                         if (listingWaiting)
                         {
                             CreateListing();
@@ -2376,6 +2377,9 @@ function RemoveLoginFeatures()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> faa3853... 136 create listing with user id
 =======
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
@@ -2387,6 +2391,7 @@ function RemoveLoginFeatures()
     $("#create-listing-button").attr("onclick", "PendingListingCreation()");
 >>>>>>> bf5781f... 136 inits and function call fix
 =======
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 118cf11... 136 create listing with user id
@@ -2413,6 +2418,10 @@ function RemoveLoginFeatures()
 >>>>>>> bf5781f... 136 inits and function call fix
 >>>>>>> 495fd48... 136 inits and function call fix
 =======
+=======
+=======
+>>>>>>> 118cf11... 136 create listing with user id
+>>>>>>> faa3853... 136 create listing with user id
     $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
 >>>>>>> 2f38a31... 136 fix flow a bit
 >>>>>>> 4f168e5... 136 fix flow a bit
@@ -2434,6 +2443,9 @@ function ShowLoginFeatures(hideMainModal, userType)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> faa3853... 136 create listing with user id
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 <<<<<<< HEAD
@@ -2476,6 +2488,8 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> e96f51e... 136 window.location
 =======
 =======
+=======
+>>>>>>> 118cf11... 136 create listing with user id
         $("#create-listing-btn").attr("onclick", "window.location='/admin/listings/';");
 >>>>>>> 5a6323a... 136 semicolon
 >>>>>>> b2c516f... 136 semicolon
@@ -2490,6 +2504,9 @@ function ShowLoginFeatures(hideMainModal, userType)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> faa3853... 136 create listing with user id
 =======
         $("#payment-btn").hide(); // landlords don't pay rent!!
 <<<<<<< HEAD
@@ -2532,6 +2549,8 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> e96f51e... 136 window.location
 =======
 =======
+=======
+>>>>>>> 118cf11... 136 create listing with user id
         $("#create-listing-btn").attr("onclick", "window.location='/landlord/listings/';");
 >>>>>>> 5a6323a... 136 semicolon
 >>>>>>> b2c516f... 136 semicolon
@@ -2639,11 +2658,6 @@ function CreateAccount()
                         PopulateAndOpenModal(null, 'modal-content-register-success');
                         
                         $('#common-modal.modal').animate({ scrollTop: 0 }, "slow");
-                        
-                        if (listingWaiting)
-                        {
-                            CreateListing();
-                        }
                     }
                     else
                     {
