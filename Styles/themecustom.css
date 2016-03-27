@@ -282,6 +282,7 @@
 .Payment.Email, 
 .Account.Email,
 .PhoneNumber,
+<<<<<<< HEAD
 .Payment.Address, 
 .Payment.Bedrooms,
 .Payment.Bathrooms, 
@@ -289,13 +290,40 @@
 .Memo,
 .LandlordEmail,
 .input-group.AmountWrapper
+=======
+.Address, 
+.Bedrooms,
+.Bathrooms, 
+<<<<<<< HEAD
+.Rent,
+<<<<<<< HEAD
+.PaymentFirstName,
+.PaymentLastName,
+.PaymentAddress,
+.PaymentUnit,
+.RentAmount,
+.PaymentMemo,
+.PaymentLandlord
+>>>>>>> 8ba4aa2... 121 setup popup
+=======
+=======
+>>>>>>> e2856dc... 121 minor changes
+.Unit,
+.Memo,
+.LandlordEmail,
+.input-group.AmountWrapper
+>>>>>>> cd801f0... 121 form fix
 {
 	text-align: center;
 	width: 50% !important;
 	margin: 0 auto;
 }
 
+<<<<<<< HEAD
 .Payment.Rent
+=======
+.Rent
+>>>>>>> e2856dc... 121 minor changes
 {
     text-align: center;
     padding-right: 45px;

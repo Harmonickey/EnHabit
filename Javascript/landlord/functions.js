@@ -46,7 +46,7 @@ $(function() {
    
    $(".main").css("min-height", height + "px");
    
-   if (location.hash == "success")
+   if (location.hash == "#success")
    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
@@ -959,10 +959,14 @@ function Logout()
                     // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                     // be a POST element, this is good for now
 <<<<<<< HEAD
+<<<<<<< HEAD
                     location.href = "/#loggedout";
 =======
                     location.href = "/";
 >>>>>>> 6d15b60... 107 revert to old logout
+=======
+                    location.href = "/#loggedout";
+>>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
                 }
                 else
                 {

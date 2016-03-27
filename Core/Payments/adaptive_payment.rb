@@ -13,7 +13,19 @@ require 'json'
 require 'moped'
 require 'bson'
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 def GetMarkup()
+=======
+def GetMarkup
+>>>>>>> f1e9c2b... 121 listing markup
+=======
+def GetMarkup()
+>>>>>>> cece09b... 121 function
+=======
+def GetMarkup(rent)
+>>>>>>> e2856dc... 121 minor changes
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -22,9 +34,21 @@ def GetMarkup()
     
     begin    
         mongoSession.with(safe: true) do |session|
+<<<<<<< HEAD
+<<<<<<< HEAD
             university = session[:universities].find({"UniversityName" => "Northwestern"}).select(UniversityId: 1).to_a
         
             pricing = session[:pricing].find({"UniversityId" => university[0]["UniversityId"]}).select(ListingMarkup: 1).to_a
+=======
+            university = session[:universities].find({"UniversityName" => "Northwestern"}).select(UniversityId: 1)
+        
+            pricing = session[:pricing].find({"UniversityId" => university[0]["UniversityId"]}).select(ListingMarkup: 1)
+>>>>>>> f1e9c2b... 121 listing markup
+=======
+            university = session[:universities].find({"UniversityName" => "Northwestern"}).select(UniversityId: 1).to_a
+        
+            pricing = session[:pricing].find({"UniversityId" => university[0]["UniversityId"]}).select(ListingMarkup: 1).to_a
+>>>>>>> 80022d4... 121 need array
         end       
         
         retVal = "Okay"
@@ -33,8 +57,16 @@ def GetMarkup()
     end
     
 	mongoSession.disconnect
+<<<<<<< HEAD
+<<<<<<< HEAD
     #return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
     return pricing[0]["ListingMarkup"].to_f
+=======
+    return pricing[0]["ListingMarkup"]
+>>>>>>> f1e9c2b... 121 listing markup
+=======
+    return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
+>>>>>>> e2856dc... 121 minor changes
 end
 
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
@@ -47,8 +79,11 @@ end
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> cc7cf82... 130 memo
+=======
+>>>>>>> 6a63063... 130 fix
 @memo = "Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -63,6 +98,7 @@ end
 =======
 @memo = @data["Memo"] + "\n\nRent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 @memo = @data["Memo"] + " -- Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
@@ -72,11 +108,16 @@ end
 @uid = @data["_id"]["oid"]
 >>>>>>> f438910... 130 memo
 =======
+<<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 @rent = @data["Rent"]
 @landlord = @data["LandlordEmail"]
 >>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
+=======
+=======
+>>>>>>> 8f012f6... 121 add actual enhabit user
 @enhabit = "enhabitlife@gmail.com"
 >>>>>>> 7252721... 121 add actual enhabit user
 @uid = @data["_id"]["oid"] if not @data["_id"].nil? and not @data["_id"]["oid"].nil?
@@ -91,7 +132,13 @@ end
 @markup = @data["ListingMarkup"]
 
 if @markup.nil?
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   @markup = GetMarkup()
+=======
+  @markup = GetMarkup(@rent)
+>>>>>>> e2856dc... 121 minor changes
 end
 
 @markupTotal = (@markup / 100) * @rent.to_f
@@ -132,6 +179,7 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 >>>>>>> 9494f64... 121 updated more
 =======
 #enhabit gets the markup amount
+<<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + @markupTotal.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
 #landlord gets the rent plus markup amount
 <<<<<<< HEAD
@@ -140,6 +188,12 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 =======
 @receiverList.push '{\"amount\":\"' + (@rent.to_f + @markupTotal ).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
 >>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
+=======
+@receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+#landlord gets the rent plus markup amount
+@receiverList.push '{\"amount\":\"' + (@rent.to_f + @markup).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
+>>>>>>> 7f47e16... 121 minor changes
+>>>>>>> e2856dc... 121 minor changes
 
 @successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
 
@@ -285,10 +339,19 @@ puts app_result.to_json
 >>>>>>> 7f6a3f3... 127 payments tracking
 >>>>>>> 2cda3a2... 127 payments tracking
 =======
+=======
+=======
+@memo = @data["Memo"] + " -- Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
+>>>>>>> daa50ba... 130 fix
+>>>>>>> 6a63063... 130 fix
 @enhabit = "alex@lbkstudios.net"
 @uid = @data["_id"]["oid"]
 >>>>>>> f438910... 130 memo
 >>>>>>> cc7cf82... 130 memo
+=======
+@uid = @data["_id"]["oid"] if not @data["_id"].nil? and not @data["_id"]["oid"].nil?
+>>>>>>> f1f855f... 121 adapt
+>>>>>>> 91c26e3... 121 adapt
 
 @isDev = `cat #{@deploymentBase}/enhabit.git/hooks/post-receive`.split("\n")[4].split(" ")[-2].include? 'dev'
 
@@ -298,11 +361,22 @@ puts app_result.to_json
 
 @markup = @data["ListingMarkup"]
 
+=======
+  @markup = GetMarkup
+=======
+  @markup = GetMarkup()
+>>>>>>> 60b8314... 121 as function
+end
+
+>>>>>>> f1e9c2b... 121 listing markup
 @receiverList = []
 <<<<<<< HEAD
 #enhabit gets the full rent amount and markup
-@receiverList.push '{\"amount\":\"' + (@markup.to_f + @rent.to_f).to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"true\"}'
+@receiverList.push '{\"amount\":\"' + (@markup.to_f).to_s + '\", \"email\":\"' + @landlord.to_s + '\", \"primary\":\"false\"}'
 #landlord gets the full rent amount
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"false\"}'
 
 <<<<<<< HEAD
@@ -318,14 +392,43 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 
 params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/?uid=' + @uid + '&landlordEmail=' + @landlord + '&rent=' + @rent + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\"}'
 >>>>>>> 56fbc5c... 127 small  oid fix
+=======
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+=======
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\"}'
+>>>>>>> 56c92b4... 121 omit the false
+=======
+@receiverList.push '{\"amount\":\"' + @rent.to_s + '\",\"email\":\"' + @enhabit.to_s + '\", \"primary\":\"true\"}'
+>>>>>>> 9494f64... 121 updated more
+
+@successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/?uid=' + @uid + '&landlordEmail=' + @landlord + '&rent=' + @rent + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"SECONDARYRECEIVER\"}'
+>>>>>>> d9f205a... 121 better ux
+=======
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/?uid=' + @uid + '&landlordEmail=' + @landlord + '&rent=' + @rent + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"SECONDARYONLY\"}'
+>>>>>>> a088d13... 121 fix for param
+=======
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/?uid=' + @uid + '&landlordEmail=' + @landlord + '&rent=' + @rent + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"PRIMARYRECEIVER\"}'
+>>>>>>> daa50ba... 130 fix
+=======
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife/tenant/payments/success/' + @successUri + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"SECONDARYONLY\"}'
+>>>>>>> f1f855f... 121 adapt
+=======
+params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\"receiver\":[' + @receiverList.join(",") + ']}, \"returnUrl\":\"http://' + @returnLocation +'enhabitlife.com/tenant/payments/success/' + @successUri + '\", \"cancelUrl\":\"http://' + @returnLocation + 'enhabitlife.com/tenant/payments/failure/\", \"requestEnvelope\":{\"errorLanguage\":\"en_US\", \"detailLevel\":\"ReturnAll\"}, \"memo\":\"' + @memo + '\", \"feesPayer\":\"SECONDARYONLY\"}'
+>>>>>>> d9faf3c... 121 needed .com
 
 req = Hash.new
-req['X-PAYPAL-SECURITY-USERID'] = 'alex_api1.lbkstudios.net'
-req['X-PAYPAL-SECURITY-PASSWORD'] = 'DVWC6FTKRG7WYWFY'
-req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AWjlrRdzrtV5-PSI427csM4fUlCsA3Y.solWILTwvYm8VyPRKVxsqXFZ'
+req['X-PAYPAL-SECURITY-USERID'] = 'enhabitlife_api1.gmail.com'
+req['X-PAYPAL-SECURITY-PASSWORD'] = 'NJ3DJWL7B794Q8BJ'
+req['X-PAYPAL-SECURITY-SIGNATURE'] = 'AMCv3slS9yBuKOniN2ij3Mh1fAG1A7koo8NHz0My20EiyPBHmfWBa.pT'
 
-# Global Sandbox Application ID
-req['X-PAYPAL-APPLICATION-ID'] = 'APP-1NM10749ND821735L'
+# Live App ID
+req['X-PAYPAL-APPLICATION-ID'] = 'APP-47R179153P103222T'
 
 # Input and output formats
 req['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'JSON'

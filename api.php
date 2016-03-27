@@ -65,7 +65,15 @@ else if (isset($_POST["command"]))
     
     $data = (isset($_POST["data"]) ? remove_malicious_characters($_POST["data"]) : NULL);
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment" || $_POST["command"] === "get_all_users" || $_POST["command"] == "send_email" || $_POST["command"] === "get_all_universities")
+=======
+    if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment")
+>>>>>>> 1e59f08... 121 better ux
+=======
+    if ($_POST["command"] === "login" || $_POST["command"] === "facebook_login" || $_POST["command"] === "get_listings" || $_POST["command"] === "create_account" || $_POST["command"] === "get_price_range" || $_POST["command"] === "adaptive_payment" || $_POST["command"] === "get_all_users")
+>>>>>>> cd801f0... 121 form fix
     {
         debug_string("ruby " . ROOTPATH . "/Core/" . $_POST["endpoint"] . "/" . $_POST["command"] . ".rb '$data' '' '' 'false'");
         

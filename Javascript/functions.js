@@ -676,6 +676,10 @@ function InitMainSidebar()
     InitDatePicker();
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 29cb4d2... 121 landlords
 function GetNextMonth(today)
 {
     today.setMonth(today.getMonth() + 1);
@@ -732,12 +736,17 @@ function GetAllLandlords()
                     
                     for (var i = 0; i < data.length; i++)
                     {
+<<<<<<< HEAD
                         if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
                             // create listing dropdown
                             $("#landlords-filter").append("<option value='" + data[i].Username + "'>" + data[i].Username + "</option>");
                             
                             // payment modal dropdown
+=======
+                        if (data[i].IsLandlord)
+                        {
+>>>>>>> 29cb4d2... 121 landlords
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
                         }
                     }
@@ -753,6 +762,31 @@ function GetAllLandlords()
             $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
         }
     });
+<<<<<<< HEAD
+=======
+=======
+}
+
+>>>>>>> 29cb4d2... 121 landlords
+function InitPaymentModal()
+{
+    GetAllLandlords();
+<<<<<<< HEAD
+    
+    $(".Address").geocomplete().bind("geocode:result", function(event, result){ });
+    
+    var today = new Date();
+    var nextMonth = GetNextMonth(today) + "'s Rent";
+    
+<<<<<<< HEAD
+    
+    $(".Memo").attr("placeholder", nextMonth)
+>>>>>>> 1e59f08... 121 better ux
+=======
+    $(".Memo").attr("placeholder", nextMonth);
+>>>>>>> 29cb4d2... 121 landlords
+=======
+>>>>>>> 1114524... 121 geocomplete
 }
 
 function InitSlider()
@@ -1119,6 +1153,7 @@ function InsertMarkers(res)
                 popupContent += slideshowContent +
                                 '</div>' +
 <<<<<<< HEAD
+<<<<<<< HEAD
                             '</div>' +
                             "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "', '" + entry[0].Username + "', '" + entry[0].Landlord + "')\" />";
                 
@@ -1147,6 +1182,10 @@ function InsertMarkers(res)
 =======
                             "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
 >>>>>>> 6b01f5f... 115 apply pricing not markup
+=======
+                            '</div>' +
+                            "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "')\" />";
+>>>>>>> 1114524... 121 geocomplete
                 
                 popupContent += '<div class="popup-background-shadow"></div>';
                 
@@ -1372,6 +1411,7 @@ function InsertIntoListView(data)
                     "</div>" +
                 "</div>" +
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                     "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "', '" + data.Username + "', '" + data.Landlord + "')\" />" +
 =======
@@ -1398,6 +1438,10 @@ function InsertIntoListView(data)
 =======
                     "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
 >>>>>>> 6b01f5f... 115 apply pricing not markup
+=======
+                "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                    "<input type='button' class='btn btn-outline-inverse btn-sm' value='More Details' onclick=\"OpenListing('" + data._id.$oid + "', '" + data.Address + "', '" + data.Unit + "', '" + data.Start + "', '" + data.Bedrooms + "', '" + data.Bathrooms + "', '" + data.Price + "', '" + data.LeaseType + "', '" + data.BuildingType + "', '" + data.Notes + "', '" + data.HasAnimals + "', '" + data.HasLaundry + "', '" + data.HasParking + "', '" + data.HasAirConditioning + "', [" + data.Thumbnails + "], '" + data.WorldCoordinates.x + "', '" + data.WorldCoordinates.y + "', '" + data.Testing + "')\" />" +
+>>>>>>> 1114524... 121 geocomplete
                 "</div>" +
             "</div>" +
         "</div>");
@@ -1423,6 +1467,7 @@ function InsertIntoListView(data)
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing, Username, Landlord)
 =======
@@ -1441,6 +1486,10 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, RentWithMark
 =======
 function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
 >>>>>>> 6b01f5f... 115 apply pricing not markup
+=======
+
+function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, x, y, Testing)
+>>>>>>> 1114524... 121 geocomplete
 {
     $("#common-modal").modal('hide');
     
@@ -2116,6 +2165,7 @@ function RemoveLoginFeatures()
     $(".account-nav").hide();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
@@ -2131,6 +2181,10 @@ function RemoveLoginFeatures()
 >>>>>>> 118cf11... 136 create listing with user id
     $("#create-listing-btn").attr("onclick", "PostListingModal(event);");
 >>>>>>> 2f38a31... 136 fix flow a bit
+=======
+    $("#payment-btn").show(); // just in case an admin logged out
+    $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
+>>>>>>> 02ef3a7... 121 handle logout scenario
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -2142,6 +2196,7 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2161,10 +2216,14 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> 5a6323a... 136 semicolon
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        $("#payment-btn").hide();
+>>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2184,6 +2243,9 @@ function ShowLoginFeatures(hideMainModal, userType)
 >>>>>>> 5a6323a... 136 semicolon
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
+>>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
     }
     if (Contains(userType, "Tenant"))
     {
@@ -2195,6 +2257,7 @@ function ShowLoginFeatures(hideMainModal, userType)
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
         }
 <<<<<<< HEAD
         
@@ -2335,7 +2398,10 @@ function LoadModal(event, which, enterDefault, btnText)
         
         $(".Memo").attr("placeholder", nextMonth);
     }
+<<<<<<< HEAD
     
+=======
+>>>>>>> 1114524... 121 geocomplete
 } 
 
 function OpenListingsList()
@@ -2648,6 +2714,8 @@ function CreateEmailMessage(listingId)
 
 function GetPayKey()
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
     var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Rent", "Memo", "LandlordEmail"]);
                                     
     var error = BuildError(data);
@@ -2664,6 +2732,20 @@ function GetPayKey()
 =======
         LoadModal(null, 'modal-content-login', 'login', 'Log In');
 >>>>>>> 39804cb... 107 latest fixes
+=======
+    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Amount", "Memo", "LandlordEmail"]);
+=======
+    var data = BuildData(["FirstName", "LastName", "Address", "Unit", "Rent", "Memo", "LandlordEmail"]);
+>>>>>>> 08f43f4... 121 getting Rent
+                                    
+    var error = BuildError(data);
+    
+    data.Memo = data.Memo.replace("'", "");
+    
+    if (error != "Please Include<br>")
+    {
+        SetError("MakePayment", error);
+>>>>>>> 1e59f08... 121 better ux
     }
     else
     {
@@ -2674,7 +2756,15 @@ function GetPayKey()
             beforeSend: function()
             {
                 $("#GetPaymentKey").prop("disabled", true);
+<<<<<<< HEAD
+<<<<<<< HEAD
                 $("#GetPaymentKey").val("Submitting...");
+=======
+                $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
+>>>>>>> 1e59f08... 121 better ux
+=======
+                $("#GetPaymentKey").val("Submitting...");
+>>>>>>> 1114524... 121 geocomplete
             },
             data:
             {
@@ -2719,6 +2809,8 @@ function GetPayKey()
             complete: function()
             {
                 $("#GetPaymentKey").prop("disabled", false);
+<<<<<<< HEAD
+<<<<<<< HEAD
                 $("#GetPaymentKey").val("Make Payment");
             }
         });
@@ -2727,6 +2819,15 @@ function GetPayKey()
     PopulateAndOpenModal(null, 'modal-content-email');
     $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 >>>>>>> c7605ad... 132 lease type
+=======
+                $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Make Payment");
+=======
+                $("#GetPaymentKey").val("Make Payment");
+>>>>>>> 1114524... 121 geocomplete
+            }
+        });
+    }
+>>>>>>> 1e59f08... 121 better ux
 }
 
 function SendEmail(listingId)
@@ -3005,7 +3106,15 @@ function BuildError(fields)
     {
         error += "Valid Address<br>";
     }
+<<<<<<< HEAD
+<<<<<<< HEAD
     if (fields.Rent === "")
+=======
+    if (fields.Amount === "")
+>>>>>>> d181ce8... 121 needed some checks on frontend
+=======
+    if (fields.Rent === "")
+>>>>>>> 08f43f4... 121 getting Rent
     {
         error += "Valid Rent Amount<br>";
     }
@@ -3065,6 +3174,8 @@ $(function ()
     LoadAllDefaultListings();
  
     SetHiddenSidebars();
+    
+    InitPaymentModal();
 
     GetAllUniversities();
     GetAllLandlords();
@@ -3083,13 +3194,19 @@ $(function ()
     if (location.hash == "#loggedout")
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
         location.hash = "";
         RemoveLoginFeatures();
+=======
+        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
+        location.hash = "";
+>>>>>>> 9ca2667... 121 change logout methods, update payment
     }
     else if (location.hash == "#sessiontimeout")
     {
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Session Timed Out", position: 'top-center'});
+<<<<<<< HEAD
         location.hash = "";
         RemoveLoginFeatures();
     }
@@ -3104,8 +3221,20 @@ $(function ()
        location.hash = "";
 =======
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Your Session Timed Out", position: 'top-center'});
+=======
+>>>>>>> 9ca2667... 121 change logout methods, update payment
         location.hash = "";
 >>>>>>> 4ab65f9... 119 better session logout UX
+    }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
     }
 });
 
@@ -3122,7 +3251,11 @@ $(window).on('resize', function() {
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
 <<<<<<< HEAD
+<<<<<<< HEAD
 });
 =======
 });
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+});
+>>>>>>> 1114524... 121 geocomplete

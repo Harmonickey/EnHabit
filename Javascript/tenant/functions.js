@@ -1233,10 +1233,14 @@ function Logout()
                     // TODO: Ideally I'd like this to be a server redirect in PHP, location would
                     // be a POST element, this is good for now
 <<<<<<< HEAD
+<<<<<<< HEAD
                     location.href = "/#loggedout";
 =======
                     location.href = "/";
 >>>>>>> 6d15b60... 107 revert to old logout
+=======
+                    location.href = "/#loggedout";
+>>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
                 }
                 else
                 {
@@ -1409,6 +1413,7 @@ function DeleteAccount()
 function GetPayKey(oid, data)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     data.Memo = $("#paymentNote").val().replace("'", "");
 =======
 function MakeAdaptivePayment(uid)
@@ -1432,6 +1437,9 @@ function GetPayKey(oid, data)
 >>>>>>> 7319f63... 107 better flow
 =======
     data.Memo = $("#paymentNote").val();
+=======
+    data.Memo = $("#paymentNote").val().replace("'", "");
+>>>>>>> 6a63063... 130 fix
     
 >>>>>>> cc7cf82... 130 memo
     $.ajax(

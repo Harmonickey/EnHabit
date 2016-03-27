@@ -8,6 +8,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9ca2667... 121 change logout methods, update payment
         header("Location: /", FALSE);
 <<<<<<< HEAD
 =======
@@ -16,12 +19,15 @@
 =======
         header("Location: /#sessiontimeout", FALSE);
 >>>>>>> c667221... 121 change logout methods, update payment
+<<<<<<< HEAD
 =======
         header("Location: /", FALSE);
 =======
         header("Location: /#loggedout", FALSE);
 >>>>>>> fd415d1... 119 better session logout UX
 >>>>>>> 4ab65f9... 119 better session logout UX
+=======
+>>>>>>> 9ca2667... 121 change logout methods, update payment
         return;
 =======
         header("Location: /", FALSE);

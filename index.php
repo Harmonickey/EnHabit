@@ -81,6 +81,16 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         Save Money on Energy Now!
                     </a>
                 </div>
+<<<<<<< HEAD
+=======
+                
+                <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
+                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                        <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
+                    </a>
+                </div>
+                
+>>>>>>> 8ba4aa2... 121 setup popup
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -345,6 +355,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             </div>
             <!-- #modal-content-register-success -->
 <<<<<<< HEAD
+<<<<<<< HEAD
             <!-- Speedy Payment -->
             <div class="content-to-populate-in-modal" id="modal-content-payment">
                 <h1>Pay Rent Now</h1>
@@ -366,6 +377,42 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                     <button class='hidden' id='submitBtn'></button>
                     <input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>
                 </form>
+=======
+            <!-- Speedy Payment -->
+            <div class="content-to-populate-in-modal" id="modal-content-payment">
+                <h1>Pay Rent Now</h1>
+                <label class="required">First Name: </label><input type="text" class="form-control FirstName" />
+                <label class="required">Last Name: </label><input type="text" class="form-control LastName" />
+                <label class="required">Address: </label><input type="text" class="form-control Address" autocomplete="false" />
+                <label>Unit: </label><input type="text" class="form-control Unit" placeholder="Ex: 2E"/>
+                <label class="required">Rent Amount: </label>
+                    <div class="input-group AmountWrapper">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control Rent" placeholder="Ex: 500" />
+                    </div>
+                <label>Payment Memo: </label><input type="text" class="form-control Memo" />
+                <label>Landlord: </label><select class="form-control LandlordEmail" ></select>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                <input type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
+<<<<<<< HEAD
+                <!-- insert the hidden form there -->
+<<<<<<< HEAD
+>>>>>>> 8ba4aa2... 121 setup popup
+=======
+=======
+>>>>>>> cd801f0... 121 form fix
+=======
+=======
+                <p class="small">If your landlord is not available, please contact Enhabit.</p>
+>>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
+                <input id="GetPaymentKey" type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
+>>>>>>> 1114524... 121 geocomplete
+                <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>
+                    <button class='hidden' id='submitBtn'></button>
+                    <input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>
+                </form>
+>>>>>>> 94a655a... 121 insert payment form
                 <p class="MakePayment-error alert alert-danger" style="display: none;"></p>
             </div>
             <!-- #modal-content-payment -->
@@ -749,9 +796,13 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <!-- fancy scrollbars -->
         <script src="Libraries/Javascript/jquery.slimscroll.min.js"></script>  
         <!-- PayPal -->
+<<<<<<< HEAD
         <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script> 
         <!-- PowerKiosk -->
         <script src="Libraries/Javascript/powerkiosk_front.js"></script>
+=======
+        <script src="//www.paypalobjects.com/js/external/dg.js" type="text/javascript"></script>        
+>>>>>>> e2856dc... 121 minor changes
         <!-- Custom functions for this theme -->
         <script src="Javascript/functions.js"></script>
         <script src="Libraries/Javascript/initialise-functions.js"></script>

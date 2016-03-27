@@ -120,6 +120,7 @@ function InsertPayment(uid, landlordEmail, rent)
     var data = {
       "LandlordEmail": landlordEmail, // will be converted to LandlordID in backend
       "Rent": rent
+<<<<<<< HEAD
     };
     
     if (uid != "")
@@ -209,7 +210,14 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
 =======
       Rent: rent
 >>>>>>> 2cda3a2... 127 payments tracking
+=======
+>>>>>>> 91c26e3... 121 adapt
     };
+    
+    if (uid != "")
+    {
+        data["RenterId"] = uid;
+    }
     
     $.ajax({
        type: "POST",
@@ -220,7 +228,9 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
            command: "insert_payment",
            data: data 
        },
+<<<<<<< HEAD
        success: function(res) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
            window.top.location = "/landlord/listings/#successpayment";
@@ -231,16 +241,44 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
 =======
 =======
 >>>>>>> 4f8300f... 130 insert payment?
+=======
+=======
+       success: function(res) {
+<<<<<<< HEAD
+>>>>>>> f1f855f... 121 adapt
+>>>>>>> 91c26e3... 121 adapt
            window.top.location = "/tenant/payments/#successpayment"
            window.location.reload();
        },
        error: function(res) {
            window.top.location = "/tenant/payments/#cancelledpayment"
+<<<<<<< HEAD
 >>>>>>> 9e824ba... 127 smarter reloading and inserting records
+=======
+<<<<<<< HEAD
+>>>>>>> 91c26e3... 121 adapt
            window.location.reload();
 =======
            //window.top.location = "/tenant/payments/#successpayment"
 >>>>>>> ed916d6... 130 insert payment?
+=======
+=======
+           window.top.location = "/tenant/payments/#successpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#successpayment";
+           }
+           window.location.reload();
+       },
+       error: function(res) {
+           window.top.location = "/tenant/payments/#cancelledpayment";
+           if (uid == "")
+           {
+               window.top.location = "/#cancelledpayment";
+           }
+>>>>>>> 2f7ba8a... 121 some payment flow
+           window.location.reload();
+>>>>>>> f1f855f... 121 adapt
        }
     });
 }
