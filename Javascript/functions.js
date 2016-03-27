@@ -1287,6 +1287,7 @@ function InsertMarkers(res)
                 }
                 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 entry.reverse(); // reverse for now since we need to display the featured ones first
                 
 =======
@@ -1309,6 +1310,10 @@ function InsertMarkers(res)
                     'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
 >>>>>>> 38a9215... 116 featured markers
 =======
+=======
+                entry.reverse(); // reverse for now since we need to display the featured ones first
+                
+>>>>>>> 5bd1521... 142 reverse the array
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
                     'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
