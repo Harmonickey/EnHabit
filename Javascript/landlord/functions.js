@@ -614,6 +614,7 @@ function CreateListing()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
 =======
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
@@ -632,6 +633,13 @@ function CreateListing()
     
     //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
 >>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "University", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    
+    var error = BuildError(data);
+    
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+>>>>>>> c7605ad... 132 lease type
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -1304,10 +1312,10 @@ function InitSpecialFields()
         });
         
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
-    //$($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
-    //$($("#createListingModal .type-content input")[0]).prop("checked", true);
-    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
     $($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[1]).prop("checked", true);
         
     $(listingModal[2]).autoNumeric('init', 
     {

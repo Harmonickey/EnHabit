@@ -48,6 +48,7 @@ def GetEmailDetails(listingId)
         
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         return {"To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"])}
 =======
         return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"]), "Name" => account[0]["FirstName"] + " " + account[0]["LastName"], "PhoneNumber" => (account[0]["PhoneNumber"].nil? ? "" : account[0]["PhoneNumber"])}
@@ -55,6 +56,9 @@ def GetEmailDetails(listingId)
 =======
         return {"From" => account[0]["Email"], "To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"]), "Name" => account[0]["FirstName"] + " " + account[0]["LastName"], "PhoneNumber" => (account[0]["PhoneNumber"].nil? ? "" : account[0]["PhoneNumber"]), "Username" => account[0]["Username"]}
 >>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+        return {"To" => landlordAccount[0]["Email"], "Listing" => listing[0]["Address"] + " " + (listing[0]["Unit"].nil? ? "" : listing[0]["Unit"])}
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
     rescue Moped::Errors::OperationFailure => e
         return nil
     end
@@ -80,6 +84,7 @@ begin
     
     @to = @details["To"]
 <<<<<<< HEAD
+<<<<<<< HEAD
     @message = message
     @listing = @details["Listing"]
     @from = emailAddress
@@ -94,18 +99,16 @@ begin
 =======
     @message = data["Message"]
     @name = @details["Name"]
+=======
+    @message = message
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
     @listing = @details["Listing"]
-    @from = @details["From"]
-    @username = @details["Username"]
-    @phone = @details["PhoneNumber"] if not @details["PhoneNumber"].nil?
-    
-    puts "Could Not Find User" if @from.nil? 
-    puts "Please Update Your Account" if @username.include? "Facebook"
+    @from = emailAddress
     
     if not @from.nil?
         `chmod 775 #{@deploymentBase}/Core/Accounts/mail.rb`
-        `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'`
-        puts "#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@name}' '#{@listing}' '#{@from}' '#{@phone}'"
+        `#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@listing}' '#{@from}' '#{@phone}'`
+        puts "#{@deploymentBase}/Core/Accounts/mail.rb '#{@to}' '#{@message}' '#{@listing}' '#{@from}' '#{@phone}'"
 
 <<<<<<< HEAD
 <<<<<<< HEAD

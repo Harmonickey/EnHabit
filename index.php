@@ -288,7 +288,6 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             </div>
                         </div>
                     </div>
-                    <!--
                     <div class="item-content type-content">
                         <label>Rental or Sublet</label>
                         <div class="styled-select">
@@ -299,7 +298,6 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                             </select>
                         </div>
                     </div>
-                    -->
                     <div class="item-content type-content">
                         <label>Apartment or House</label>
                         <div class="styled-select">
@@ -383,12 +381,17 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+<<<<<<< HEAD
                         <label>Your Email Address</label>
+=======
+                        <label>Email Address</label>
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
                         <input type="text" class="form-control email-address" />
                     </div>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
+<<<<<<< HEAD
 <<<<<<< HEAD
                         <label>Phone Number (optional)</label>
                         <input type="text" class="form-control email-phone-number" />
@@ -410,6 +413,10 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         <label>Message</label>
                         <textarea rows='10' class="form-control email-message">I would like to meet up with you to view this listing!</textarea>
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                        <label>Phone Number (optional)</label>
+                        <input type="text" class="form-control email-phone-number" />
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
                     </div>
                 </div>
                 <div class="row row-centered" style="margin-top: 10px;">
@@ -681,10 +688,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
         <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <div class="modal-content" style="margin-top: 100px; border-radius: 10px;">
 =======
                 <div class="modal-content" style="margin-top: 100px;">
 >>>>>>> a76a00b... 107 z index stuff
+=======
+                <div class="modal-content" style="margin-top: 100px; border-radius: 10px;">
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <div class="modal-body clearfix">
                     </div>

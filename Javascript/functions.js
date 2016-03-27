@@ -1593,6 +1593,7 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
     var actionsContent =
     "<div class='col-lg-12 col-md-12 col-sm-12'>" +
 <<<<<<< HEAD
+<<<<<<< HEAD
         //"<div class='row'>" +
             //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
         //"</div>" +
@@ -1610,11 +1611,19 @@ function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, Lease
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
         "<div class='row'>" +
 =======
+=======
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
         //"<div class='row'>" +
-        //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
+            //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
         //"</div>" +
         //"<div class='row'>" +
+<<<<<<< HEAD
 >>>>>>> c623f5b... 107 remove share button
+=======
+        //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
+        //"</div>" +
+        "<div class='row'>" +
+>>>>>>> d026abd... 132 border radiuses, contact, no apply
             "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
         "</div>" +
     "</div>";
@@ -2632,6 +2641,7 @@ function SetDefaultButtonOnEnter(modal)
 function CreateEmailMessage(listingId)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     PopulateAndOpenModal(null, 'modal-content-email');
     $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
 }
@@ -2713,6 +2723,10 @@ function GetPayKey()
             }
         });
     }
+=======
+    PopulateAndOpenModal(null, 'modal-content-email');
+    $("#common-modal .email-btn").attr("onclick", "SendEmail('" + listingId + "');");
+>>>>>>> c7605ad... 132 lease type
 }
 
 function SendEmail(listingId)

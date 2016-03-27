@@ -1949,6 +1949,7 @@ function CreateListing()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
 =======
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "User", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
@@ -1959,10 +1960,13 @@ function CreateListing()
 =======
     var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
 >>>>>>> 0dc8937... 107 updating deleting creating
+=======
+    var data = BuildData(inputs, ["Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "Landlord", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+>>>>>>> c7605ad... 132 lease type
     
     var error = BuildError(data);
     
-    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -2640,6 +2644,7 @@ function InitSpecialFields()
     $("#createListingModal input[type='checkbox']").not(".type-content input").bootstrapSwitch({onText: "Yes", offText: "No"});
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
     $($("#createListingModal .type-content input")[0]).prop("checked", true);
     $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
@@ -2655,6 +2660,12 @@ function InitSpecialFields()
     $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
     $($("#createListingModal .type-content input")[0]).prop("checked", true);
 >>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+    $($("#createListingModal .type-content input")[0]).bootstrapSwitch({onText: "Rental", offText: "Sublet", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[0]).prop("checked", true);
+    $($("#createListingModal .type-content input")[1]).bootstrapSwitch({onText: "Apartment", offText: "House", 'state': true, 'setState': true});
+    $($("#createListingModal .type-content input")[1]).prop("checked", true);
+>>>>>>> 131255e... 132 bootstrap switches
     
     $(listingModal[2]).autoNumeric('init', 
     {
