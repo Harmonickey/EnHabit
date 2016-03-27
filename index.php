@@ -452,10 +452,14 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                 <div class="row row-centered" style="margin-top: 10px;">
                     <div class="col-sm-5 col-md-5 col-lg-5" style="margin: 0 auto; float: none;">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <label>Your Email Address</label>
 =======
                         <label>Email Address</label>
 >>>>>>> d026abd... 132 border radiuses, contact, no apply
+=======
+                        <label>Your Email Address</label>
+>>>>>>> 2517a2d... 135 fixed contact popin
                         <input type="text" class="form-control email-address" />
                     </div>
                 </div>
