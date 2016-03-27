@@ -1307,7 +1307,7 @@ function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "IsFeatured", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
@@ -2133,6 +2133,7 @@ function ProcessListing()
 <<<<<<< HEAD
                         window.location = "/admin/listings/#success";
                         window.location.reload();
+<<<<<<< HEAD
 =======
                         var inputs = $("#" + id + " input");
                         var headingInputs = $("#heading" + id + " label");
@@ -2165,6 +2166,8 @@ function ProcessListing()
 =======
                         window.location = "/admin/listings/#success";
 >>>>>>> da5fc3d... 119 hash usage
+=======
+>>>>>>> 74819c8... 116 add reload
                     }
                     else
                     {
@@ -2815,10 +2818,14 @@ function BuildData(inputs, elements)
     for (var i = 0; i < elements.length; i++)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented" || elements[i] == "IsFeatured")
 =======
         if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented")
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        if (elements[i] == "Animals" || elements[i] == "Laundry" || elements[i] == "Parking" || elements[i] == "AirConditioning" || elements[i] == "LeaseType" || elements[i] == "BuildingType" || elements[i] == "IsActive" || elements[i] == "IsAdmin" || elements[i] == "IsVerified" || elements[i] == "IsLandlord" || elements[i] == "IsRented" || elements[i] == "IsFeatured")
+>>>>>>> 74819c8... 116 add reload
         {
             data[elements[i]] = $(inputs[i]).prop("checked");
         }
@@ -3014,6 +3021,7 @@ function FormattedTime(time)
 
 function CreateAccordionView(oid, data)
 {
+    console.log(data);
     var landlords = "";
     $.each(landlordList, function(index, landlord) {
         landlords += "<option value='" + landlord + "'" + (data.Landlord == landlord ? "selected" : "") + ">" + landlord + "</option>";
@@ -3208,6 +3216,11 @@ function CreateAccordionView(oid, data)
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.IsPastThreshold ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, The Address Must Be Within the University Radius!</label>" +                    
                             "</div>" +
                         "</div>" +
+                        "<div class='row' style='margin-top: 10px'>" + 
+                            "<div class='col-lg-2 col-md-2 col-sm-2'>" +
+                                "<label>Featured Listing</label><input class='yesno' type='checkbox' " + (data.IsFeatured ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+                        "</div>" + 
                         "<div class='row'>" + 
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
 <<<<<<< HEAD

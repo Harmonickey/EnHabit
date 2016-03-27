@@ -176,6 +176,8 @@ function InsertPayment(uid, landlordEmail, rent)
     });
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function UpdateToFeatured(uid, landlordEmail, amount)
 {
     var data = {
@@ -212,12 +214,51 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
 >>>>>>> 2cda3a2... 127 payments tracking
 =======
 >>>>>>> 91c26e3... 121 adapt
+=======
+function InsertFeaturedPayment(uid, landlordEmail, rent)
+=======
+function UpdateToFeatured(uid, landlordEmail, amount)
+>>>>>>> da9c88b... 116 update to featured
+{
+    var data = {
+        uid: uid
     };
     
-    if (uid != "")
-    {
-        data["RenterId"] = uid;
-    }
+    $.ajax({
+       type: "POST",
+       url: "/api.php",
+       data: 
+       {
+           endpoint: "Listings",
+           command: "update_to_featured",
+           data: data 
+       },
+       success: function(res) {
+           InsertFeaturedPayment(uid, landlordEmail, amount);
+       },
+       error: function(res) {
+           window.top.location = "/landlord/listings/#cancelledpayment";
+           window.location.reload();
+       }
+    });
+    
+function InsertFeaturedPayment(uid, landlordEmail, amount)    
+{   
+    var data = {
+<<<<<<< HEAD
+      "LandlordEmail": landlordEmail, // will be converted to LandlordID in backend
+<<<<<<< HEAD
+      "Rent": rent
+>>>>>>> 56269ed... 116 featured listings
+=======
+      "Rent": amount
+>>>>>>> da9c88b... 116 update to featured
+=======
+      LandlordEmail: landlordEmail, // will be converted to LandlordID in backend
+      Rent: amount,
+      RenterId: uid
+>>>>>>> a60b636... 116 featured listings
+    };
     
     $.ajax({
        type: "POST",
@@ -229,15 +270,20 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
            data: data 
        },
 <<<<<<< HEAD
+<<<<<<< HEAD
        success: function(res) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+       success: function(res) {
+>>>>>>> 56269ed... 116 featured listings
            window.top.location = "/landlord/listings/#successpayment";
            window.location.reload();
        },
        error: function(res) {
            window.top.location = "/landlord/listings/#cancelledpayment";
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 4f8300f... 130 insert payment?
@@ -279,6 +325,9 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
 >>>>>>> 2f7ba8a... 121 some payment flow
            window.location.reload();
 >>>>>>> f1f855f... 121 adapt
+=======
+           window.location.reload();
+>>>>>>> 56269ed... 116 featured listings
        }
     });
 }

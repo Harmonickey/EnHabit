@@ -15,7 +15,15 @@
     </head>
     <script type="text/javascript">
     
+<<<<<<< HEAD
+<<<<<<< HEAD
         <?php echo "UpdateToFeatured('" . $oid . "', '" . $landlordEmail . "', '" . $amount . "')"; ?>
+=======
+        <?php echo "InsertFeaturedPayment('" . $oid . "', '" . $landlordEmail . "', '" . $amount . "')"; ?>
+>>>>>>> 1893860... 116 featured listings
+=======
+        <?php echo "UpdateToFeatured('" . $oid . "', '" . $landlordEmail . "', '" . $amount . "')"; ?>
+>>>>>>> da9c88b... 116 update to featured
 
     </script>
 </html>

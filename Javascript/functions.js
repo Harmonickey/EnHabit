@@ -1220,6 +1220,9 @@ function InsertMarkers(res)
             {   
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 629c4d2... 116 admin fix
                 var isMarkerFeatured = false;
                 for (var i = 0; i < entry.length; i++)
                 {
@@ -1229,6 +1232,7 @@ function InsertMarkers(res)
                     }
                 }
                 
+<<<<<<< HEAD
                 entry.reverse(); // reverse for now since we need to display the featured ones first
                 
 =======
@@ -1250,6 +1254,12 @@ function InsertMarkers(res)
                     'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
                     'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
 >>>>>>> 38a9215... 116 featured markers
+=======
+                var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
+                marker.setIcon(L.mapbox.marker.icon({
+                    'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (isMarkerFeatured ? 'large' : 'medium'),
+>>>>>>> 629c4d2... 116 admin fix
                     'marker-symbol': 'building'
                 }));
                 
@@ -1290,12 +1300,16 @@ function InsertMarkers(res)
                                 "<img src='" + base + listingPic + "' height='100' width='100' />" +
                                 "<div class='information text-left'>" +
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     "<p class='listing-address'>" + listing.Address + " Unit " + (listing.Unit ? listing.Unit : "") + (listing.IsFeatured ? " <strong style='color: #4078c0'>(Featured Listing)</strong>" : "") + "</p><br>" +
 =======
                                     "<p class='listing-address'>" + listing.Address + " " + (listing.Unit ? listing.Unit : "") + "</p><br>" +
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                    "<p class='listing-address'>" + listing.Address + " Unit " + (listing.Unit ? listing.Unit : "") + (listing.IsFeatured ? " <strong style='color: #4078c0'>(Featured Listing)</strong>" : "") + "</p><br>" +
+>>>>>>> 629c4d2... 116 admin fix
                                     "<p class='listing-price'>$" + listing.Price + "/month</p><br>" +
                                     "<p class='listing-bedrooms'>" + listing.Bedrooms + " Bedroom" + (listing.Bedrooms == 1 ? "" : "s") + "</p>" + 
                                     "<p class='listing-bathrooms'>" + listing.Bathrooms + " Bathroom" + (listing.Bathrooms == 1 ? "" : "s") + "</p><br>" +
@@ -2219,6 +2233,7 @@ function RemoveLoginFeatures()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
@@ -2238,6 +2253,8 @@ function RemoveLoginFeatures()
     $("#payment-btn").show(); // just in case an admin logged out
     $("#payment-btn").attr("onclick", "LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment')");
 >>>>>>> 02ef3a7... 121 handle logout scenario
+=======
+>>>>>>> 629c4d2... 116 admin fix
 }
 
 function ShowLoginFeatures(hideMainModal, userType)
@@ -2249,6 +2266,7 @@ function ShowLoginFeatures(hideMainModal, userType)
     if (Contains(userType, "Admin"))
     {
         $(".admin-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2276,10 +2294,13 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 >>>>>>> 21cb68d... 132 some small payment navigate fixes
+=======
+>>>>>>> 629c4d2... 116 admin fix
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2307,10 +2328,13 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").hide(); // landlords don't pay rent!!
 >>>>>>> 21cb68d... 132 some small payment navigate fixes
+=======
+>>>>>>> 629c4d2... 116 admin fix
     }
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2319,10 +2343,11 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").show(); // in case we're going from landlord to user
 >>>>>>> 21cb68d... 132 some small payment navigate fixes
+=======
+>>>>>>> 629c4d2... 116 admin fix
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
-            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
 <<<<<<< HEAD
         
@@ -3266,7 +3291,11 @@ $(function ()
 =======
         $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Logout Success", position: 'top-center'});
         location.hash = "";
+<<<<<<< HEAD
 >>>>>>> 9ca2667... 121 change logout methods, update payment
+=======
+        RemoveLoginFeatures();
+>>>>>>> 629c4d2... 116 admin fix
     }
     else if (location.hash == "#sessiontimeout")
     {
@@ -3274,6 +3303,7 @@ $(function ()
 <<<<<<< HEAD
         location.hash = "";
         RemoveLoginFeatures();
+<<<<<<< HEAD
     }
     else if (location.hash == "#successpayment")
     {
@@ -3290,6 +3320,8 @@ $(function ()
 >>>>>>> 9ca2667... 121 change logout methods, update payment
         location.hash = "";
 >>>>>>> 4ab65f9... 119 better session logout UX
+=======
+>>>>>>> 629c4d2... 116 admin fix
     }
     else if (location.hash == "#successpayment")
     {
@@ -3301,8 +3333,6 @@ $(function ()
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
     }
-    
-    RemoveLoginFeatures();
 });
 
 $(window).on('resize', function() {

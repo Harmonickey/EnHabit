@@ -1105,10 +1105,14 @@ function ProcessListing()
 =======
                         window.location = "/tenant/listings/#success"
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> da5fc3d... 119 hash usage
 =======
                         location.reload();
 >>>>>>> 23c42f1... 119 switch
+=======
+                        window.location.reload();
+>>>>>>> 74819c8... 116 add reload
                     }
                     else
                     {

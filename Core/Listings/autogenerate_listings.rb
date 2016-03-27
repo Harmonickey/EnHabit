@@ -61,11 +61,16 @@ def CreateListings(amount)
         listingObj["Testing"] = true
         listingObj["Pictures"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/sports/"]
 <<<<<<< HEAD
+<<<<<<< HEAD
         listingObj["IsActive"] = true
         listingObj["IsFeatured"] = [true, false].sample
 =======
         listingObj["IsActive"] = true
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+        listingObj["IsActive"] = true
+        listingObj["IsFeatured"] = [true, false].sample
+>>>>>>> 56269ed... 116 featured listings
         listingObj["Thumbnails"] = ["http://lorempixel.com/300/200/cats/", "http://lorempixel.com/300/200/sports/"]
        
         begin

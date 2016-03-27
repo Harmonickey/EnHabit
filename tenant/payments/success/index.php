@@ -375,8 +375,12 @@ ga('send', 'pageview');
     </head>
     <script type="text/javascript">
     
+<<<<<<< HEAD
         <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . rent . "')"; ?>
 <<<<<<< HEAD
+=======
+        <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . $rent . "')"; ?>
+>>>>>>> 8564af8... 116 featured listings
 
 =======
         

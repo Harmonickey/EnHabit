@@ -837,9 +837,13 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             if (isset($_SESSION['tenant']) || isset($_SESSION['landlord']) || isset($_SESSION['admin']))
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                
+>>>>>>> 629c4d2... 116 admin fix
                 $res = "";
                 if (isset($_SESSION['tenant']))
                 {

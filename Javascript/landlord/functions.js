@@ -21,6 +21,7 @@ $(function() {
 
     if (location.hash == "#success")
     {
+<<<<<<< HEAD
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
        location.hash = "";
@@ -53,6 +54,22 @@ $(function() {
        location.hash = "";
    }
 >>>>>>> da5fc3d... 119 hash usage
+=======
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
+       
+       location.hash = "";
+    }
+    else if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Listing Featured Successfully!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
+>>>>>>> da9c88b... 116 update to featured
 });
 
 $(document).on("keypress", function(e)
@@ -800,6 +817,7 @@ function ProcessListing()
 <<<<<<< HEAD
                         window.location = "/landlord/listings/#success";
                         window.location.reload();
+<<<<<<< HEAD
 =======
                         var inputs = $("#" + id + " input");
                         var headingInputs = $("#heading" + id + " label");
@@ -833,6 +851,8 @@ function ProcessListing()
 =======
                         window.location = "/landlord/listings/#success";
 >>>>>>> da5fc3d... 119 hash usage
+=======
+>>>>>>> 74819c8... 116 add reload
                     }
                     else
                     {
@@ -1064,6 +1084,67 @@ function UpdateToFeatured(oid)
     GetPayKey(oid);
 =======
 >>>>>>> 6d15b60... 107 revert to old logout
+}
+
+function GetPayKey(oid)
+{
+    var data = { oid: oid };
+    
+    $.ajax(
+    {
+        type: "POST",
+        url: "/api.php",
+        data:
+        {
+            command: "featured_payment",
+            data: data,
+            endpoint: "Payments"
+        },
+        success: function(res)
+        {
+            try
+            {
+                var payResponse = JSON.parse(res);
+                
+                if (payResponse["error"])
+                {
+                   throw Error("Unable to Begin Payment"); 
+                }
+                else
+                {
+                    // get pay key
+                    var paykey = payResponse["payKey"];
+                    
+                    // set it in the DOM
+                    $("#paykey").val(paykey);
+                    
+                    // init the PayPal popup object
+                    var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+                    
+                    // programmatically submit
+                    $("#submitBtn").click();
+                }
+            }
+            catch(e)
+            {
+                $.msgGrowl ({ type: 'error', title: 'Error', text: e.message, position: 'top-center'});
+            }
+        },
+        error: function(res, err)
+        {
+            $.msgGrowl ({ type: 'error', title: 'Error', text: res, position: 'top-center'});
+        },
+        complete: function()
+        {
+            $("#GetPaymentKey").prop("disabled", false);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
+        }
+    });
+}
+
+function UpdateToFeatured(oid)
+{
+    GetPayKey(oid);
 }
 
 function UpdateAccount()
@@ -1634,7 +1715,23 @@ function CreateAccordionView(oid, data)
                             "<label>Start Date: " + FormattedDate(data.Start) + "</label>" +
                         "</a>" +
                     "</h4>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                     (data.IsFeatured ? "<label style='width: 20%; margin-right; 0;'>Featured Listing!</label>" : "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>") +
+=======
+                    "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured('" + oid + "')>Update to Featured</button>" +
+>>>>>>> 56269ed... 116 featured listings
+=======
+                    "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>" +
+>>>>>>> 38e0b4c... 116 fixed searching
+=======
+                    (data.IsFeatured ? "<label style='width: 20%; margin-right; 0;'>Featured Listing!</label>" : "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>" +)
+>>>>>>> 91b1598... 116 1 dollar test and listing
+=======
+                    (data.IsFeatured ? "<label style='width: 20%; margin-right; 0;'>Featured Listing!</label>" : "<button class='btn btn-block btn-primary pull-right' style='width: 20%; margin-right: 0' onclick='UpdateToFeatured(\"" + oid + "\")'>Update to Featured</button>") +
+>>>>>>> a60b636... 116 featured listings
                 "</div>" +
                 "<div id='" + oid + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='heading" + oid + "'>" +
                     "<div class='panel-body'>" +

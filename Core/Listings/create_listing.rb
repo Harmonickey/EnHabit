@@ -18,6 +18,7 @@ Moped::BSON = BSON
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold, isFeatured)
 =======
 def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures)
@@ -25,6 +26,9 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
 =======
 def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold)
 >>>>>>> da5fc3d... 119 hash usage
+=======
+def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, threshold, isPastThreshold, isFeatured)
+>>>>>>> 56269ed... 116 featured listings
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
 
@@ -65,10 +69,14 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
 >>>>>>> bc7c714... 116 default to not featured
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d92b283... 116 fix create statement
 =======
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
     listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
 >>>>>>> 2bc45ed... 116 fix create statement
+<<<<<<< HEAD
 =======
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0)
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
@@ -84,6 +92,8 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
 >>>>>>> da5fc3d... 119 hash usage
 =======
 >>>>>>> 3218806... 116 default to not featured
+=======
+>>>>>>> d92b283... 116 fix create statement
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -316,6 +326,7 @@ begin
         isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
     
         result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold, data["IsFeatured"])
+<<<<<<< HEAD
 
         puts result.to_json
     end
@@ -339,6 +350,8 @@ begin
         isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
     
         result = CreateListing(isAdmin, key, user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], university[:Threshold], isPastThreshold)
+=======
+>>>>>>> d92b283... 116 fix create statement
 
         puts result.to_json
     end

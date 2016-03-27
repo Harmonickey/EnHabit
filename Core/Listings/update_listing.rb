@@ -18,6 +18,7 @@ Moped::BSON = BSON
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive, isPastThreshold, isFeatured)
 =======
 def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures)
@@ -28,6 +29,9 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
 =======
 def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive, isPastThreshold)
 >>>>>>> da5fc3d... 119 hash usage
+=======
+def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, address, unit, bedrooms, bathrooms, animals, laundry, parking, airConditioning, leaseType, buildingType, notes, start, latitude, longitude, university, pictures, isActive, isPastThreshold, isFeatured)
+>>>>>>> 56269ed... 116 featured listings
     mongoSession = Moped::Session.new(['127.0.0.1:27017'])
     mongoSession.use("enhabit")
 
@@ -58,6 +62,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = false
     listingObj["IsFeatured"] = isFeatured
+<<<<<<< HEAD
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -73,6 +78,8 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["IsPastThreshold"] = isPastThreshold
 >>>>>>> da5fc3d... 119 hash usage
     listingObj["IsActive"] = false
+=======
+>>>>>>> 56269ed... 116 featured listings
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
@@ -308,7 +315,7 @@ begin
     else
         isPastThreshold = (ComputeDistance(university[:X], university[:Y], data["Latitude"], data["Longitude"]) > university[:Threshold].to_f)
     
-        puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"],isPastThreshold)
+        puts UpdateListing(isAdmin, key, data["id"], user, userId, landlord, landlordId, data["Rent"], data["Address"], data["Unit"], data["Bedrooms"], data["Bathrooms"], data["Animals"], data["Laundry"], data["Parking"], data["AirConditioning"], data["LeaseType"], data["BuildingType"], data["Notes"], data["Start"], data["Latitude"], data["Longitude"], data["University"], data["Pictures"], data["IsActive"],isPastThreshold, data["IsFeatured"])
     end
 >>>>>>> 29c0140... 119 better error message
 rescue Exception => e
