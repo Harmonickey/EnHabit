@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
         header("Location: /", FALSE);
+<<<<<<< HEAD
 =======
         header("Location: /#loggedout", FALSE);
 >>>>>>> fd415d1... 119 better session logout UX
@@ -18,6 +19,9 @@
 =======
         header("Location: /", FALSE);
 >>>>>>> 7226f8e... 120 add necessary files
+=======
+        return;
+>>>>>>> f64b283... 120 logs needed a return
     }
     
     if (!isset($_SESSION["admin"]))
