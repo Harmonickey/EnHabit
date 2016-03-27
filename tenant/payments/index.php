@@ -343,7 +343,12 @@ $(function()
 >>>>>>> 268c466... 107 flip flow
 =======
     GetRenter();
+<<<<<<< HEAD
 >>>>>>> 20627ba... 107 what the heck
+=======
+    
+    GetAllTransactions();
+>>>>>>> 649de0f... 130 transactional stuff
 });
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

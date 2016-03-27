@@ -24,6 +24,7 @@ $(function() {
     var height = $("html").outerHeight(true) - $(".navbar").outerHeight(true) - $(".subnavbar").outerHeight(true) - $(".footer").outerHeight(true);
    
 <<<<<<< HEAD
+<<<<<<< HEAD
     $(".main").css("min-height", height + "px");
    
     if ($.fn.lightbox) {
@@ -89,7 +90,15 @@ $(function() {
        $('.ui-lightbox').lightbox();
 >>>>>>> 23c42f1... 119 switch
    }
+=======
+    $(".main").css("min-height", height + "px");
+   
+    if ($.fn.lightbox) {
+       $('.ui-lightbox').lightbox();
+    }
+>>>>>>> 1951600... 130 memo
     
+<<<<<<< HEAD
 <<<<<<< HEAD
    if (location.hash == "#successpayment")
 =======
@@ -109,19 +118,38 @@ $(function() {
        location.hash = "";
    }
 <<<<<<< HEAD
+=======
+    if (location.hash == "#successpayment")
+    {
+       $.msgGrowl ({ type: 'success', title: 'Success', text: "Payment Successfully Sent!", position: 'top-center'});
+       location.hash = "";
+    }      
+    else if (location.hash == "#cancelledpayment")
+    {
+       $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
+       location.hash = "";
+    }
+>>>>>>> ef00d00... 130 memo
     
-   if (location.hash == "#success")
-   {
+    if (location.hash == "#success")
+    {
        $.msgGrowl ({ type: 'success', title: 'Success', text: "Successfully Updated Listing", position: 'top-center'});
        
        location.hash = "";
+<<<<<<< HEAD
    }
 <<<<<<< HEAD
 >>>>>>> da5fc3d... 119 hash usage
 =======
 =======
 >>>>>>> 921ffff... 117 payment enhancement
+<<<<<<< HEAD
 >>>>>>> dad3f6b... 117 payment enhancement
+=======
+=======
+    }
+>>>>>>> ef00d00... 130 memo
+>>>>>>> 1951600... 130 memo
 });
 
 $(document).on("keypress", function(e)
@@ -214,10 +242,39 @@ function GetRenter()
                          
 =======
                         
+<<<<<<< HEAD
 >>>>>>> 1c87344... 107 redirect
                         GetPayKey(oid, data);
 >>>>>>> 014529f... 107 better flow
+<<<<<<< HEAD
 >>>>>>> 7319f63... 107 better flow
+=======
+=======
+                        $("#payment").append(CreatePaymentView(oid, data));
+<<<<<<< HEAD
+>>>>>>> f438910... 130 memo
+<<<<<<< HEAD
+>>>>>>> cc7cf82... 130 memo
+=======
+=======
+                        
+                        $("#paymentNote").keyup(function() {
+                            var charactersLeft = 100 - $("#paymentNote").val().length;
+                            
+                            $("#charactersLeft").text(charactersLeft);
+                        });
+<<<<<<< HEAD
+>>>>>>> ef00d00... 130 memo
+<<<<<<< HEAD
+>>>>>>> 1951600... 130 memo
+=======
+=======
+                        
+                        $("#GetPaymentKey").click(function() {
+                            GetPayKey(oid, data);
+                        });
+>>>>>>> 33588c5... 130 payments
+>>>>>>> c2e558f... 130 payments
                     }                       
                 }
             }
@@ -461,9 +518,25 @@ function GetAccount(isListingPage)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function GetAllTransactions()
 {  
     var data = { "TenantPaymentHistory": true };
+<<<<<<< HEAD
+=======
+function GetAllTransactions()
+{  
+<<<<<<< HEAD
+    var data =
+    {
+        
+    };
+>>>>>>> 8986867... 130 payment history
+=======
+    var data = { TenantPaymentHistory: true };
+>>>>>>> 4f8300f... 130 insert payment?
+=======
+>>>>>>> c2e558f... 130 payments
 
     $.ajax(
     {
@@ -521,8 +594,11 @@ function GetAllTransactions()
     });
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+>>>>>>> 8986867... 130 payment history
 function HandleCreateListingButton(data)
 {
     if (Contains(data.Username, "Facebook"))
@@ -1332,6 +1408,7 @@ function DeleteAccount()
 <<<<<<< HEAD
 function GetPayKey(oid, data)
 {
+<<<<<<< HEAD
     data.Memo = $("#paymentNote").val().replace("'", "");
 =======
 function MakeAdaptivePayment(uid)
@@ -1353,6 +1430,10 @@ function GetPayKey()
 function GetPayKey(oid, data)
 {
 >>>>>>> 7319f63... 107 better flow
+=======
+    data.Memo = $("#paymentNote").val();
+    
+>>>>>>> cc7cf82... 130 memo
     $.ajax(
     {
         type: "POST",
@@ -1360,12 +1441,17 @@ function GetPayKey(oid, data)
         beforeSend: function()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             $("#GetPaymentKey").prop("disabled", true);
             $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
 =======
             $(".adaptive-payment button").prop("disabled", true);
             $($(".adaptive-payment button")[1]).text("Deleting...");
 >>>>>>> 1a55107... 107 adaptive payments
+=======
+            $("#GetPaymentKey").prop("disabled", true);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Paying...");
+>>>>>>> c2e558f... 130 payments
         },
         data:
         {
@@ -1413,17 +1499,29 @@ function GetPayKey(oid, data)
                 }
                 else
                 {
+                    // get pay key
                     var paykey = payResponse["payKey"];
                     
+<<<<<<< HEAD
 <<<<<<< HEAD
                     GetRenter(paykey);
 =======
                     $("#payment").append(CreatePaymentView(oid, data));
                      
+=======
+                    // set it in the DOM
+>>>>>>> f438910... 130 memo
                     $("#paykey").val(paykey);
                     
+                    // init the PayPal popup object
                     var embeddedPPFlow = new PAYPAL.apps.DGFlow({trigger: 'submitBtn'});
+<<<<<<< HEAD
 >>>>>>> 014529f... 107 better flow
+=======
+                    
+                    // programmatically submit
+                    $("#submitBtn").click();
+>>>>>>> f438910... 130 memo
                 }
 <<<<<<< HEAD
                 else
@@ -1446,12 +1544,17 @@ function GetPayKey(oid, data)
         complete: function()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             $("#GetPaymentKey").prop("disabled", false);
             $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
 =======
             $(".adaptive-payment button").prop("disabled", false);
             $($(".adaptive-payment button")[1]).text("Delete");
 >>>>>>> 1a55107... 107 adaptive payments
+=======
+            $("#GetPaymentKey").prop("disabled", false);
+            $("#GetPaymentKey").html("<i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent");
+>>>>>>> c2e558f... 130 payments
         }
     });
 }
@@ -1967,10 +2070,18 @@ function GetNextMonth(today)
 }
 
 /* Rent, HasPaidRent, Address,  */
-function CreatePaymentView(oid, data, paykey)
+function CreatePaymentView(oid, data)
 {
     var today = new Date();
+<<<<<<< HEAD
+<<<<<<< HEAD
     var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
+=======
+    var nextMonth = GetNextMonth(today);
+>>>>>>> cc7cf82... 130 memo
+=======
+    var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
+>>>>>>> 1951600... 130 memo
     
     return "<div class='panel panel-default'>" +
                 "<div id='" + oid + "' aria-labelledby='heading" + oid + "'>" +
@@ -2003,6 +2114,7 @@ function CreatePaymentView(oid, data, paykey)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             "<div class='row'>" +
                                 "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
                                     "<label>Optional Payment Note:</label>" + 
@@ -2014,6 +2126,7 @@ function CreatePaymentView(oid, data, paykey)
                             "</div>" +
                             "<button class='btn btn-primary btn-success' id='GetPaymentKey')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
                             "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
+<<<<<<< HEAD
                                 "<button class='hidden' id='submitBtn'></button>" +
                                 "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
                             "</form>" +
@@ -2028,6 +2141,7 @@ function CreatePaymentView(oid, data, paykey)
                                 "<input type='image' id='submitBtn' value='Pay Rent' src='https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif'>" +
 =======
                             "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
+<<<<<<< HEAD
                                 "<button class='btn btn-primary btn-success' id='submitBtn'><i class='fa fa-cc-paypal'></i> Pay Rent</button>" +
 <<<<<<< HEAD
 >>>>>>> a155d99... 107 endpoints
@@ -2035,6 +2149,38 @@ function CreatePaymentView(oid, data, paykey)
 =======
                                 "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value='" + paykey + "'>" +
 >>>>>>> 268c466... 107 flip flow
+=======
+                                "<label>Payment Note:</label>" + 
+                                "<input type='text' class='form-control' style='margin-right: 15px;' id='paymentNote' value='' name='paymentNote' placeholder='" + thisMonth + "\'s Rent'>" +
+                                "<button class='btn btn-primary btn-success' id='PayKey' onclick='GetPayKey('" + oid + "', '" + data + "')'><i class='fa fa-cc-paypal'></i>Pay Rent</button>" +
+=======
+                                "<div class='row'>" +
+                                    "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
+                                        "<label>Optional Payment Note:</label>" + 
+                                        "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\">" +
+                                    "</div>" +
+                                    "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
+                                        "<span id='charactersLeft'>100</span> characters left" +
+                                    "</div>" +
+                                "</div>" +
+                                "<button class='btn btn-primary btn-success' id='PayKey' onclick='GetPayKey('" + oid + "', '" + data + "')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
+>>>>>>> 1951600... 130 memo
+=======
+                            "<div class='row'>" +
+                                "<div class='col-lg-7 col-md-7 col-sm-7'>" +    
+                                    "<label>Optional Payment Note:</label>" + 
+                                    "<input type='text' class='form-control' style='margin-bottom: 15px;' id='paymentNote' value='' name='paymentNote' placeholder=\"" + nextMonth + "\" maxlength='100'>" +
+                                "</div>" +
+                                "<div class='col-lg-3 col-md-3 col-sm-3' style='margin-top: 25px'>" +
+                                    "<span id='charactersLeft'>100</span> characters left" +
+                                "</div>" +
+                            "</div>" +
+                            "<button class='btn btn-primary btn-success' id='GetPaymentKey')'><i class='fa fa-cc-paypal' style='margin-right: 5px'></i>Pay Rent</button>" +
+                            "<form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>" +
+>>>>>>> c2e558f... 130 payments
+                                "<button class='hidden' id='submitBtn'></button>" +
+                                "<input id='type' type='hidden' name='expType' value='light'><input id='paykey' type='hidden' name='paykey' value=''>" +
+>>>>>>> cc7cf82... 130 memo
                             "</form>" +
 >>>>>>> 152205d... 107 more paypal
                             "</div>" +
@@ -2051,7 +2197,15 @@ function CreatePaymentHistoryView(oid, data)
                 "<div class='panel-heading' role='tab' id='heading" + oid + "'>" +
                     "<h4 class='panel-title'>" +
                         "<a role='button' data-toggle='collapse' data-parent='#accordion' href='#" + oid + "' aria-expanded='false' aria-controls='" + oid + "'>" +
+<<<<<<< HEAD
+<<<<<<< HEAD
                             "<label>Paid Rent: $" + data.Rent + "</label>" +
+=======
+                            "<label>Rent: $" + data.Rent + "</label>" +
+>>>>>>> 8986867... 130 payment history
+=======
+                            "<label>Paid Rent: $" + data.Rent + "</label>" +
+>>>>>>> 894ddc2... 130 payment history
                             "<label>Month: " + data.Month + "</label>" +
                         "</a>" +
                     "</h4>" +

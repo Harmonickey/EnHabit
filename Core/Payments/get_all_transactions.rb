@@ -10,7 +10,15 @@ Moped::BSON = BSON
 begin
     data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     @userId = ARGV[1].split(",")[0] if not ARGV[1].empty? and not data.nil? and not data["TenantPaymentHistory"].nil?
+=======
+    @userId = ARGV[1].split(",")[0] if not ARGV[1].empty? and not data["TenantPaymentHistory"].nil?
+>>>>>>> 649de0f... 130 transactional stuff
+=======
+    @userId = ARGV[1].split(",")[0] if not ARGV[1].empty? and not data.nil? and not data["TenantPaymentHistory"].nil?
+>>>>>>> 4f8300f... 130 insert payment?
 
     mongo_session = Moped::Session.new(['127.0.0.1:27017'])# our mongo database is local
     mongo_session.use("enhabit")# this is our current database

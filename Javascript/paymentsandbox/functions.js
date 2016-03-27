@@ -222,12 +222,15 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
        },
        success: function(res) {
 <<<<<<< HEAD
+<<<<<<< HEAD
            window.top.location = "/landlord/listings/#successpayment";
            window.location.reload();
        },
        error: function(res) {
            window.top.location = "/landlord/listings/#cancelledpayment";
 =======
+=======
+>>>>>>> 4f8300f... 130 insert payment?
            window.top.location = "/tenant/payments/#successpayment"
            window.location.reload();
        },
@@ -235,6 +238,9 @@ function InsertFeaturedPayment(uid, landlordEmail, amount)
            window.top.location = "/tenant/payments/#cancelledpayment"
 >>>>>>> 9e824ba... 127 smarter reloading and inserting records
            window.location.reload();
+=======
+           //window.top.location = "/tenant/payments/#successpayment"
+>>>>>>> ed916d6... 130 insert payment?
        }
     });
 }

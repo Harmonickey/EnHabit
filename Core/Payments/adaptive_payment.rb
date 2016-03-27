@@ -46,6 +46,9 @@ end
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cc7cf82... 130 memo
 @memo = "Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -59,6 +62,7 @@ end
 >>>>>>> 7f6a3f3... 127 payments tracking
 =======
 @memo = @data["Memo"] + "\n\nRent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
+<<<<<<< HEAD
 =======
 @memo = @data["Memo"] + " -- Rent payment for: " + @data["Address"] + " Unit:" + @data["Unit"]
 <<<<<<< HEAD
@@ -280,6 +284,11 @@ puts app_result.to_json
 @enhabit = "marcel@lbkstudios.net"
 >>>>>>> 7f6a3f3... 127 payments tracking
 >>>>>>> 2cda3a2... 127 payments tracking
+=======
+@enhabit = "alex@lbkstudios.net"
+@uid = @data["_id"]["oid"]
+>>>>>>> f438910... 130 memo
+>>>>>>> cc7cf82... 130 memo
 
 @isDev = `cat #{@deploymentBase}/enhabit.git/hooks/post-receive`.split("\n")[4].split(" ")[-2].include? 'dev'
 
