@@ -224,10 +224,14 @@ def combineFiltersIntoQuery
         @mainFilter["$and"].push @isRentedFilter
     end
 <<<<<<< HEAD
+<<<<<<< HEAD
     if not @isActiveFilter.nil? and @userId.nil? and @landlordId.nil?
         @mainFilter["$and"].push @isActiveFilter
 =======
     if not @isActiveFilter.nil?
+=======
+    if not @isActiveFilter.nil? and @userId.nil? and @landlordId.nil?
+>>>>>>> 79e2840... 116 active filter
         @mainFilter["$and"].push @isActiveFilter
     end
 <<<<<<< HEAD
@@ -314,6 +318,7 @@ begin
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1, IsPastThreshold: 1).to_a
 =======
     # get all the non featured ones first
@@ -342,6 +347,22 @@ begin
 =======
     documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1, IsPastThreshold: 1).to_a
 >>>>>>> 5ec30e2... 119 add to query
+=======
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1, IsPastThreshold: 1).to_a
+=======
+    # get all the non featured ones first
+    @mainFilter["$and"].push({"IsFeatured" => false})
+    documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
+   
+    # now get all the featured ones
+    @mainFilter["$and"].pop
+    @mainFilter["$and"].push({"IsFeatured" => true})
+    featured_documents = mongoSession[:listings].find(@mainFilter).select(_id: 1, UserId: 1, LandlordId: 1, University: 1, Landlord: 1, WorldCoordinates: 1, Price: 1, Bedrooms: 1, Bathrooms: 1, Start: 1, Address: 1, Unit: 1, HasAnimals: 1, HasAirConditioning: 1, HasLaundry: 1, HasParking: 1, LeaseType: 1, BuildingType: 1, Notes: 1, Pictures: 1, Thumbnails: 1, IsRented: 1, IsActive: 1, Testing: 1).to_a
+    
+    # smoosh them all together now
+    documents += featured_documents
+>>>>>>> 81164a5... 116 featured markers
+>>>>>>> 38a9215... 116 featured markers
     
     mongoSession.disconnect
 

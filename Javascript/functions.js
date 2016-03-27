@@ -1059,12 +1059,17 @@ function InsertMarkers(res)
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
                     'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
 =======
                     'marker-color': '#000',
                     'marker-size': 'medium',
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
+>>>>>>> 38a9215... 116 featured markers
                     'marker-symbol': 'building'
                 }));
                 
@@ -1180,12 +1185,17 @@ function InsertMarkers(res)
                 var marker = L.marker([entry[0].WorldCoordinates.x, entry[0].WorldCoordinates.y]).addTo(map);
                 marker.setIcon(L.mapbox.marker.icon({
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'marker-color': (isMarkerFeatured ? '#4078c0' : '#000'),
                     'marker-size': (isMarkerFeatured ? 'large' : 'medium'),
 =======
                     'marker-color': '#000',
                     'marker-size': 'medium',
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                    'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
+                    'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
+>>>>>>> 38a9215... 116 featured markers
                     'marker-symbol': 'building'
                 }));
                 

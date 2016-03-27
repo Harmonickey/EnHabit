@@ -54,6 +54,9 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3218806... 116 default to not featured
     listingObj["IsPastThreshold"] = isPastThreshold
 <<<<<<< HEAD
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
@@ -61,6 +64,7 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsFeatured"] = false
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 ? true : false)
 >>>>>>> bc7c714... 116 default to not featured
+<<<<<<< HEAD
 =======
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
     listingObj["IsFeatured"] = (isFeatured.nil? ? false : isFeatured)
@@ -78,6 +82,8 @@ def CreateListing(isAdmin, key, user, userId, landlord, landlordId, price, addre
     listingObj["IsPastThreshold"] = isPastThreshold
     listingObj["IsActive"] = (not pictures.nil? and pictures.length > 0 and not isPastThreshold ? true : false)
 >>>>>>> da5fc3d... 119 hash usage
+=======
+>>>>>>> 3218806... 116 default to not featured
     listingObj["Pictures"] = pictures
     
     if not pictures.nil? and pictures.length > 0
