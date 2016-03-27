@@ -16,6 +16,7 @@ require 'bson'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 def GetMarkup()
 =======
 def GetMarkup
@@ -26,6 +27,9 @@ def GetMarkup()
 =======
 def GetMarkup(rent)
 >>>>>>> e2856dc... 121 minor changes
+=======
+def GetMarkup()
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
 
     mongoSession = Moped::Session.new(['127.0.0.1:27017']) # our mongo database is local
     mongoSession.use("enhabit") # this is our current database
@@ -59,6 +63,7 @@ def GetMarkup(rent)
 	mongoSession.disconnect
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     #return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
     return pricing[0]["ListingMarkup"].to_f
 =======
@@ -67,6 +72,10 @@ def GetMarkup(rent)
 =======
     return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
 >>>>>>> e2856dc... 121 minor changes
+=======
+    #return ((pricing[0]["ListingMarkup"]).to_f / 100) * rent.to_f
+    return pricing[0]["ListingMarkup"].to_f
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
 end
 
 @data = JSON.parse(ARGV[0].delete('\\')) if not ARGV[0].nil? and not ARGV[0].empty?
@@ -117,7 +126,13 @@ end
 >>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 8f012f6... 121 add actual enhabit user
+=======
+@rent = @data["Rent"]
+@landlord = @data["LandlordEmail"]
+>>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
 @enhabit = "enhabitlife@gmail.com"
 >>>>>>> 7252721... 121 add actual enhabit user
 @uid = @data["_id"]["oid"] if not @data["_id"].nil? and not @data["_id"]["oid"].nil?
@@ -135,15 +150,27 @@ if @markup.nil?
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   @markup = GetMarkup()
 =======
   @markup = GetMarkup(@rent)
 >>>>>>> e2856dc... 121 minor changes
+=======
+  @markup = GetMarkup()
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
 end
 
 @markupTotal = (@markup / 100) * @rent.to_f
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 @memo = @markup.to_s + "% Enhabit Convenience Charge. 2.9% PayPal Credit Card Processing Fee.\\r\\n" + @data["Memo"] + " -- \\r\\nRent payment for: " + @data["Address"] + " Unit: " + @data["Unit"]
+=======
+@memo = @markup.to_s + "% convenience charge through Enhabit.\\r\\n" + @data["Memo"] + " -- \\r\\nRent payment for: " + @data["Address"] + " Unit: " + @data["Unit"]
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
+=======
+@memo = @markup.to_s + "% Enhabit Convenience Charge. 2.9% PayPal Credit Card Processing Fee.\\r\\n" + @data["Memo"] + " -- \\r\\nRent payment for: " + @data["Address"] + " Unit: " + @data["Unit"]
+>>>>>>> b736643... 132 paypal processing
 
 @receiverList = []
 <<<<<<< HEAD
@@ -180,6 +207,7 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 =======
 #enhabit gets the markup amount
 <<<<<<< HEAD
+<<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + @markupTotal.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
 #landlord gets the rent plus markup amount
 <<<<<<< HEAD
@@ -190,10 +218,20 @@ params = '{\"actionType\":\"PAY\", \"currencyCode\":\"USD\", \"receiverList\":{\
 >>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
 =======
 @receiverList.push '{\"amount\":\"' + @markup.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+=======
+@receiverList.push '{\"amount\":\"' + @markupTotal.to_s + '\", \"email\":\"' + @enhabit.to_s + '\", \"primary\":\"false\"}'
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
 #landlord gets the rent plus markup amount
+<<<<<<< HEAD
 @receiverList.push '{\"amount\":\"' + (@rent.to_f + @markup).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
 >>>>>>> 7f47e16... 121 minor changes
+<<<<<<< HEAD
 >>>>>>> e2856dc... 121 minor changes
+=======
+=======
+@receiverList.push '{\"amount\":\"' + (@rent.to_f + @markupTotal ).to_s + '\",\"email\":\"' + @landlord.to_s + '\", \"primary\":\"true\"}'
+>>>>>>> ac2e3fc... 132 final changes for lease stuff and payment stuff
+>>>>>>> 0bc155a... 132 final changes for lease stuff and payment stuff
 
 @successUri = '?landlordEmail=' + @landlord + '&rent=' + @rent + (@uid.nil? ? '' : '&uid=' + @uid)
 

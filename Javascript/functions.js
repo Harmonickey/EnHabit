@@ -737,6 +737,8 @@ function GetAllLandlords()
                     for (var i = 0; i < data.length; i++)
                     {
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
                         {
                             // create listing dropdown
@@ -745,6 +747,12 @@ function GetAllLandlords()
                             // payment modal dropdown
 =======
                         if (data[i].IsLandlord)
+=======
+                        if (data[i].IsLandlord && data[i].UserName != "BJBEvanston" && data[i].UserName != "EvanstonRentals")
+>>>>>>> e294a77... 132 exclude the two landlords
+=======
+                        if (data[i].IsLandlord && data[i].Username != "BJBEvanston" && data[i].Username != "EvanstonRentals")
+>>>>>>> dd22ca4... 132 UserName to Username
                         {
 >>>>>>> 29cb4d2... 121 landlords
                             $(".LandlordEmail").append("<option value='" + data[i].Email + "'>" + data[i].Username + "</option>")
@@ -2200,6 +2208,7 @@ function ShowLoginFeatures(hideMainModal, userType)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         $("#payment-btn").hide(); // admins don't pay rent!!
 <<<<<<< HEAD
@@ -2219,10 +2228,14 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").hide();
 >>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
+=======
+        $("#payment-btn").hide(); // admins don't pay rent!!
+>>>>>>> 21cb68d... 132 some small payment navigate fixes
     }
     if (Contains(userType, "Landlord"))
     {
         $(".landlord-nav").show();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2246,18 +2259,25 @@ function ShowLoginFeatures(hideMainModal, userType)
 =======
         $("#payment-btn").attr("onclick", "window.location='/landlord/payments/';");
 >>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
+=======
+        $("#payment-btn").hide(); // landlords don't pay rent!!
+>>>>>>> 21cb68d... 132 some small payment navigate fixes
     }
     if (Contains(userType, "Tenant"))
     {
         $(".tenant-nav").show();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 65240df... 107 various payments fixes
+=======
+        $("#payment-btn").show(); // in case we're going from landlord to user
+>>>>>>> 21cb68d... 132 some small payment navigate fixes
         if (Contains(userType, "HasRental"))
         {
             $(".rental-nav").show();
-            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';");
+            $("#payment-btn").attr("onclick", "window.location='/tenant/payments/';"); // go to the special payment page
         }
 <<<<<<< HEAD
         
@@ -3236,6 +3256,8 @@ $(function ()
        $.msgGrowl ({ type: 'warning', title: 'Notice', text: "Payment Cancelled!", position: 'top-center'});
        location.hash = "";
     }
+    
+    RemoveLoginFeatures();
 });
 
 $(window).on('resize', function() {

@@ -81,7 +81,15 @@
           <span class="sr-only">Toggle navigation</span>
           <i class="fa fa-cog"></i>
         </button>
+<<<<<<< HEAD
+<<<<<<< HEAD
         <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+=======
+        <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="57"/></a>
+>>>>>>> 8902ab5... 132 updated the image
+=======
+        <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+>>>>>>> 734d22b... 132 57 to 56
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -305,6 +313,10 @@
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b923d74... 132 fixed some shit
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
@@ -312,6 +324,18 @@
                             <option value="8">8</option>
                             <option value="9">9</option>
                             <option value="10">10+</option>
+<<<<<<< HEAD
+=======
+                            <option value="3">4</option>
+                            <option value="3">5</option>
+                            <option value="3">6</option>
+                            <option value="3">7</option>
+                            <option value="3">8</option>
+                            <option value="3">9</option>
+                            <option value="3">10+</option>
+>>>>>>> 4b498aa... 132 updated bed/bath numbers
+=======
+>>>>>>> b923d74... 132 fixed some shit
                         </select>
                     </div>
                 </div>
@@ -322,6 +346,10 @@
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b923d74... 132 fixed some shit
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
@@ -329,6 +357,18 @@
                             <option value="8">8</option>
                             <option value="9">9</option>
                             <option value="10">10+</option>
+<<<<<<< HEAD
+=======
+                            <option value="3">4</option>
+                            <option value="3">5</option>
+                            <option value="3">6</option>
+                            <option value="3">7</option>
+                            <option value="3">8</option>
+                            <option value="3">9</option>
+                            <option value="3">10+</option>
+>>>>>>> 4b498aa... 132 updated bed/bath numbers
+=======
+>>>>>>> b923d74... 132 fixed some shit
                         </select>
                     </div>
                 </div>

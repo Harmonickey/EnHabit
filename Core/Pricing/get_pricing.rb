@@ -16,6 +16,7 @@ begin
     end
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     universities = []
 
@@ -33,20 +34,26 @@ begin
 >>>>>>> 34c5dec... 115 backend functions
 =======
     
+=======
+
+>>>>>>> 2dab861... hotfix
     universities = []
-    
+
     mongoSession.with(safe: true) do |session|
         universities = session[:universities].find().to_a
     end
-    
+
     universities.each do |university|
         docs = documents.select {|doc| doc["UniversityId"] == university["UniversityId"] }
-        document = docs[0]
-        
-        document["UniversityName"] = university["UniversityName"]
+
+        docs[0]["UniversityName"] = university["UniversityName"]
     end
+<<<<<<< HEAD
     
 >>>>>>> 2fdafcb... 115 frontend functions
+=======
+
+>>>>>>> 2dab861... hotfix
     mongoSession.disconnect
 
     if documents.count == 0
@@ -62,7 +69,11 @@ rescue Exception => e
 
     puts "Error: #{e.message}"
 <<<<<<< HEAD
+<<<<<<< HEAD
 end
 =======
 end
 >>>>>>> 34c5dec... 115 backend functions
+=======
+end
+>>>>>>> 2dab861... hotfix

@@ -46,7 +46,7 @@ def UpdateListing(isAdmin, key, id, user, userId, landlord, landlordId, price, a
     listingObj["HasLaundry"] = laundry.to_b
     listingObj["HasParking"] = parking.to_b
     listingObj["HasAirConditioning"] = airConditioning.to_b
-    #listingObj["LeaseType"] = leaseType
+    listingObj["LeaseType"] = leaseType
     listingObj["BuildingType"] = buildingType
     listingObj["Notes"] = (notes.nil? ? "" : notes)
     listingObj["Start"] = Date.strptime(start, "%m/%d/%Y").mongoize

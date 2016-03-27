@@ -62,7 +62,15 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
+<<<<<<< HEAD
+<<<<<<< HEAD
                     <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+=======
+                    <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="57"/></a>
+>>>>>>> 8902ab5... 132 updated the image
+=======
+                    <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+>>>>>>> 734d22b... 132 57 to 56
                 </div>
                 <!--
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
@@ -76,6 +84,7 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
                         Post Listing Now!
                     </a>
                 </div>
+<<<<<<< HEAD
                 <div class="nav navbar-nav navbar-left" style="margin-left: 15px; margin-top: 6px;" >
                     <a id="powerk-kiosk-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="PowerKioskModal(event);">
                         Save Money on Energy Now!
@@ -84,13 +93,20 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 <<<<<<< HEAD
 =======
                 
+=======
+                <!--
+>>>>>>> c7ffcb3... hotfix remove pay now
                 <div class="nav navbar-nav navbar-left" style="margin-left: 200px; margin-top: 6px;" >
-                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
+                    <a id="payment-btn" style="border-radius: 10px; font-weight: bold; font-size: medium; display: none;" class="btn btn-outline-inverse btn-sm" onclick="LoadModal(event, 'modal-content-payment', 'payment', 'Make Payment');">
                         <i class="fa fa-usd" style="margin-right: 5px;"></i>Pay Rent Now
                     </a>
                 </div>
+<<<<<<< HEAD
                 
 >>>>>>> 8ba4aa2... 121 setup popup
+=======
+                -->
+>>>>>>> c7ffcb3... hotfix remove pay now
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -405,7 +421,11 @@ window.location ="https://enhabitlife.com/mobile.html";}</script>
 =======
 =======
                 <p class="small">If your landlord is not available, please contact Enhabit.</p>
+<<<<<<< HEAD
 >>>>>>> aad23d3... 121 logging out stuff as well as when logged in the pay rent button changes
+=======
+                <p class="small">Friendly Reminder: Use your Bank Account to avoid PayPal processing fees!</p>
+>>>>>>> b736643... 132 paypal processing
                 <input id="GetPaymentKey" type="button" class="btn btn-outline-inverse btn-lg MakePayment-btn" onclick="GetPayKey()" value="Make Payment" style="margin-top: 15px;" />
 >>>>>>> 1114524... 121 geocomplete
                 <form action='https://www.paypal.com/webapps/adaptivepayment/flow/pay' target='PPDGFrame' class='standard'>

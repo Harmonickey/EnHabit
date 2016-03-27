@@ -1232,10 +1232,9 @@ function UpdateUniversity(oid)
 >>>>>>> f518129... 107 universities
 function SetBootstrapSwitches(rowId)
 {
-    var checkboxes = $("#" + rowId + " input[type='checkbox']");
-    checkboxes.not(":eq(4)").bootstrapSwitch({onText: "Yes", offText: "No"});
-    //$(checkboxes[checkboxes.length - 3]).bootstrapSwitch({onText: "Rental", offText: "Sublet"});
-    $(checkboxes[checkboxes.length - 2]).bootstrapSwitch({onText: "Apartment", offText: "House"});
+    $("#" + rowId + " .yesno").bootstrapSwitch({onText: "Yes", offText: "No"});
+    $("#" + rowId + " .leasetype").bootstrapSwitch({onText: "Rental", offText: "Sublet"});
+    $("#" + rowId + " .buildingtype").bootstrapSwitch({onText: "Apartment", offText: "House"});
 }
 
 function SetBootstrapSwitchesForUsers(rowId)
@@ -1308,13 +1307,13 @@ function UpdateListing(oid)
 {
     var inputs = $("#" + oid + " input, #" + oid + " select, #" + oid + " textarea");
     
-    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
+    var data = BuildData(inputs, ["User", "Landlord", "Address", "Unit", "Rent", "Start", "University", "Bedrooms", "Bathrooms", "Animals", "Laundry", "Parking", "AirConditioning", "LeaseType", "BuildingType", "IsActive", "Notes", "Latitude", "Longitude", "SelectedAddress"]);
     
     //first validate that the fields are filled out
     var error = BuildError(data);
     
     data.id = oid;
-    //data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
+    data.LeaseType = (data.LeaseType == true ? "rental" : "sublet");
     data.BuildingType = (data.BuildingType == true ? "apartment" : "house");
     data.Address = data.Address.split(",")[0];
     data.Start = $.datepicker.formatDate('mm/dd/yy', new Date(data.Start));
@@ -3030,14 +3029,27 @@ function CreateAccordionView(oid, data)
     });
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     var bedrooms = "";
     for (var i = 0; i <= 10; i++)
     {
         bedrooms += "<option value='" + (i == 0 ? "studio" : i) + "'" + (data.Bedrooms == i ? "selected" : "") + ">" + (i == 0 ? "studio" : i) + (i == 10 ? "+" : "") + "</option>";
+=======
+    var bedrooms = "";
+    for (var i = 0; i <= 10; i++)
+    {
+<<<<<<< HEAD
+        bedrooms += "<option value='" + (i == 0 ? "studio" : i) + "'" + (data.Bedrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") + "</option>";
+>>>>>>> 55fc325... 132 lease type, bathrooms and bedrooms
+=======
+        bedrooms += "<option value='" + (i == 0 ? "studio" : i) + "'" + (data.Bedrooms == i ? "selected" : "") + ">" + (i == 0 ? "studio" : i) + (i == 10 ? "+" : "") + "</option>";
+>>>>>>> 6f0cc6a... 132 bootstrap boxes
     }
     var bathrooms = "";
     for (var i = 0; i <= 10; i++)
     {
+<<<<<<< HEAD
+<<<<<<< HEAD
         bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") +"</option>";
     }
     
@@ -3045,6 +3057,14 @@ function CreateAccordionView(oid, data)
 >>>>>>> 0dc8937... 107 updating deleting creating
 =======
 >>>>>>> f518129... 107 universities
+=======
+        bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + + (i == 10 ? "+" : "") +"</option>";
+=======
+        bathrooms += "<option value='" + i + "'" + (data.Bathrooms == i ? "selected" : "") + ">" + i + (i == 10 ? "+" : "") +"</option>";
+>>>>>>> 6f0cc6a... 132 bootstrap boxes
+    }
+    
+>>>>>>> 55fc325... 132 lease type, bathrooms and bedrooms
     var notes = data.Notes.replace("#39", "'").replace("#34", "\"");
     
     return "<div class='panel panel-default'>" +
@@ -3115,11 +3135,17 @@ function CreateAccordionView(oid, data)
 >>>>>>> f518129... 107 universities
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Bedrooms</label><input type='text' class='form-control' value='" + data.Bedrooms + "' />" +
+                                "<label>Bedrooms</label>" + 
+                                "<select class='form-control'>" + bedrooms + "</select>" +
                             "</div>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+<<<<<<< HEAD
                                 "<label>Bathrooms</label><input type='text' class='form-control' value='" + data.Bathrooms + "' />" +
 >>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+                                "<label>Bathrooms</label>" + 
+                                "<select class='form-control'>" + bathrooms + "</select>" +
+>>>>>>> 55fc325... 132 lease type, bathrooms and bedrooms
                             "</div>" +
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" +
@@ -3138,6 +3164,7 @@ function CreateAccordionView(oid, data)
                         "</div>" +
                         "<div class='row' style='margin-top: 10px'>" + 
 <<<<<<< HEAD
+<<<<<<< HEAD
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Lease Type</label><input class='leasetype' type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
                             "</div>" +
@@ -3146,8 +3173,14 @@ function CreateAccordionView(oid, data)
                             //    "<label>Lease Type</label><input type='checkbox' " + (data.LeaseType == "rental" //? "checked" : "") + " data-size='mini' />" +
                             //"</div>" +
 >>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+                            "<div class='col-lg-3 col-md-3 col-sm-3'>" +
+                                "<label>Lease Type</label><input class='leasetype' type='checkbox' " + (data.LeaseType == "rental" ? "checked" : "") + " data-size='mini' />" +
+                            "</div>" +
+>>>>>>> 55fc325... 132 lease type, bathrooms and bedrooms
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
                                 "<label>Building Type</label><input class='buildingtype' type='checkbox' " + (data.BuildingType == "apartment" ? "checked" : "") + " data-size='mini' />" +
+<<<<<<< HEAD
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px'>" + 
@@ -3162,11 +3195,13 @@ function CreateAccordionView(oid, data)
                         "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-2 col-md-2 col-sm-2'>" +
                                 "<label>Featured Listing</label><input class='yesno' type='checkbox' " + (data.IsFeatured ? "checked" : "") + " data-size='mini' />" +
+=======
+>>>>>>> 6f0cc6a... 132 bootstrap boxes
                             "</div>" +
                         "</div>" + 
                         "<div class='row' style='margin-top: 10px'>" + 
                             "<div class='col-lg-3 col-md-3 col-sm-3'>" +
-                                "<label>Listing Active</label><input class='activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
+                                "<label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' " + (data.IsActive ? "checked" : "") + " data-size='mini'" + (data.Pictures == null || data.Pictures.length == 0 ? "disabled" : "") + "/>" +
                             "</div>" +
                             "<div class='col-lg-6 col-md-6 col-sm-6'>" +
                                 "<label style='color: red; " + (data.IsActive ? "display: none;" : (data.Pictures == null || data.Pictures.length == 0 ? "" : "display: none;")) + "' class='activemsg'>To Activate This Listing, You Must Include Images!</label>" +

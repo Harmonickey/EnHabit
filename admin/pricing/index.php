@@ -96,10 +96,18 @@
                 <i class="fa fa-cog"></i>
             </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
 =======
             <a class="logo" href="/"><img src='/assets/images/theme_images/enhabit logo.png' height="57"/></a>
 >>>>>>> 12b3320... 115 added pricing location
+=======
+            <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="57"/></a>
+>>>>>>> 8902ab5... 132 updated the image
+=======
+            <a class="logo" href="/"><img src='/assets/images/theme_images/EnhabitLogo_Beta.png' height="56"/></a>
+>>>>>>> 734d22b... 132 57 to 56
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
