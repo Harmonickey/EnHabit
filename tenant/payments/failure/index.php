@@ -320,7 +320,8 @@ ga('send', 'pageview');
 <!DOCTYPE html>
 <html lang="en"> 
    <script type="text/javascript">
-    window.top.location = "/tenant/payments/#cancelledpayment"
+    window.top.location = "/tenant/payments/#cancelledpayment";
+    window.top.location.reload();
    </script>
 >>>>>>> 83f6113... 117 return for ruby
 </html>

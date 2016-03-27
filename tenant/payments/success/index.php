@@ -372,8 +372,7 @@ ga('send', 'pageview');
     <script type="text/javascript">
     
         <?php echo "InsertPayment('" . $uid . "', '" . $landlordEmail . "', '" . rent . "')"; ?>
-    
-        window.top.location = "/tenant/payments/#successpayment"
+
     </script>
 </html>
 >>>>>>> 2cda3a2... 127 payments tracking
