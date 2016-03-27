@@ -26,8 +26,12 @@ MAX_BEDROOMS_FOR_FILTER = 3
 require 'date'
 =======
 
+<<<<<<< HEAD
 MAX_BATHROOMS_FOR_FILTER = 3
 >>>>>>> 91ff935... 118 move to if statement
+=======
+MAX_BEDROOMS_FOR_FILTER = 3
+>>>>>>> 8914906... 118 merged
 MIN_BEDROOMS_FOR_FILTER = 0
 >>>>>>> d1eed6e... 118 move to if statement
 
