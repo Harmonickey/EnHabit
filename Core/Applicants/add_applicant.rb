@@ -59,6 +59,8 @@ def GetListingData(listingId, userId)
         mongoSession.with(safe: true) do |session|
             userAccount = session[:accounts].find({:UserId => userId}).one
         end
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         if userAccount.nil?
           mongoSession.with(safe: true) do |session|
@@ -66,6 +68,7 @@ def GetListingData(listingId, userId)
           end
         end
 
+<<<<<<< HEAD
         if listing.count == 0
             return nil
         else
@@ -73,6 +76,28 @@ def GetListingData(listingId, userId)
             isOwnListing = (userId == listing[0]["LandlordId"] || userAccount["Username"] == listing[0]["Username"])
             hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
 
+=======
+        
+=======
+
+>>>>>>> a5da5e8... 107 file changes
+        # determine if we're applying for our own listing!
+        isOwnListing = (userAccount["Username"] == listing[0]["Landlord"] || userAccount["Username"] == listing[0]["Username"])
+        hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
+        
+        if listing.count == 0
+            return nil
+        else
+>>>>>>> 65a35be... 107 lease type and front page fixes
+=======
+        if listing.count == 0
+            return nil
+        else
+            # determine if we're applying for our own listing!
+            isOwnListing = (userId == listing[0]["LandlordId"] || userAccount["Username"] == listing[0]["Username"])
+            hasUpdatedAccount = (not userAccount["Username"].include? "Facebook")
+
+>>>>>>> 461525b... 107 close leaflet popup, white x
             return { :LandlordId => listing[0]["LandlordId"], :OwnListing => isOwnListing, :HasUpdatedAccount => hasUpdatedAccount }
         end
     rescue Moped::Errors::OperationFailure => e
@@ -90,15 +115,33 @@ begin
     key = ARGV[2] if not ARGV[2].nil?
     isAdmin = ARGV[3].to_b
 
+<<<<<<< HEAD
     listingData = GetListingData(data["ListingId"], userId) # ListingId (oid), LandlordId
     
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> a5da5e8... 107 file changes
+    listingData = GetListingData(data["ListingId"], userId) # ListingId (oid), LandlordId
+    
+>>>>>>> 65a35be... 107 lease type and front page fixes
     puts "No Listing Data" if listingData.nil?
     puts "Cannot Apply to Your Own Listing" if listingData[:OwnListing]
     puts "Please Update Your Account" if not listingData[:HasUpdatedAccount]
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     if not listingData.nil? and not listingData[:OwnListing]
         puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId])
     end
+=======
+    puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId])
+>>>>>>> 013afa8... 107 emailing
+=======
+    if not listingData.nil? and not listingData[:OwnListing]
+        puts InsertApplicant(userId, data["ListingId"], listingData[:LandlordId])
+    end
+>>>>>>> 65a35be... 107 lease type and front page fixes
 rescue Exception => e
     puts e.inspect
 end

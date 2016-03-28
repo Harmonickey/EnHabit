@@ -75,6 +75,17 @@ function debug_string($data)
     $date = date('Y-m-d H:i:s');
     $output = fopen("output.log", "a") or die("Unable to open file!");
     fwrite($output, "[" . $date . "] " .$data . "\n");
+<<<<<<< HEAD
+    fclose($output);
+}
+
+function debug_error($data)
+{
+    $date = date('Y-m-d H:i:s');
+    $output = fopen("error.log", "a") or die("Unable to open file!");
+    fwrite($output, "[" . $date . "] " . $data . "\n");
+=======
+>>>>>>> b1467c5... 120 error and debug string logging with times
     fclose($output);
 }
 

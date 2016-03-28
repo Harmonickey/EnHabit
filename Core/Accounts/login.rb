@@ -65,9 +65,23 @@ begin
 	
     result = UserExists(data["Username"], data["Password"])
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     if result != false && result["exists"]
         hasRental = HasRental(result["id"])
 
+=======
+    puts "Incorrect Username/Password" if result == false
+    
+    hasRental = HasRental(result["id"])
+    
+    if result["exists"]
+>>>>>>> 18e6d5a... 107 Full Ticket in this commit
+=======
+    if result != false && result["exists"]
+        hasRental = HasRental(result["id"])
+
+>>>>>>> b5ca333... 107 fix login error
         retMsg = "Okay"
         retMsg += ":Landlord" if @isLandlord
         retMsg += ":Tenant" if not @isLandlord
