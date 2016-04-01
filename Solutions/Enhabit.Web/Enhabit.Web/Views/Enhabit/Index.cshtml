@@ -379,7 +379,7 @@
         <!-- Put all the fields to create a listing here -->
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" data-bind="addressAutocomplete: Address, location: { X: CreateListing.XCoordinate, Y: CreateListing.YCoordinate }" />
+                <div style="font-weight: 700;">Address</div><input type='text' class='form-control Address' autocomplete="false" data-bind="addressAutocomplete: Address, location: { X: XCoordinate, Y: YCoordinate }" />
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -487,8 +487,6 @@
                 <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone"></form>
             </div>
         </div>
-        <!-- Lat, Long, Address Hidden fields -->
-        <input type='hidden' class="Latitude" data-bind="value: XCoordinate"/><input type='hidden' class="Longitude" data-bind="value: YCoordinate"/><input type='hidden' class="SelectedAddress" data-bind="value: SelectedAddress"/>
         <div class="row" style="margin-top: 15px;">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <button id="create-listing-button" type="button" style="border-radius: 10px; font-weight: bold; font-size: medium;" class="btn btn-outline-inverse btn-sm" data-bind="click: PendingListingCreation">Create Listing</button>

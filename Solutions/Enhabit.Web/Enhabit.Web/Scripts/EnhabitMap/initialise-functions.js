@@ -331,13 +331,6 @@ function PopulateAndOpenModal(event, modal_content_id, section_in_modal, add_cla
         // open modal (popup)
         modal.modal();
 
-        // lightbox fix - temporary change attribute, to avoid duplicate entries (since same content is printed inside the popup container)
-        modal_content_container_to_populate.find("a[data-lightbox]").each(function () {
-            var attr_value = $(this).attr("data-lightbox");
-            $(this).removeAttr("data-lightbox");
-            $(this).attr("data-mod-lightbox", attr_value);
-        });
-
         // add class to modal
         if (add_class != "") modal.addClass(add_class);
 
@@ -361,12 +354,8 @@ function PopulateAndOpenModal(event, modal_content_id, section_in_modal, add_cla
         modal.on('hide.bs.modal', function (e) {
             $("#outer-container").fadeTo("fast", 1);
 
-            // lightbox fix - reset attribute to original
-            $("#" + modal_content_id).find("a[data-mod-lightbox]").each(function () {
-                var attr_value = $(this).attr("data-mod-lightbox");
-                $(this).removeAttr("data-mod-lightbox");
-                $(this).attr("data-lightbox", attr_value);
-            });
+            ko.cleanNode($("#common-modal")[0]); // remove the view model binding from the popup
+            console.log("cleaned");
         });
 
         // when modal is hidden, empty modal body 

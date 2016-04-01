@@ -35,7 +35,7 @@
         return self.BuildingTypes() == true ? "apartment" : "house";
     });
     self.FormattedAddress = ko.computed(function () {
-        return (self.SelectedAddress() ? self.SelectedAddress().split(",")[0] : "");
+        return (self.Address() ? self.Address().split(",")[0] : "");
     });
     self.FormattedStartDate = ko.computed(function () {
         return (self.StartDate() ? $.datepicker.formatDate('mm/dd/yy', new Date(self.StartDate())) : "");
@@ -71,7 +71,6 @@
     {
         self.SetPendingData();
 
-        CleanModalViewModel();
         parentViewModel.OpenRegisterModal();
     };
 

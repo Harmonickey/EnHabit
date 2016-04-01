@@ -50,16 +50,6 @@ function LoadModal(event, which, enterDefault, btnText) {
     //      because it's different for each modal
 
     ModalBackdropHeight($('#common-modal.modal'));
-
-    if (which == "modal-content-payment") {
-        $(".Address").geocomplete();
-
-        var today = new Date();
-        var nextMonth = "Ex: " + GetNextMonth(today) + "'s Rent";
-
-        $(".Memo").attr("placeholder", nextMonth);
-    }
-
 }
 
 function SetDatePickerTextBox(rowId)

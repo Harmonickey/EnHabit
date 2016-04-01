@@ -90,12 +90,18 @@ ko.bindingHandlers.addressAutocomplete = {
             result = autocomplete.getPlace();
 
             // set the binding's Address field
-            value(result.formatted_address);
+            if (result.formatted_address)
+            {
+                value(result.formatted_address);
+            }
 
             // set the extra x and y coordinate fields
-            var keys = Object.keys(result.geometry.location);
-            location.X(result.geometry.location[keys[0]]);
-            location.Y(result.geometry.location[keys[1]]);
+            if (result.geometry)
+            {
+                var keys = Object.keys(result.geometry.location);
+                location.X(result.geometry.location[keys[0]]);
+                location.Y(result.geometry.location[keys[1]]);
+            }
         });
 
 

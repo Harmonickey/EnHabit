@@ -36,10 +36,7 @@
     self.DeleteAccountEnabled = ko.observable(true);
     self.DeleteAccountText = ko.observable("Delete Account");
 
-    self.OpenRegisterModal = function () {
-        CleanModalViewModel();
-        parentViewModel.OpenRegisterModal();
-    };
+    self.OpenRegisterModal = parentViewModel.OpenRegisterModal;
 
     self.LoginUser = function ()
     {
