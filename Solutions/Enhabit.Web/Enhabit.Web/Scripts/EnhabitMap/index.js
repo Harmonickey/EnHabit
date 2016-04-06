@@ -61,7 +61,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.UserLoggedIn = ko.observable(enhabitMapData.UserLoggedIn);
 
-    self.User = new UserViewModel(enhabitMapData.User);
+    self.User = new UserViewModel(enhabitMapData.User, self);
 
     self.ExtraFiltersBtnText = ko.observable("Open Extra Filters");
 

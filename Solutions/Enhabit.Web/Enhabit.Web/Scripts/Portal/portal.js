@@ -5,38 +5,48 @@
     self.ListingsActive = ko.observable(false);
 
     self.Listings = ko.observableArray(ko.utils.arrayMap(listingViewModels, function (listing) {
-        return new ListingViewModel(listing);
+        return new ListingViewModel(listing, parentViewModel.Universities, parentViewModel.Landlords);
     }));
+
+    self.Threshold = parentViewModel.Universities[0].Threshold;
     
     self.ShowCreateListing = ko.observable(true);
     self.ShowUpdateAccountMessage = ko.observable(false);
-    self.ShowListingMessage = ko.observable(true);
 
-    self.AfterListingRender = function (element, index, data)
+    self.AfterListingRender = function (element, data)
     {
-        parentViewModel.CreateDropzone(data.Id, "[id='" + data.Id + " form]", data.Images);
+        parentViewModel.CreateDropzone(data.Id, "[id='" + data.Id + "'] form", data.Images());
 
         SetDatePickerTextBox(data.Id);
     };
 };
 
-var PaymentTabViewModel = function (paymentViewModels)
+var PaymentTabViewModel = function (paymentViewModel)
 {
     var self = this;
 
     self.PaymentsActive = ko.observable(false);
 
-    self.Address = ko.observable();
-    self.Unit = ko.observable();
-    self.FormattedRent = ko.observable();
-    self.LandlordEmail = ko.observable();
+    self.Address = paymentViewModel.Address;
+    self.Unit = paymentViewModel.Unit;
+    self.Rent = paymentViewModel.Rent;
+    self.LandlordEmail = paymentViewModel.LandlordEmail;
     self.PaymentNote = ko.observable();
-    self.NextMonth = ko.observable();
-    self.CharactersLeft = ko.observable();
+
+    self.FormattedRent = ko.pureComputed(function () {
+        return accounting.formatMoney(self.Rent);
+    });
+
+    self.NextMonth = paymentViewModel.NextMonth;
+
+    self.CharactersLeft = ko.computed(function () {
+        return 100 - self.PaymentNote().length;
+    });
+
     self.PayKey = ko.observable();
 
-    self.PastPayments = ko.observableArray(ko.utils.arrayMap(paymentViewModels, function (payment) {
-        return new PaymentViewModel(payment);
+    self.PastPayments = ko.observableArray(ko.utils.arrayMap(paymentViewModel.PaymentHistory, function (payment) {
+        return new PaymentHistoryViewModel(payment);
     }));
 };
 
@@ -49,29 +59,67 @@ var AccountTabViewModel = function (userViewModel, parentViewModel)
     self.Account = new UserViewModel(userViewModel, parentViewModel);
 };
 
+var ApplicantTabViewModel = function (applicantViewModels)
+{
+    var self = this;
+
+    self.ApplicantsActive = ko.observable(false);
+
+    self.Applicants = ko.observableArray(ko.utils.arrayMap(applicantViewModels, function (applicant) {
+        return new ApplicantViewModel(applicant);
+    }));
+};
+
+var RenterTabViewModel = function (renterViewModels)
+{
+    var self = this;
+
+    self.RentersActive = ko.observable(false);
+
+    self.Renters = ko.observableArray(ko.utils.arrayMap(renterViewModels, function (renter) {
+        return new RenterViewModel(renter);
+    }));
+};
+
 var PortalViewModel = function (portalViewModel)
 {
     var self = this;
     
-    self.AccountTab = new AccountTabViewModel(portalViewModel.Account);
+    self.Landlords = portalViewModel.Landlords;
+    self.Universities = portalViewModel.Universities;
+
+    self.AccountTab = new AccountTabViewModel(portalViewModel.Account, self);
+
     self.ListingTab = new ListingTabViewModel(portalViewModel.Listings, self);
-    self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
+
+    if (portalViewModel.Applicants)
+    {
+        self.ApplicantTab = new ApplicantTabViewModel(portalViewModel.Applicants);
+    }
+    if (portalViewModel.Payments)
+    {
+        self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
+    }
+    if (portalViewModel.Renters)
+    {
+        self.RenterTab = new RenterTabViewModel(portalViewModel.Renters);
+    }
 
     self.CreateListingPictureGuid = portalViewModel.CreateListingPictureGuid;
-    self.CreateListingUserGuid = self.AccountTab.Account.Id();
+    self.CreateListingUserGuid = ko.observable(self.AccountTab.Account.Id());
 
     self.CreateListingButtonEnabled = ko.observable(true);
     self.CreateListingButtonText = ko.observable("Create Listing");
 
     self.Dropzones = {};
-    self.NumAdded = ko.observable(0);
-    self.NumUploaded = ko.observable(0);
+    self.NumAdded = {};
+    self.NumUploaded = {};
 
     self.Pictures = {};
     self.AddedFiles = {};
 
-    self.Landlords = portalViewModel.Landlords;
-    self.Universities = portalViewModel.Universities;
+    self.PendingUpdateListingData = ko.observable();
+    self.PendingListingData = ko.observable();
 
     self.CreateListing = new CreateListingViewModel(self.Landlords, self.Universities, self);
 
@@ -105,20 +153,54 @@ var PortalViewModel = function (portalViewModel)
     self.TabActive = function(tab)
     {
         switch (tab) {
-            case "Account":
+            case "Account": // landlord and tenant
                 self.AccountTab.AccountActive(true);
                 self.ListingTab.ListingsActive(false);
-                self.PaymentTab.PaymentsActive(false);
+                if (self.PaymentTab)
+                {
+                    self.PaymentTab.PaymentsActive(false);
+                }
+                if (self.ApplicantTab)
+                {
+                    self.ApplicantTab.ApplicantsActive(false);
+                }
+                if (self.RenterTab)
+                {
+                    self.RenterTab.RentersActive(false);
+                }
                 break;
-            case "Listings":
+            case "Listings": // landlord and tenant
                 self.AccountTab.AccountActive(false);
                 self.ListingTab.ListingsActive(true);
-                self.PaymentTab.PaymentsActive(false);
+                if (self.PaymentTab)
+                {
+                    self.PaymentTab.PaymentsActive(false);
+                }
+                if (self.ApplicantTab)
+                {
+                    self.ApplicantTab.ApplicantsActive(false);
+                }
+                if (self.RenterTab)
+                {
+                    self.RenterTab.RentersActive(false);
+                }
                 break;
-            case "Payments":
+            case "Payments": // tenant only
                 self.AccountTab.AccountActive(false);
                 self.ListingTab.ListingsActive(false);
                 self.PaymentTab.PaymentsActive(true);
+                break;
+            case "Applicants": // landlord only
+                self.AccountTab.AccountActive(false);
+                self.ListingTab.ListingsActive(false);
+                self.ApplicantTab.ApplicantsActive(true);
+                self.RenterTab.RentersActive(false);
+                break;
+            case "Renters": // landlord only
+                self.AccountTab.AccountActive(false);
+                self.ListingTab.ListingsActive(false);
+                self.ApplicantTab.ApplicantsActive(false);
+                self.RenterTab.RentersActive(true);
                 break;
         }
     };
@@ -132,59 +214,64 @@ var PortalViewModel = function (portalViewModel)
         });
 
         var myDropzone = self.Dropzones[key];
+        self.NumAdded[key] = 0;
+        self.NumUploaded[key] = 0;
 
         myDropzone.on("success", function (file)
         {
-            if (self.NumUploaded() == self.NumAdded() - 1)
+            if (self.NumUploaded[key] == self.NumAdded[key] - 1)
             {
-                self.NumUploaded(0);
-                self.NumAdded(0);
+                self.NumUploaded[key] = 0;
+                self.NumAdded[key] = 0;
                 $(".dz-progress").remove();
                 self.ProcessListing();
             }
             else
             {
-                self.NumUploaded(self.NumUploaded() + 1);
+                self.NumUploaded[key] += 1;
                 $(".dz-progress").remove();
             }
         });
 
-        myDropzone.on("addedfile", function (file) {
-            var oid = $(this.element).data("pic-id");
-            if (self.Pictures[oid] == null) {
-                self.Pictures[oid] = [];
+        myDropzone.on("addedfile", function (file)
+        {
+            if (self.Pictures[key] == null)
+            {
+                self.Pictures[key] = [];
             }
             var filename = (file.alreadyUploaded
                             ? file.name
                             : self.CreateListingPictureGuid + "_" + file.name);
 
-            self.Pictures[oid].push(filename);
+            self.Pictures[key].push(filename);
 
             if (!file.alreadyUploaded)
             {
                 this.files[this.files.length - 1].serverFileName = filename;
             }
 
-            self.AddedFiles[oid] = true;
+            self.AddedFiles[key] = true;
 
-            self.NumAdded(self.NumAdded() + 1);
+            self.NumAdded[key] += 1;
         });
 
-        myDropzone.on("removedfile", function (file) {
+        myDropzone.on("removedfile", function (file)
+        {
             var index = this.files.indexOf(file);
 
-            var oid = $(this.element).data("pic-id");
-            if (self.Pictures[oid] == null) {
-                self.Pictures[oid] = [];
+            if (self.Pictures[key] == null)
+            {
+                self.Pictures[key] = [];
             }
 
-            self.Pictures[oid].splice(index, 1);
+            self.Pictures[key].splice(index, 1);
 
             self.NumAdded(self.NumAdded() - 1);
 
-            if (self.NumAdded() < 0) {
-                self.AddedFiles[oid] = false;
-                self.NumAdded(0);
+            if (self.NumAdded[key] < 0)
+            {
+                self.AddedFiles[key] = false;
+                self.NumAdded[key] = 0;
             }
         });
 
@@ -195,7 +282,8 @@ var PortalViewModel = function (portalViewModel)
                 var mockFile = { name: existingPics[i], alreadyUploaded: true };
 
                 myDropzone.emit("addedfile", mockFile);
-                self.NumAdded(self.NumAdded() - 1);
+                myDropzone.emit("thumbnail", mockFile, mockFile.name);
+                self.NumAdded -= 1;
                 myDropzone.emit("complete", mockFile);
             }
         }
@@ -231,7 +319,7 @@ var PortalViewModel = function (portalViewModel)
                 {
                     try
                     {
-                        if (res != false)
+                        if (res == false)
                         {
                             throw new Error("Unable to Create Listing");
                         }
@@ -240,13 +328,6 @@ var PortalViewModel = function (portalViewModel)
                             var listing = new ListingViewModel(res);
 
                             self.ListingTab.Listings.push(listing);
-
-                            $("#createListingModal").modal('hide');
-
-                            self.NumUploaded(0);
-                            self.PendingListingData(undefined);
-                            self.ListingTab.ShowCreateListing(false);
-                            self.ListingTab.ShowListingMessage(true);
 
                             $.msgGrowl({ type: 'success', title: 'Success', text: "Listing Created Successfully!", position: 'top-center' });
                         }
@@ -264,8 +345,18 @@ var PortalViewModel = function (portalViewModel)
                 {
                     self.CreateListingButtonEnabled(true);
                     self.CreateListingButtonText("Create Listing");
+                    self.NumUploaded["create"] = 0;
+                    self.NumAdded["create"] = 0;
+                    self.AddedFiles["create"] = false;
+
+                    self.PendingListingData(undefined);
 
                     self.Dropzones["create"].destroy();
+
+                    $("#createListingModal").modal('hide');
+
+                    self.ListingTab.ShowCreateListing(false);
+                    self.ListingTab.ShowListingMessage(true);
 
                     self.CreateDropzone("create", "#modal-content-listing form");
                 }
@@ -276,29 +367,30 @@ var PortalViewModel = function (portalViewModel)
             $.ajax(
             {
                 type: "POST",
-                url: "/Listing/Create",
+                url: "/Listing/Update",
                 data: data,
                 dataType: "json",
                 contentType: "application/json charset=utf-8",
-                beforeSend: function()
-                {
-                    self.PendingUpdateListingData.UpdateListingButtonEnabled(false);
-                    self.PendingUpdateListingData.UpdateListingButtonText("Updating...");
-                },
                 success: function (res)
                 {
                     try
                     {
-                        if (res == true)
+                        if (res == false)
                         {
-                            // update the listing itself
-
-                            // then release the pending data
-                            self.PendingUpdateListingData(undefined);
+                            throw new Error("Problem Updating Listing");
                         }
                         else
                         {
-                            throw new Error("Problem Updating Listing");
+                            for (var i = 0; i < self.ListingTab.Listings().length; i++)
+                            {
+                                // find the listing we were just updating
+                                if (self.ListingTab.Listings()[i].Id == data.Id)
+                                {
+                                    // just reassign it the new view model
+                                    self.ListingTab.Listings()[i] = new ListingViewModel(res);
+                                    break;
+                                }
+                            }
                         }
                     }
                     catch (e)
@@ -314,9 +406,9 @@ var PortalViewModel = function (portalViewModel)
                 {
                     self.PendingUpdateListingData.UpdateListingButtonEnabled(true);
                     self.PendingUpdateListingData.UpdateListingButtonText("Update");
-                    numUploaded = 0;
-                    addedFiles[id] = false;
-                    pendingUpdateData = null;
+                    self.NumUploaded[data.Id] = 0;
+                    self.AddedFiles[data.Id] = false;
+                    self.PendingUpdateListingData(undefined);
                 }
             });
         }

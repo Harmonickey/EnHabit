@@ -9,6 +9,7 @@ namespace Enhabit.Models
         public Guid UserId { get; set; }
         public Guid PicturesId { get; set; }
         public Guid UniversityId { get; set; }
+        public Guid LandlordId { get; set; }
         public float Price { get; set; }
         public string Address { get; set; }
         public string Unit { get; set; }
@@ -31,5 +32,6 @@ namespace Enhabit.Models
         public int Laundry { get; set; }
         public int Parking { get; set; }
         public bool HasAirConditioning { get; set; }
+        public bool IsPastThreshold { get; set; }
     }
 }

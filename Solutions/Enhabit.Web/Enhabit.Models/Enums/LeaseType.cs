@@ -8,6 +8,6 @@ namespace Enhabit.Models.Enums
         Sublet = 0,
 
         [Description("Rental")]
-        Rental = 1
+        Rental
     }
 }

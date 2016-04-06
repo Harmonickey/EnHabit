@@ -25,7 +25,10 @@ SET NOCOUNT ON;
 		[BuildingTypeId],
 		[StartDate],
 		[IsRented],
-		[IsFeatured]
+		[IsFeatured],
+		[IsPastThreshold],
+		[IsActive],
+		[Notes]
 	FROM Enhabit.Listings
 	WHERE ListingId = @ListingsId
 

@@ -33,6 +33,7 @@ namespace Enhabit.Web
                         "~/Scripts/ThirdParty/msgGrowl.js",
                         "~/Scripts/ThirdParty/jquery.msgbox.js",
                         "~/Scripts/ThirdParty/dropzone.js",
+                        "~/Scripts/ThirdParty/accounting.js",
                         "~/Scripts/ThirdParty/knockout-3.4.0.js",
                         "~/Scripts/ThirdParty/knockout-2.0.3.validation.js"));
 
@@ -44,8 +45,12 @@ namespace Enhabit.Web
                         "~/Scripts/Common/createListing.js",
                         "~/Scripts/Common/utilities.js"));
 
+            bundles.Add(new ScriptBundle("~/Enhabit/Portal/Landlord").Include(
+                        "~/Scripts/Portal/applicants.js",
+                        "~/Scripts/Portal/payments.js",
+                        "~/Scripts/Portal/renters.js"));
+
             bundles.Add(new ScriptBundle("~/Enhabit/Portal").Include(
-                        "~/Scripts/Portal/utilities.js",
                         "~/Scripts/Portal/portal.js"));
 
             bundles.Add(new ScriptBundle("~/Enhabit/Map").Include(

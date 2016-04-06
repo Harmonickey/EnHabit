@@ -69,12 +69,12 @@ textarea
     width: 100%;
 }
 
-#accordion button
+.accordion button
 {
     margin-right: 10px;
 }
 
-#accordion .row label
+.accordion .row label
 {
     margin-right: 5px;
 }
@@ -128,13 +128,13 @@ textarea
     margin-top: 10px;
 }
 
-#accordion img
+.accordion img
 {
     width: 120px;
     height: 120px;
 }
 
-#accordion form
+.accordion form
 {
     margin-top: 10px;
 }

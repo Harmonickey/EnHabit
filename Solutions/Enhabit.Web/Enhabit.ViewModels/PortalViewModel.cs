@@ -10,7 +10,7 @@ namespace Enhabit.ViewModels
             Account = uvm;
             Listings = lvm;
             NavLinks = nvm;
-            CreateListingPictureGuid = new Guid();
+            CreateListingPictureGuid = Guid.NewGuid();
         }
         
         public UserViewModel Account { get; set; }

@@ -14,8 +14,8 @@ ko.bindingHandlers.bootstrapSwitchOn = {
             settings = bindings.settings,
             value = valueAccessor();
 
-        settings.setState = ko.utils.unwrapObservable(valueAccessor());
-
+        settings.setState = ko.utils.unwrapObservable(value);
+        
         $elem.bootstrapSwitch(settings);
 
         // Update the value when changed
@@ -29,9 +29,10 @@ ko.bindingHandlers.bootstrapSwitchOn = {
         var $elem = $(element);
         var vStatus = $elem.bootstrapSwitch('state');
         var vmStatus = ko.utils.unwrapObservable(valueAccessor());
+        
         if (vStatus != vmStatus)
         {
-            $elem.bootstrapSwitch('setState', vmStatus);
+            $elem.bootstrapSwitch('state', vmStatus);
         }
     }
 };

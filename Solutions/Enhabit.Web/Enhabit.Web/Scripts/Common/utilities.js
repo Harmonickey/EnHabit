@@ -61,5 +61,23 @@ function SetDatePickerTextBox(rowId)
     });
 }
 
+function getDateFromUnix(date)
+{
+    var fullDate = new Date(parseInt(date.substring(6, 19)));
+
+    var month = zeroPad(fullDate.getMonth() + 1);
+    var day = zeroPad(fullDate.getDate());
+    var hours = zeroPad(fullDate.getHours());
+    var minutes = zeroPad(fullDate.getMinutes());
+    var seconds = zeroPad(fullDate.getSeconds());
+
+    return fullDate.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + ".0";
+}
+
+function zeroPad(num)
+{
+    return (num < 10 ? "0" + num : num);
+}
+
 
 

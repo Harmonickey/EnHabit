@@ -49,5 +49,34 @@ namespace Enhabit.Repository.ADO
 
             return universities;
         }
+
+        public University GetUniversity(Guid universityId)
+        {
+            var university = new University();
+
+            using (var SqlConn = new SqlConnection(_enhabitConnString))
+            {
+                SqlConn.Open();
+                using (var cmd = SqlConn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "[Enhabit].[GetUniversity]";
+                    cmd.Parameters.AddWithValue("@UniversityId", universityId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.HasRows && reader.Read())
+                    {
+                        university.UniversityId = (Guid)reader["UniversityId"];
+                        university.Name = reader["Name"].ToString();
+                        university.MaxListingDistance = decimal.Parse(reader["MaxListingDistance"].ToString());
+                        university.Address = reader["Address"].ToString();
+                        university.XCoordinate = reader["XCoordinate"].ToString();
+                        university.YCoordinate = reader["YCoordinate"].ToString();
+                    }
+                }
+            }
+
+            return university;
+        }
     }
 }

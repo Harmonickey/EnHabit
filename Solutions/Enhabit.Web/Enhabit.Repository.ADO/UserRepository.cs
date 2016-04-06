@@ -244,11 +244,12 @@ namespace Enhabit.Repository.ADO
                     {
                         users.Add(new User
                         { 
-                           Username = reader["Username"].ToString(),
-                           FirstName = reader["FirstName"].ToString(),
-                           LastName = reader["LastName"].ToString(),
-                           Email = reader["Email"].ToString(),
-                           PhoneNumber = reader["PhoneNumber"].ToString()
+                            UserId = (Guid)reader["UserId"],
+                            Username = reader["Username"].ToString(),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            PhoneNumber = reader["PhoneNumber"].ToString()
                         });
                     }
                 }

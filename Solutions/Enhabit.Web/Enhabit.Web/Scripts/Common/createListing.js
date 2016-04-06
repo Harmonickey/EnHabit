@@ -31,8 +31,14 @@
     self.LeaseType = ko.computed(function () {
         return self.LeaseTypes() == true ? "rental" : "sublet";
     });
+    self.LeaseTypeValue = ko.computed(function () {
+        return self.LeaseType() == "rental" ? 1 : 0;
+    });
     self.BuildingType = ko.computed(function () {
         return self.BuildingTypes() == true ? "apartment" : "house";
+    });
+    self.BuildingTypeValue = ko.computed(function () {
+        return self.BuildingType() == "apartment" ? 0 : 1;
     });
     self.FormattedAddress = ko.computed(function () {
         return (self.Address() ? self.Address().split(",")[0] : "");
@@ -85,7 +91,7 @@
                 XCoordinate: self.XCoordinate()(),
                 YCoordinate: self.YCoordinate()(),
                 Unit: self.Unit(),
-                Rent: self.Rent(),
+                Price: self.Rent(),
                 AvailableStartDate: self.FormattedStartDate(),
                 Bedrooms: self.Bedrooms(),
                 Bathrooms: self.Bathrooms(),
@@ -93,12 +99,12 @@
                 Animals: self.Animals(),
                 Laundry: self.Laundry(),
                 AirConditioning: self.AirConditioning(),
-                LeaseType: self.LeaseType(),
-                BuildingType: self.BuildingType(),
+                LeaseType: self.LeaseTypeValue(),
+                BuildingType: self.BuildingTypeValue(),
                 LandlordId: self.Landlord(),
                 UniversityId: self.University(),
                 PicturesId: parentViewModel.CreateListingPictureGuid,
-                Note: self.Notes()
+                Notes: self.Notes()
             };
 
             // setup the listing data for pending 

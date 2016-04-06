@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-
-using Enhabit.Models;
 using Enhabit.ViewModels;
 using Enhabit.Repository.Contracts;
 using Enhabit.Presenter.Commands;
@@ -51,8 +49,7 @@ namespace Enhabit.Presenter
             return new TenantViewModel(_user, _listings, NavLinks.Tenant(_hasRental), _payments, _hasRental)
             {
                 Universities = _universities,
-                Landlords = _landlords,
-                CreateListingPictureGuid = Guid.NewGuid()
+                Landlords = _landlords
             };
         }
 
@@ -60,7 +57,6 @@ namespace Enhabit.Presenter
         {
             Parallel.Invoke(() => _user = Users.Get(_userRepo, userGuid),
                             () => _listings = Listings.GetUserListings(_listingRepo, userGuid),
-                            () => _payments = Payments.GetUserPayments(_paymentRepo, userGuid),
                             () => _landlords = Users.GetLandlords(_userRepo),
                             () => _universities = Universities.GetAll(_universityRepo),
                             () => _applicants = Applicants.GetUserApplicants(_applicantRepo, userGuid),

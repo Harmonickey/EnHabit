@@ -44,6 +44,7 @@
     <Compile Include="EnhabitMapViewModel.cs" />
     <Compile Include="ListingViewModel.cs" />
     <Compile Include="NavLinkViewModel.cs" />
+    <Compile Include="PaymentHistoryViewModel.cs" />
     <Compile Include="PaymentViewModel.cs" />
     <Compile Include="PortalViewModel.cs" />
     <Compile Include="PriceRangeViewModel.cs" />

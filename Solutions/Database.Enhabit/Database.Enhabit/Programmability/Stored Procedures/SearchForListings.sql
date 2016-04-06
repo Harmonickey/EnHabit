@@ -35,7 +35,8 @@ SET NOCOUNT ON;
 		[BuildingTypeId],
 		[StartDate],
 		[IsRented],
-		[IsFeatured]
+		[IsFeatured],
+		[IsPastThreshold]
 	FROM Enhabit.Listings
 	WHERE Price BETWEEN @priceLow AND @priceUpper
 	AND   Bedrooms >= @bedrooms
@@ -47,4 +48,5 @@ SET NOCOUNT ON;
 	AND   LeaseTypeId = @leaseType
 	AND   BuildingTypeId = @buildingType
 	AND   StartDate >= @startDate
+	AND   IsActive = 1
 END

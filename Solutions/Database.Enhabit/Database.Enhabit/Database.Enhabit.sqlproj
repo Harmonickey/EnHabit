@@ -91,7 +91,6 @@
     <Build Include="Programmability\Stored Procedures\CreateUser.sql" />
     <Build Include="Programmability\Stored Procedures\GetAllUsers.sql" />
     <Build Include="Programmability\Stored Procedures\SavePicture.sql" />
-    <Build Include="Programmability\Stored Procedures\GetListingPictures.sql" />
     <Build Include="Programmability\Stored Procedures\CreateListing.sql" />
     <Build Include="Programmability\Stored Procedures\GetUser.sql" />
     <Build Include="Programmability\Stored Procedures\UserHasRental.sql" />
@@ -101,6 +100,8 @@
     <Build Include="Programmability\Stored Procedures\UpdateUser.sql" />
     <Build Include="Programmability\Stored Procedures\DeleteUser.sql" />
     <Build Include="Programmability\Stored Procedures\GetListing.sql" />
+    <Build Include="Programmability\Stored Procedures\GetListingsPictures.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUniversity.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

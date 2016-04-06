@@ -14,15 +14,13 @@ namespace Enhabit.Presenter.Commands
                     {
                         Name = "Account",
                         Href = "Portal/Tenant#Account",
-                        Class = "fa-user",
-                        Class2 = "fa-book"
+                        Class = "fa-user"
                     },
                     new NavLinkViewModel
                     {
                         Name = "Listings",
                         Href = "Portal/Tenant#Listings",
-                        Class = "fa-home",
-                        Class2 = "fa-th-list"
+                        Class = "fa-home"
                     }
                 };
 
@@ -32,8 +30,7 @@ namespace Enhabit.Presenter.Commands
                 {
                     Name = "Payments",
                     Href = "Portal/Tenant#Payments",
-                    Class = "fa-usd",
-                    Class2 = "fa-usd"
+                    Class = "fa-usd"
                 });
             }
 
@@ -61,12 +58,6 @@ namespace Enhabit.Presenter.Commands
                         Name = "Listings",
                         Href = "Portal/Landlord#Listings",
                         Class = "fa-home"
-                    },
-                    new NavLinkViewModel
-                    {
-                        Name = "Energy",
-                        Href = "Portal/Landlord#Energy",
-                        Class = "fa-bolt"
                     },
                     new NavLinkViewModel
                     {

@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 }
 
+@Styles.Render("~/Portal/Content/Tenant")
+
 <!-- ko with: AccountTab -->
 <div class="main" data-bind="visible: AccountActive">
     <div class="container">
@@ -88,13 +90,13 @@
                     <div class="widget-content listings">
                         <label class="listings-message" data-bind="visible: ShowListingMessage" style="display: none;">Click the listing below to update and see more details</label>
                         <!-- all the listings go here -->
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: { data: Listings, afterRender: AfterListingRender }">
+                        <div class="panel-group accordion" id="listings-accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: { data: Listings, afterRender: AfterListingRender }">
                             <div class='panel panel-default'>
                                 <div class='panel-heading' role='tab'>
                                     <h4 class='panel-title'>
-                                        <a role='button' data-toggle='collapse' data-parent='#accordion' data-bind="attr: { href: '#' + ListingId }" aria-expanded='false'>
+                                        <a role='button' data-toggle='collapse' data-parent='#listings-accordion' data-bind="attr: { href: '#' + Id }" aria-expanded='false'>
                                             <label>Address: <span data-bind="text: Address"></span></label>
-                                            <!-- ko if: Unit() != null -->
+                                            <!-- ko if: Unit != null -->
                                             <label>Unit: <span data-bind="text: Unit"></span></label>
                                             <!-- /ko -->
                                             <label>Rent: <span data-bind="text: FormattedPrice"></span></label>
@@ -102,13 +104,13 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <div data-bind="attr: { id: ListingId }" class='panel-collapse collapse' role='tabpanel'>
+                                <div data-bind="attr: { id: Id }" class='panel-collapse collapse' role='tabpanel'>
                                     <div class='panel-body'>                                      
                                         <div class='row'>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
                                                 <label>Address</label><input type='text' class='form-control' data-bind="value: Address" />
                                             </div>
-                                            <!-- ko if: Unit() != null -->
+                                            <!-- ko if: Unit != null -->
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
                                                 <label>Unit</label><input type='text' class='form-control' data-bind="value: Unit" />
                                             </div>
@@ -117,7 +119,7 @@
                                                 <label>Rent/Month</label><input type='text' class='form-control' data-bind="value: Price" />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Start Date</label><input type='text' class='form-control' data-bind="value: Start)" />
+                                                <label>Start Date</label><input type='text' class='form-control' data-bind="value: Start" />
                                             </div>
                                         </div>
                                         <div class='row'>
@@ -246,7 +248,7 @@
                                                 <label>Address</label><p data-bind="text: Address"></p>
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <!-- ko if: Unit() != null -->
+                                                <!-- ko if: Unit != null -->
                                                 <label>Unit</label><p data-bind="text: Unit"></p>
                                                 <!-- /ko -->
                                             </div>
@@ -279,24 +281,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="paymentHistory" style="margin: 0;" data-bind="foreach: PastPayments">
-                            <div class='panel panel-default'>
-                                <div class='panel-heading' role='tab'>
-                                    <h4 class='panel-title'>
-                                        <a role='button' data-toggle='collapse' data-parent='#accordion' data-bind="attr: { href: '#' + PaymentId }" aria-expanded='false'>
-                                            <label>Paid Rent: <span data-bind="text: FormattedRent"></span></label>
-                                            <label>Month: <span data-bind="text: Month"></span></label>    
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div data-bind="attr: { id: PaymentId }" class='panel-collapse collapse' role='tabpanel'>
-                                    <div class='panel-body'>
-                                        <div class='row'>
-                                            <div class='col-lg-4 col-md-4 col-sm-4'>
-                                                <label>Rent</label><p class='rent' data-bind="text: FormattedRent"></p>    
-                                            </div>
-                                            <div class='col-lg-4 col-md-4 col-sm-4'>
-                                                <label>Month</label><p class='address' data-bind="text: Month"></p>
+                        <div class="row" id="paymentHistory" style="margin: 0;">
+                            <div class="panel-group accordion" id="payment-accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: PastPayments">
+                                <div class='panel panel-default'>
+                                    <div class='panel-heading' role='tab'>
+                                        <h4 class='panel-title'>
+                                            <a role='button' data-toggle='collapse' data-parent='#payment-accordion' data-bind="attr: { href: '#' + PaymentId }" aria-expanded='false'>
+                                                <label>Paid Rent: <span data-bind="text: FormattedRent"></span></label>
+                                                <label>Month: <span data-bind="text: Month"></span></label>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div data-bind="attr: { id: PaymentId }" class='panel-collapse collapse' role='tabpanel'>
+                                        <div class='panel-body'>
+                                            <div class='row'>
+                                                <div class='col-lg-4 col-md-4 col-sm-4'>
+                                                    <label>Rent</label><p class='rent' data-bind="text: FormattedRent"></p>
+                                                </div>
+                                                <div class='col-lg-4 col-md-4 col-sm-4'>
+                                                    <label>Month</label><p class='address' data-bind="text: Month"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -411,7 +415,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <label>Info</label><textarea rows='4' cols='50' class='form-control' data-bind="text: CreateListing.Notes"></textarea>
+                        <label>Info</label><textarea rows='4' cols='50' class='form-control' data-bind="value: CreateListing.Notes"></textarea>
                     </div>
                 </div>
                 <div class="row">

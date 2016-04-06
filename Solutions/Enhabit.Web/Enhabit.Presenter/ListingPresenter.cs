@@ -10,18 +10,20 @@ namespace Enhabit.Presenter
     {
         private readonly IListingRepository _listingRepo;
         private readonly IImageRepository _imageRepo;
+        private readonly IUniversityRepository _universityRepo;
         private readonly ICloudinaryAdaptor _cloudinaryAdaptor;
 
-        public ListingPresenter(IListingRepository listingRepo, IImageRepository imageRepo, ICloudinaryAdaptor cloudinaryAdaptor)
+        public ListingPresenter(IListingRepository listingRepo, IImageRepository imageRepo, IUniversityRepository universityRepo, ICloudinaryAdaptor cloudinaryAdaptor)
         {
             _listingRepo = listingRepo;
             _imageRepo = imageRepo;
+            _universityRepo = universityRepo;
             _cloudinaryAdaptor = cloudinaryAdaptor;
         }
 
         public ListingViewModel CreateListing(Listing listing)
         {
-            return Listings.Create(_listingRepo, _imageRepo, listing);
+            return Listings.Create(_listingRepo, _imageRepo, _universityRepo, listing);
         }
 
         public ListingViewModel UpdateListing(Listing listing)

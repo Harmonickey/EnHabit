@@ -11,12 +11,15 @@ namespace Enhabit.Presenter.Extensions
             return new ListingViewModel
             {
                 ListingId = listing.ListingId,
+                PicturesId = listing.PicturesId,
                 Address = listing.Address,
                 Unit = listing.Unit,
                 Animals = listing.Animals,
                 AvailableStartDate = listing.AvailableStartDate,
                 LeaseType = listing.LeaseType,
                 BuildingType = listing.BuildingType,
+                Bedrooms = listing.Bedrooms,
+                Bathrooms = listing.Bathrooms,
                 HasAirConditioning = listing.HasAirConditioning,
                 ImageUrls = listing.ImageUrls,
                 ThumbnailUrls = listing.ImageUrls.Select(u => u.ToThumbnail()),
@@ -29,7 +32,9 @@ namespace Enhabit.Presenter.Extensions
                 Parking = listing.Parking,
                 Price = listing.Price,
                 XCoordinate = listing.XCoordinate,
-                YCoordinate = listing.YCoordinate
+                YCoordinate = listing.YCoordinate,
+                IsActive = listing.IsActive,
+                IsPastThreshold = listing.IsPastThreshold
             };
         }
 

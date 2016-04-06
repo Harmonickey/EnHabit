@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Data;
 using log4net;
 using System.Linq;
+using Enhabit.Models.Enums;
 
 namespace Enhabit.Repository.ADO
 {
@@ -50,8 +51,10 @@ namespace Enhabit.Repository.ADO
                             cmd.Parameters.AddWithValue("@UserId", listing.UserId);
                             cmd.Parameters.AddWithValue("@PicturesId", listing.PicturesId);
                             cmd.Parameters.AddWithValue("@UniversityId", listing.UniversityId);
+                            cmd.Parameters.AddWithValue("@LandlordId", listing.LandlordId);
                             cmd.Parameters.AddWithValue("@Address", listing.Address);
                             cmd.Parameters.AddWithValue("@Unit", listing.Unit);
+                            cmd.Parameters.AddWithValue("@Notes", listing.Notes);
                             cmd.Parameters.AddWithValue("@XCoordinate", listing.XCoordinate);
                             cmd.Parameters.AddWithValue("@YCoordinate", listing.YCoordinate);
                             cmd.Parameters.AddWithValue("@Price", listing.Price);
@@ -66,10 +69,14 @@ namespace Enhabit.Repository.ADO
                             cmd.Parameters.AddWithValue("@StartDate", listing.AvailableStartDate);
                             cmd.Parameters.AddWithValue("@IsRented", listing.IsRented);
                             cmd.Parameters.AddWithValue("@IsFeatured", listing.IsFeatured);
+                            cmd.Parameters.AddWithValue("@IsPastThreshold", listing.IsPastThreshold);
+                            cmd.Parameters.AddWithValue("@IsActive", listing.IsActive);
                             
                             cmd.ExecuteNonQuery();
                         }
                     }
+
+                    transactionScope.Complete();
                 }
                 catch (Exception ex)
                 {
@@ -146,14 +153,15 @@ namespace Enhabit.Repository.ADO
                     {
                         listings.Add(new Listing
                         {
-                            Price = (int)reader["Price"],
+                            Price = (float)((decimal)reader["Price"]),
                             Address = reader["Address"].ToString(),
                             AvailableStartDate = (DateTime)reader["StartDate"],
                             IsFeatured = (bool)reader["IsFeatured"],
                             IsActive = (bool)reader["IsActive"],
                             TenantName = reader["OwnerName"].ToString(),
                             LandlordName = reader["LandlordName"].ToString(),
-                            PicturesId = (Guid)reader["PictureId"]
+                            PicturesId = (Guid)reader["PicturesId"],
+                            Notes = (reader["Notes"] == DBNull.Value ? "" : reader["Notes"].ToString())
                         });
                     }
 
@@ -162,11 +170,10 @@ namespace Enhabit.Repository.ADO
                     foreach (Listing listing in listings)
                     {
                         var matchingPictures = pictures.Where(p => p.PicturesId == listing.PicturesId);
-
-                        if (matchingPictures.Any())
-                        {
-                            listing.ImageUrls = matchingPictures.Select(p => p.CloudinaryUrl);
-                        }
+                        
+                        listing.ImageUrls = (matchingPictures.Any() 
+                            ? matchingPictures.Select(p => p.CloudinaryUrl)
+                            : new List<string>());
                     }
                 } 
             }
@@ -190,22 +197,21 @@ namespace Enhabit.Repository.ADO
 
                     while (reader.HasRows && reader.Read())
                     {
-                        listing.Price = (int)reader["Price"];
+                        listing.Price = (float)((decimal)reader["Price"]);
                         listing.Address = reader["Address"].ToString();
                         listing.AvailableStartDate = (DateTime)reader["StartDate"];
                         listing.IsFeatured = (bool)reader["IsFeatured"];
                         listing.IsActive = (bool)reader["IsActive"];
                         listing.TenantName = reader["OwnerName"].ToString();
                         listing.LandlordName = reader["LandlordName"].ToString();
-                        listing.PicturesId = (Guid)reader["PictureId"];
+                        listing.PicturesId = (Guid)reader["PicturesId"];
                     }
 
                     var pictures = _imageRepo.GetListingsPictures(new List<Guid> { listing.ListingId });
 
-                    if (pictures.Any())
-                    {
-                        listing.ImageUrls = pictures.Select(p => p.CloudinaryUrl);
-                    }
+                    listing.ImageUrls = (pictures.Any()
+                            ? pictures.Select(p => p.CloudinaryUrl)
+                            : new List<string>());
                 }
             }
 
@@ -231,7 +237,7 @@ namespace Enhabit.Repository.ADO
                         {
                             listings.Add(new Listing
                             {
-                                Price = (int)reader["Price"],
+                                Price = (float)((decimal)reader["Price"]),
                                 Address = reader["Address"].ToString(),
                                 AvailableStartDate = (DateTime)reader["StartDate"],
                                 IsFeatured = (bool)reader["IsFeatured"],
@@ -241,6 +247,17 @@ namespace Enhabit.Repository.ADO
                             });
                         }
                     }
+                }
+
+                var pictures = _imageRepo.GetListingsPictures(listings.Select(l => l.PicturesId));
+
+                foreach (Listing listing in listings)
+                {
+                    var matchingPictures = pictures.Where(p => p.PicturesId == listing.PicturesId);
+
+                    listing.ImageUrls = (matchingPictures.Any()
+                            ? matchingPictures.Select(p => p.CloudinaryUrl)
+                            : new List<string>());
                 }
 
                 return listings;
@@ -267,16 +284,43 @@ namespace Enhabit.Repository.ADO
                         {
                             listings.Add(new Listing
                             {
-                                Price = (int)reader["Price"],
+                                ListingId = (Guid)reader["ListingId"],
+                                PicturesId = (Guid)reader["PicturesId"],
+                                IsRented = (bool)reader["IsRented"],
+                                Price = (float)((decimal)reader["Price"]),
                                 Address = reader["Address"].ToString(),
+                                Unit = reader["Unit"].ToString(),
                                 AvailableStartDate = (DateTime)reader["StartDate"],
                                 IsFeatured = (bool)reader["IsFeatured"],
                                 IsActive = (bool)reader["IsActive"],
                                 TenantName = reader["OwnerName"].ToString(),
-                                LandlordName = reader["LandlordName"].ToString()
+                                LandlordName = reader["LandlordName"].ToString(),
+                                Animals = (int)reader["PetId"],
+                                HasAirConditioning = (bool)reader["HasAirConditioning"],
+                                Bedrooms = (int)reader["Bedrooms"],
+                                Bathrooms = (int)reader["Bathrooms"],
+                                Laundry = (int)reader["LaundryId"],
+                                Parking = (int)reader["ParkingId"],
+                                LeaseType = (int)reader["LeaseTypeId"],
+                                BuildingType = (int)reader["BuildingTypeId"],
+                                Notes = (reader["Notes"] == DBNull.Value ? "" : reader["Notes"].ToString()),
+                                IsPastThreshold = (bool)reader["IsPastThreshold"],
+                                XCoordinate = decimal.Parse(reader["XCoordinate"].ToString()),
+                                YCoordinate = decimal.Parse(reader["YCoordinate"].ToString())
                             });
                         }
                     }
+                }
+
+                var pictures = _imageRepo.GetListingsPictures(listings.Select(l => l.PicturesId));
+
+                foreach (Listing listing in listings)
+                {
+                    var matchingPictures = pictures.Where(p => p.PicturesId == listing.PicturesId);
+
+                    listing.ImageUrls = (matchingPictures.Any()
+                            ? matchingPictures.Select(p => p.CloudinaryUrl)
+                            : new List<string>());
                 }
 
                 return listings;
