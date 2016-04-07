@@ -28,6 +28,7 @@ SET NOCOUNT ON;
 		li.[IsFeatured],
 		li.[IsActive],
 		li.[Notes],
+		li.[IsPastThreshold],
 		te.Username AS OwnerName,
 		la.Username AS LandlordName
 	FROM Enhabit.Listings li

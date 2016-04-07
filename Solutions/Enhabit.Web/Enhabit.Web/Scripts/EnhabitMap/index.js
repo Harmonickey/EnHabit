@@ -1,7 +1,7 @@
 ﻿var SearchQueryViewModel = function (priceRange)
 {
     var self = this;
-    
+
     self.PriceRangeLow = ko.observable(priceRange.Low);
     self.PriceRangeHigh = ko.observable(priceRange.High);
     self.Step = priceRange.Step;
@@ -71,7 +71,7 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiaGFybW9uaWNrZXkiLCJhIjoiZmM4MGM0Mjk0NmJmMDFjMmY3YWY1NmUxMzllMzc5NGYifQ.hdx-TOA4rtQibXkpdLQK4g';
     self.Map = L.mapbox.map('map', 'mapbox.streets', { zoomControl: false }).setView([42.057, -87.680], 15);
-
+    
     self.OpenPostListingModal = function (data, event)
     {
         if (self.UserLoggedIn())
@@ -277,22 +277,26 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.CreateMarker = function(listing)
     {
-        var marker = L.marker([listing.XCoordinate, entry[0].WorldCoordinates.y]).addTo(map);
+        console.log(listing);
+        var marker = L.marker([listing.XCoordinate, listing.YCoordinate]).addTo(self.Map);
+        
         marker.setIcon(L.mapbox.marker.icon({
-            'marker-color': (entry[0].IsFeatured ? '#4078c0' : '#000'),
-            'marker-size': (entry[0].IsFeatured ? 'large' : 'medium'),
+            'marker-color': (listing.IsFeatured ? '#4078c0' : '#000'),
+            'marker-size': (listing.IsFeatured ? 'large' : 'medium'),
             'marker-symbol': 'building'
         }));
 
         var slideshowContent = "";
-        var base = (entry[0].Testing ? "" : "/images/enhabit/images/");
-        var images = entry[0].Thumbnails;
-        if (!images || images.length === 0) {
-            images = [];
-            images.push(defaultPicture);
+
+        var thumbnails = listing.ThumbnailUrls;
+        if (!thumbnails || thumbnails.length === 0)
+        {
+            thumbnails = [];
+            thumbnails.push(self.DefaultPicture);
         }
-        for (var i = 0; i < images.length; i++) {
-            var source = base + images[i];
+        for (var i = 0; i < thumbnails.length; i++)
+        {
+            var source = thumbnails[i];
 
             slideshowContent +=
                                 '<div class="image' + (i === 0 ? ' active' : '') + '">' +
@@ -302,24 +306,26 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
         var popupContent =
                     '<a onclick="CloseLeafletPopup()" class="enhabit-popup-close-button">x</a>' +
-                    '<div id="' + entry[0]._id.$oid + '" class="popup">' +
+                    '<div class="popup">' +
                         '<div style="position: absolute; top: 5%; left: 5%; z-index: 1; width: 83%;">' +
-                            '<h2>' + entry[0].Address + ' ' + (entry[0].Unit ? "<br>Unit " + entry[0].Unit : "") + '</h2>' +
-                            '<h3>$' + entry[0].Price + '</h3>' +
+                            '<h2>' + listing.Address + ' ' + (listing.Unit ? "<br>Unit " + listing.Unit : "") + '</h2>' +
+                            '<h3>$' + listing.Price + '</h3>' +
                         '</div>' +
                         '<div class="slideshow">';
 
-        if (images.length > 1) {
-            popupContent += '<div class="slider-arrow slider-left"><img src="assets/images/theme_images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
-                            '<div class="slider-arrow slider-right"><img src="assets/images/theme_images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
+        if (thumbnails.length > 1) {
+            popupContent += '<div class="slider-arrow slider-left"><img src="/Images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
+                            '<div class="slider-arrow slider-right"><img src="/Images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
         }
 
-        entry[0].Thumbnails = ToStringFromList(entry[0].Thumbnails);
+        var ThumbnailsList = $.map(listing.ThumbnailUrls, function (d) {
+            return "'" + d + "'";
+        }).join(",");
 
         popupContent += slideshowContent +
                         '</div>' +
                     '</div>' +
-                    "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + entry[0]._id.$oid + "', '" + entry[0].Address + "', '" + entry[0].Unit + "', '" + entry[0].Start + "', '" + entry[0].Bedrooms + "', '" + entry[0].Bathrooms + "', '" + entry[0].Price + "', '" + entry[0].LeaseType + "', '" + entry[0].BuildingType + "', '" + entry[0].Notes + "', '" + entry[0].HasAnimals + "', '" + entry[0].HasLaundry + "', '" + entry[0].HasParking + "', '" + entry[0].HasAirConditioning + "', [" + entry[0].Thumbnails + "], '" + entry[0].WorldCoordinates.x + "', '" + entry[0].WorldCoordinates.y + "', '" + entry[0].Testing + "', '" + entry[0].Username + "', '" + entry[0].Landlord + "')\" />";
+                    "<input type='button' class='btn btn-outline-inverse btn-sm popup-details-btn' value='More Details' onclick=\"OpenListing('" + listing.Address + "', '" + listing.Unit + "', '" + listing.Start + "', '" + listing.Bedrooms + "', '" + listing.Bathrooms + "', '" + listing.Price + "', '" + listing.LeaseType + "', '" + listing.BuildingType + "', '" + listing.Notes + "', '" + listing.Animals + "', '" + listing.Laundry + "', '" + listing.Parking + "', '" + listing.HasAirConditioning + "', [" + ThumbnailsList + "], '" + listing.Testing + "', '" + listing.Username + "', '" + listing.Landlord + "')\" />";
 
         popupContent += '<div class="popup-background-shadow"></div>';
 
@@ -328,8 +334,8 @@ var EnhabitMapViewModel = function (enhabitMapData)
             closeButton: true,
             minWidth: 320
         });
-
-        markers.addLayer(marker);
+        
+        self.Markers.addLayer(marker);
     };
 
     self.CreateListing = function (userGuid)
@@ -392,8 +398,14 @@ var EnhabitMapViewModel = function (enhabitMapData)
         });
     });
 
+    self.Listings = ko.observableArray(enhabitMapData.Listings);
+
     self.SearchForListings = function ()
     {
 
     };
+
+    $.each(self.Listings(), function (index, listing) {
+        self.CreateMarker(listing);
+    });
 };

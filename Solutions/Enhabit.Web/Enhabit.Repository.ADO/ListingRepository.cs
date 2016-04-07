@@ -153,15 +153,29 @@ namespace Enhabit.Repository.ADO
                     {
                         listings.Add(new Listing
                         {
+                            ListingId = (Guid)reader["ListingId"],
+                            PicturesId = (Guid)reader["PicturesId"],
+                            IsRented = (bool)reader["IsRented"],
                             Price = (float)((decimal)reader["Price"]),
                             Address = reader["Address"].ToString(),
+                            Unit = reader["Unit"].ToString(),
                             AvailableStartDate = (DateTime)reader["StartDate"],
                             IsFeatured = (bool)reader["IsFeatured"],
                             IsActive = (bool)reader["IsActive"],
                             TenantName = reader["OwnerName"].ToString(),
                             LandlordName = reader["LandlordName"].ToString(),
-                            PicturesId = (Guid)reader["PicturesId"],
-                            Notes = (reader["Notes"] == DBNull.Value ? "" : reader["Notes"].ToString())
+                            Animals = (int)reader["PetId"],
+                            HasAirConditioning = (bool)reader["HasAirConditioning"],
+                            Bedrooms = (int)reader["Bedrooms"],
+                            Bathrooms = (int)reader["Bathrooms"],
+                            Laundry = (int)reader["LaundryId"],
+                            Parking = (int)reader["ParkingId"],
+                            LeaseType = (int)reader["LeaseTypeId"],
+                            BuildingType = (int)reader["BuildingTypeId"],
+                            Notes = (reader["Notes"] == DBNull.Value ? "" : reader["Notes"].ToString()),
+                            IsPastThreshold = (bool)reader["IsPastThreshold"],
+                            XCoordinate = decimal.Parse(reader["XCoordinate"].ToString()),
+                            YCoordinate = decimal.Parse(reader["YCoordinate"].ToString())
                         });
                     }
 
