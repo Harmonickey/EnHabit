@@ -5,7 +5,7 @@
     self.ListingsActive = ko.observable(false);
 
     self.Listings = ko.observableArray(ko.utils.arrayMap(listingViewModels, function (listing) {
-        return new ListingViewModel(listing, parentViewModel.Universities, parentViewModel.Landlords);
+        return new ListingViewModel(listing, parentViewModel);
     }));
 
     self.Threshold = parentViewModel.Universities[0].Threshold;
@@ -17,7 +17,10 @@
     {
         parentViewModel.CreateDropzone(data.Id, "[id='" + data.Id + "'] form", data.Images());
 
+        // no knockout custom binding for this yet...
         SetDatePickerTextBox(data.Id);
+
+        parentViewModel.AddedFiles[data.Id] = false;
     };
 };
 
@@ -266,9 +269,9 @@ var PortalViewModel = function (portalViewModel)
 
             self.Pictures[key].splice(index, 1);
 
-            self.NumAdded(self.NumAdded() - 1);
+            self.NumAdded[key] -= 1;
 
-            if (self.NumAdded[key] < 0)
+            if (self.NumAdded[key] <= 0)
             {
                 self.AddedFiles[key] = false;
                 self.NumAdded[key] = 0;
@@ -282,8 +285,8 @@ var PortalViewModel = function (portalViewModel)
                 var mockFile = { name: existingPics[i], alreadyUploaded: true };
 
                 myDropzone.emit("addedfile", mockFile);
+                self.NumAdded[key] -= 1; // these files need to be tracked, but technically we cannot count them as "added" files
                 myDropzone.emit("thumbnail", mockFile, mockFile.name);
-                self.NumAdded -= 1;
                 myDropzone.emit("complete", mockFile);
             }
         }
@@ -364,6 +367,8 @@ var PortalViewModel = function (portalViewModel)
         }
         else if (self.PendingUpdateListingData() != undefined)
         {
+            var data = ko.toJSON(self.PendingUpdateListingData());
+
             $.ajax(
             {
                 type: "POST",
@@ -404,8 +409,6 @@ var PortalViewModel = function (portalViewModel)
                 },
                 complete: function ()
                 {
-                    self.PendingUpdateListingData.UpdateListingButtonEnabled(true);
-                    self.PendingUpdateListingData.UpdateListingButtonText("Update");
                     self.NumUploaded[data.Id] = 0;
                     self.AddedFiles[data.Id] = false;
                     self.PendingUpdateListingData(undefined);

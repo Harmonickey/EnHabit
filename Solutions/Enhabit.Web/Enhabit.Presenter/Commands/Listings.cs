@@ -64,6 +64,9 @@ namespace Enhabit.Presenter.Commands
             var oldListing = repo.GetListing(listing.ListingId);
             var oldPictures = imageRepo.GetListingsPictures(new List<Guid> { oldListing.PicturesId });
 
+            var newPictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
+            listing.IsActive = !listing.IsPastThreshold && newPictures.Any();
+
             if (!repo.UpdateListing(listing))
             {
                 return null;
@@ -71,13 +74,10 @@ namespace Enhabit.Presenter.Commands
             
             // now that update has succeeded, we can delete the old pictures from the cloud
             cloudinaryAdaptor.Delete(oldPictures.Select(p => p.CloudinaryPublicId));
-
-            // then reassign the new images to the return object
-            var pictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
-
-            if (pictures.Any())
+            
+            if (newPictures.Any())
             {
-                listing.ImageUrls = pictures.Select(p => p.CloudinaryUrl);
+                listing.ImageUrls = newPictures.Select(p => p.CloudinaryUrl);
             }
 
             return listing.ToListingViewModel();

@@ -1,4 +1,4 @@
-﻿var ListingViewModel = function (listing, universities, landlords)
+﻿var ListingViewModel = function (listing, parentViewModel)
 {
     var self = this;
 
@@ -41,11 +41,11 @@
         return self.BuildingType() == "apartment" ? 0 : 1;
     });
 
-    self.Universities = universities;
-    self.Landlords = landlords;
+    self.Universities = parentViewModel.Universities;
+    self.Landlords = parentViewModel.Landlords;
 
-    self.University = listing.University;
-    self.Landlord = listing.Landlord;
+    self.University = ko.observable(listing.University);
+    self.Landlord = ko.observable(listing.Landlord);
 
     self.FormattedPrice = ko.pureComputed(function ()
     {
@@ -85,6 +85,10 @@
         return parts[1] + "/" + parts[2] + "/" + parts[0];
     });
 
+    self.StartValue = ko.computed(function () {
+        return $.datepicker.formatDate('mm/dd/yy', new Date(self.FormattedStart()));
+    });
+
     self.UpdateListingButtonEnabled = ko.observable(true);
     self.UpdateListingButtonText = ko.observable("Update");
 
@@ -98,16 +102,11 @@
         self.UpdateListingButtonEnabled(false);
         self.UpdateListingButtonText("Updating...");
 
-        dropzones[self.Id].processQueue();
+        parentViewModel.Dropzones[self.Id].processQueue();
 
-        if (parentViewModel.AddedFiles[i] == false)
+        if (parentViewModel.AddedFiles[self.Id] == false)
         {
             parentViewModel.ProcessListing();
-        }
-        else
-        {
-            // async call, caught in dropzone.success event handler in portal.js
-            parentViewModel.Dropzones[self.Id].processQueue();
         }
     };
 
@@ -115,11 +114,11 @@
     {
         var data = {
             Address: self.FormattedAddress(),
-            XCoordinate: self.XCoordinate()(),
-            YCoordinate: self.YCoordinate()(),
+            XCoordinate: self.XCoordinate(),
+            YCoordinate: self.YCoordinate(),
             Unit: self.Unit(),
-            Price: self.Rent(),
-            AvailableStartDate: self.FormattedStartDate(),
+            Price: self.Price(),
+            AvailableStartDate: self.StartValue(),
             Bedrooms: self.Bedrooms(),
             Bathrooms: self.Bathrooms(),
             Parking: self.Parking(),

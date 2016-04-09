@@ -102,8 +102,6 @@ namespace Enhabit.Repository.ADO
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[Enhabit].[UpdateListing]";
                             cmd.Parameters.AddWithValue("@ListingId", listing.ListingId);
-                            cmd.Parameters.AddWithValue("@UserId", listing.UserId);
-                            cmd.Parameters.AddWithValue("@PicturesId", listing.PicturesId);
                             cmd.Parameters.AddWithValue("@UniversityId", listing.UniversityId);
                             cmd.Parameters.AddWithValue("@Address", listing.Address);
                             cmd.Parameters.AddWithValue("@Unit", listing.Unit);
@@ -119,12 +117,15 @@ namespace Enhabit.Repository.ADO
                             cmd.Parameters.AddWithValue("@LeaseTypeId", listing.LeaseType);
                             cmd.Parameters.AddWithValue("@BuildingTypeId", listing.BuildingType);
                             cmd.Parameters.AddWithValue("@StartDate", listing.AvailableStartDate);
+                            cmd.Parameters.AddWithValue("@IsActive", listing.IsActive);
                             cmd.Parameters.AddWithValue("@IsRented", listing.IsRented);
                             cmd.Parameters.AddWithValue("@IsFeatured", listing.IsFeatured);
 
                             cmd.ExecuteNonQuery();
                         }
                     }
+
+                    transactionScope.Complete();
                 }
                 catch (Exception ex)
                 {

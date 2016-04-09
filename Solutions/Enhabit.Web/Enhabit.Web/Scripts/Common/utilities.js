@@ -79,124 +79,186 @@ function zeroPad(num)
     return (num < 10 ? "0" + num : num);
 }
 
-function OpenListing(Id, Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, AirConditioning, Images, Testing, Username, Landlord)
+function OpenListing(Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, HasAirConditioning, Images, Testing, Username, Landlord)
 {
     $("#common-modal").modal('hide');
 
     $("#details-view").fadeIn();
 
-    //load up the images into the modal...
-    var slideshowContent = "";
-
-    if (!Images || Images.length === 0) {
-        Images = [];
-        Images.push(self.DefaultPicture);
+    var slideShowSource = {
+        tag: 'div',
+        clasName: 'slideshow',
+        style: { position: 'relative' },
+        init: function ()
+        {
+            if (!Images || Images.length === 0)
+            {
+                Images = [self.DefaultPicture];
+            }
+        },
+        content: (function ()
+        {
+            var sliderContent = [];
+            if (Images.length > 1)
+            {
+                sliderContent.push(
+                {
+                    tag: 'div',
+                    className: 'slider-arrow slider-left',
+                    content: {
+                        tag: 'img',
+                        attr: { src: '/Images/carousel_arrow_left.png' },
+                        className: 'slider-arrow-left',
+                    }
+                });
+                sliderContent.push(
+                {
+                    tag: 'div',
+                    className: 'slider-arrow slider-right',
+                    content: {
+                        tag: 'img',
+                        attr: { src: '/Images/carousel_arrow_right.png' },
+                        className: 'slider-arrow-right'
+                    }
+                });
+            }
+            for (var i = 0; i < Images.length; i++)
+            {
+                sliderContent.push({
+                    tag: 'div',
+                    className: (i === 0 ? 'image active' : 'image'),
+                    content: {
+                        tag: 'img',
+                        attr: { src: Images[i], height: 200, width: 300 }
+                    }
+                });
+            }
+            return sliderContent;
+        })()
     }
-    for (var i = 0; i < Images.length; i++) {
-        var source = Images[i];
 
-        slideshowContent +=
-                            '<div class="image' + (i === 0 ? ' active' : '') + '">' +
-                              '<img src="' + source + '" height="200" width="300" />' +
-                            '</div>';
-    }
-
-    var slideshowModalContent = '<div class="slideshow" style="position: relative;">';
-    if (Images.length > 1) {
-        slideshowModalContent += '<div class="slider-arrow slider-left"><img src="/Images/carousel_arrow_left.png" class="slider-arrow-left" /></div>' +
-        '<div class="slider-arrow slider-right"><img src="/Images/carousel_arrow_right.png" class="slider-arrow-right" /></div>';
-    }
-
-    slideshowModalContent += slideshowContent +
-    '</div>';
-
+    var rowDiv = function(data) {
+        return {
+            tag: 'div',
+            className: 'row',
+            content: {
+                tag: 'div',
+                className: 'col-lg-12 col-md-12 col-sm-12',
+                content: {
+                    tag: 'h2',
+                    content: data
+                }
+            }
+        }
+    };
+    var doubleRowDiv = function (data1, data2) {
+        return [{
+            tag: 'div',
+            className: 'row',
+            content: {
+                tag: 'div',
+                className: 'col-lg-3 col-md-3 col-sm-3 lightbackground',
+                content: {
+                    tag: 'p',
+                    content: data
+                }
+            }
+        },
+        {
+            tag: 'div',
+            className: 'row',
+            content: {
+                tag: 'div',
+                className: 'col-lg-3 col-md-3 col-sm-3 lightbackground',
+                content: {
+                    tag: 'p',
+                    content: data2
+                }
+            }
+        }]
+    };
+    var firstDoubleRow = new doubleRowDiv("Bedrooms: " + Bedrooms, "Lease Type: " + LeaseType);
+    firstDoubleRow[0].content.style = { 'border-top-left-radius': '10px' };
+    firstDoubleRow[1].content.style = { 'border-top-left-radius': '10px' };
+    var lastDoubleRow = new doubleRowDiv("Parking: " + Parking, "In-Unit Laundry: " + Laundry);
+    lastDoubleRow[0].content.style = { 'border-bottom-left-radius': '10px' };
+    lastDoubleRow[1].content.style = { 'border-bottom-left-radius': '10px' };
     var notes = Notes.replace("#39", "'").replace("#34", "\"");
+    var detailsSource = {
+        tag: 'div',
+        className: 'container-fluid',
+        style: { 'padding-left': '40px' },
+        content: [
+            new rowDiv(Address + (Unit ? Unit : "")),
+            new rowDiv("$" + Price + "/Month"),
+            new rowDiv("Available " + Start),
+            new rowDiv("Listed By: " + (Landlord != 'undefined' ? Landlord : (Username != 'undefined' ? Username : ""))),
+            firstDoubleRow,
+            new doubleRowDiv("Bathrooms: " + Bathrooms, "Building Type: " + BuildingType),
+            new doubleRowDiv("Animals " + Animals, "Air Conditioning: " + HasAirConditioning),
+            lastDoubleRow,
+            {
+                tag: 'row',
+                style: { 'margin-top': '50px' },
+                content: {
+                    tag: 'div',
+                    className: 'col-lg-8 col-md-8 col-sm-8 darkbackground',
+                    content: {
+                        tag: 'p',
+                        content: (notes != "undefined" ? notes : "")
+                    }
+                }
+            }
+        ]
+    };
 
-    var detailsContent =
-    "<div class='container-fluid' style='padding-left: 40px;'>" +
-        "<div class='row'>" +
-            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>" + Address + " " + (Unit ? Unit : "") + "</h2>" +
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>$" + Price + "/Month</h2>" +
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                "<h2>Available " + DateToHumanReadable(Start) + "</h2>" +
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-                (Landlord != 'undefined' ? "<h5>Listed By: " + Landlord + "</h5>" : (Username != 'undefined' ? "<h5>Listed By: " + Username + "</h5>" : "")) +
-            "</div>" +
-        "</div>" +
-        "<div class='row' style='margin-top: 25px;'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground' style='border-top-left-radius: 10px;'>" +
-                "<p>Bedrooms: " + Bedrooms + "</p>" +
-            "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground' style='border-top-right-radius: 10px;'>" +
-                "<p>Lease Type: " + LeaseType + "</p>" +
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground'>" +
-                "<p>Bathrooms: " + Bathrooms + "</p>" +
-            "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground'>" +
-                "<p>Building Type: " + BuildingType + "</p>" +
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground'>" +
-                "<p>Animals: " + Animals + "</p>" +
-            "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground'>" +
-                "<p>Air Conditioning: " + HasAirConditioning + "</p>" +
-            "</div>" +
-        "</div>" +
-        "<div class='row'>" +
-            "<div class='col-lg-3 col-md-3 col-sm-3 lightbackground' style='border-bottom-left-radius: 10px;'>" +
-                "<p>Parking: " + Parking + "</p>" +
-            "</div>" +
-            "<div class='col-lg-5 col-md-5 col-sm-5 lightbackground' style='border-bottom-right-radius: 10px;'>" +
-                "<p>In-Unit Laundry: " + Laundry + "</p>" +
-            "</div>" +
-        "</div>" +
-        (notes == null || notes == "" ? "" :
-        "<div class='row' style='margin-top: 50px;'>" +
-            "<div class='col-lg-8 col-md-8 col-sm-8 darkbackground'>" +
-                "<p>" + (notes != "undefined" ? notes : "") + "</p>" +
-            "</div>" +
-        "</div>") +
-    "</div>";
+    var actionsSource = {
+        tag: 'div',
+        className: 'col-lg-12 col-md-12 col-sm-12',
+        content: {
+            tag: 'div',
+            className: 'row',
+            content: {
+                tag: 'input',
+                attr: { type: 'button', value: 'Contact' },
+                className: 'btn btn-outline-inverse btn-sm details-listing-action-btn',
+                events: {
+                    click: CreateEmailMessage
+                }
+            }
+        }
+    };
 
-    var actionsContent =
-    "<div class='col-lg-12 col-md-12 col-sm-12'>" +
-        //"<div class='row'>" +
-            //"<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Apply' onclick='Apply(\"" + Id + "\");' />" +
-        //"</div>" +
-        //"<div class='row'>" +
-        //    "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Share' //onclick='ShareListing(\"" + Id + "\");' />" +
-        //"</div>" +
-        "<div class='row'>" +
-            "<input type='button' class='btn btn-outline-inverse btn-sm details-listing-action-btn' value='Contact' onclick='CreateEmailMessage(\"" + Id + "\");' />" +
-        "</div>" +
-    "</div>";
+    var slideShow = jCreate(slideShowSource);
+    var details = jCreate(detailsSource);
+    var actions = jCreate(actionsSource);
 
-    $("#details-view-slideshow-section").html(slideshowModalContent);
-
-    $("#details-view-listing-details").html(detailsContent);
-
-    $("#details-view-actions").html(actionsContent);
+    $("#details-view-slideshow-section").html(slideShow);
+    $("#details-view-listing-details").html(details);
+    $("#details-view-actions").html(actions);
     
     var width = $("#details-view").width();
     $("#details-items").width(width);
     var height = $("#details-view-slideshow-section .slideshow").height();
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
+}
+
+function CloseDetailsView()
+{
+    $("#details-view").html(
+        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
+        "<div id='details-view-slideshow-section' class='row'></div>" +
+        "<div id='details-items' class='row'>" +
+            "<div id='details-view-listing-details' class='col-lg-8 col-md-8 col-sm-8'></div>" +
+            "<div id='details-view-actions' class='col-lg-4 col-md-4 col-sm-4'></div>" +
+        "</div>");
+
+    $("#details-view").fadeOut();
+}
+
+function CloseLeafletPopup()
+{
+    ko.dataFor(document.body).Map.closePopup();
 }
 
 

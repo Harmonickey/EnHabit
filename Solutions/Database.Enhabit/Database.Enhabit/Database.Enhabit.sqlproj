@@ -102,6 +102,7 @@
     <Build Include="Programmability\Stored Procedures\GetListing.sql" />
     <Build Include="Programmability\Stored Procedures\GetListingsPictures.sql" />
     <Build Include="Programmability\Stored Procedures\GetUniversity.sql" />
+    <Build Include="Programmability\Stored Procedures\UpdateListing.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />

@@ -22,6 +22,7 @@ namespace Enhabit.Web
                         "~/Scripts/ThirdParty/msgGrowl.js",
                         "~/Scripts/ThirdParty/dropzone.js",
                         "~/Scripts/ThirdParty/powerkiosk_front.js",
+                        "~/Scripts/ThirdParty/jcreate.js",
                         "~/Scripts/ThirdParty/knockout-3.4.0.js",
                         "~/Scripts/ThirdParty/knockout-2.0.3.validation.js"));
 

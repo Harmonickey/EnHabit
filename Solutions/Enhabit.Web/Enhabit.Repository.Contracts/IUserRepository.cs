@@ -17,6 +17,6 @@ namespace Enhabit.Repository.Contracts
 
         bool DeleteUser(Guid userGuid, string password);
 
-        User UpdateUser(User user);
+        bool UpdateUser(User user);
     }
 }

@@ -30,7 +30,12 @@ namespace Enhabit.Presenter.Commands
 
         public static User Update(IUserRepository repo, User user)
         {
-            return repo.UpdateUser(user);
+            if (!repo.UpdateUser(user))
+            {
+                return null;
+            }
+
+            return user;
         }
 
         public static bool Delete(IUserRepository repo, Guid userGuid, string password)

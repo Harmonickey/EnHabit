@@ -135,10 +135,8 @@ namespace Enhabit.Repository.ADO
             return deleted;
         }
 
-        public User UpdateUser(User user)
+        public bool UpdateUser(User user)
         {
-            var previousUserState = GetUser(user.UserId);
-
             using (var transactionScope = new TransactionScope(_transactionScopeOption, _transactionOptions))
             {
                 try
@@ -151,23 +149,14 @@ namespace Enhabit.Repository.ADO
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "[Enhabit].[UpdateUser]";
                             cmd.Parameters.AddWithValue("@UserId", user.UserId);
-                            cmd.Parameters.AddWithValue("@Username", (user.Username != null ? user.Username : previousUserState.Username));
-                            cmd.Parameters.AddWithValue("@Password", (user.Password != null ? user.Password : previousUserState.Password));
-                            cmd.Parameters.AddWithValue("@Email", (user.Email != null ? user.Email : previousUserState.Email));
-                            cmd.Parameters.AddWithValue("@FirstName", (user.FirstName != null ? user.FirstName : previousUserState.FirstName));
-                            cmd.Parameters.AddWithValue("@LastName", (user.LastName != null ? user.LastName : previousUserState.LastName));
-                            cmd.Parameters.AddWithValue("@PhoneNumber", (user.PhoneNumber != null ? user.PhoneNumber : previousUserState.PhoneNumber));
-                            SqlDataReader reader = cmd.ExecuteReader();
+                            cmd.Parameters.AddWithValue("@Username", user.Username);
+                            cmd.Parameters.AddWithValue("@Password", user.Password);
+                            cmd.Parameters.AddWithValue("@Email", user.Email);
+                            cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                            cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                            cmd.Parameters.AddWithValue("@PhoneNumber", user.PhoneNumber);
 
-                            while (reader.HasRows && reader.Read())
-                            {
-                                user.Username = reader["Username"].ToString();
-                                user.FirstName = reader["FirstName"].ToString();
-                                user.LastName = reader["LastName"].ToString();
-                                user.Email = reader["Email"].ToString();
-                                user.PhoneNumber = reader["PhoneNumber"].ToString();
-                                user.AccountTypeId = (int)reader["AccountTypeId"];
-                            }
+                            cmd.ExecuteNonQuery();
                         }
                     }
 
@@ -192,7 +181,7 @@ namespace Enhabit.Repository.ADO
                 }
             }
 
-            return user;
+            return true;
         }
 
         public User GetUser(Guid userGuid)

@@ -216,6 +216,7 @@
     <Content Include="Scripts\ThirdParty\bootstrap.js" />
     <Content Include="Scripts\ThirdParty\detectmobilebrowser.js" />
     <Content Include="Scripts\ThirdParty\dropzone.js" />
+    <Content Include="Scripts\ThirdParty\jcreate.js" />
     <Content Include="Scripts\ThirdParty\jquery-1.11.2.js" />
     <Content Include="Scripts\ThirdParty\jquery-migrate.min.js" />
     <Content Include="Scripts\ThirdParty\jquery-ui-1.10.0.custom.js" />

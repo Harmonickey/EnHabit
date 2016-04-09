@@ -277,7 +277,6 @@ var EnhabitMapViewModel = function (enhabitMapData)
 
     self.CreateMarker = function(listing)
     {
-        console.log(listing);
         var marker = L.marker([listing.XCoordinate, listing.YCoordinate]).addTo(self.Map);
         
         marker.setIcon(L.mapbox.marker.icon({
