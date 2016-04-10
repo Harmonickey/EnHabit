@@ -11,6 +11,7 @@ using Enhabit.Models;
 using System.Transactions;
 using IsolationLevel = System.Transactions.IsolationLevel;
 using Enhabit.Presenter.Extensions;
+using System.Linq;
 
 namespace Enhabit.Repository.ADO
 {
@@ -30,6 +31,42 @@ namespace Enhabit.Repository.ADO
             _transactionScopeOption = TransactionScopeOption.Required;
             _transactionOptions = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted };
             _logger = logger;
+        }
+
+        public bool DeleteByUrls(IEnumerable<string> pictureUrls)
+        {
+            // only continue if there are any pictures to delete
+            if (pictureUrls != null && pictureUrls.Any())
+            {
+                using (var transactionScope = new TransactionScope(_transactionScopeOption, _transactionOptions))
+                {
+                    try
+                    {
+                        var dtPictureUrls = pictureUrls.ToDataTablePictureUrls();
+                        using (var SqlConn = new SqlConnection(_enhabitConnString))
+                        {
+                            SqlConn.Open();
+                            using (var cmd = SqlConn.CreateCommand())
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.CommandText = "[Enhabit].[DeletePictures]";
+                                cmd.Parameters.AddWithValue("@PictureUrls", dtPictureUrls);
+
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        transactionScope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error(string.Format("ImageRepository.DeleteByUrls({0}) Exception: {1}", pictureUrls, ex.Message));
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public IEnumerable<Picture> GetListingsPictures(IEnumerable<Guid> pictureIds)

@@ -7,6 +7,7 @@ using Enhabit.Repository.Contracts;
 using Enhabit.Presenter.DataAdaptors;
 using System;
 using System.Device.Location;
+using System.IO;
 
 namespace Enhabit.Presenter.Commands
 {
@@ -58,26 +59,28 @@ namespace Enhabit.Presenter.Commands
             return listing.ToListingViewModel();
         }
 
-        public static ListingViewModel Update(IListingRepository repo, IImageRepository imageRepo, ICloudinaryAdaptor cloudinaryAdaptor, Listing listing)
+        public static ListingViewModel Update(IListingRepository repo, IImageRepository imageRepo, IUniversityRepository universityRepo, ICloudinaryAdaptor cloudinaryAdaptor, Listing listing)
         {
-            // need to get the old PicturesId before the listing is updated in the db
-            var oldListing = repo.GetListing(listing.ListingId);
-            var oldPictures = imageRepo.GetListingsPictures(new List<Guid> { oldListing.PicturesId });
+            var viewPictures = listing.DropzoneImages.Select(i => Path.GetFileName(i));
+            var repoPictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
 
-            var newPictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
-            listing.IsActive = !listing.IsPastThreshold && newPictures.Any();
+            var picsToDelete = repoPictures.Select(p => p.CloudinaryPublicId).Except(viewPictures);
 
-            if (!repo.UpdateListing(listing))
+            listing.IsPastThreshold = CheckIsListingPastThreshold(universityRepo, listing);
+            listing.IsActive = !listing.IsPastThreshold && repoPictures.Any();
+
+            if (!repo.UpdateListing(listing) || //update the values
+                !imageRepo.DeleteByUrls(picsToDelete)) //delete pics if needbe
             {
                 return null;
             }
+
+            var publicIds = picsToDelete.Select(p => Path.GetFileName(p));
+            cloudinaryAdaptor.Delete(publicIds); //delete cloud pics if needbe
             
-            // now that update has succeeded, we can delete the old pictures from the cloud
-            cloudinaryAdaptor.Delete(oldPictures.Select(p => p.CloudinaryPublicId));
-            
-            if (newPictures.Any())
+            if (repoPictures.Any())
             {
-                listing.ImageUrls = newPictures.Select(p => p.CloudinaryUrl);
+                listing.ImageUrls = repoPictures.Select(p => p.CloudinaryUrl);
             }
 
             return listing.ToListingViewModel();

@@ -16,6 +16,7 @@ namespace Enhabit.Models
         public decimal XCoordinate { get; set; }
         public decimal YCoordinate { get; set; }
         public IEnumerable<string> ImageUrls { get; set; }
+        public IEnumerable<string> DropzoneImages { get; set; }
         public DateTime AvailableStartDate { get; set; }
         public bool IsFeatured { get; set; }
         public bool IsRented { get; set; }

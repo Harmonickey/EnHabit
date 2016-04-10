@@ -242,9 +242,11 @@ var PortalViewModel = function (portalViewModel)
             {
                 self.Pictures[key] = [];
             }
+            var listing = self.GetListingById(key);
+
             var filename = (file.alreadyUploaded
                             ? file.name
-                            : self.CreateListingPictureGuid + "_" + file.name);
+                            : (key == "create" || listing == null ? self.CreateListingPictureGuid : listing.PicturesId) + "_" + file.name);
 
             self.Pictures[key].push(filename);
 
@@ -328,7 +330,7 @@ var PortalViewModel = function (portalViewModel)
                         }
                         else
                         {
-                            var listing = new ListingViewModel(res);
+                            var listing = new ListingViewModel(res, self);
 
                             self.ListingTab.Listings.push(listing);
 
@@ -386,16 +388,9 @@ var PortalViewModel = function (portalViewModel)
                         }
                         else
                         {
-                            for (var i = 0; i < self.ListingTab.Listings().length; i++)
-                            {
-                                // find the listing we were just updating
-                                if (self.ListingTab.Listings()[i].Id == data.Id)
-                                {
-                                    // just reassign it the new view model
-                                    self.ListingTab.Listings()[i] = new ListingViewModel(res);
-                                    break;
-                                }
-                            }
+                            var listing = self.GetListingById(data.ListingId);
+
+                            listing = new ListingViewModel(res, self);
                         }
                     }
                     catch (e)
@@ -409,13 +404,32 @@ var PortalViewModel = function (portalViewModel)
                 },
                 complete: function ()
                 {
-                    self.NumUploaded[data.Id] = 0;
-                    self.AddedFiles[data.Id] = false;
+                    self.NumUploaded[self.PendingUpdateListingData().ListingId] = 0;
+                    self.AddedFiles[self.PendingUpdateListingData().ListingId] = false;
+                    var listing = self.GetListingById(self.PendingUpdateListingData().ListingId);
+                    listing.UpdateListingButtonEnabled(true);
+                    listing.UpdateListingButtonText("Update");
+                    $("a[href='#" + self.PendingUpdateListingData().ListingId + "'").click();
                     self.PendingUpdateListingData(undefined);
                 }
             });
         }
     };
+
+    self.GetListingById = function(id)
+    {
+        for (var i = 0; i < self.ListingTab.Listings().length; i++)
+        {
+            // find the listing we were just updating
+            if (self.ListingTab.Listings()[i].Id == id)
+            {
+                // just reassign it the new view model
+                return self.ListingTab.Listings()[i];
+            }
+        }
+
+        return null;
+    }
 
     /****** Initialization Calls ******/
 

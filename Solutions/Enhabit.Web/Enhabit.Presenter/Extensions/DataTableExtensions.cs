@@ -12,7 +12,7 @@ namespace Enhabit.Presenter.Extensions
         /// <summary>
         /// Converts to System.DataTable for querying pictures
         /// </summary>
-        /// <param name="pictures"></param>
+        /// <param name="pictureIds"></param>
         /// <returns></returns>
         public static DataTable ToDataTablePictureIds(this IEnumerable<Guid> pictureIds)
         {
@@ -20,6 +20,27 @@ namespace Enhabit.Presenter.Extensions
             dtLocation.Columns.Add(new DataColumn { ColumnName = "PictureId", DataType = typeof(Guid) });
             
             foreach (var item in pictureIds)
+            {
+                DataRow row = dtLocation.NewRow();
+                row[0] = item;
+
+                dtLocation.Rows.Add(row);
+            }
+
+            return dtLocation;
+        }
+
+        /// <summary>
+        /// Converts to System.DataTable for deleting pictures
+        /// </summary>
+        /// <param name="pictureUrls"></param>
+        /// <returns></returns>
+        public static DataTable ToDataTablePictureUrls(this IEnumerable<string> pictureUrls)
+        {
+            DataTable dtLocation = new DataTable("TT_PictureUrls");
+            dtLocation.Columns.Add(new DataColumn { ColumnName = "CloudinaryUrl", DataType = typeof(string) });
+
+            foreach (var item in pictureUrls)
             {
                 DataRow row = dtLocation.NewRow();
                 row[0] = item;

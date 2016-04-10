@@ -3,7 +3,7 @@
     var self = this;
 
     self.Id = listing.ListingId;
-    self.PicturesGuid = listing.PicturesId;
+    self.PicturesId = listing.PicturesId;
     self.XCoordinate = ko.observable(listing.XCoordinate);
     self.YCoordinate = ko.observable(listing.YCoordinate);
     self.IsFeatured = ko.observable(listing.IsFeatured);
@@ -86,7 +86,7 @@
     });
 
     self.StartValue = ko.computed(function () {
-        return $.datepicker.formatDate('mm/dd/yy', new Date(self.FormattedStart()));
+        return $.datepicker.formatDate('mm/dd/yy', new Date(self.Start()));
     });
 
     self.UpdateListingButtonEnabled = ko.observable(true);
@@ -113,6 +113,7 @@
     self.SetPendingUpdateData = function ()
     {
         var data = {
+            ListingId: self.Id,
             Address: self.FormattedAddress(),
             XCoordinate: self.XCoordinate(),
             YCoordinate: self.YCoordinate(),
@@ -129,7 +130,8 @@
             BuildingType: self.BuildingTypeValue(),
             LandlordId: self.Landlord(),
             UniversityId: self.University(),
-            PicturesId: self.PicturesGuid,
+            PicturesId: self.PicturesId,
+            DropzoneImages: parentViewModel.Pictures[self.Id],
             Notes: self.Notes()
         };
 

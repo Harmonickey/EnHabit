@@ -1,4 +1,5 @@
-﻿function InitSpecialFields(selector)
+﻿// no knockout binding for pickaday, so just call the constructor
+function InitSpecialFields(selector)
 {
     var listingModal = $(selector + " input");
 
@@ -9,24 +10,31 @@
     });
 }
 
-function ModalBackdropHeight(modal) {
+// sets the modal backdrop height
+function ModalBackdropHeight(modal)
+{
     modal.find(".modal-backdrop").css(
     {
         'min-height': modal.find(".modal-dialog").outerHeight(true) + 'px'
     });
 }
 
-function SetDefaultButtonOnEnter(modal) {
-    if (modal !== "") {
+// make the desired button default upon clicking enter on the keyboard
+function SetDefaultButtonOnEnter(modal)
+{
+    if (modal !== "")
+    {
         //reset for next set
         $(document).unbind("keypress");
         which_modal = "." + modal + "-btn";
     }
-    else {
+    else
+    {
         which_modal = "";
     }
 
-    $(document).on("keypress", function (e) {
+    $(document).on("keypress", function (e)
+    {
         var code = e.keyCode || e.which;
         if (code == 13) {
             $(".modal-body ." + modal + "-btn").click();
@@ -34,7 +42,9 @@ function SetDefaultButtonOnEnter(modal) {
     });
 }
 
-function ResetModal(modal, btnText, hide) {
+// put the buttons back to the original state
+function ResetModal(modal, btnText, hide)
+{
     $("." + modal + "-btn").val(btnText);
     $("." + modal + "-btn").attr('disabled', false);
     if (hide) {
@@ -42,16 +52,16 @@ function ResetModal(modal, btnText, hide) {
     }
 }
 
-function LoadModal(event, which, enterDefault, btnText) {
+// loading a modal means populating the empty modal, resetting the data, setting the default button, and setting the modal backdrop
+function LoadModal(event, which, enterDefault, btnText)
+{
     PopulateAndOpenModal(event, which);
     ResetModal(enterDefault, btnText, true);
     SetDefaultButtonOnEnter(enterDefault);
-    //also try to reset the modal backdrop height 
-    //      because it's different for each modal
-
     ModalBackdropHeight($('#common-modal.modal'));
 }
 
+// no knockout binding for now, so just use the pickaday() constructor
 function SetDatePickerTextBox(rowId)
 {
     $($("#" + rowId + " input[type='text']")[3]).pikaday(
@@ -61,6 +71,7 @@ function SetDatePickerTextBox(rowId)
     });
 }
 
+// sometimes we get a unix datetime back, so convert it to a human readable date time
 function getDateFromUnix(date)
 {
     var fullDate = new Date(parseInt(date.substring(6, 19)));
@@ -74,11 +85,13 @@ function getDateFromUnix(date)
     return fullDate.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + ".0";
 }
 
+// pad a number with a single zero
 function zeroPad(num)
 {
     return (num < 10 ? "0" + num : num);
 }
 
+// need to have this long list instead of the instantiating object because the click events calling this function are generated dynamically
 function OpenListing(Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType, BuildingType, Notes, Animals, Laundry, Parking, HasAirConditioning, Images, Testing, Username, Landlord)
 {
     $("#common-modal").modal('hide');
@@ -243,19 +256,51 @@ function OpenListing(Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType
     $("#details-view-slideshow-section .slider-arrow").css("top", (height / 2) - 22);
 }
 
+// close the details and reset the modal back to the original state
 function CloseDetailsView()
 {
-    $("#details-view").html(
-        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='CloseDetailsView();'>×</button>" +
-        "<div id='details-view-slideshow-section' class='row'></div>" +
-        "<div id='details-items' class='row'>" +
-            "<div id='details-view-listing-details' class='col-lg-8 col-md-8 col-sm-8'></div>" +
-            "<div id='details-view-actions' class='col-lg-4 col-md-4 col-sm-4'></div>" +
-        "</div>");
+    var detailsSource = [
+        {
+            tag: 'button',
+            attr: { type: 'button', 'data-dismiss': 'modal', 'aria-hidden': 'true' },
+            className: 'close',
+            events: {
+                click: CloseDetailsView
+            },
+            content: '×'
+        },
+        {
+            tag: 'div',
+            attr: { id: 'details-view-slideshow-section' },
+            className: 'row'
+        },
+        {
+            tag: 'div',
+            attr: { id: 'details-items' },
+            className: 'row',
+            content: [
+                {
+                    tag: 'div',
+                    attr: { id: 'details-view-listing-details' },
+                    className: 'col-lg-8 col-md-8 col-sm-8'
+                },
+                {
+                    tag: 'div',
+                    attr: { id: 'details-view-actions' },
+                    className: 'col-lg-4 col-md-4 col-sm-4'
+                }
+            ]
+        }
+    ];
+
+    var details = jCreate(detailsSource);
+
+    $("#details-view").html(details);
 
     $("#details-view").fadeOut();
 }
 
+// control the method for closing the popup since we have a custom close button
 function CloseLeafletPopup()
 {
     ko.dataFor(document.body).Map.closePopup();

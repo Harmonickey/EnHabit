@@ -240,7 +240,7 @@
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' data-bind="disabled: (Images().Length == 0 || IsPastThreshold()), bootstrapSwitchOn: IsActive, settings: { onText: 'Yes', offText: 'No' }" data-size="mini"/>
+                                                <label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' data-bind="bootstrapSwitchOn: IsActive, settings: { onText: 'Yes', offText: 'No' }, bootstrapSwitchDisabled: (Images().length == 0 || IsPastThreshold())" data-size="mini"/>
                                             </div>
                                             <div class='col-lg-6 col-md-6 col-sm-6'>
                                                 <label style='color: red' class='activemsg' data-bind="visible: Images().length == 0">To Activate This Listing You Must Include Images!</label>

@@ -46,6 +46,11 @@ namespace Enhabit.Adaptors
         /// <returns></returns>
         public void Delete(IEnumerable<string> publicIds)
         {
+            if (publicIds == null || !publicIds.Any())
+            {
+                return;
+            }
+
             // I don't care about a return, or the order - just delete them all
             publicIds.AsParallel().ForAll(Delete);
         }

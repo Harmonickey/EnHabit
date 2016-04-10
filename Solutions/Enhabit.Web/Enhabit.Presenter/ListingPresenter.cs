@@ -28,7 +28,7 @@ namespace Enhabit.Presenter
 
         public ListingViewModel UpdateListing(Listing listing)
         {
-            return Listings.Update(_listingRepo, _imageRepo, _cloudinaryAdaptor, listing);
+            return Listings.Update(_listingRepo, _imageRepo, _universityRepo, _cloudinaryAdaptor, listing);
         }
     }
 }

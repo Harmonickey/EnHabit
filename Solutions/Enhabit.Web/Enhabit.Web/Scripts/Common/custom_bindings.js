@@ -6,6 +6,23 @@
 
 ko.virtualElements.allowedBindings.stopBinding = true;
 
+ko.bindingHandlers.bootstrapSwitchDisabled = {
+    init: function(element, valueAccessor)
+    {
+        var $elem = $(element),
+            value = valueAccessor();
+
+        $elem.bootstrapSwitch('disabled', value);
+    },
+    update: function(element, valueAccessor)
+    {
+        var $elem = $(element),
+            value = valueAccessor();
+
+        $elem.bootstrapSwitch('disabled', value);
+    }
+}
+
 ko.bindingHandlers.bootstrapSwitchOn = {
     init: function (element, valueAccessor, bindingsAccessor, viewModel)
     {
