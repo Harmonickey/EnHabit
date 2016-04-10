@@ -57,6 +57,8 @@
         return (self.Address() ? self.Address().split(",")[0] : "");
     });
 
+    self.DropZoneFormHeight = ko.observable("200px");
+
     self.FormattedStart = ko.pureComputed(function ()
     {
         var parts = self.Start().split("T")[0].split("-");

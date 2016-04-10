@@ -91,26 +91,6 @@ var PortalViewModel = function (portalViewModel)
     self.Landlords = portalViewModel.Landlords;
     self.Universities = portalViewModel.Universities;
 
-    self.AccountTab = new AccountTabViewModel(portalViewModel.Account, self);
-
-    self.ListingTab = new ListingTabViewModel(portalViewModel.Listings, self);
-
-    if (portalViewModel.Applicants)
-    {
-        self.ApplicantTab = new ApplicantTabViewModel(portalViewModel.Applicants);
-    }
-    if (portalViewModel.Payments)
-    {
-        self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
-    }
-    if (portalViewModel.Renters)
-    {
-        self.RenterTab = new RenterTabViewModel(portalViewModel.Renters);
-    }
-
-    self.CreateListingPictureGuid = portalViewModel.CreateListingPictureGuid;
-    self.CreateListingUserGuid = ko.observable(self.AccountTab.Account.Id());
-
     self.CreateListingButtonEnabled = ko.observable(true);
     self.CreateListingButtonText = ko.observable("Create Listing");
 
@@ -123,6 +103,23 @@ var PortalViewModel = function (portalViewModel)
 
     self.PendingUpdateListingData = ko.observable();
     self.PendingListingData = ko.observable();
+
+    self.AccountTab = new AccountTabViewModel(portalViewModel.Account, self);
+
+    self.ListingTab = new ListingTabViewModel(portalViewModel.Listings, self);
+
+    if (portalViewModel.Applicants) {
+        self.ApplicantTab = new ApplicantTabViewModel(portalViewModel.Applicants);
+    }
+    if (portalViewModel.Payments) {
+        self.PaymentTab = new PaymentTabViewModel(portalViewModel.Payments);
+    }
+    if (portalViewModel.Renters) {
+        self.RenterTab = new RenterTabViewModel(portalViewModel.Renters);
+    }
+
+    self.CreateListingPictureGuid = portalViewModel.CreateListingPictureGuid;
+    self.CreateListingUserGuid = ko.observable(self.AccountTab.Account.Id());
 
     self.CreateListing = new CreateListingViewModel(self.Landlords, self.Universities, self);
 
@@ -250,6 +247,8 @@ var PortalViewModel = function (portalViewModel)
 
             self.Pictures[key].push(filename);
 
+            self.FixDropZoneFormHeight();
+
             if (!file.alreadyUploaded)
             {
                 this.files[this.files.length - 1].serverFileName = filename;
@@ -269,7 +268,14 @@ var PortalViewModel = function (portalViewModel)
                 self.Pictures[key] = [];
             }
 
+            if (index == -1)
+            {
+                index = $.inArray(file.name, self.Pictures[key]);
+            }
+
             self.Pictures[key].splice(index, 1);
+
+            self.FixDropZoneFormHeight();
 
             self.NumAdded[key] -= 1;
 
@@ -292,6 +298,13 @@ var PortalViewModel = function (portalViewModel)
                 myDropzone.emit("complete", mockFile);
             }
         }
+    };
+
+    self.FixDropZoneFormHeight = function ()
+    {
+        var numPictures = self.Pictures[key].length;
+        var listing = self.GetListingById(key);
+        listing.DropZoneFormHeight((200 * Math.ceil(numPictures / 3)) + "px");
     };
 
     self.ProcessListing = function ()

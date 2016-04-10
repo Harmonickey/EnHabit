@@ -33,14 +33,14 @@ namespace Enhabit.Presenter.Extensions
         /// <summary>
         /// Converts to System.DataTable for deleting pictures
         /// </summary>
-        /// <param name="pictureUrls"></param>
+        /// <param name="pictureCloudinaryPublicIds"></param>
         /// <returns></returns>
-        public static DataTable ToDataTablePictureUrls(this IEnumerable<string> pictureUrls)
+        public static DataTable ToDataTablePictureCloudinaryPublicIds(this IEnumerable<string> pictureCloudinaryPublicIds)
         {
-            DataTable dtLocation = new DataTable("TT_PictureUrls");
-            dtLocation.Columns.Add(new DataColumn { ColumnName = "CloudinaryUrl", DataType = typeof(string) });
+            DataTable dtLocation = new DataTable("TT_PictureCloudinaryPublicIds");
+            dtLocation.Columns.Add(new DataColumn { ColumnName = "CloudinaryPublicId", DataType = typeof(string) });
 
-            foreach (var item in pictureUrls)
+            foreach (var item in pictureCloudinaryPublicIds)
             {
                 DataRow row = dtLocation.NewRow();
                 row[0] = item;

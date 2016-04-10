@@ -8,7 +8,7 @@ namespace Enhabit.Repository.Contracts
     {
         IEnumerable<Picture> GetListingsPictures(IEnumerable<Guid> pictureIds);
 
-        bool DeleteByUrls(IEnumerable<string> pictureUrls);
+        bool DeleteByPublicIds(IEnumerable<string> pictureCloudinaryPublicIds);
 
         bool Save(Picture picture);
     }

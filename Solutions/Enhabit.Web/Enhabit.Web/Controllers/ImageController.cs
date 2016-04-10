@@ -30,7 +30,7 @@ namespace Enhabit.Web.Controllers
                 file.SaveAs(saveLocation);
 
                 // save to cloud
-                if (!Presenter.Save(saveLocation, path))
+                if (!Presenter.Save(saveLocation, Path.GetFileNameWithoutExtension(path)))
                 {
                     throw new Exception("Unable to Save Picture");
                 }

@@ -33,16 +33,16 @@ namespace Enhabit.Repository.ADO
             _logger = logger;
         }
 
-        public bool DeleteByUrls(IEnumerable<string> pictureUrls)
+        public bool DeleteByPublicIds(IEnumerable<string> pictureCloudinaryPublicIds)
         {
             // only continue if there are any pictures to delete
-            if (pictureUrls != null && pictureUrls.Any())
+            if (pictureCloudinaryPublicIds != null && pictureCloudinaryPublicIds.Any())
             {
                 using (var transactionScope = new TransactionScope(_transactionScopeOption, _transactionOptions))
                 {
                     try
                     {
-                        var dtPictureUrls = pictureUrls.ToDataTablePictureUrls();
+                        var dtPictureCloudinaryPublicIds = pictureCloudinaryPublicIds.ToDataTablePictureCloudinaryPublicIds();
                         using (var SqlConn = new SqlConnection(_enhabitConnString))
                         {
                             SqlConn.Open();
@@ -50,7 +50,7 @@ namespace Enhabit.Repository.ADO
                             {
                                 cmd.CommandType = CommandType.StoredProcedure;
                                 cmd.CommandText = "[Enhabit].[DeletePictures]";
-                                cmd.Parameters.AddWithValue("@PictureUrls", dtPictureUrls);
+                                cmd.Parameters.AddWithValue("@pictureCloudinaryPublicIds", dtPictureCloudinaryPublicIds);
 
                                 cmd.ExecuteNonQuery();
                             }
@@ -60,7 +60,7 @@ namespace Enhabit.Repository.ADO
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error(string.Format("ImageRepository.DeleteByUrls({0}) Exception: {1}", pictureUrls, ex.Message));
+                        _logger.Error(string.Format("ImageRepository.DeleteByPublicIds({0}) Exception: {1}", string.Join(",", pictureCloudinaryPublicIds), ex.Message));
                         return false;
                     }
                 }

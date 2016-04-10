@@ -61,7 +61,7 @@ namespace Enhabit.Presenter.Commands
 
         public static ListingViewModel Update(IListingRepository repo, IImageRepository imageRepo, IUniversityRepository universityRepo, ICloudinaryAdaptor cloudinaryAdaptor, Listing listing)
         {
-            var viewPictures = listing.DropzoneImages.Select(i => Path.GetFileName(i));
+            var viewPictures = listing.DropzoneImages.Select(i => Path.GetFileNameWithoutExtension(i));
             var repoPictures = imageRepo.GetListingsPictures(new List<Guid> { listing.PicturesId });
 
             var picsToDelete = repoPictures.Select(p => p.CloudinaryPublicId).Except(viewPictures);
@@ -70,13 +70,12 @@ namespace Enhabit.Presenter.Commands
             listing.IsActive = !listing.IsPastThreshold && repoPictures.Any();
 
             if (!repo.UpdateListing(listing) || //update the values
-                !imageRepo.DeleteByUrls(picsToDelete)) //delete pics if needbe
+                !imageRepo.DeleteByPublicIds(picsToDelete)) //delete pics if needbe
             {
                 return null;
             }
 
-            var publicIds = picsToDelete.Select(p => Path.GetFileName(p));
-            cloudinaryAdaptor.Delete(publicIds); //delete cloud pics if needbe
+            cloudinaryAdaptor.Delete(picsToDelete); //delete cloud pics if needbe
             
             if (repoPictures.Any())
             {
