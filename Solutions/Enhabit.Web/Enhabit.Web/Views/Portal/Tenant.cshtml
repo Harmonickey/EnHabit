@@ -84,11 +84,11 @@
                 <div class="widget stacked">
                     <div class="widget-header actions">
                         <h3>Registered Listing</h3>
-                        <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;" data-bind="visible: ShowCreateListing"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+                        <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;" data-bind="visible: Listings().length == 0"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
                         <p id="create-listing-warning" class="pull-right" style="color: red;" data-bind="visible: ShowUpdateAccountMessage">Update your account to create a listing!</p>
                     </div> <!-- /widget-header -->
                     <div class="widget-content listings">
-                        <label class="listings-message" data-bind="visible: ShowListingMessage" style="display: none;">Click the listing below to update and see more details</label>
+                        <label class="listings-message" data-bind="visible: Listings().length > 0" style="display: none;">Click the listing below to update and see more details</label>
                         <!-- all the listings go here -->
                         <div class="panel-group accordion" id="listings-accordion" role="tablist" aria-multiselectable="true" data-bind="foreach: { data: Listings, afterRender: AfterListingRender }">
                             <div class='panel panel-default'>
@@ -108,7 +108,7 @@
                                     <div class='panel-body'>                                      
                                         <div class='row'>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Address</label><input type='text' class='form-control' data-bind="value: Address" />
+                                                <label>Address</label><input type='text' class='form-control' data-bind="addressAutocomplete: Address, location: { X: XCoordinate, Y: YCoordinate }, attr: { placeholder: Address }" />
                                             </div>
                                             <!-- ko if: Unit != null -->
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
@@ -116,7 +116,7 @@
                                             </div>
                                             <!-- /ko -->
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Rent/Month</label><input type='text' class='form-control' data-bind="value: Price" />
+                                                <label>Rent/Month</label><input type='text' class='form-control' data-bind="autoNumeric: Price, settings: { aSign: '$ ', vMax: '999999.99', wEmpty: 'sign', lZero: 'deny' }" />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
                                                 <label>Start Date</label><input type='text' class='form-control' data-bind="value: Start" />
@@ -161,36 +161,36 @@
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Animals</label><input class='yesno' type='checkbox' data-bind="value: Animals" data-size='mini' />
+                                                <label>Animals</label><input class='yesno' type='checkbox'data-bind="bootstrapSwitchOn: Animals, settings: { onText: 'Yes', offText: 'No' }" data-size='mini' />
                                             </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Laundry</label><input class='yesno' type='checkbox' data-bind="value: Laundry" data-size='mini' />
+                                                <label>Laundry</label><input class='yesno' type='checkbox' data-bind="bootstrapSwitchOn: Laundry, settings: { onText: 'Yes', offText: 'No' }" data-size='mini' />
                                             </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>Parking</label><input  class='yesno' type='checkbox' data-bind="value: Parking" data-size='mini' />
+                                                <label>Parking</label><input  class='yesno' type='checkbox' data-bind="bootstrapSwitchOn: Parking, settings: { onText: 'Yes', offText: 'No' }" data-size='mini' />
                                             </div>
                                             <div class='col-lg-2 col-md-2 col-sm-2'>
-                                                <label>AC</label><input class='yesno' type='checkbox' data-bind="value: AirConditioning" data-size='mini' />
+                                                <label>AC</label><input class='yesno' type='checkbox' data-bind="bootstrapSwitchOn: AirConditioning, settings: { onText: 'Yes', offText: 'No' }" data-size='mini' />
                                             </div>
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Is Rented</label><input class='yesno' type='checkbox' data-bind="value: IsRented" data-size='mini' />
+                                                <label>Is Rented</label><input class='yesno' type='checkbox' data-bind="bootstrapSwitchOn: IsRented, settings: { onText: 'Yes', offText: 'No' }" data-size='mini' />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Lease Type</label><input class='leasType' type='checkbox' data-size='mini' data-bind="value: LeaseType" />
+                                                <label>Lease Type</label><input class='leasType' type='checkbox' data-size='mini' data-bind="bootstrapSwitchOn: LeaseTypes, settings: { onText: 'Rental', offText: 'Sublet' }" />
                                             </div>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Building Type</label><input class='buildingType' type='checkbox' data-size='mini' data-bind="value: BuildingType" />    
+                                                <label>Building Type</label><input class='buildingType' type='checkbox' data-size='mini' data-bind="bootstrapSwitchOn: BuildingTypes, settings: { onText: 'Apartment', offText: 'House' }" />    
                                             </div>
                                         </div>
                                         <div class='row' style='margin-top: 10px'>
                                             <div class='col-lg-3 col-md-3 col-sm-3'>
-                                                <label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' data-bind="value: IsActive" />
+                                                <label>Listing Active</label><input class='yesno activecheckbox' type='checkbox' data-bind="bootstrapSwitchOn: IsActive, settings: { onText: 'Yes', offText: 'No' }, bootstrapSwitchDisabled: (Images().length == 0 || IsPastThreshold())" />
                                             </div>
                                             <div class='col-lg-6 col-md-6 col-sm-6'>
                                             <label style='color: red' class='activemsg' data-bind="visible: Images().length == 0">To Activate This Listing You Must Include Images!</label>
-                                            <label style='color: red' class='activemsg' data-bind="visible: IsPastThreshold()">To Activate This Listing, Please Choose an Address Within <span data-bind="text: Threshold"></span> miles of this University!</label>
+                                            <label style='color: red' class='activemsg' data-bind="visible: IsPastThreshold()">To Activate This Listing, Please Choose an Address Within <span data-bind="text: $parent.Threshold"></span> miles of this University!</label>
                                             </div>
                                         </div>
                                         <div class='row'>
@@ -201,22 +201,21 @@
                                         </div>
                                         <div class='row'>
                                             <div class='col-lg-6 col-md-6 col-sm-6'>
-                                                <label>Info</label><textarea rows='4' cols='50' class='form-control' data-bind="text: Notes"></textarea>
+                                                <label>Info</label><textarea rows='4' cols='50' class='form-control' data-bind="textInput: Notes"></textarea>
                                             </div>
                                         </div>
                                         <div class='row'>
                                             <div class='col-lg-6 col-md-6 col-sm-6'>
                                                 <label>Images (Will Upload Upon Submit)</label>
-                                                <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone"></form>                                                
+                                                <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone" data-bind="style: { 'min-height': DropZoneFormHeight }"></form>                                                
                                             </div>
                                         </div>
                                         <div class='row' style='margin-top: 10px;'>
                                             <div class='col-lg-6 col-md-6 col-sm-6'>
-                                                <button class='btn btn-primary btn-success' data-bind="click: UpdateListing">Update</button>
-                                                <button class='btn btn-danger' data-bind="click: DeleteListing">Delete</button>
+                                                <button class='btn btn-primary btn-success' data-bind="click: UpdateListing, enable: UpdateListingButtonEnabled, text: UpdateListingButtonText">Update</button>
+                                                <button class='btn btn-danger' data-bind="click: DeleteListing, enable: DeleteListingButtonEnabled, text: DeleteListingButtonText">Delete</button>
                                             </div>
                                         </div>
-                                        <input type='hidden' data-bind="value: XCoordinate" /><input type='hidden' data-bind="value: YCoordinate" /><input type='hidden' data-bind="value: Address" />
                                     </div>
                                 </div>
                             </div>
@@ -421,7 +420,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Images (Will Upload Upon Submit)</label>
-                        <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone"></form>
+                        <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone" data-bind="style: { 'min-height': CreateListing.DropZoneFormHeight }"></form>
                     </div>
                 </div>
                 <div class="row">

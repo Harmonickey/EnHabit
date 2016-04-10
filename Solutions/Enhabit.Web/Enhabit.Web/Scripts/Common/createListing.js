@@ -55,6 +55,8 @@
     self.CreateListingButtonEnabled = ko.observable(true);
     self.CreateListingButtonText = ko.observable("Create Listing");
 
+    self.DropZoneFormHeight = ko.observable("200px");
+
     self.PendingPortalListingCreation = function ()
     {
         self.SetPendingData();

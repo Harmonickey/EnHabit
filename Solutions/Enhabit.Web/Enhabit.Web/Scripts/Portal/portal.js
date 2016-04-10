@@ -10,7 +10,6 @@
 
     self.Threshold = parentViewModel.Universities[0].Threshold;
     
-    self.ShowCreateListing = ko.observable(true);
     self.ShowUpdateAccountMessage = ko.observable(false);
 
     self.AfterListingRender = function (element, data)
@@ -34,7 +33,7 @@ var PaymentTabViewModel = function (paymentViewModel)
     self.Unit = paymentViewModel.Unit;
     self.Rent = paymentViewModel.Rent;
     self.LandlordEmail = paymentViewModel.LandlordEmail;
-    self.PaymentNote = ko.observable();
+    self.PaymentNote = ko.observable("");
 
     self.FormattedRent = ko.pureComputed(function () {
         return accounting.formatMoney(self.Rent);
@@ -148,6 +147,8 @@ var PortalViewModel = function (portalViewModel)
         navLink.Selected(true);
 
         self.TabActive(tab);
+
+        location.hash = tab;
     };
 
     self.TabActive = function(tab)
@@ -247,7 +248,7 @@ var PortalViewModel = function (portalViewModel)
 
             self.Pictures[key].push(filename);
 
-            self.FixDropZoneFormHeight();
+            self.FixDropZoneFormHeight(key);
 
             if (!file.alreadyUploaded)
             {
@@ -275,7 +276,7 @@ var PortalViewModel = function (portalViewModel)
 
             self.Pictures[key].splice(index, 1);
 
-            self.FixDropZoneFormHeight();
+            self.FixDropZoneFormHeight(key);
 
             self.NumAdded[key] -= 1;
 
@@ -300,11 +301,18 @@ var PortalViewModel = function (portalViewModel)
         }
     };
 
-    self.FixDropZoneFormHeight = function ()
+    self.FixDropZoneFormHeight = function (key)
     {
         var numPictures = self.Pictures[key].length;
-        var listing = self.GetListingById(key);
-        listing.DropZoneFormHeight((200 * Math.ceil(numPictures / 3)) + "px");
+        if (key == "create")
+        {
+            self.CreateListing.DropZoneFormHeight((200 * Math.ceil(numPictures / 3)) + "px");
+        }
+        else
+        {
+            var listing = self.GetListingById(key);
+            listing.DropZoneFormHeight((200 * Math.ceil(numPictures / 3)) + "px");
+        }
     };
 
     self.ProcessListing = function ()

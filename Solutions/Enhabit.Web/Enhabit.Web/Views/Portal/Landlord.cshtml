@@ -138,7 +138,7 @@
                 <div class="widget stacked">
                     <div class="widget-header actions">
                         <h3>Registered Listings</h3>
-                        <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;" data-bind="visible: ShowCreateListing"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
+                        <a id="create-listing-modal-button" class="btn btn-success" data-toggle="modal" href="#createListingModal" style="margin-bottom: 5px;"><i style="margin-left: 0; margin-right: 5px;" class="fa fa-plus"></i>Create New Listing</a>
                         <p id="create-listing-warning" class="pull-right" style="color: red;" data-bind="visible: ShowUpdateAccountMessage">Update your account to create a listing!</p>
                     </div> <!-- /widget-header -->
                     <div class="widget-content listings">
@@ -444,7 +444,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <label>Images (Will Upload Upon Submit)</label>
-                        <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone"></form>
+                        <form action="/Image/Save" method="post" enctype="multipart/form-data" data-pic-id="create" class="form-control dropzone" data-bind="style: { 'min-height': CreateListing.DropZoneFormHeight }"></form>
                     </div>
                 </div>
                 <div class="row">

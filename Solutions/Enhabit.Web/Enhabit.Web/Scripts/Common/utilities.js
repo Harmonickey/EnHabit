@@ -173,7 +173,7 @@ function OpenListing(Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType
                 className: 'col-lg-3 col-md-3 col-sm-3 lightbackground',
                 content: {
                     tag: 'p',
-                    content: data
+                    content: data1
                 }
             }
         },
@@ -190,7 +190,7 @@ function OpenListing(Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType
             }
         }]
     };
-    var firstDoubleRow = new doubleRowDiv("Bedrooms: " + Bedrooms, "Lease Type: " + LeaseType);
+    var firstDoubleRow = new doubleRowDiv("Bedrooms: " + Bedrooms, "Lease Type: " + (LeaseType == 0 ? "Sublet" : "Rental"));
     firstDoubleRow[0].content.style = { 'border-top-left-radius': '10px' };
     firstDoubleRow[1].content.style = { 'border-top-left-radius': '10px' };
     var lastDoubleRow = new doubleRowDiv("Parking: " + Parking, "In-Unit Laundry: " + Laundry);
@@ -207,7 +207,7 @@ function OpenListing(Address, Unit, Start, Bedrooms, Bathrooms, Price, LeaseType
             new rowDiv("Available " + Start),
             new rowDiv("Listed By: " + (Landlord != 'undefined' ? Landlord : (Username != 'undefined' ? Username : ""))),
             firstDoubleRow,
-            new doubleRowDiv("Bathrooms: " + Bathrooms, "Building Type: " + BuildingType),
+            new doubleRowDiv("Bathrooms: " + Bathrooms, "Building Type: " + (BuildingType == 0 ? "Apartment" : "House")),
             new doubleRowDiv("Animals " + Animals, "Air Conditioning: " + HasAirConditioning),
             lastDoubleRow,
             {
@@ -304,6 +304,11 @@ function CloseDetailsView()
 function CloseLeafletPopup()
 {
     ko.dataFor(document.body).Map.closePopup();
+}
+
+function CreateEmailMessage()
+{
+
 }
 
 
